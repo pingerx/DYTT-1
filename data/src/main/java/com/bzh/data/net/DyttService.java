@@ -18,7 +18,7 @@ import rx.Observable;
 public interface DyttService {
 
     @GET("/")
-//    @Headers({"Content-Type: text/html; charset=gb2312"
+//    @Headers({"Content-Type: text/html; charset=UTF-8"
 //            , "Content-Language: en,zh", "Content-Encoding: gzip"})
     Observable<String> getHomePage();
 }

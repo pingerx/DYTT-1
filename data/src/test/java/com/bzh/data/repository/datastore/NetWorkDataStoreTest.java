@@ -4,13 +4,18 @@ import com.bzh.data.ApplicationStub;
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.net.RetrofitManager;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -40,6 +45,8 @@ public class NetWorkDataStoreTest extends ApplicationTestCase {
 
     @Test
     public void testGetHomePage() throws Exception {
+//        Element body = Jsoup.connect("http://www.dytt8.net/").get().body();
+//        System.out.println(body);
         Observable<String> homePage = netWorkDataStore.getHomePage();
         homePage.subscribe(new Subscriber<String>() {
             @Override
@@ -55,12 +62,11 @@ public class NetWorkDataStoreTest extends ApplicationTestCase {
             @Override
             public void onNext(String s) {
                 try {
-                    s = new String(s.getBytes("gbk"));
-                    System.out.println("s = [" + s + "]");
-                } catch (Exception e) {
+                    s = new String(s.getBytes("ISO8859_1"), "GB2312");
+                } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-
+                System.out.println(s);
                 Assert.assertNotNull(s);
             }
         });
