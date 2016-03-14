@@ -1,5 +1,9 @@
 package com.bzh.data.repository.datastore;
 
+import android.app.Application;
+import android.content.Context;
+import android.util.Log;
+
 import com.bzh.data.ApplicationStub;
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.net.RetrofitManager;
@@ -12,11 +16,15 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -37,37 +45,37 @@ public class NetWorkDataStoreTest extends ApplicationTestCase {
 
     private NetWorkDataStore netWorkDataStore;
 
+    @Mock
+    Application application;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        netWorkDataStore = new NetWorkDataStore(RetrofitManager.getInstance());
+        netWorkDataStore = new NetWorkDataStore(RetrofitManager.getInstance(application));
     }
 
     @Test
     public void testGetHomePage() throws Exception {
-//        Element body = Jsoup.connect("http://www.dytt8.net/").get().body();
-//        System.out.println(body);
         Observable<String> homePage = netWorkDataStore.getHomePage();
         homePage.subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
-                System.out.println("NetWorkDataStoreTest.onCompleted");
+                System.out.println("");
             }
 
             @Override
             public void onError(Throwable e) {
-                System.out.println("NetWorkDataStoreTest.onError");
+                System.out.println("e = [" + e + "]");
             }
 
             @Override
-            public void onNext(String s) {
-                try {
-                    s = new String(s.getBytes("ISO8859_1"), "GB2312");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(s);
-                Assert.assertNotNull(s);
+            public void onNext(String res) {
+                Assert.assertNotNull(res);
+                String pattern = "[\u4e00-\u9fa5]+";
+                Pattern p = Pattern.compile(pattern);
+                Assert.assertTrue(p.matcher(res).find());
+                System.out.println(res);
+
             }
         });
     }

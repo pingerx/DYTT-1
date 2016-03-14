@@ -3,7 +3,11 @@ package com.bzh.data.repository.datastore;
 import com.bzh.data.net.DyttService;
 import com.bzh.data.net.RetrofitManager;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * ==========================================================<br>
@@ -17,6 +21,7 @@ import rx.Observable;
  */
 public class NetWorkDataStore implements HtmlDataStore {
 
+    public static final String CHARSET_NAME = "GB2312";
     private RetrofitManager retrofitManager;
 
     public NetWorkDataStore(RetrofitManager retrofitManager) {
@@ -25,6 +30,17 @@ public class NetWorkDataStore implements HtmlDataStore {
 
     @Override
     public Observable<String> getHomePage() {
-        return retrofitManager.getDyttService().getHomePage();
+        Observable<ResponseBody> homePage = retrofitManager.getDyttService().getHomePage();
+        return homePage.map(new Func1<ResponseBody, String>() {
+            @Override
+            public String call(ResponseBody responseBody) {
+                try {
+                    return new String(responseBody.bytes(), CHARSET_NAME);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return "";
+                }
+            }
+        });
     }
 }
