@@ -1,5 +1,6 @@
 package com.bzh.data.repository.datastore;
 
+import com.bzh.data.exception.DataLayerException;
 import com.bzh.data.net.DyttService;
 import com.bzh.data.net.RetrofitManager;
 
@@ -23,6 +24,17 @@ public class NetWorkDataStore implements HtmlDataStore {
 
     public static final String CHARSET_NAME = "GB2312";
     private RetrofitManager retrofitManager;
+    private Func1<ResponseBody, String> transformCharset = new Func1<ResponseBody, String>() {
+        @Override
+        public String call(ResponseBody responseBody) {
+            try {
+                return new String(responseBody.bytes(), CHARSET_NAME);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "";
+            }
+        }
+    };
 
     public NetWorkDataStore(RetrofitManager retrofitManager) {
         this.retrofitManager = retrofitManager;
@@ -31,16 +43,6 @@ public class NetWorkDataStore implements HtmlDataStore {
     @Override
     public Observable<String> getHomePage() {
         Observable<ResponseBody> homePage = retrofitManager.getDyttService().getHomePage();
-        return homePage.map(new Func1<ResponseBody, String>() {
-            @Override
-            public String call(ResponseBody responseBody) {
-                try {
-                    return new String(responseBody.bytes(), CHARSET_NAME);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return "";
-                }
-            }
-        });
+        return homePage.map(transformCharset);
     }
 }
