@@ -1,5 +1,9 @@
 package com.bzh.data.repository.datastore;
 
+import android.app.Application;
+import android.content.Context;
+import android.util.Log;
+
 import com.bzh.data.ApplicationStub;
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.net.RetrofitManager;
@@ -11,16 +15,24 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Subscriber;
 
 import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -35,40 +47,39 @@ import static org.mockito.Mockito.verify;
  */
 public class NetWorkDataStoreTest extends ApplicationTestCase {
 
-    private NetWorkDataStore netWorkDataStore;
+    @Mock
+    NetWorkDataStore netWorkDataStore;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        netWorkDataStore = new NetWorkDataStore(RetrofitManager.getInstance());
     }
 
     @Test
     public void testGetHomePage() throws Exception {
-//        Element body = Jsoup.connect("http://www.dytt8.net/").get().body();
-//        System.out.println(body);
-        Observable<String> homePage = netWorkDataStore.getHomePage();
-        homePage.subscribe(new Subscriber<String>() {
-            @Override
-            public void onCompleted() {
-                System.out.println("NetWorkDataStoreTest.onCompleted");
-            }
+        given(netWorkDataStore.getHomePage()).willReturn(Observable.just("<title>电影天堂_免费电影_迅雷电影下载</title>"));
+        verify(netWorkDataStore).getHomePage();
 
-            @Override
-            public void onError(Throwable e) {
-                System.out.println("NetWorkDataStoreTest.onError");
-            }
-
-            @Override
-            public void onNext(String s) {
-                try {
-                    s = new String(s.getBytes("ISO8859_1"), "GB2312");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(s);
-                Assert.assertNotNull(s);
-            }
-        });
+//        Observable<String> homePage = netWorkDataStore.getHomePage();
+//        homePage.subscribe(new Subscriber<String>() {
+//            @Override
+//            public void onCompleted() {
+//                System.out.println("");
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                System.out.println("e = [" + e + "]");
+//            }
+//
+//            @Override
+//            public void onNext(String res) {
+//                Assert.assertNotNull(res);
+//                String pattern = "[\u4e00-\u9fa5]+";
+//                Pattern p = Pattern.compile(pattern);
+//                Assert.assertTrue(p.matcher(res).find());
+//                System.out.println(res);
+//            }
+//        });
     }
 }

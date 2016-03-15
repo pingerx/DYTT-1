@@ -1,5 +1,6 @@
 package com.bzh.data.repository.datastore;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
 
 /**

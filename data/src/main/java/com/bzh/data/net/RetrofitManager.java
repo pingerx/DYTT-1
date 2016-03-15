@@ -1,5 +1,13 @@
 package com.bzh.data.net;
 
+import android.content.Context;
+
+import java.io.File;
+import java.lang.reflect.Field;
+import java.sql.Time;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -18,22 +26,34 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class RetrofitManager {
 
     private DyttService dyttService;
+
     private static RetrofitManager retrofitManager;
 
-    private RetrofitManager() {
+    private RetrofitManager(Context context) {
+
+        int cacheSize = 10 * 1024 * 1024;
+
+        Cache cache = new Cache(new File(context.getCacheDir().getAbsolutePath() + File.separator + "cache.dytt"), cacheSize);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .cache(cache)
+                .connectTimeout(3, TimeUnit.SECONDS)
+
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.dytt8.net")
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(new OkHttpClient())
+                .client(okHttpClient)
                 .build();
 
         dyttService = retrofit.create(DyttService.class);
     }
 
-    public static RetrofitManager getInstance() {
+    public static RetrofitManager getInstance(Context context) {
         if (retrofitManager == null) {
-            retrofitManager = new RetrofitManager();
+            retrofitManager = new RetrofitManager(context);
         }
         return retrofitManager;
     }
