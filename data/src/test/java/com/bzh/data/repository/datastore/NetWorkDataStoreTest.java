@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +34,7 @@ import rx.Subscriber;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -57,8 +59,21 @@ public class NetWorkDataStoreTest extends ApplicationTestCase {
 
     @Test
     public void testGetHomePage() throws Exception {
-        given(netWorkDataStore.getHomePage()).willReturn(Observable.just("<title>电影天堂_免费电影_迅雷电影下载</title>"));
+
+        netWorkDataStore.getHomePage();
         verify(netWorkDataStore).getHomePage();
+
+        //mock creation
+        List mockedList = mock(List.class);
+
+        //using mock object
+        mockedList.add("one");
+        mockedList.clear();
+
+        //verification
+        verify(mockedList).add("one");
+        verify(mockedList).clear();
+
 
 //        Observable<String> homePage = netWorkDataStore.getHomePage();
 //        homePage.subscribe(new Subscriber<String>() {
