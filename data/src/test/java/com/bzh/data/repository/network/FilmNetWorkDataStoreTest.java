@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.entity.FilmDetailEntity;
+import com.bzh.data.entity.FilmEntity;
 import com.bzh.data.net.RetrofitManager;
 
 import org.jsoup.Jsoup;
@@ -44,62 +45,17 @@ import static org.mockito.Mockito.when;
  */
 public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
 
-    @Mock
-    FilmNetWorkDataStore netWorkDataStore;
-
     FilmNetWorkDataStore realNetWorkDataStore;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
         realNetWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance(null));
     }
 
     @Test
     public void testGetNewest() throws Exception {
-        // 模拟数据
-        when(netWorkDataStore.getHrefTags()).thenReturn(new Func1<String, Observable<Element>>() {
-            @Override
-            public Observable<Element> call(String s) {
-                Document document = Jsoup.parse(s);
-                Elements elements = document.select("div.co_content8").select("ul");
-                return Observable.from(elements.select("a[href]"));
-            }
-        });
-        when(netWorkDataStore.getHrefTagValue()).thenReturn(new Func1<Element, String>() {
-            @Override
-            public String call(Element element) {
-                return element.attr("href");
-            }
-        });
-
-        Observable<String> htmlSource = Observable.just(getHtml("newest_1.html", "GB2312"))
-                .flatMap(netWorkDataStore.getHrefTags())
-                .map(netWorkDataStore.getHrefTagValue());
-
-        when(netWorkDataStore.getNewest(1)).thenReturn(htmlSource);
-        netWorkDataStore.getNewest(1)
-                .subscribe(new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(String s) {
-                        assertNotNull(s);
-                        assertTrue(s.endsWith("html"));
-                        assertTrue(s.contains("html"));
-                    }
-                });
-
         // 真实数据
-        realNetWorkDataStore.getNewest(1).subscribe(new Subscriber<String>() {
+        realNetWorkDataStore.getNewest(1).subscribe(new Subscriber<FilmEntity>() {
             @Override
             public void onCompleted() {
 
@@ -111,26 +67,28 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
             }
 
             @Override
-            public void onNext(String s) {
+            public void onNext(FilmEntity s) {
                 assertNotNull(s);
-                assertTrue(s.endsWith("html"));
-                assertTrue(s.contains("html"));
+                System.out.println("s = [" + s + "]");
             }
         });
     }
 
-    @NonNull
-    private String getHtml(String fileName, String charsetName) throws IOException {
-        InputStream in = new FileInputStream(new File("html" + File.separator + fileName));
-        assertNotNull(in);
-        String html = Okio.buffer(Okio.source(in)).readString(Charset.forName(charsetName));
-        assertNotNull(html);
-        return html;
-    }
+//    @NonNull
+//    private String getHtml(String fileName, String charsetName) throws IOException {
+//        InputStream in = new FileInputStream(new File("html" + File.separator + fileName));
+//        assertNotNull(in);
+//        String html = Okio.buffer(Okio.source(in)).readString(Charset.forName(charsetName));
+//        assertNotNull(html);
+//        return html;
+//    }
 
     @Test
     public void testGetFilmDetail() throws Exception {
-        realNetWorkDataStore.getFilmDetail("/html/gndy/dyzz/20160309/50431.html")
+        FilmEntity filmEntity = new FilmEntity();
+        filmEntity.setName("2015年奇幻动作《道士下山》BD国语中字");
+        filmEntity.setUrl("/html/gndy/dyzz/20160309/50431.html");
+        realNetWorkDataStore.getFilmDetail(filmEntity)
                 .subscribe(new Subscriber<FilmDetailEntity>() {
                     @Override
                     public void onCompleted() {
@@ -154,9 +112,9 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
     public void testGetFilmDetailList() {
         final long start = System.currentTimeMillis();
         realNetWorkDataStore.getNewest(1)
-                .flatMap(new Func1<String, Observable<FilmDetailEntity>>() {
+                .flatMap(new Func1<FilmEntity, Observable<FilmDetailEntity>>() {
                     @Override
-                    public Observable<FilmDetailEntity> call(String s) {
+                    public Observable<FilmDetailEntity> call(FilmEntity s) {
                         return realNetWorkDataStore.getFilmDetail(s);
                     }
                 })

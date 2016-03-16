@@ -1,5 +1,8 @@
 package com.bzh.data.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,7 +18,7 @@ import java.util.Collections;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmDetailEntity {
+public class FilmDetailEntity implements Parcelable {
 
     private String title;               // 标题
     private String publishTime;         // 发布时间
@@ -214,4 +217,69 @@ public class FilmDetailEntity {
                 ", downloadUrl='" + downloadUrl + '\'' + "\n" +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.title);
+        dest.writeString(this.publishTime);
+        dest.writeString(this.coverUrl);
+        dest.writeString(this.name);
+        dest.writeString(this.translationName);
+        dest.writeString(this.years);
+        dest.writeString(this.country);
+        dest.writeString(this.category);
+        dest.writeString(this.language);
+        dest.writeString(this.subtitle);
+        dest.writeString(this.fileFormat);
+        dest.writeString(this.videoSize);
+        dest.writeString(this.fileSize);
+        dest.writeString(this.showTime);
+        dest.writeString(this.director);
+        dest.writeStringList(this.leadingPlayers);
+        dest.writeString(this.description);
+        dest.writeString(this.previewImage);
+        dest.writeString(this.downloadUrl);
+    }
+
+    public FilmDetailEntity() {
+    }
+
+    protected FilmDetailEntity(Parcel in) {
+        this.title = in.readString();
+        this.publishTime = in.readString();
+        this.coverUrl = in.readString();
+        this.name = in.readString();
+        this.translationName = in.readString();
+        this.years = in.readString();
+        this.country = in.readString();
+        this.category = in.readString();
+        this.language = in.readString();
+        this.subtitle = in.readString();
+        this.fileFormat = in.readString();
+        this.videoSize = in.readString();
+        this.fileSize = in.readString();
+        this.showTime = in.readString();
+        this.director = in.readString();
+        this.leadingPlayers = in.createStringArrayList();
+        this.description = in.readString();
+        this.previewImage = in.readString();
+        this.downloadUrl = in.readString();
+    }
+
+    public static final Creator<FilmDetailEntity> CREATOR = new Creator<FilmDetailEntity>() {
+        @Override
+        public FilmDetailEntity createFromParcel(Parcel source) {
+            return new FilmDetailEntity(source);
+        }
+
+        @Override
+        public FilmDetailEntity[] newArray(int size) {
+            return new FilmDetailEntity[size];
+        }
+    };
 }

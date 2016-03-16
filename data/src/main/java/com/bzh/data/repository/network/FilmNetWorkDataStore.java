@@ -4,6 +4,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.bzh.data.entity.FilmDetailEntity;
+import com.bzh.data.entity.FilmEntity;
 import com.bzh.data.net.RetrofitManager;
 
 import org.jsoup.Jsoup;
@@ -56,10 +57,13 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
         }
     };
 
-    private Func1<Element, String> hrefTagValue = new Func1<Element, String>() {
+    private Func1<Element, FilmEntity> hrefTagValue = new Func1<Element, FilmEntity>() {
         @Override
-        public String call(Element element) {
-            return element.attr("href");
+        public FilmEntity call(Element element) {
+            FilmEntity filmEntity = new FilmEntity();
+            filmEntity.setName(element.text());
+            filmEntity.setUrl(element.attr("href"));
+            return filmEntity;
         }
     };
 
@@ -67,7 +71,7 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
         this.retrofitManager = retrofitManager;
     }
 
-    public Observable<String> getNewest(@IntRange(from = 1, to = 131) int index) {
+    public Observable<FilmEntity> getNewest(@IntRange(from = 1, to = 131) int index) {
         return retrofitManager.getFilmService()
                 .getNewest(index)
                 .map(transformCharset)
@@ -75,10 +79,10 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
                 .map(hrefTagValue);
     }
 
-    public Observable<FilmDetailEntity> getFilmDetail(String filmDetailUrl) {
+    public Observable<FilmDetailEntity> getFilmDetail(FilmEntity filmEntity) {
         return retrofitManager
                 .getFilmService()
-                .getFilmDetail(filmDetailUrl)
+                .getFilmDetail(filmEntity.getUrl())
                 .map(transformCharset)
                 .map(transformHtmlToEntity);
     }
@@ -188,7 +192,7 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
         return hrefTags;
     }
 
-    public Func1<Element, String> getHrefTagValue() {
+    public Func1<Element, FilmEntity> getHrefTagValue() {
         return hrefTagValue;
     }
 }
