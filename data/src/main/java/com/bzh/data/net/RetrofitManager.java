@@ -48,7 +48,7 @@ public class RetrofitManager {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.dytt8.net")
+                .baseUrl("http://www.ygdy8.net")
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(okHttpClient)

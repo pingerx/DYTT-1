@@ -1,5 +1,10 @@
 package com.bzh.data.entity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * ==========================================================<br>
  * <b>版权</b>：　　　别志华 版权所有(c)2016<br>
@@ -12,6 +17,7 @@ package com.bzh.data.entity;
  */
 public class FilmDetailEntity {
 
+    private String title;               // 标题
     private String publishTime;         // 发布时间
     private String coverUrl;            // 封面
     private String name;                 // 电影名
@@ -26,10 +32,18 @@ public class FilmDetailEntity {
     private String fileSize;            // 文件大小
     private String showTime;            // 片长
     private String director;            // 导演
-    private String[] leadingPlayers;   // 主演
+    private ArrayList<String> leadingPlayers;   // 主演
     private String description;         // 简介
-    private String[] previewImages;     // 预览图
+    private String previewImage;     // 预览图
     private String downloadUrl;         // 下载地址
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getPublishTime() {
         return publishTime;
@@ -143,11 +157,11 @@ public class FilmDetailEntity {
         this.director = director;
     }
 
-    public String[] getLeadingPlayers() {
+    public ArrayList<String> getLeadingPlayers() {
         return leadingPlayers;
     }
 
-    public void setLeadingPlayers(String[] leadingPlayers) {
+    public void setLeadingPlayers(ArrayList<String> leadingPlayers) {
         this.leadingPlayers = leadingPlayers;
     }
 
@@ -159,12 +173,12 @@ public class FilmDetailEntity {
         this.description = description;
     }
 
-    public String[] getPreviewImages() {
-        return previewImages;
+    public String getPreviewImage() {
+        return previewImage;
     }
 
-    public void setPreviewImages(String[] previewImages) {
-        this.previewImages = previewImages;
+    public void setPreviewImage(String previewImage) {
+        this.previewImage = previewImage;
     }
 
     public String getDownloadUrl() {
@@ -173,5 +187,31 @@ public class FilmDetailEntity {
 
     public void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;
+    }
+
+
+    @Override
+    public String toString() {
+        return "FilmDetailEntity{\n" +
+                "title='" + title + '\'' + "\n" +
+                ", publishTime='" + publishTime + '\'' + "\n" +
+                ", coverUrl='" + coverUrl + '\'' + "\n" +
+                ", name='" + name + '\'' + "\n" +
+                ", translationName='" + translationName + '\'' + "\n" +
+                ", years='" + years + '\'' + "\n" +
+                ", country='" + country + '\'' + "\n" +
+                ", category='" + category + '\'' + "\n" +
+                ", language='" + language + '\'' + "\n" +
+                ", subtitle='" + subtitle + '\'' + "\n" +
+                ", fileFormat='" + fileFormat + '\'' + "\n" +
+                ", videoSize='" + videoSize + '\'' + "\n" +
+                ", fileSize='" + fileSize + '\'' + "\n" +
+                ", showTime='" + showTime + '\'' + "\n" +
+                ", director='" + director + '\'' + "\n" +
+                ", leadingPlayers=" + leadingPlayers + "\n" +
+                ", description='" + description + '\'' + "\n" +
+                ", previewImage='" + previewImage + '\'' + "\n" +
+                ", downloadUrl='" + downloadUrl + '\'' + "\n" +
+                '}';
     }
 }

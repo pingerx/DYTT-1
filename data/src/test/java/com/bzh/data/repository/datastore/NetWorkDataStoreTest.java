@@ -3,6 +3,7 @@ package com.bzh.data.repository.datastore;
 import android.support.annotation.NonNull;
 
 import com.bzh.data.ApplicationTestCase;
+import com.bzh.data.entity.FilmDetailEntity;
 import com.bzh.data.net.RetrofitManager;
 
 import org.jsoup.Jsoup;
@@ -87,6 +88,7 @@ public class NetWorkDataStoreTest extends ApplicationTestCase {
 
     @Test
     public void testGetNewest() throws Exception {
+        // 模拟数据
         when(netWorkDataStore.getHrefTags()).thenReturn(new Func1<String, Observable<Element>>() {
             @Override
             public Observable<Element> call(String s) {
@@ -127,6 +129,7 @@ public class NetWorkDataStoreTest extends ApplicationTestCase {
                     }
                 });
 
+        // 真实数据
         realNetWorkDataStore.getNewest(1).subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
@@ -140,16 +143,17 @@ public class NetWorkDataStoreTest extends ApplicationTestCase {
 
             @Override
             public void onNext(String s) {
-                System.out.println("s = [" + s + "]");
+                assertNotNull(s);
+                assertTrue(s.endsWith("html"));
+                assertTrue(s.contains("html"));
+                ;
             }
         });
     }
 
     @NonNull
     private String getHtml(String fileName, String charsetName) throws IOException {
-        File htmlDirectory = new File("html");
-        File newest_1HtmlFile = new File(htmlDirectory, fileName);
-        InputStream in = new FileInputStream(newest_1HtmlFile);
+        InputStream in = new FileInputStream(new File("html" + File.separator + fileName));
         assertNotNull(in);
         String html = Okio.buffer(Okio.source(in)).readString(Charset.forName(charsetName));
         assertNotNull(html);
@@ -158,8 +162,8 @@ public class NetWorkDataStoreTest extends ApplicationTestCase {
 
     @Test
     public void testGetFilmDetail() throws Exception {
-        realNetWorkDataStore.getFilmDetail("/html/gndy/dyzz/20160311/50454.html")
-                .subscribe(new Subscriber<String>() {
+        realNetWorkDataStore.getFilmDetail("/html/gndy/dyzz/20160309/50431.html")
+                .subscribe(new Subscriber<FilmDetailEntity>() {
                     @Override
                     public void onCompleted() {
 
@@ -171,9 +175,21 @@ public class NetWorkDataStoreTest extends ApplicationTestCase {
                     }
 
                     @Override
-                    public void onNext(String s) {
-                        System.out.println("s = [" + s + "]");
+                    public void onNext(FilmDetailEntity s) {
+                        System.out.println("FilmDetailEntity = [" + s.toString() + "]");
                     }
                 });
     }
+
+    @Test
+    public void testGetFilmDetailList() {
+        realNetWorkDataStore.getNewest(1)
+                .map(new Func1<String, Observable<FilmDetailEntity>>() {
+                    @Override
+                    public Observable<FilmDetailEntity> call(String s) {
+                        return realNetWorkDataStore.getFilmDetail("/html/gndy/dyzz/20160309/50431.html");
+                    }
+                });
+    }
+
 }
