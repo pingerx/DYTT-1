@@ -33,7 +33,13 @@ public class RetrofitManager {
 
         int cacheSize = 10 * 1024 * 1024;
 
-        Cache cache = new Cache(new File(context.getCacheDir().getAbsolutePath() + File.separator + "cache.dytt"), cacheSize);
+        String cachePath;
+        if (null == context) {
+            cachePath = "cache.dytt";
+        } else {
+            cachePath = context.getCacheDir().getAbsolutePath() + File.separator + "cache.dytt";
+        }
+        Cache cache = new Cache(new File(cachePath), cacheSize);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cache(cache)

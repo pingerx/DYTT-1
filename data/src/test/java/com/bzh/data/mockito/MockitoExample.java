@@ -13,6 +13,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+
+import rx.Subscriber;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -200,4 +203,5 @@ public class MockitoExample {
 
 
     // 22. Verification with timeout (Since 1.8.5)
+
 }
