@@ -1,4 +1,4 @@
-package com.bzh.data.repository.datastore;
+package com.bzh.data.mockito;
 
 import com.bzh.data.ApplicationTestCase;
 

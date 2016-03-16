@@ -10,5 +10,5 @@ package com.bzh.data.repository;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class DyttRespority {
+public class FilmRespority {
 }

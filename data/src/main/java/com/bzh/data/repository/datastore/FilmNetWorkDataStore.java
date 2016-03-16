@@ -30,7 +30,7 @@ import rx.functions.Func1;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NetWorkDataStore implements HtmlDataStore {
+public class FilmNetWorkDataStore implements HtmlDataStore {
 
     public static final String NAME = "◎片名";
     public static final String YEARS = "◎年代";
@@ -47,24 +47,7 @@ public class NetWorkDataStore implements HtmlDataStore {
     public static final String DESCRIPTION = "◎简介";
     public static final String TRANSLATIONNAME = "◎译名";
 
-
-    private static final String TO_CHARSET_NAME = "GB2312";
     private final RetrofitManager retrofitManager;
-
-    /**
-     * 将html解析成字符串
-     */
-    private final Func1<ResponseBody, String> transformCharset = new Func1<ResponseBody, String>() {
-        @Override
-        public String call(ResponseBody responseBody) {
-            try {
-                return new String(responseBody.bytes(), TO_CHARSET_NAME);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "";
-            }
-        }
-    };
 
     private Func1<String, Observable<Element>> hrefTags = new Func1<String, Observable<Element>>() {
         @Override
@@ -75,9 +58,6 @@ public class NetWorkDataStore implements HtmlDataStore {
         }
     };
 
-    /**
-     * 获取href的值
-     */
     private Func1<Element, String> hrefTagValue = new Func1<Element, String>() {
         @Override
         public String call(Element element) {
@@ -85,28 +65,21 @@ public class NetWorkDataStore implements HtmlDataStore {
         }
     };
 
-    public NetWorkDataStore(RetrofitManager retrofitManager) {
+    public FilmNetWorkDataStore(RetrofitManager retrofitManager) {
         this.retrofitManager = retrofitManager;
     }
 
-    @Override
-    public Observable<String> getHomePage() {
-        return retrofitManager.getDyttService().getHomePage().map(transformCharset);
-    }
-
-    @Override
     public Observable<String> getNewest(@IntRange(from = 1, to = 131) int index) {
-        return retrofitManager.getDyttService()
+        return retrofitManager.getFilmService()
                 .getNewest(index)
                 .map(transformCharset)
                 .flatMap(hrefTags)
                 .map(hrefTagValue);
     }
 
-    @Override
     public Observable<FilmDetailEntity> getFilmDetail(String filmDetailUrl) {
         return retrofitManager
-                .getDyttService()
+                .getFilmService()
                 .getFilmDetail(filmDetailUrl)
                 .map(transformCharset)
                 .map(transformHtmlToEntity);
@@ -211,10 +184,6 @@ public class NetWorkDataStore implements HtmlDataStore {
 
     public Func1<String, FilmDetailEntity> getTransformHtmlToEntity() {
         return transformHtmlToEntity;
-    }
-
-    public Func1<ResponseBody, String> getTransformCharset() {
-        return transformCharset;
     }
 
     public Func1<String, Observable<Element>> getHrefTags() {

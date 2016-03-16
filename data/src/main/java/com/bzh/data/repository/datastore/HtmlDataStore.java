@@ -4,8 +4,11 @@ import android.support.annotation.IntRange;
 
 import com.bzh.data.entity.FilmDetailEntity;
 
+import java.io.IOException;
+
 import okhttp3.ResponseBody;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * ==========================================================<br>
@@ -19,9 +22,21 @@ import rx.Observable;
  */
 public interface HtmlDataStore {
 
-    Observable<String> getHomePage();
 
-    Observable<String> getNewest(@IntRange(from = 1, to = 131) int index);
+    String TO_CHARSET_NAME = "GB2312";
 
-    Observable<FilmDetailEntity> getFilmDetail(String filmDetailUrl);
+    /**
+     * 将html解析成字符串
+     */
+    Func1<ResponseBody, String> transformCharset = new Func1<ResponseBody, String>() {
+        @Override
+        public String call(ResponseBody responseBody) {
+            try {
+                return new String(responseBody.bytes(), TO_CHARSET_NAME);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "";
+            }
+        }
+    };
 }

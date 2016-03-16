@@ -3,8 +3,6 @@ package com.bzh.data.net;
 import android.content.Context;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -25,7 +23,12 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 public class RetrofitManager {
 
-    private DyttService dyttService;
+    private final ComicService comicService;
+    private final FilmService filmService;
+    private final GameService gameService;
+    private final TvService tvService;
+    private final VarietyService varietyService;
+    private final HomePageService homePageService;
 
     private static RetrofitManager retrofitManager;
 
@@ -54,7 +57,12 @@ public class RetrofitManager {
                 .client(okHttpClient)
                 .build();
 
-        dyttService = retrofit.create(DyttService.class);
+        homePageService = retrofit.create(HomePageService.class);
+        comicService = retrofit.create(ComicService.class);
+        filmService = retrofit.create(FilmService.class);
+        gameService = retrofit.create(GameService.class);
+        tvService = retrofit.create(TvService.class);
+        varietyService = retrofit.create(VarietyService.class);
     }
 
     public static RetrofitManager getInstance(Context context) {
@@ -64,8 +72,32 @@ public class RetrofitManager {
         return retrofitManager;
     }
 
-    public DyttService getDyttService() {
-        return dyttService;
+    public HomePageService getHomePageService() {
+        return homePageService;
+    }
+
+    public ComicService getComicService() {
+        return comicService;
+    }
+
+    public FilmService getFilmService() {
+        return filmService;
+    }
+
+    public GameService getGameService() {
+        return gameService;
+    }
+
+    public TvService getTvService() {
+        return tvService;
+    }
+
+    public VarietyService getVarietyService() {
+        return varietyService;
+    }
+
+    public static RetrofitManager getRetrofitManager() {
+        return retrofitManager;
     }
 }
 

@@ -16,10 +16,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.bzh.data.net.RetrofitManager;
-import com.bzh.data.repository.datastore.NetWorkDataStore;
+import com.bzh.data.repository.datastore.FilmNetWorkDataStore;
 
 import rx.Observable;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        NetWorkDataStore netWorkDataStore = new NetWorkDataStore(RetrofitManager.getInstance());
+        FilmNetWorkDataStore netWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance());
         Log.d(TAG, "onCreate() called with: " + "netWorkDataStore = [" + netWorkDataStore + "]");
         Observable<String> homePage = netWorkDataStore.getHomePage();
         Log.d(TAG, "onCreate() called with: " + "homePage = [" + homePage + "]");

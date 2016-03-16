@@ -27,8 +27,9 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,48 +43,17 @@ import static org.mockito.Mockito.when;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NetWorkDataStoreTest extends ApplicationTestCase {
+public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
 
     @Mock
-    NetWorkDataStore netWorkDataStore;
+    FilmNetWorkDataStore netWorkDataStore;
 
-    NetWorkDataStore realNetWorkDataStore;
+    FilmNetWorkDataStore realNetWorkDataStore;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        realNetWorkDataStore = new NetWorkDataStore(RetrofitManager.getInstance(null));
-    }
-
-    @Test
-    public void testGetHomePage() throws Exception {
-
-        // 验证行为
-        netWorkDataStore.getHomePage();
-        verify(netWorkDataStore).getHomePage();
-
-        when(netWorkDataStore.getHomePage()).thenReturn(Observable.just("<title>电影天堂_免费电影_迅雷电影下载</title>"));
-        netWorkDataStore.getHomePage().subscribe(new Subscriber<String>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(String res) {
-                String pattern = "[\u4e00-\u9fa5]+";
-                Pattern p = Pattern.compile(pattern);
-
-                assertNotNull(res);
-                assertTrue(p.matcher(res).find());
-                assertEquals("<title>电影天堂_免费电影_迅雷电影下载</title>", res);
-            }
-        });
+        realNetWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance(null));
     }
 
     @Test
