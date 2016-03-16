@@ -1,5 +1,9 @@
 package com.bzh.data.repository.datastore;
 
+import android.support.annotation.IntRange;
+
+import com.bzh.data.entity.FilmDetailEntity;
+
 import okhttp3.ResponseBody;
 import rx.Observable;
 
@@ -17,4 +21,7 @@ public interface HtmlDataStore {
 
     Observable<String> getHomePage();
 
+    Observable<String> getNewest(@IntRange(from = 1, to = 131) int index);
+
+    Observable<FilmDetailEntity> getFilmDetail(String filmDetailUrl);
 }

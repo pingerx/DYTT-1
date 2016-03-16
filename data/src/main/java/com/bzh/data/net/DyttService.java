@@ -1,7 +1,10 @@
 package com.bzh.data.net;
 
+import android.support.annotation.IntRange;
+
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -18,4 +21,11 @@ public interface DyttService {
 
     @GET("/")
     Observable<ResponseBody> getHomePage();
+
+    // 获取最新电影
+    @GET("/html/gndy/dyzz/list_23_{index}.html")
+    Observable<ResponseBody> getNewest(@Path("index") @IntRange(from = 1, to = 131) int index);
+
+    @GET("{filmDetailUrl}")
+    Observable<ResponseBody> getFilmDetail(@Path("filmDetailUrl") String filmDetailUrl);
 }
