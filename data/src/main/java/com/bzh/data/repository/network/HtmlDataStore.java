@@ -1,13 +1,8 @@
-package com.bzh.data.repository.datastore;
-
-import android.support.annotation.IntRange;
-
-import com.bzh.data.entity.FilmDetailEntity;
+package com.bzh.data.repository.network;
 
 import java.io.IOException;
 
 import okhttp3.ResponseBody;
-import rx.Observable;
 import rx.functions.Func1;
 
 /**

@@ -21,3 +21,10 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+task cleanDataCache(type: Delete) {
+    def dataCache = rootProject.getProjectDir().getAbsolutePath()+"/data/cache.dytt";
+    println dataCache
+    delete dataCache
+   //  delete(rootProject.getProjectDir() + File.separator + "data" + File.separator + "cache.dytt")
+}

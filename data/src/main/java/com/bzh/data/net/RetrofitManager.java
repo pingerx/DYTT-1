@@ -65,6 +65,13 @@ public class RetrofitManager {
         varietyService = retrofit.create(VarietyService.class);
     }
 
+    public static RetrofitManager getInstance() {
+        if (retrofitManager == null) {
+            retrofitManager = new RetrofitManager(null);
+        }
+        return retrofitManager;
+    }
+
     public static RetrofitManager getInstance(Context context) {
         if (retrofitManager == null) {
             retrofitManager = new RetrofitManager(context);

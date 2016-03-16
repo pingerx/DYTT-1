@@ -1,4 +1,4 @@
-package com.bzh.data.repository.datastore;
+package com.bzh.data.repository.network;
 
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.net.RetrofitManager;

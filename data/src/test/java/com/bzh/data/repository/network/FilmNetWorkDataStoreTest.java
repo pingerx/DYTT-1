@@ -1,4 +1,4 @@
-package com.bzh.data.repository.datastore;
+package com.bzh.data.repository.network;
 
 import android.support.annotation.NonNull;
 
@@ -20,7 +20,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.regex.Pattern;
 
 import okio.Okio;
 import rx.Observable;

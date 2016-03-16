@@ -2,10 +2,8 @@ package com.bzh.dytt;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,15 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-
-import com.bzh.data.net.RetrofitManager;
-import com.bzh.data.repository.datastore.FilmNetWorkDataStore;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -52,32 +42,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-        FilmNetWorkDataStore netWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance());
-        Log.d(TAG, "onCreate() called with: " + "netWorkDataStore = [" + netWorkDataStore + "]");
-        Observable<String> homePage = netWorkDataStore.getHomePage();
-        Log.d(TAG, "onCreate() called with: " + "homePage = [" + homePage + "]");
-        homePage
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d(TAG, "onCompleted() called with: " + "");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "onError() called with: " + "e = [" + e + "]");
-                    }
-
-                    @Override
-                    public void onNext(String s) {
-                        Log.d(TAG, "onNext() called with: " + "s = [" + s + "]");
-                        ((TextView) findViewById(R.id.textView)).setText(s);
-                    }
-                });
     }
 
     @Override

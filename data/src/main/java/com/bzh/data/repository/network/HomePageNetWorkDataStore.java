@@ -1,24 +1,8 @@
-package com.bzh.data.repository.datastore;
+package com.bzh.data.repository.network;
 
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-
-import com.bzh.data.entity.FilmDetailEntity;
 import com.bzh.data.net.RetrofitManager;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import okhttp3.ResponseBody;
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * ==========================================================<br>
