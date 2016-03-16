@@ -183,16 +183,4 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
         }
         return publishTime;
     }
-
-    public Func1<String, FilmDetailEntity> getTransformHtmlToEntity() {
-        return transformHtmlToEntity;
-    }
-
-    public Func1<String, Observable<Element>> getHrefTags() {
-        return hrefTags;
-    }
-
-    public Func1<Element, FilmEntity> getHrefTagValue() {
-        return hrefTagValue;
-    }
 }
