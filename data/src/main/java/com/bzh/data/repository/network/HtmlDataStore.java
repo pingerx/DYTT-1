@@ -1,5 +1,7 @@
 package com.bzh.data.repository.network;
 
+import com.bzh.data.exception.DataLayerException;
+
 import java.io.IOException;
 
 import okhttp3.ResponseBody;
@@ -30,7 +32,7 @@ public interface HtmlDataStore {
                 return new String(responseBody.bytes(), TO_CHARSET_NAME);
             } catch (IOException e) {
                 e.printStackTrace();
-                return "";
+                throw new DataLayerException(DataLayerException.ERROR_HTML_PARSE);
             }
         }
     };

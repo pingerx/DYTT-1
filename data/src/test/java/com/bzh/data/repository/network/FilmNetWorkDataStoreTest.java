@@ -2,6 +2,8 @@ package com.bzh.data.repository.network;
 
 import android.support.annotation.NonNull;
 
+import com.bzh.common.context.GlobalContext;
+import com.bzh.common.utils.SystemUtils;
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.entity.FilmDetailEntity;
 import com.bzh.data.entity.FilmEntity;
@@ -13,8 +15,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.robolectric.Robolectric;
+import org.robolectric.RuntimeEnvironment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,35 +49,60 @@ import static org.mockito.Mockito.when;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
+@RunWith(MockitoJUnitRunner.class)
 public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
 
     FilmNetWorkDataStore realNetWorkDataStore;
+    private FilmNetWorkDataStore mockNetWorkDataStore;
 
     @Before
     public void setUp() {
         realNetWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance(null));
+
+        mockNetWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance(RuntimeEnvironment.application));
+        GlobalContext.setContext((GlobalContext) RuntimeEnvironment.application);
     }
 
     @Test
     public void testGetNewest() throws Exception {
-        // 真实数据
-        realNetWorkDataStore.getNewest(1).subscribe(new Subscriber<FilmEntity>() {
+
+        Observable<FilmEntity> newest = mockNetWorkDataStore.getNewest(1);
+
+        newest.subscribe(new Subscriber<FilmEntity>() {
             @Override
             public void onCompleted() {
-
+                System.out.println("FilmNetWorkDataStoreTest.onCompleted");
             }
 
             @Override
             public void onError(Throwable e) {
-
+                System.out.println("e = [" + e + "]");
             }
 
             @Override
-            public void onNext(FilmEntity s) {
-                assertNotNull(s);
-                System.out.println("s = [" + s + "]");
+            public void onNext(FilmEntity filmEntity) {
+                System.out.println("FilmNetWorkDataStoreTest.onNext");
             }
         });
+
+        // 真实数据
+//        realNetWorkDataStore.getNewest(1).subscribe(new Subscriber<FilmEntity>() {
+//            @Override
+//            public void onCompleted() {
+//                System.out.println("FilmNetWorkDataStoreTest.onCompleted");
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                System.out.println("e = [" + e + "]");
+//            }
+//
+//            @Override
+//            public void onNext(FilmEntity s) {
+//                assertNotNull(s);
+//                System.out.println("s = [" + s + "]");
+//            }
+//        });
     }
 
 //    @NonNull

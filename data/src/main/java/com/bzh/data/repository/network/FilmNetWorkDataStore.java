@@ -3,8 +3,10 @@ package com.bzh.data.repository.network;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
+import com.bzh.common.utils.SystemUtils;
 import com.bzh.data.entity.FilmDetailEntity;
 import com.bzh.data.entity.FilmEntity;
+import com.bzh.data.exception.DataLayerException;
 import com.bzh.data.net.RetrofitManager;
 
 import org.jsoup.Jsoup;
@@ -16,7 +18,9 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
+import rx.Subscriber;
 import rx.functions.Func1;
 
 /**
@@ -72,11 +76,27 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
     }
 
     public Observable<FilmEntity> getNewest(@IntRange(from = 1, to = 131) final int index) {
-        return retrofitManager.getFilmService()
-                .getNewest(index)
-                .map(transformCharset)
-                .flatMap(hrefTags)
-                .map(hrefTagValue);
+        return Observable.create(new Observable.OnSubscribe<FilmEntity>() {
+            @Override
+            public void call(Subscriber<? super FilmEntity> subscriber) {
+
+                // 无网络
+                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
+                    subscriber.onError(new DataLayerException(DataLayerException.ERROR_NONE_NETWORK));
+                } else {
+                    try {
+                        retrofitManager.getFilmService()
+                                .getNewest(index)
+                                .map(transformCharset)
+                                .flatMap(hrefTags)
+                                .map(hrefTagValue)
+                                .subscribe(subscriber);
+                    } catch (DataLayerException e) {
+                        subscriber.onError(e);
+                    }
+                }
+            }
+        });
     }
 
     public Observable<FilmDetailEntity> getFilmDetail(final FilmEntity filmEntity) {

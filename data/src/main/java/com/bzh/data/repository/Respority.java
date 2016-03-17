@@ -1,5 +1,7 @@
 package com.bzh.data.repository;
 
+import rx.functions.Func1;
+
 /**
  * ==========================================================<br>
  * <b>版权</b>：　　　别志华 版权所有(c)2016<br>
@@ -10,5 +12,6 @@ package com.bzh.data.repository;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmRespority {
+public class Respority {
+
 }
