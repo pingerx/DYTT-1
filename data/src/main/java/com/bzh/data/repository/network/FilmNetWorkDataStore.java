@@ -71,7 +71,7 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
         this.retrofitManager = retrofitManager;
     }
 
-    public Observable<FilmEntity> getNewest(@IntRange(from = 1, to = 131) int index) {
+    public Observable<FilmEntity> getNewest(@IntRange(from = 1, to = 131) final int index) {
         return retrofitManager.getFilmService()
                 .getNewest(index)
                 .map(transformCharset)
@@ -79,7 +79,7 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
                 .map(hrefTagValue);
     }
 
-    public Observable<FilmDetailEntity> getFilmDetail(FilmEntity filmEntity) {
+    public Observable<FilmDetailEntity> getFilmDetail(final FilmEntity filmEntity) {
         return retrofitManager
                 .getFilmService()
                 .getFilmDetail(filmEntity.getUrl())

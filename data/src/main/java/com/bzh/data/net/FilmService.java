@@ -18,6 +18,7 @@ import rx.Observable;
  * ==========================================================<br>
  */
 public interface FilmService {
+
     // 获取最新电影
     @GET("/html/gndy/dyzz/list_23_{index}.html")
     Observable<ResponseBody> getNewest(@Path("index") @IntRange(from = 1, to = 131) int index);
