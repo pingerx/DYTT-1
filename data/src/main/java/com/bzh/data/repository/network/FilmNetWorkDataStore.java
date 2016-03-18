@@ -79,8 +79,6 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
         return Observable.create(new Observable.OnSubscribe<FilmEntity>() {
             @Override
             public void call(Subscriber<? super FilmEntity> subscriber) {
-
-                // 无网络
                 if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
                     subscriber.onError(new DataLayerException(DataLayerException.ERROR_NONE_NETWORK));
                 } else {
@@ -100,11 +98,25 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
     }
 
     public Observable<FilmDetailEntity> getFilmDetail(final FilmEntity filmEntity) {
-        return retrofitManager
-                .getFilmService()
-                .getFilmDetail(filmEntity.getUrl())
-                .map(transformCharset)
-                .map(transformHtmlToEntity);
+        return Observable.create(new Observable.OnSubscribe<FilmDetailEntity>() {
+            @Override
+            public void call(Subscriber<? super FilmDetailEntity> subscriber) {
+                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
+                    subscriber.onError(new DataLayerException(DataLayerException.ERROR_NONE_NETWORK));
+                } else {
+                    try {
+                        retrofitManager
+                                .getFilmService()
+                                .getFilmDetail(filmEntity.getUrl())
+                                .map(transformCharset)
+                                .map(transformHtmlToEntity)
+                                .subscribe(subscriber);
+                    } catch (DataLayerException e) {
+                        subscriber.onError(e);
+                    }
+                }
+            }
+        });
     }
 
     private Func1<String, FilmDetailEntity> transformHtmlToEntity = new Func1<String, FilmDetailEntity>() {

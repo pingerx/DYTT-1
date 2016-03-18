@@ -3,17 +3,16 @@ GET
 1
 Accept-Encoding: gzip
 HTTP/1.1 200 OK
-13
-Content-Length: 7341
-Content-Type: text/html
+12
 Content-Encoding: gzip
-Last-Modified: Fri, 11 Mar 2016 11:28:25 GMT
-Accept-Ranges: bytes
-ETag: "80921d20897bd11:448"
+Last-Modified: Fri, 18 Mar 2016 00:26:24 GMT
 Vary: Accept-Encoding
-Server: Microsoft-IIS/6.0
-Date: Thu, 17 Mar 2016 03:26:34 GMT
 Connection: keep-alive
-X-Via: 658-751-387-923-557 Fikker/Webcache/3.6.2
-OkHttp-Sent-Millis: 1458211348121
-OkHttp-Received-Millis: 1458211348187
+Accept-Ranges: bytes
+Server: Microsoft-IIS/6.0
+Date: Fri, 18 Mar 2016 20:30:52 GMT
+Etag: "03872cdac80d11:448"
+Content-Type: text/html
+X-Via: 939-612-294-963-662 Fikker/Webcache/3.6.2
+OkHttp-Sent-Millis: 1458273705541
+OkHttp-Received-Millis: 1458273705576

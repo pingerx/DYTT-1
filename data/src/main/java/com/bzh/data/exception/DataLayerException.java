@@ -15,6 +15,11 @@ import android.text.TextUtils;
  */
 public class DataLayerException extends RuntimeException {
 
+    public static final String LABEL_NONE_NETWORK = "没有网络连接";
+    public static final String LABEL_TIMEOUT = "网络不给力";
+    public static final String LABEL_RESULT_ILLEGAL = "数据解析出错";
+    public static final String LABEL_HTML_PARSE = "Html网页解析错误";
+
     @StringDef({ERROR_NONE_NETWORK, ERROR_TIMEOUT, ERROR_RESULT_ILLEGAL, ERROR_HTML_PARSE})
     public @interface DATA_LAYER_ERROR {
     }
@@ -61,14 +66,14 @@ public class DataLayerException extends RuntimeException {
 
         switch (code) {
             case ERROR_NONE_NETWORK:
-                return "没有网络连接";
+                return LABEL_NONE_NETWORK;
             case ERROR_TIMEOUT:
-                return "网络不给力";
+                return LABEL_TIMEOUT;
             case ERROR_RESULT_ILLEGAL:
-                return "数据解析出错";
+                return LABEL_RESULT_ILLEGAL;
             case ERROR_IO:
             case ERROR_HTML_PARSE:
-                return "Html网页解析错误";
+                return LABEL_HTML_PARSE;
         }
 
         return super.getMessage();
