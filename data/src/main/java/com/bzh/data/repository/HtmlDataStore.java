@@ -1,4 +1,4 @@
-package com.bzh.data.repository.network;
+package com.bzh.data.repository;
 
 import com.bzh.data.exception.DataLayerException;
 

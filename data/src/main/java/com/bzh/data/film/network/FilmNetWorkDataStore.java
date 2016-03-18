@@ -1,13 +1,14 @@
-package com.bzh.data.repository.network;
+package com.bzh.data.film.network;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.bzh.common.utils.SystemUtils;
-import com.bzh.data.entity.FilmDetailEntity;
-import com.bzh.data.entity.FilmEntity;
+import com.bzh.data.film.entity.FilmDetailEntity;
+import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.exception.DataLayerException;
-import com.bzh.data.net.RetrofitManager;
+import com.bzh.data.service.RetrofitManager;
+import com.bzh.data.repository.HtmlDataStore;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
@@ -75,6 +75,11 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
         this.retrofitManager = retrofitManager;
     }
 
+    /**
+     * 获取最新电影列表
+     *
+     * @param index 索引范围为1 ~ 131
+     */
     public Observable<FilmEntity> getNewest(@IntRange(from = 1, to = 131) final int index) {
         return Observable.create(new Observable.OnSubscribe<FilmEntity>() {
             @Override
@@ -97,6 +102,11 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
         });
     }
 
+    /**
+     * 获取某电影的详细信息
+     *
+     * @param filmEntity 电影的基本信息
+     */
     public Observable<FilmDetailEntity> getFilmDetail(final FilmEntity filmEntity) {
         return Observable.create(new Observable.OnSubscribe<FilmDetailEntity>() {
             @Override

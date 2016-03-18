@@ -1,36 +1,18 @@
 package com.bzh.data.repository.network;
 
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-
-import com.bzh.common.context.GlobalContext;
-import com.bzh.common.utils.SystemUtils;
 import com.bzh.data.ApplicationTestCase;
-import com.bzh.data.entity.FilmDetailEntity;
-import com.bzh.data.entity.FilmEntity;
+import com.bzh.data.film.entity.FilmDetailEntity;
+import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.exception.DataLayerException;
-import com.bzh.data.net.RetrofitManager;
+import com.bzh.data.film.network.FilmNetWorkDataStore;
+import com.bzh.data.service.RetrofitManager;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.robolectric.Robolectric;
-import org.robolectric.RuntimeEnvironment;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
-import okio.Okio;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;

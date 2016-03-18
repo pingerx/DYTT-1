@@ -1,6 +1,9 @@
-package com.bzh.data.net;
+package com.bzh.data.service;
 
 import android.content.Context;
+
+import com.bzh.data.film.service.FilmService;
+import com.bzh.data.home.HomePageService;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;

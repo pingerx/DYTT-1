@@ -1,6 +1,7 @@
-package com.bzh.data.repository.network;
+package com.bzh.data.home;
 
-import com.bzh.data.net.RetrofitManager;
+import com.bzh.data.service.RetrofitManager;
+import com.bzh.data.repository.HtmlDataStore;
 
 import rx.Observable;
 
