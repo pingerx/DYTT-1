@@ -1,4 +1,4 @@
-package com.bzh.data.film.network;
+package com.bzh.data.film.datasource;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -33,7 +33,7 @@ import rx.functions.Func1;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmNetWorkDataStore implements IHtmlDataStore {
+public class FilmNetWorkDataStore implements IFilmDataStore {
 
     public static final String NAME = "◎片名";
     public static final String YEARS = "◎年代";
@@ -164,6 +164,7 @@ public class FilmNetWorkDataStore implements IHtmlDataStore {
      *
      * @param index 索引范围为1 ~ 131
      */
+    @Override
     public Observable<FilmEntity> getNewest(@IntRange(from = 1, to = 131) final int index) {
         return Observable.create(new Observable.OnSubscribe<FilmEntity>() {
             @Override
@@ -188,10 +189,9 @@ public class FilmNetWorkDataStore implements IHtmlDataStore {
 
     /**
      * 获取某电影的详细信息
-     *
-     * @param filmEntity 电影的基本信息
      */
-    public Observable<FilmDetailEntity> getFilmDetail(final FilmEntity filmEntity) {
+    @Override
+    public Observable<FilmDetailEntity> getFilmDetail(final String filmStr) {
         return Observable.create(new Observable.OnSubscribe<FilmDetailEntity>() {
             @Override
             public void call(Subscriber<? super FilmDetailEntity> subscriber) {
@@ -201,7 +201,7 @@ public class FilmNetWorkDataStore implements IHtmlDataStore {
                     try {
                         retrofitManager
                                 .getFilmService()
-                                .getFilmDetail(filmEntity.getUrl())
+                                .getFilmDetail(filmStr)
                                 .map(transformCharset)
                                 .map(transformHtmlToEntity)
                                 .subscribe(subscriber);
@@ -212,7 +212,6 @@ public class FilmNetWorkDataStore implements IHtmlDataStore {
             }
         });
     }
-
 
     @NonNull
     private String getPublishTime(String html) {
@@ -227,4 +226,5 @@ public class FilmNetWorkDataStore implements IHtmlDataStore {
         }
         return publishTime;
     }
+
 }

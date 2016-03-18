@@ -4,7 +4,7 @@ import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.film.entity.FilmDetailEntity;
 import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.exception.DataLayerException;
-import com.bzh.data.film.network.FilmNetWorkDataStore;
+import com.bzh.data.film.datasource.FilmNetWorkDataStore;
 import com.bzh.data.service.RetrofitManager;
 
 import org.junit.Before;
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
 
-    FilmNetWorkDataStore realNetWorkDataStore;
+//    FilmNetWorkDataStore realNetWorkDataStore;
 
     @Mock
     FilmNetWorkDataStore mockNetWorkDataStore;
@@ -50,7 +50,7 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
 
     @Before
     public void setUp() {
-        realNetWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance(null));
+//        realNetWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance());
     }
 
     @Test
@@ -112,85 +112,82 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
         });
     }
 
-    @Deprecated
-    @Test
-    public void testGetNewestReal() {
-        // 真实数据
-        realNetWorkDataStore.getNewest(1).subscribe(new Subscriber<FilmEntity>() {
-            @Override
-            public void onCompleted() {
-                System.out.println("FilmNetWorkDataStoreTest.onCompleted");
-            }
+//    @Deprecated
+//    @Test
+//    public void testGetNewestReal() {
+//        // 真实数据
+//        realNetWorkDataStore.getNewest(1).subscribe(new Subscriber<FilmEntity>() {
+//            @Override
+//            public void onCompleted() {
+//                System.out.println("FilmNetWorkDataStoreTest.onCompleted");
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                System.out.println("e = [" + e + "]");
+//            }
+//
+//            @Override
+//            public void onNext(FilmEntity s) {
+//                assertNotNull(s);
+//                System.out.println("s = [" + s + "]");
+//            }
+//        });
+//    }
 
-            @Override
-            public void onError(Throwable e) {
-                System.out.println("e = [" + e + "]");
-            }
+//    @Deprecated
+//    @Test
+//    public void testGetFilmDetail() throws Exception {
+//        realNetWorkDataStore.getFilmDetail("/html/gndy/dyzz/20160309/50431.html")
+//                .subscribe(new Subscriber<FilmDetailEntity>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(FilmDetailEntity s) {
+//                        assertNotNull(s);
+//                        System.out.println("FilmDetailEntity = [" + s.toString() + "]");
+//                    }
+//                });
+//    }
 
-            @Override
-            public void onNext(FilmEntity s) {
-                assertNotNull(s);
-                System.out.println("s = [" + s + "]");
-            }
-        });
-    }
-
-    @Deprecated
-    @Test
-    public void testGetFilmDetail() throws Exception {
-        FilmEntity filmEntity = new FilmEntity();
-        filmEntity.setName("2015年奇幻动作《道士下山》BD国语中字");
-        filmEntity.setUrl("/html/gndy/dyzz/20160309/50431.html");
-        realNetWorkDataStore.getFilmDetail(filmEntity)
-                .subscribe(new Subscriber<FilmDetailEntity>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(FilmDetailEntity s) {
-                        assertNotNull(s);
-                        System.out.println("FilmDetailEntity = [" + s.toString() + "]");
-                    }
-                });
-    }
-
-    @Deprecated
-    @Test
-    public void testGetFilmDetailList() {
-        final long start = System.currentTimeMillis();
-        realNetWorkDataStore.getNewest(1)
-                .flatMap(new Func1<FilmEntity, Observable<FilmDetailEntity>>() {
-                    @Override
-                    public Observable<FilmDetailEntity> call(FilmEntity s) {
-                        return realNetWorkDataStore.getFilmDetail(s);
-                    }
-                })
-                .subscribe(new Subscriber<FilmDetailEntity>() {
-                    @Override
-                    public void onCompleted() {
-                        long end = System.currentTimeMillis();
-                        System.out.println("total time = [" + (end - start) / 1000 + "]");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(FilmDetailEntity filmDetailEntity) {
-                        assertNotNull(filmDetailEntity);
-                        assertNotNull(filmDetailEntity.getTitle());
-                        System.out.println("filmDetailEntity = [" + filmDetailEntity.getTitle() + "]");
-                    }
-                });
-    }
+//    @Deprecated
+//    @Test
+//    public void testGetFilmDetailList() {
+//        final long start = System.currentTimeMillis();
+//        realNetWorkDataStore.getNewest(1)
+//                .flatMap(new Func1<FilmEntity, Observable<FilmDetailEntity>>() {
+//                    @Override
+//                    public Observable<FilmDetailEntity> call(FilmEntity s) {
+//                        return realNetWorkDataStore.getFilmDetail(s.getUrl());
+//                    }
+//                })
+//                .subscribe(new Subscriber<FilmDetailEntity>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        long end = System.currentTimeMillis();
+//                        System.out.println("total time = [" + (end - start) / 1000 + "]");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(FilmDetailEntity filmDetailEntity) {
+//                        assertNotNull(filmDetailEntity);
+//                        assertNotNull(filmDetailEntity.getTitle());
+//                        System.out.println("filmDetailEntity = [" + filmDetailEntity.getTitle() + "]");
+//                    }
+//                });
+//    }
 
 }

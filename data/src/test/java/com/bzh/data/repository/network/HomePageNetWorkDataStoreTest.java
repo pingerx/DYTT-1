@@ -32,7 +32,7 @@ public class HomePageNetWorkDataStoreTest extends ApplicationTestCase {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        realNetWorkDataStore = new HomePageNetWorkDataStore(RetrofitManager.getInstance(null));
+        realNetWorkDataStore = new HomePageNetWorkDataStore(RetrofitManager.getInstance());
     }
 
     @Test

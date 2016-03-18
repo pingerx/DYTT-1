@@ -25,8 +25,4 @@ public class GlobalContext extends Application {
     public static GlobalContext getInstance() {
         return _context;
     }
-
-    public static void setContext(GlobalContext context) {
-        GlobalContext._context = context;
-    }
 }

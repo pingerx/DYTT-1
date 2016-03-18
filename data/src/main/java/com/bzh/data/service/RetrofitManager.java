@@ -2,6 +2,7 @@ package com.bzh.data.service;
 
 import android.content.Context;
 
+import com.bzh.common.context.GlobalContext;
 import com.bzh.data.film.service.IFilmService;
 import com.bzh.data.home.IHomePageService;
 
@@ -69,15 +70,8 @@ public class RetrofitManager {
     }
 
     public static RetrofitManager getInstance() {
-        if (retrofitManager == null) {
-            retrofitManager = new RetrofitManager(null);
-        }
-        return retrofitManager;
-    }
-
-    public static RetrofitManager getInstance(Context context) {
-        if (retrofitManager == null) {
-            retrofitManager = new RetrofitManager(context);
+        if (retrofitManager == null && GlobalContext.getInstance() != null) {
+            retrofitManager = new RetrofitManager(GlobalContext.getInstance());
         }
         return retrofitManager;
     }
@@ -104,10 +98,6 @@ public class RetrofitManager {
 
     public IVarietyService getVarietyService() {
         return varietyService;
-    }
-
-    public static RetrofitManager getRetrofitManager() {
-        return retrofitManager;
     }
 }
 
