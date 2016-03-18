@@ -17,7 +17,7 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface TvService {
+public interface ITvService {
     // 华语电视
     @GET("/html/tv/hytv/list_71_{index}.html")
     Observable<ResponseBody> getChineseTV(@Path("index") @IntRange(from = 1, to = 33) int index);

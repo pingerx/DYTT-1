@@ -8,7 +8,7 @@ import com.bzh.data.film.entity.FilmDetailEntity;
 import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.exception.DataLayerException;
 import com.bzh.data.service.RetrofitManager;
-import com.bzh.data.repository.HtmlDataStore;
+import com.bzh.data.repository.IHtmlDataStore;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -33,7 +33,7 @@ import rx.functions.Func1;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmNetWorkDataStore implements HtmlDataStore {
+public class FilmNetWorkDataStore implements IHtmlDataStore {
 
     public static final String NAME = "◎片名";
     public static final String YEARS = "◎年代";

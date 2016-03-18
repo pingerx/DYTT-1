@@ -17,7 +17,7 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface VarietyService {
+public interface IVarietyService {
     // 最新大陆综艺
     @GET("/html/zongyi2013/list_99_{index}.html")
     Observable<ResponseBody> getNewestChineseVariety(@Path("index") @IntRange(from = 1, to = 98) int index);

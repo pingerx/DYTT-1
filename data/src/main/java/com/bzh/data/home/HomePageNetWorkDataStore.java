@@ -1,7 +1,7 @@
 package com.bzh.data.home;
 
 import com.bzh.data.service.RetrofitManager;
-import com.bzh.data.repository.HtmlDataStore;
+import com.bzh.data.repository.IHtmlDataStore;
 
 import rx.Observable;
 
@@ -15,7 +15,7 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class HomePageNetWorkDataStore implements HtmlDataStore {
+public class HomePageNetWorkDataStore implements IHtmlDataStore {
 
     private final RetrofitManager retrofitManager;
 

@@ -17,7 +17,7 @@ import rx.functions.Func1;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface HtmlDataStore {
+public interface IHtmlDataStore {
 
 
     String TO_CHARSET_NAME = "GB2312";

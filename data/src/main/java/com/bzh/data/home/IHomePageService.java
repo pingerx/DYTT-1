@@ -17,7 +17,7 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface HomePageService {
+public interface IHomePageService {
     @GET("/")
     Observable<ResponseBody> getHomePage();
 }
