@@ -1,12 +1,9 @@
 package com.bzh.domain.interactor;
 
-import com.bzh.domain.executor.PostExecutionThread;
-
 import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 /**
@@ -32,7 +29,6 @@ public abstract class UseCase {
     private Subscription subscription = Subscriptions.empty();
 
     protected abstract Observable buildUseCaseObservable();
-
 
     @SuppressWarnings("unchecked")
     public void execute(Subscriber useCaseSubscribe) {

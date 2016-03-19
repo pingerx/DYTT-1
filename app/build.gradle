@@ -21,7 +21,6 @@ android {
 
 dependencies {
     compile project(':domain')
-    compile project(':data')
 
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'

@@ -1,7 +1,4 @@
-package com.bzh.domain.executor;
-
-import rx.Scheduler;
-import rx.schedulers.Schedulers;
+package com.bzh.domain.exception;
 
 /**
  * ==========================================================<br>
@@ -13,6 +10,9 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface PostExecutionThread {
-    Scheduler getSchedular();
+public interface ErrorBundle {
+
+    Exception getException();
+
+    String getErrorMessage();
 }

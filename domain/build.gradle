@@ -1,21 +1,25 @@
-apply plugin: 'java'
+apply plugin: 'com.android.library'
 
-//noinspection GroovyUnusedAssignment
-sourceCompatibility = 1.7
-//noinspection GroovyUnusedAssignment
-targetCompatibility = 1.7
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
-configurations {
-    provided
-}
-
-sourceSets {
-    main {
-        compileClasspath += configurations.provided
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 }
 
 dependencies {
+    compile project(':data')
 
     compile 'io.reactivex:rxjava:1.1.1'
     provided 'javax.annotation:jsr250-api:1.0'
@@ -23,6 +27,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.3.0'
     testCompile 'org.mockito:mockito-core:2.0.43-beta'
-
 
 }

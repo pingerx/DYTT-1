@@ -42,37 +42,6 @@ public class RepositoryTest extends ApplicationTestCase {
     @Test
     public void test1() {
 
-        when(repository.getNewestFilmList(1)).thenReturn(Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
-            @Override
-            public void call(Subscriber<? super ArrayList<FilmEntity>> subscriber) {
-                subscriber.onNext(filmEntities);
-                subscriber.onCompleted();
-            }
-        }));
-
-
-        when(filmEntities.get(0)).thenReturn(filmEntity);
-        when(filmEntities.get(0).getName()).thenReturn("别志华");
-
-        repository.getNewestFilmList(1)
-                .subscribe(new Subscriber<ArrayList<FilmEntity>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(ArrayList<FilmEntity> filmEntities) {
-                        assertNotNull(filmEntities);
-                        assertEquals(filmEntities.get(0).getName(), "别志华");
-                    }
-                });
-
     }
 
 }
