@@ -1,4 +1,4 @@
-package com.bzh.data.net;
+package com.bzh.data.film.service;
 
 import android.support.annotation.IntRange;
 
@@ -17,7 +17,7 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface FilmService {
+public interface IFilmService {
 
     // 获取最新电影
     @GET("/html/gndy/dyzz/list_23_{index}.html")

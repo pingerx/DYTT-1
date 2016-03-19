@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
@@ -13,6 +14,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.support.annotation.IntDef;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -35,11 +37,15 @@ import java.io.File;
 @SuppressWarnings("unused")
 public class SystemUtils {
 
-    public enum NetWorkType {
-        none, mobile, wifi
+    @IntDef({NETWORK_TYPE_NONE, NETWORK_TYPE_MOBILE, NETWORK_TYPE_WIFI})
+    public @interface NetWorkType {
     }
 
-    public static NetWorkType getNetworkType() {
+    public static final int NETWORK_TYPE_NONE = 1;
+    public static final int NETWORK_TYPE_MOBILE = NETWORK_TYPE_NONE << 1;
+    public static final int NETWORK_TYPE_WIFI = NETWORK_TYPE_MOBILE << 1;
+
+    public static int getNetworkType() {
 
         ConnectivityManager connMgr = (ConnectivityManager) GlobalContext.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -48,12 +54,12 @@ public class SystemUtils {
         if (networkInfo != null) {
             switch (networkInfo.getType()) {
                 case ConnectivityManager.TYPE_MOBILE:
-                    return NetWorkType.mobile;
+                    return NETWORK_TYPE_MOBILE;
                 case ConnectivityManager.TYPE_WIFI:
-                    return NetWorkType.wifi;
+                    return NETWORK_TYPE_WIFI;
             }
         }
-        return NetWorkType.none;
+        return NETWORK_TYPE_NONE;
     }
 
     /**

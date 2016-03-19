@@ -1,6 +1,10 @@
-package com.bzh.data.net;
+package com.bzh.data.service;
 
 import android.content.Context;
+
+import com.bzh.common.context.GlobalContext;
+import com.bzh.data.film.service.IFilmService;
+import com.bzh.data.home.IHomePageService;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -23,12 +27,12 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 public class RetrofitManager {
 
-    private final ComicService comicService;
-    private final FilmService filmService;
-    private final GameService gameService;
-    private final TvService tvService;
-    private final VarietyService varietyService;
-    private final HomePageService homePageService;
+    private final IComicService comicService;
+    private final IFilmService filmService;
+    private final IGameService gameService;
+    private final ITvService tvService;
+    private final IVarietyService varietyService;
+    private final IHomePageService homePageService;
 
     private static RetrofitManager retrofitManager;
 
@@ -57,54 +61,43 @@ public class RetrofitManager {
                 .client(okHttpClient)
                 .build();
 
-        homePageService = retrofit.create(HomePageService.class);
-        comicService = retrofit.create(ComicService.class);
-        filmService = retrofit.create(FilmService.class);
-        gameService = retrofit.create(GameService.class);
-        tvService = retrofit.create(TvService.class);
-        varietyService = retrofit.create(VarietyService.class);
+        homePageService = retrofit.create(IHomePageService.class);
+        comicService = retrofit.create(IComicService.class);
+        filmService = retrofit.create(IFilmService.class);
+        gameService = retrofit.create(IGameService.class);
+        tvService = retrofit.create(ITvService.class);
+        varietyService = retrofit.create(IVarietyService.class);
     }
 
     public static RetrofitManager getInstance() {
-        if (retrofitManager == null) {
-            retrofitManager = new RetrofitManager(null);
+        if (retrofitManager == null && GlobalContext.getInstance() != null) {
+            retrofitManager = new RetrofitManager(GlobalContext.getInstance());
         }
         return retrofitManager;
     }
 
-    public static RetrofitManager getInstance(Context context) {
-        if (retrofitManager == null) {
-            retrofitManager = new RetrofitManager(context);
-        }
-        return retrofitManager;
-    }
-
-    public HomePageService getHomePageService() {
+    public IHomePageService getHomePageService() {
         return homePageService;
     }
 
-    public ComicService getComicService() {
+    public IComicService getComicService() {
         return comicService;
     }
 
-    public FilmService getFilmService() {
+    public IFilmService getFilmService() {
         return filmService;
     }
 
-    public GameService getGameService() {
+    public IGameService getGameService() {
         return gameService;
     }
 
-    public TvService getTvService() {
+    public ITvService getTvService() {
         return tvService;
     }
 
-    public VarietyService getVarietyService() {
+    public IVarietyService getVarietyService() {
         return varietyService;
-    }
-
-    public static RetrofitManager getRetrofitManager() {
-        return retrofitManager;
     }
 }
 

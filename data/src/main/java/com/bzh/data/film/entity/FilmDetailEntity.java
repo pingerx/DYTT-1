@@ -1,12 +1,9 @@
-package com.bzh.data.entity;
+package com.bzh.data.film.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * ==========================================================<br>

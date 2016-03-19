@@ -1,28 +1,20 @@
 package com.bzh.data.repository.network;
 
-import android.support.annotation.NonNull;
-
 import com.bzh.data.ApplicationTestCase;
-import com.bzh.data.entity.FilmDetailEntity;
-import com.bzh.data.entity.FilmEntity;
-import com.bzh.data.net.RetrofitManager;
+import com.bzh.data.film.entity.FilmDetailEntity;
+import com.bzh.data.film.entity.FilmEntity;
+import com.bzh.data.exception.DataLayerException;
+import com.bzh.data.film.datasource.FilmNetWorkDataStore;
+import com.bzh.data.service.RetrofitManager;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.util.ArrayList;
 
-import okio.Okio;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
@@ -30,6 +22,7 @@ import rx.functions.Func1;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,100 +36,163 @@ import static org.mockito.Mockito.when;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
+@RunWith(MockitoJUnitRunner.class)
 public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
 
-    FilmNetWorkDataStore realNetWorkDataStore;
+//    FilmNetWorkDataStore realNetWorkDataStore;
+
+    @Mock
+    FilmNetWorkDataStore mockNetWorkDataStore;
+
+    @Mock
+    DataLayerException dataLayerException;
+
+    @Mock
+    ArrayList<FilmEntity> filmEntities;
+
+    @Mock
+    FilmEntity filmEntity;
 
     @Before
     public void setUp() {
-        realNetWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance(null));
+//        realNetWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance());
     }
 
     @Test
     public void testGetNewest() throws Exception {
-        // 真实数据
-        realNetWorkDataStore.getNewest(1).subscribe(new Subscriber<FilmEntity>() {
+        when(mockNetWorkDataStore.getNewest(1)).thenReturn(Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
+            @Override
+            public void call(Subscriber<? super ArrayList<FilmEntity>> subscriber) {
+                subscriber.onError(dataLayerException);
+            }
+        }));
+        when(dataLayerException.getCode()).thenReturn(DataLayerException.ERROR_NONE_NETWORK);
+        when(dataLayerException.getMessage()).thenReturn(DataLayerException.LABEL_NONE_NETWORK);
+        mockNetWorkDataStore.getNewest(1).subscribe(new Subscriber<ArrayList<FilmEntity>>() {
             @Override
             public void onCompleted() {
-
             }
 
             @Override
             public void onError(Throwable e) {
-
+                assertNotNull(e);
+                assertTrue(e instanceof DataLayerException);
+                DataLayerException exception = (DataLayerException) e;
+                assertEquals(exception.getMessage(), DataLayerException.LABEL_NONE_NETWORK);
+                assertEquals(exception.getCode(), DataLayerException.ERROR_NONE_NETWORK);
             }
 
             @Override
-            public void onNext(FilmEntity s) {
-                assertNotNull(s);
-                System.out.println("s = [" + s + "]");
+            public void onNext(ArrayList<FilmEntity> filmEntities) {
+            }
+        });
+
+
+        when(mockNetWorkDataStore.getNewest(131)).thenReturn(Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
+            @Override
+            public void call(Subscriber<? super ArrayList<FilmEntity>> subscriber) {
+                subscriber.onNext(filmEntities);
+                subscriber.onCompleted();
+            }
+        }));
+
+        when(filmEntities.get(0)).thenReturn(filmEntity);
+        when(filmEntities.get(0).getName()).thenReturn("道士下山");
+        when(filmEntities.get(0).getUrl()).thenReturn("http://www.baidu.com");
+        mockNetWorkDataStore.getNewest(131).subscribe(new Subscriber<ArrayList<FilmEntity>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
+            @Override
+            public void onNext(ArrayList<FilmEntity> filmEntities) {
+                assertNotNull(filmEntities);
+                assertEquals(filmEntities.get(0).getName(), "道士下山");
+                assertEquals(filmEntities.get(0).getUrl(), "http://www.baidu.com");
             }
         });
     }
 
-//    @NonNull
-//    private String getHtml(String fileName, String charsetName) throws IOException {
-//        InputStream in = new FileInputStream(new File("html" + File.separator + fileName));
-//        assertNotNull(in);
-//        String html = Okio.buffer(Okio.source(in)).readString(Charset.forName(charsetName));
-//        assertNotNull(html);
-//        return html;
+//    @Deprecated
+//    @Test
+//    public void testGetNewestReal() {
+//        // 真实数据
+//        realNetWorkDataStore.getNewest(1).subscribe(new Subscriber<FilmEntity>() {
+//            @Override
+//            public void onCompleted() {
+//                System.out.println("FilmNetWorkDataStoreTest.onCompleted");
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                System.out.println("e = [" + e + "]");
+//            }
+//
+//            @Override
+//            public void onNext(FilmEntity s) {
+//                assertNotNull(s);
+//                System.out.println("s = [" + s + "]");
+//            }
+//        });
 //    }
 
-    @Test
-    public void testGetFilmDetail() throws Exception {
-        FilmEntity filmEntity = new FilmEntity();
-        filmEntity.setName("2015年奇幻动作《道士下山》BD国语中字");
-        filmEntity.setUrl("/html/gndy/dyzz/20160309/50431.html");
-        realNetWorkDataStore.getFilmDetail(filmEntity)
-                .subscribe(new Subscriber<FilmDetailEntity>() {
-                    @Override
-                    public void onCompleted() {
+//    @Deprecated
+//    @Test
+//    public void testGetFilmDetail() throws Exception {
+//        realNetWorkDataStore.getFilmDetail("/html/gndy/dyzz/20160309/50431.html")
+//                .subscribe(new Subscriber<FilmDetailEntity>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(FilmDetailEntity s) {
+//                        assertNotNull(s);
+//                        System.out.println("FilmDetailEntity = [" + s.toString() + "]");
+//                    }
+//                });
+//    }
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(FilmDetailEntity s) {
-                        assertNotNull(s);
-                        System.out.println("FilmDetailEntity = [" + s.toString() + "]");
-                    }
-                });
-    }
-
-    @Test
-    public void testGetFilmDetailList() {
-        final long start = System.currentTimeMillis();
-        realNetWorkDataStore.getNewest(1)
-                .flatMap(new Func1<FilmEntity, Observable<FilmDetailEntity>>() {
-                    @Override
-                    public Observable<FilmDetailEntity> call(FilmEntity s) {
-                        return realNetWorkDataStore.getFilmDetail(s);
-                    }
-                })
-                .subscribe(new Subscriber<FilmDetailEntity>() {
-                    @Override
-                    public void onCompleted() {
-                        long end = System.currentTimeMillis();
-                        System.out.println("total time = [" + (end - start) / 1000 + "]");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(FilmDetailEntity filmDetailEntity) {
-                        assertNotNull(filmDetailEntity);
-                        assertNotNull(filmDetailEntity.getTitle());
-                        System.out.println("filmDetailEntity = [" + filmDetailEntity.getTitle() + "]");
-                    }
-                });
-    }
+//    @Deprecated
+//    @Test
+//    public void testGetFilmDetailList() {
+//        final long start = System.currentTimeMillis();
+//        realNetWorkDataStore.getNewest(1)
+//                .flatMap(new Func1<FilmEntity, Observable<FilmDetailEntity>>() {
+//                    @Override
+//                    public Observable<FilmDetailEntity> call(FilmEntity s) {
+//                        return realNetWorkDataStore.getFilmDetail(s.getUrl());
+//                    }
+//                })
+//                .subscribe(new Subscriber<FilmDetailEntity>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        long end = System.currentTimeMillis();
+//                        System.out.println("total time = [" + (end - start) / 1000 + "]");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(FilmDetailEntity filmDetailEntity) {
+//                        assertNotNull(filmDetailEntity);
+//                        assertNotNull(filmDetailEntity.getTitle());
+//                        System.out.println("filmDetailEntity = [" + filmDetailEntity.getTitle() + "]");
+//                    }
+//                });
+//    }
 
 }

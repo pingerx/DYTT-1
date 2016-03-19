@@ -13,16 +13,23 @@ import android.text.TextUtils;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class DataLayerException extends Exception {
+public class DataLayerException extends RuntimeException {
+
+    public static final String LABEL_NONE_NETWORK = "没有网络连接";
+    public static final String LABEL_TIMEOUT = "网络不给力";
+    public static final String LABEL_RESULT_ILLEGAL = "数据解析出错";
+    public static final String LABEL_HTML_PARSE = "Html网页解析错误";
 
     @StringDef({ERROR_NONE_NETWORK, ERROR_TIMEOUT, ERROR_RESULT_ILLEGAL, ERROR_HTML_PARSE})
     public @interface DATA_LAYER_ERROR {
     }
 
-    public static final String ERROR_NONE_NETWORK = "1";
-    public static final String ERROR_TIMEOUT = "2";
-    public static final String ERROR_RESULT_ILLEGAL = "3";
-    public static final String ERROR_HTML_PARSE = "4";
+    public static final int ERROR_STATUS_DEFAULT = 1;
+    public static final String ERROR_NONE_NETWORK = (ERROR_STATUS_DEFAULT << 1) + "";
+    public static final String ERROR_TIMEOUT = (ERROR_STATUS_DEFAULT << 2) + "";
+    public static final String ERROR_RESULT_ILLEGAL = (ERROR_STATUS_DEFAULT << 3) + "";
+    public static final String ERROR_HTML_PARSE = (ERROR_STATUS_DEFAULT << 4) + "";
+    public static final String ERROR_IO = (ERROR_STATUS_DEFAULT << 5) + "";
 
     private String code;
 
@@ -45,6 +52,7 @@ public class DataLayerException extends Exception {
 
     @Override
     public String getMessage() {
+
         if (!TextUtils.isEmpty(msg)) {
             return msg;
         }
@@ -58,13 +66,14 @@ public class DataLayerException extends Exception {
 
         switch (code) {
             case ERROR_NONE_NETWORK:
-                return "没有网络连接";
+                return LABEL_NONE_NETWORK;
             case ERROR_TIMEOUT:
-                return "网络不给力";
+                return LABEL_TIMEOUT;
             case ERROR_RESULT_ILLEGAL:
-                return "数据解析出错";
+                return LABEL_RESULT_ILLEGAL;
+            case ERROR_IO:
             case ERROR_HTML_PARSE:
-                return "Html网页解析错误";
+                return LABEL_HTML_PARSE;
         }
 
         return super.getMessage();

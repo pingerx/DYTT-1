@@ -1,11 +1,14 @@
-package com.bzh.data.repository.network;
+package com.bzh.data.film.datasource;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
-import com.bzh.data.entity.FilmDetailEntity;
-import com.bzh.data.entity.FilmEntity;
-import com.bzh.data.net.RetrofitManager;
+import com.bzh.common.utils.SystemUtils;
+import com.bzh.data.film.entity.FilmDetailEntity;
+import com.bzh.data.film.entity.FilmEntity;
+import com.bzh.data.exception.DataLayerException;
+import com.bzh.data.service.RetrofitManager;
+import com.bzh.data.repository.IHtmlDataStore;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,6 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.functions.Func1;
 
 /**
@@ -29,7 +33,7 @@ import rx.functions.Func1;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmNetWorkDataStore implements HtmlDataStore {
+public class FilmNetWorkDataStore implements IFilmDataStore {
 
     public static final String NAME = "◎片名";
     public static final String YEARS = "◎年代";
@@ -48,44 +52,29 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
 
     private final RetrofitManager retrofitManager;
 
-    private Func1<String, Observable<Element>> hrefTags = new Func1<String, Observable<Element>>() {
+    private Func1<String, Elements> hrefTags = new Func1<String, Elements>() {
         @Override
-        public Observable<Element> call(String s) {
+        public Elements call(String s) {
             Document document = Jsoup.parse(s);
             Elements elements = document.select("div.co_content8").select("ul");
-            return Observable.from(elements.select("a[href]"));
+            return elements.select("a[href]");
         }
     };
 
-    private Func1<Element, FilmEntity> hrefTagValue = new Func1<Element, FilmEntity>() {
+    private Func1<Elements, ArrayList<FilmEntity>> hrefTagValue = new Func1<Elements, ArrayList<FilmEntity>>() {
+
         @Override
-        public FilmEntity call(Element element) {
-            FilmEntity filmEntity = new FilmEntity();
-            filmEntity.setName(element.text());
-            filmEntity.setUrl(element.attr("href"));
-            return filmEntity;
+        public ArrayList<FilmEntity> call(Elements elements) {
+            ArrayList<FilmEntity> filmEntities = new ArrayList<>();
+
+            for (Element element : elements) {
+                FilmEntity filmEntity = new FilmEntity();
+                filmEntity.setName(element.text());
+                filmEntity.setUrl(element.attr("href"));
+            }
+            return filmEntities;
         }
     };
-
-    public FilmNetWorkDataStore(RetrofitManager retrofitManager) {
-        this.retrofitManager = retrofitManager;
-    }
-
-    public Observable<FilmEntity> getNewest(@IntRange(from = 1, to = 131) final int index) {
-        return retrofitManager.getFilmService()
-                .getNewest(index)
-                .map(transformCharset)
-                .flatMap(hrefTags)
-                .map(hrefTagValue);
-    }
-
-    public Observable<FilmDetailEntity> getFilmDetail(final FilmEntity filmEntity) {
-        return retrofitManager
-                .getFilmService()
-                .getFilmDetail(filmEntity.getUrl())
-                .map(transformCharset)
-                .map(transformHtmlToEntity);
-    }
 
     private Func1<String, FilmDetailEntity> transformHtmlToEntity = new Func1<String, FilmDetailEntity>() {
         @Override
@@ -170,6 +159,65 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
         }
     };
 
+
+    public FilmNetWorkDataStore(RetrofitManager retrofitManager) {
+        this.retrofitManager = retrofitManager;
+    }
+
+    /**
+     * 获取最新电影列表
+     *
+     * @param index 索引范围为1 ~ 131
+     */
+    @Override
+    public Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) final int index) {
+        return Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
+            @Override
+            public void call(Subscriber<? super ArrayList<FilmEntity>> subscriber) {
+                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
+                    subscriber.onError(new DataLayerException(DataLayerException.ERROR_NONE_NETWORK));
+                } else {
+                    try {
+                        retrofitManager.getFilmService()
+                                .getNewest(index)
+                                .map(transformCharset)
+                                .map(hrefTags)
+                                .map(hrefTagValue)
+                                .subscribe(subscriber);
+                    } catch (DataLayerException e) {
+                        subscriber.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取某电影的详细信息
+     */
+    @Override
+    public Observable<FilmDetailEntity> getFilmDetail(final String filmStr) {
+        return Observable.create(new Observable.OnSubscribe<FilmDetailEntity>() {
+            @Override
+            public void call(Subscriber<? super FilmDetailEntity> subscriber) {
+                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
+                    subscriber.onError(new DataLayerException(DataLayerException.ERROR_NONE_NETWORK));
+                } else {
+                    try {
+                        retrofitManager
+                                .getFilmService()
+                                .getFilmDetail(filmStr)
+                                .map(transformCharset)
+                                .map(transformHtmlToEntity)
+                                .subscribe(subscriber);
+                    } catch (DataLayerException e) {
+                        subscriber.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
     @NonNull
     private String getPublishTime(String html) {
         String publishTime;
@@ -183,4 +231,5 @@ public class FilmNetWorkDataStore implements HtmlDataStore {
         }
         return publishTime;
     }
+
 }

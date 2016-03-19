@@ -1,4 +1,6 @@
-package com.bzh.data.repository.network;
+package com.bzh.data.repository;
+
+import com.bzh.data.exception.DataLayerException;
 
 import java.io.IOException;
 
@@ -15,7 +17,7 @@ import rx.functions.Func1;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface HtmlDataStore {
+public interface IHtmlDataStore {
 
 
     String TO_CHARSET_NAME = "GB2312";
@@ -30,7 +32,7 @@ public interface HtmlDataStore {
                 return new String(responseBody.bytes(), TO_CHARSET_NAME);
             } catch (IOException e) {
                 e.printStackTrace();
-                return "";
+                throw new DataLayerException(DataLayerException.ERROR_HTML_PARSE);
             }
         }
     };

@@ -1,7 +1,8 @@
 package com.bzh.data.repository.network;
 
 import com.bzh.data.ApplicationTestCase;
-import com.bzh.data.net.RetrofitManager;
+import com.bzh.data.home.HomePageNetWorkDataStore;
+import com.bzh.data.service.RetrofitManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class HomePageNetWorkDataStoreTest extends ApplicationTestCase {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        realNetWorkDataStore = new HomePageNetWorkDataStore(RetrofitManager.getInstance(null));
+        realNetWorkDataStore = new HomePageNetWorkDataStore(RetrofitManager.getInstance());
     }
 
     @Test
