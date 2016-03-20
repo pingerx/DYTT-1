@@ -12,6 +12,7 @@ import com.bzh.dytt.R;
 import com.bzh.dytt.presenter.impl.film.NewestFilmFImpl;
 import com.bzh.dytt.ui.fragment.base.BaseFragment;
 import com.bzh.dytt.ui.view.film.INewestFilmView;
+import com.bzh.recycler.ExRecyclerView;
 
 import butterknife.Bind;
 import butterknife.BindInt;
@@ -32,7 +33,7 @@ public class NewestFilmFragment extends BaseFragment implements INewestFilmView 
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
+    ExRecyclerView recyclerView;
 
     @Bind(R.id.exception)
     LinearLayout exception;
@@ -100,8 +101,11 @@ public class NewestFilmFragment extends BaseFragment implements INewestFilmView 
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    @Override
-    public void setOnRefreshListener(NewestFilmFImpl newestFilmF) {
-        swipeRefreshLayout.setOnRefreshListener(newestFilmF);
+    public ExRecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+    public SwipeRefreshLayout getSwipeRefreshLayout() {
+        return swipeRefreshLayout;
     }
 }

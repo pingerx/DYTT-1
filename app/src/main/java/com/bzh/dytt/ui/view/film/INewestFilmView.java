@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.bzh.dytt.presenter.impl.film.NewestFilmFImpl;
+import com.bzh.recycler.ExRecyclerView;
 
 /**
  * ==========================================================<br>
@@ -28,5 +29,7 @@ public interface INewestFilmView {
 
     void hideSwipeRefreshing();
 
-    void setOnRefreshListener(NewestFilmFImpl newestFilmF);
+    ExRecyclerView getRecyclerView();
+
+    SwipeRefreshLayout getSwipeRefreshLayout();
 }

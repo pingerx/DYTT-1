@@ -13,8 +13,10 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * ==========================================================<br>
@@ -46,15 +48,17 @@ public class Repository implements IFilmDataStore {
 
     @Override
     public Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) int index) {
-        return getFilmDataStore().getNewest(index);
+        return getFilmDataStore()
+                .getNewest(index);
     }
 
     @Override
     public Observable<FilmDetailEntity> getFilmDetail(String filmStr) {
-        return getFilmDataStore().getFilmDetail(filmStr);
+        return getFilmDataStore()
+                .getFilmDetail(filmStr);
     }
 
-    public IFilmDataStore getFilmDataStore() {
+    private IFilmDataStore getFilmDataStore() {
         if (filmNetWorkDataStore == null) {
             filmNetWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance());
         }

@@ -3,21 +3,23 @@ package com.bzh.dytt.presenter.impl.film;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.bzh.data.film.entity.FilmEntity;
-import com.bzh.domain.interactor.DefaultSubscriber;
-import com.bzh.domain.interactor.GetFilmList;
+import com.bzh.data.repository.Repository;
+import com.bzh.dytt.R;
 import com.bzh.dytt.presenter.IFragmentPersenter;
 import com.bzh.dytt.ui.activity.base.BaseActivity;
-import com.bzh.dytt.ui.adapter.film.NewestFilmAdapter;
 import com.bzh.dytt.ui.fragment.base.BaseFragment;
 import com.bzh.dytt.ui.view.film.INewestFilmView;
+import com.bzh.recycler.ExCommonAdapter;
+import com.bzh.recycler.ExRecyclerView;
+import com.bzh.recycler.ExViewHolder;
 
 import java.util.ArrayList;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 /**
@@ -30,15 +32,16 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NewestFilmFImpl implements IFragmentPersenter, NewestFilmAdapter.OnRecyclerItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class NewestFilmFImpl implements IFragmentPersenter, SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
+
+    private int index = 1;
 
     private static final String TAG = "NewestFilmFImpl";
 
     private final BaseActivity baseActivity;
     private final BaseFragment baseFragment;
     private final INewestFilmView newestFilmView;
-    private GetFilmList getFilmList;
-    private NewestFilmAdapter newestFilmAdapter;
+    private ExCommonAdapter<FilmEntity> filmEntityExCommonAdapter;
 
     public NewestFilmFImpl(BaseActivity baseActivity, BaseFragment baseFragment, INewestFilmView newestFilmView) {
         this.baseActivity = baseActivity;
@@ -48,13 +51,22 @@ public class NewestFilmFImpl implements IFragmentPersenter, NewestFilmAdapter.On
 
     @Override
     public void onFirstUserVisible() {
-        Log.d(TAG, "onFirstUserVisible() called with: " + "");
-        newestFilmAdapter = new NewestFilmAdapter(baseActivity);
-        newestFilmAdapter.setOnRecyclerItemClick(this);
-        newestFilmView.initRecyclerView(new LinearLayoutManager(baseActivity), newestFilmAdapter);
-        newestFilmView.setOnRefreshListener(this);
-        getFilmList = new GetFilmList(1, Schedulers.io(), AndroidSchedulers.mainThread());
-        getFilmList.execute(new NewestFilmSubscriber());
+        filmEntityExCommonAdapter = new ExCommonAdapter<FilmEntity>(baseActivity, R.layout.item_newestfilm) {
+            @Override
+            protected void convert(ExViewHolder viewHolder, FilmEntity item) {
+                viewHolder.setText(R.id.tv_film_name, item.getName());
+                viewHolder.setText(R.id.tv_film_leading_players, item.getUrl());
+            }
+        };
+        newestFilmView.initRecyclerView(new LinearLayoutManager(baseActivity), filmEntityExCommonAdapter);
+        newestFilmView.getRecyclerView().setOnItemClickListener(this);
+        newestFilmView.getRecyclerView().setOnLoadingMoreListener(this);
+        newestFilmView.getSwipeRefreshLayout().setOnRefreshListener(this);
+
+        Repository.getInstance().getNewest(index)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new NewestFilmSubscriber());
     }
 
     @Override
@@ -68,16 +80,44 @@ public class NewestFilmFImpl implements IFragmentPersenter, NewestFilmAdapter.On
     }
 
     @Override
-    public void onRecyclerItemClick(View view, int position) {
-        Toast.makeText(baseActivity, "被点击了" + position, Toast.LENGTH_SHORT).show();
+    public void onRefresh() {
+        index = 1;
+        Repository.getInstance().getNewest(index)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new NewestFilmSubscriber());
     }
 
     @Override
-    public void onRefresh() {
-        getFilmList.execute(new NewestFilmSubscriber());
+    public void onItemClick(ExViewHolder viewHolder) {
+        Log.d(TAG, "onItemClick() called with: " + "viewHolder = [" + viewHolder + "]");
     }
 
-    private final class NewestFilmSubscriber extends DefaultSubscriber<ArrayList<FilmEntity>> {
+    @Override
+    public void onLoadingMore() {
+        Repository.getInstance().getNewest(index)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ArrayList<FilmEntity>>() {
+                    @Override
+                    public void onCompleted() {
+                        index++;
+                        newestFilmView.getRecyclerView().finishLoadingMore();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<FilmEntity> filmEntities) {
+                        filmEntityExCommonAdapter.addData(filmEntities);
+                    }
+                });
+    }
+
+    private final class NewestFilmSubscriber extends Subscriber<ArrayList<FilmEntity>> {
 
         @Override
         public void onStart() {
@@ -87,23 +127,20 @@ public class NewestFilmFImpl implements IFragmentPersenter, NewestFilmAdapter.On
 
         @Override
         public void onCompleted() {
-            super.onCompleted();
             newestFilmView.hideSwipeRefreshing();
+            index++;
         }
 
         @Override
         public void onError(Throwable e) {
-            super.onError(e);
             newestFilmView.showException();
             newestFilmView.hideRecyclerView();
         }
 
         @Override
         public void onNext(ArrayList<FilmEntity> filmEntities) {
-            super.onNext(filmEntities);
             Log.d(TAG, "onNext() called with: " + "filmEntities = [" + filmEntities + "]");
-            newestFilmAdapter.setFilmEntities(filmEntities);
+            filmEntityExCommonAdapter.setData(filmEntities);
         }
     }
-
 }

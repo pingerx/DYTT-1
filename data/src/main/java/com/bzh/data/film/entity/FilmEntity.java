@@ -26,8 +26,6 @@ public class FilmEntity implements Parcelable {
         this.name = name;
     }
 
-
-
     public String getUrl() {
         return url;
     }
@@ -43,7 +41,6 @@ public class FilmEntity implements Parcelable {
                 ", url='" + url + '\'' +
                 '}';
     }
-
 
     @Override
     public int describeContents() {

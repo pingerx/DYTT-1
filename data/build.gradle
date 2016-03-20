@@ -25,6 +25,8 @@ android {
 
 dependencies {
     compile project(':lib_common')
+    compile project(':lib_recycler')
+
     compile 'com.android.support:support-annotations:23.2.0'
     compile 'io.reactivex:rxjava:1.1.1'
     compile 'io.reactivex:rxandroid:1.1.0'
