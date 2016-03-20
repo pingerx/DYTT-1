@@ -1,4 +1,4 @@
-package com.bzh.dytt.config;
+package com.bzh.dytt.ui.config;
 
 /**
  * ==========================================================<br>

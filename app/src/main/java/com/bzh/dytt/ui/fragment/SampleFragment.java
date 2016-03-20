@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.bzh.dytt;
+package com.bzh.dytt.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

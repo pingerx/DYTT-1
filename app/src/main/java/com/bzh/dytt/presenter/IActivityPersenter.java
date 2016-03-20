@@ -17,8 +17,6 @@ public interface IActivityPersenter {
 
     void onCreate(Bundle savedInstanceState);
 
-    void getIntent(Intent intent);
-
     void onStart();
 
     void onResume();
@@ -29,4 +27,5 @@ public interface IActivityPersenter {
 
     void onDestroy();
 
+    void onSaveInstanceState(Bundle outState);
 }

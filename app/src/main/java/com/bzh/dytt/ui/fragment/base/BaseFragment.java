@@ -9,7 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bzh.dytt.config.UIConfig;
+import com.bzh.dytt.ui.activity.base.BaseActivity;
+import com.bzh.dytt.ui.config.UIConfig;
 import com.bzh.dytt.eventbus.EventCenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,7 +33,7 @@ public abstract class BaseFragment extends Fragment {
 
     private static final String TAG = "BaseFragment";
 
-    protected FragmentActivity activity;
+    protected BaseActivity baseActivity;
     private FragmentConfig fragmentConfig;
     private boolean isPrepared;
     private boolean isFirstResume = true;
@@ -48,7 +49,11 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        activity = getActivity();
+
+        if (getActivity() instanceof BaseActivity) {
+            baseActivity = (BaseActivity) getActivity();
+        }
+
         fragmentConfig = new FragmentConfig();
         initUIConfig(fragmentConfig);
         if (fragmentConfig.isApplyButterKnife) {

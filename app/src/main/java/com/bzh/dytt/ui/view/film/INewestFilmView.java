@@ -1,4 +1,4 @@
-package com.bzh.dytt.ui.activity;
+package com.bzh.dytt.ui.view.film;
 
 /**
  * ==========================================================<br>
@@ -10,5 +10,5 @@ package com.bzh.dytt.ui.activity;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class x {
+public interface INewestFilmView {
 }
