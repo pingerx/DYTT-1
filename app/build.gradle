@@ -33,6 +33,5 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.roughike:bottom-bar:1.0.8'
     compile 'de.hdodenhof:circleimageview:2.0.0'
 }
