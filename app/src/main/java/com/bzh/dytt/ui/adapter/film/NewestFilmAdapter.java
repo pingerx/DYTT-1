@@ -14,8 +14,6 @@ import com.jakewharton.rxbinding.view.RxView;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import rx.functions.Action1;
 
 /**

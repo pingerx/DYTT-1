@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bzh.dytt.presenter.IFragmentPersenter;
 import com.bzh.dytt.ui.activity.base.BaseActivity;
 import com.bzh.dytt.ui.config.UIConfig;
 import com.bzh.dytt.eventbus.EventCenter;
@@ -39,6 +40,7 @@ public abstract class BaseFragment extends Fragment {
     private boolean isFirstResume = true;
     private boolean isFirstVisible = true;
     private boolean isFirstInvisible = true;
+    private boolean isCallSetUserVisibleHint = false;
 
     @Nullable
     @Override
@@ -105,11 +107,10 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (isFirstResume) {
+        if (isFirstResume && isCallSetUserVisibleHint) {
             isFirstResume = false;
             return;
         }
-        Log.d(TAG, "onResume() called with: " + "getUserVisibleHint() = [" + getUserVisibleHint() + "]");
         if (getUserVisibleHint()) {
             onUserVisible();
         }
@@ -118,16 +119,21 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause() called with: " + "getUserVisibleHint() = [" + getUserVisibleHint() + "]");
         if (getUserVisibleHint()) {
             onUserInvisible();
         }
     }
 
     @Override
+    public boolean getUserVisibleHint() {
+        return super.getUserVisibleHint();
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.d(TAG, "setUserVisibleHint() called with: " + "isVisibleToUser = [" + isVisibleToUser + "]");
+        isCallSetUserVisibleHint = true;
+
         if (isVisibleToUser) {
             if (isFirstVisible) {
                 isFirstVisible = false;
@@ -146,7 +152,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected synchronized void initPrepare() {
-        if (isPrepared) {
+        if (isPrepared || !isCallSetUserVisibleHint) {
             onFirstUserVisible();
         } else {
             isPrepared = true;

@@ -36,6 +36,7 @@ public class NewestFilmFragment extends BaseFragment implements INewestFilmView 
 
     @Bind(R.id.exception)
     LinearLayout exception;
+
     private NewestFilmFImpl newestFilmF;
 
     public static NewestFilmFragment newInstance() {

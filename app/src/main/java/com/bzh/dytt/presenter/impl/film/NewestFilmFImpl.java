@@ -88,14 +88,12 @@ public class NewestFilmFImpl implements IFragmentPersenter, NewestFilmAdapter.On
         @Override
         public void onCompleted() {
             super.onCompleted();
-            Log.d(TAG, "onCompleted() called with: " + "");
             newestFilmView.hideSwipeRefreshing();
         }
 
         @Override
         public void onError(Throwable e) {
             super.onError(e);
-            Log.d(TAG, "onError() called with: " + "e = [" + e + "]");
             newestFilmView.showException();
             newestFilmView.hideRecyclerView();
         }
