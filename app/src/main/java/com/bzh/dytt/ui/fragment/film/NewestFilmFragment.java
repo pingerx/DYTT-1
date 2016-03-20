@@ -3,6 +3,7 @@ package com.bzh.dytt.ui.fragment.film;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -69,5 +70,37 @@ public class NewestFilmFragment extends BaseFragment implements INewestFilmView 
     @Override
     protected void onUserInvisible() {
         newestFilmF.onUserInvisible();
+    }
+
+    @Override
+    public void showException() {
+        exception.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideRecyclerView() {
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter) {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void showSwipeRefreshing() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideSwipeRefreshing() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void setOnRefreshListener(NewestFilmFImpl newestFilmF) {
+        swipeRefreshLayout.setOnRefreshListener(newestFilmF);
     }
 }

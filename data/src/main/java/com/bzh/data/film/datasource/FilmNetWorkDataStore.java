@@ -71,6 +71,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
                 FilmEntity filmEntity = new FilmEntity();
                 filmEntity.setName(element.text());
                 filmEntity.setUrl(element.attr("href"));
+                filmEntities.add(filmEntity);
             }
             return filmEntities;
         }

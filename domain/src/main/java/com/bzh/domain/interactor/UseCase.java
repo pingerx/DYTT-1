@@ -34,6 +34,7 @@ public abstract class UseCase {
     public void execute(Subscriber useCaseSubscribe) {
         subscription = buildUseCaseObservable()
                 .subscribeOn(workThreadExecutor)
+                .subscribeOn(postThreadExecutor)
                 .observeOn(postThreadExecutor)
                 .subscribe(useCaseSubscribe);
     }

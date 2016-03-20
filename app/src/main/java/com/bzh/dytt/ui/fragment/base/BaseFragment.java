@@ -133,7 +133,6 @@ public abstract class BaseFragment extends Fragment {
                 isFirstVisible = false;
                 initPrepare();
             } else {
-                Log.d(TAG, "onUserVisible() called with: ");
                 onUserVisible();
             }
         } else {
@@ -141,14 +140,12 @@ public abstract class BaseFragment extends Fragment {
                 isFirstInvisible = false;
                 onFirstUserInvisible();
             } else {
-                Log.d(TAG, "onUserInvisible() called with: ");
                 onUserInvisible();
             }
         }
     }
 
     protected synchronized void initPrepare() {
-        Log.d(TAG, "initPrepare() called with: " + "");
         if (isPrepared) {
             onFirstUserVisible();
         } else {

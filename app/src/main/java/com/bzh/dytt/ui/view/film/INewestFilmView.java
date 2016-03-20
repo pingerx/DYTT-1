@@ -1,5 +1,11 @@
 package com.bzh.dytt.ui.view.film;
 
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import com.bzh.dytt.presenter.impl.film.NewestFilmFImpl;
+
 /**
  * ==========================================================<br>
  * <b>版权</b>：　　　别志华 版权所有(c)2016<br>
@@ -11,4 +17,16 @@ package com.bzh.dytt.ui.view.film;
  * ==========================================================<br>
  */
 public interface INewestFilmView {
+
+    void showException();
+
+    void hideRecyclerView();
+
+    void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter);
+
+    void showSwipeRefreshing();
+
+    void hideSwipeRefreshing();
+
+    void setOnRefreshListener(NewestFilmFImpl newestFilmF);
 }

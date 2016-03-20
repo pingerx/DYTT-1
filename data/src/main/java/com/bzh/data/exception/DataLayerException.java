@@ -3,6 +3,9 @@ package com.bzh.data.exception;
 import android.support.annotation.StringDef;
 import android.text.TextUtils;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * ==========================================================<br>
  * <b>版权</b>：　　　别志华 版权所有(c)2016<br>
@@ -21,6 +24,7 @@ public class DataLayerException extends RuntimeException {
     public static final String LABEL_HTML_PARSE = "Html网页解析错误";
 
     @StringDef({ERROR_NONE_NETWORK, ERROR_TIMEOUT, ERROR_RESULT_ILLEGAL, ERROR_HTML_PARSE})
+    @Retention(RetentionPolicy.SOURCE)
     public @interface DATA_LAYER_ERROR {
     }
 

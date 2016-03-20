@@ -21,7 +21,7 @@ public class GetFilmList extends UseCase {
 
     private final int index;
 
-    protected GetFilmList(@IntRange(from = 1, to = 131) int index, Scheduler workThreadExecutor, Scheduler postThreadExecutor) {
+    public GetFilmList(@IntRange(from = 1, to = 131) int index, Scheduler workThreadExecutor, Scheduler postThreadExecutor) {
         super(workThreadExecutor, postThreadExecutor);
         this.index = index;
     }
