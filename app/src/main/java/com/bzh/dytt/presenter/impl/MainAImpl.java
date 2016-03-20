@@ -9,6 +9,7 @@ import com.bzh.dytt.presenter.IActivityPersenter;
 import com.bzh.dytt.ui.activity.MainActivity;
 import com.bzh.dytt.ui.activity.base.BaseActivity;
 import com.bzh.dytt.ui.fragment.SampleFragment;
+import com.bzh.dytt.ui.fragment.film.FilmMainFragment;
 import com.bzh.dytt.ui.fragment.film.NewestFilmFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarFragment;
@@ -37,7 +38,7 @@ public class MainAImpl implements IActivityPersenter {
     public void onCreate(Bundle savedInstanceState) {
         mBottomBar = BottomBar.attach(baseActivity, savedInstanceState);
         mBottomBar.setFragmentItems(baseActivity.getSupportFragmentManager(), R.id.fragmentContainer,
-                new BottomBarFragment(NewestFilmFragment.newInstance(), R.mipmap.ic_recents, "电影"),
+                new BottomBarFragment(FilmMainFragment.newInstance(), R.mipmap.ic_recents, "电影"),
                 new BottomBarFragment(SampleFragment.newInstance("Content for favorites."), R.mipmap.ic_favorites, "电视"),
                 new BottomBarFragment(SampleFragment.newInstance("Content for nearby stuff."), R.mipmap.ic_nearby, "综艺"),
                 new BottomBarFragment(SampleFragment.newInstance("Content for friends."), R.mipmap.ic_friends, "动漫"),

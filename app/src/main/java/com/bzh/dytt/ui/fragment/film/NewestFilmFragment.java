@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -28,6 +29,8 @@ import butterknife.BindInt;
  * ==========================================================<br>
  */
 public class NewestFilmFragment extends BaseFragment implements INewestFilmView {
+
+    private static final String TAG = "NewestFilmFragment";
 
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -61,11 +64,13 @@ public class NewestFilmFragment extends BaseFragment implements INewestFilmView 
 
     @Override
     protected void onFirstUserVisible() {
+        Log.d(TAG, "onFirstUserVisible() called with: " + "");
         newestFilmF.onFirstUserVisible();
     }
 
     @Override
     protected void onUserVisible() {
+        Log.d(TAG, "onUserVisible() called with: " + "");
         newestFilmF.onUserVisible();
     }
 

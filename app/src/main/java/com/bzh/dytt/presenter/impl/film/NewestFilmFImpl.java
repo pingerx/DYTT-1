@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 /**
@@ -139,7 +138,6 @@ public class NewestFilmFImpl implements IFragmentPersenter, SwipeRefreshLayout.O
 
         @Override
         public void onNext(ArrayList<FilmEntity> filmEntities) {
-            Log.d(TAG, "onNext() called with: " + "filmEntities = [" + filmEntities + "]");
             filmEntityExCommonAdapter.setData(filmEntities);
         }
     }
