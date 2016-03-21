@@ -13,10 +13,19 @@ import android.os.Parcelable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmEntity implements Parcelable {
+public class FilmEntity  {
 
     private String name;
     private String url;
+    private String publishTime;
+
+    public String getPublishTime() {
+        return publishTime;
+    }
+
+    public void setPublishTime(String publishTime) {
+        this.publishTime = publishTime;
+    }
 
     public String getName() {
         return name;
@@ -39,37 +48,7 @@ public class FilmEntity implements Parcelable {
         return "FilmEntity{" +
                 "name='" + name + '\'' +
                 ", url='" + url + '\'' +
+                ", publishTime='" + publishTime + '\'' +
                 '}';
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeString(this.url);
-    }
-
-    public FilmEntity() {
-    }
-
-    protected FilmEntity(Parcel in) {
-        this.name = in.readString();
-        this.url = in.readString();
-    }
-
-    public static final Creator<FilmEntity> CREATOR = new Creator<FilmEntity>() {
-        @Override
-        public FilmEntity createFromParcel(Parcel source) {
-            return new FilmEntity(source);
-        }
-
-        @Override
-        public FilmEntity[] newArray(int size) {
-            return new FilmEntity[size];
-        }
-    };
 }

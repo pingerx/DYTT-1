@@ -4,11 +4,10 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.bzh.common.utils.SystemUtils;
+import com.bzh.data.exception.DataLayerException;
 import com.bzh.data.film.entity.FilmDetailEntity;
 import com.bzh.data.film.entity.FilmEntity;
-import com.bzh.data.exception.DataLayerException;
 import com.bzh.data.service.RetrofitManager;
-import com.bzh.data.repository.IHtmlDataStore;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -52,26 +51,25 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
 
     private final RetrofitManager retrofitManager;
 
-    private Func1<String, Elements> hrefTags = new Func1<String, Elements>() {
+    private Func1<String, ArrayList<FilmEntity>> transformFilmEntity = new Func1<String, ArrayList<FilmEntity>>() {
         @Override
-        public Elements call(String s) {
+        public ArrayList<FilmEntity> call(String s) {
             Document document = Jsoup.parse(s);
             Elements elements = document.select("div.co_content8").select("ul");
-            return elements.select("a[href]");
-        }
-    };
-
-    private Func1<Elements, ArrayList<FilmEntity>> hrefTagValue = new Func1<Elements, ArrayList<FilmEntity>>() {
-
-        @Override
-        public ArrayList<FilmEntity> call(Elements elements) {
+            Elements hrefs = elements.select("a[href]");
             ArrayList<FilmEntity> filmEntities = new ArrayList<>();
-
-            for (Element element : elements) {
+            for (Element element : hrefs) {
+                String fullName = element.text();
                 FilmEntity filmEntity = new FilmEntity();
-                filmEntity.setName(element.text());
+                filmEntity.setName(fullName.substring(0, fullName.lastIndexOf("》") + 1));
                 filmEntity.setUrl(element.attr("href"));
                 filmEntities.add(filmEntity);
+            }
+
+            Elements fonts = elements.select("font");
+            for (int i = 0; i < fonts.size(); i++) {
+                String fullName = fonts.get(i).text();
+                filmEntities.get(i).setPublishTime(fullName.substring(fullName.indexOf("：") + 1, fullName.indexOf("点击")).trim());
             }
             return filmEntities;
         }
@@ -182,8 +180,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
                         retrofitManager.getFilmService()
                                 .getNewest(index)
                                 .map(transformCharset)
-                                .map(hrefTags)
-                                .map(hrefTagValue)
+                                .map(transformFilmEntity)
                                 .subscribe(subscriber);
                     } catch (DataLayerException e) {
                         subscriber.onError(e);

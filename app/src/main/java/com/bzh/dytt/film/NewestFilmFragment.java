@@ -61,13 +61,11 @@ public class NewestFilmFragment extends BaseFragment implements NewestFilmIView 
 
     @Override
     protected void onFirstUserVisible() {
-        Log.d(TAG, "onFirstUserVisible() called with: " + "");
         newestFilmF.onFirstUserVisible();
     }
 
     @Override
     protected void onUserVisible() {
-        Log.d(TAG, "onUserVisible() called with: " + "");
         newestFilmF.onUserVisible();
     }
 

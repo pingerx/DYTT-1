@@ -1,6 +1,7 @@
 package com.bzh.data.repository;
 
 import android.support.annotation.IntRange;
+import android.util.Log;
 
 import com.bzh.data.film.datasource.FilmNetWorkDataStore;
 import com.bzh.data.film.datasource.IFilmDataStore;
@@ -9,14 +10,10 @@ import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.service.RetrofitManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * ==========================================================<br>
@@ -29,6 +26,8 @@ import rx.schedulers.Schedulers;
  * ==========================================================<br>
  */
 public class Repository implements IFilmDataStore {
+
+    private static final String TAG = "Repository";
 
     private static Repository repository;
 

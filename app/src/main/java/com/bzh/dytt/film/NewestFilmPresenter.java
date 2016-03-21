@@ -53,12 +53,12 @@ public class NewestFilmPresenter implements IFragmentPresenter, SwipeRefreshLayo
             @Override
             protected void convert(ExViewHolder viewHolder, FilmEntity item) {
                 viewHolder.setText(R.id.tv_film_name, item.getName());
-                viewHolder.setText(R.id.tv_film_leading_players, item.getUrl());
+                viewHolder.setText(R.id.tv_film_publish_time, item.getPublishTime());
             }
         };
-        newestFilmView.initRecyclerView(new LinearLayoutManager(baseActivity), filmEntityExCommonAdapter);
         newestFilmView.getRecyclerView().setOnItemClickListener(this);
         newestFilmView.getRecyclerView().setOnLoadingMoreListener(this);
+        newestFilmView.initRecyclerView(new LinearLayoutManager(baseActivity), filmEntityExCommonAdapter);
         newestFilmView.getSwipeRefreshLayout().setOnRefreshListener(this);
 
         Repository.getInstance().getNewest(index)
