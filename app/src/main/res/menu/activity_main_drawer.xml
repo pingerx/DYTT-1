@@ -28,9 +28,9 @@
     <item android:title="设置">
         <menu>
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_setting"
                 android:icon="@drawable/ic_menu_setting"
-                android:title="Send" />
+                android:title="设置" />
         </menu>
     </item>
 

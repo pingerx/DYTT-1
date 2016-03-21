@@ -1,4 +1,4 @@
-package com.bzh.dytt.ui.fragment;
+package com.bzh.dytt.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bzh.dytt.ui.activity.BaseActivity;
-import com.bzh.dytt.ui.config.UIConfig;
+import com.bzh.dytt.base.BaseActivity;
+import com.bzh.dytt.base.UIConfig;
 import com.bzh.dytt.eventbus.EventCenter;
 
 import org.greenrobot.eventbus.EventBus;

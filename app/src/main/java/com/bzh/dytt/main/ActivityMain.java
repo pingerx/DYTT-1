@@ -1,4 +1,4 @@
-package com.bzh.dytt.ui.activity;
+package com.bzh.dytt.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,16 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.presenter.MainAImpl;
-import com.bzh.dytt.ui.view.IMainView;
+import com.bzh.dytt.base.BaseActivity;
 import com.bzh.dytt.widget.XViewPager;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseActivity
-        implements IMainView {
+public class ActivityMain extends BaseActivity
+        implements IViewMain {
 
-    MainAImpl mainA;
+    ImplAMain mainA;
 
     ActionBarDrawerToggle toggle;
 
@@ -40,7 +39,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainA = new MainAImpl(this, this);
+        mainA = new ImplAMain(this, this);
         mainA.onCreate(savedInstanceState);
     }
 
@@ -109,7 +108,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void setNavigationItemSelectedListener(MainAImpl mainA) {
+    public void setNavigationItemSelectedListener(ImplAMain mainA) {
         navigationView.setNavigationItemSelectedListener(mainA);
     }
 

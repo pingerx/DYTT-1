@@ -1,4 +1,4 @@
-package com.bzh.dytt.presenter;
+package com.bzh.dytt.film;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,10 +7,9 @@ import android.util.Log;
 import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
-import com.bzh.dytt.presenter.IFragmentPersenter;
-import com.bzh.dytt.ui.activity.BaseActivity;
-import com.bzh.dytt.ui.fragment.BaseFragment;
-import com.bzh.dytt.ui.view.INewestFilmView;
+import com.bzh.dytt.base.IFragmentPersenter;
+import com.bzh.dytt.base.BaseActivity;
+import com.bzh.dytt.base.BaseFragment;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
@@ -31,18 +30,18 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NewestFilmFImpl implements IFragmentPersenter, SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
+public class ImplFNewestFilm implements IFragmentPersenter, SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
 
     private int index = 1;
 
-    private static final String TAG = "NewestFilmFImpl";
+    private static final String TAG = "ImplFNewestFilm";
 
     private final BaseActivity baseActivity;
     private final BaseFragment baseFragment;
-    private final INewestFilmView newestFilmView;
+    private final IViewNewestFilm newestFilmView;
     private ExCommonAdapter<FilmEntity> filmEntityExCommonAdapter;
 
-    public NewestFilmFImpl(BaseActivity baseActivity, BaseFragment baseFragment, INewestFilmView newestFilmView) {
+    public ImplFNewestFilm(BaseActivity baseActivity, BaseFragment baseFragment, IViewNewestFilm newestFilmView) {
         this.baseActivity = baseActivity;
         this.baseFragment = baseFragment;
         this.newestFilmView = newestFilmView;

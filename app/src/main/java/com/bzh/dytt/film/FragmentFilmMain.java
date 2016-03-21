@@ -1,4 +1,4 @@
-package com.bzh.dytt.ui.fragment;
+package com.bzh.dytt.film;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,9 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 
 import com.bzh.dytt.R;
+import com.bzh.dytt.base.BaseFragment;
 
 import butterknife.Bind;
 
@@ -23,19 +23,18 @@ import butterknife.Bind;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmMainFragment extends BaseFragment {
+public class FragmentFilmMain extends BaseFragment {
 
-    private static final String TAG = "FilmMainFragment";
-    
-    public static FilmMainFragment newInstance() {
-        
+    private static final String TAG = "FragmentFilmMain";
+
+    public static FragmentFilmMain newInstance() {
         Bundle args = new Bundle();
-        
-        FilmMainFragment fragment = new FilmMainFragment();
+
+        FragmentFilmMain fragment = new FragmentFilmMain();
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
 
@@ -51,7 +50,6 @@ public class FilmMainFragment extends BaseFragment {
 
     @Override
     protected void onFirstUserVisible() {
-        Log.d(TAG, "onFirstUserVisible() called with: " + "");
         viewPagerAdapter = new MyViewPagerAdapter(baseActivity.getSupportFragmentManager());
         pager.setOffscreenPageLimit(4);
         pager.setAdapter(viewPagerAdapter);
@@ -63,12 +61,12 @@ public class FilmMainFragment extends BaseFragment {
 
     @Override
     protected void onUserVisible() {
-        Log.d(TAG, "onUserVisible() called with: " + "");
+
     }
 
     @Override
     protected void onUserInvisible() {
-        Log.d(TAG, "onUserInvisible() called with: " + "");
+
     }
 
     class MyViewPagerAdapter extends FragmentPagerAdapter {
@@ -79,7 +77,7 @@ public class FilmMainFragment extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
-            return NewestFilmFragment.newInstance();
+            return FragmentNewestFilm.newInstance();
         }
 
         @Override

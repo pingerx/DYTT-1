@@ -1,10 +1,9 @@
-package com.bzh.dytt.ui.activity;
+package com.bzh.dytt.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.bzh.dytt.ui.config.UIConfig;
 import com.bzh.dytt.eventbus.EventCenter;
 
 import org.greenrobot.eventbus.EventBus;

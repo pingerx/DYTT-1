@@ -1,4 +1,6 @@
-package com.bzh.dytt.presenter;
+package com.bzh.dytt.base;
+
+import android.os.Bundle;
 
 /**
  * ==========================================================<br>
@@ -10,11 +12,19 @@ package com.bzh.dytt.presenter;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface IFragmentPersenter {
+public interface IActivityPersenter {
 
-    void onFirstUserVisible();
+    void onCreate(Bundle savedInstanceState);
 
-    void onUserVisible();
+    void onStart();
 
-    void onUserInvisible();
+    void onResume();
+
+    void onPause();
+
+    void onStop();
+
+    void onDestroy();
+
+    void onSaveInstanceState(Bundle outState);
 }

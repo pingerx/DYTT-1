@@ -1,4 +1,4 @@
-package com.bzh.dytt.ui.fragment;
+package com.bzh.dytt.film;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,8 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.presenter.NewestFilmFImpl;
-import com.bzh.dytt.ui.view.INewestFilmView;
+import com.bzh.dytt.base.BaseFragment;
 import com.bzh.recycler.ExRecyclerView;
 
 import butterknife.Bind;
@@ -26,9 +25,9 @@ import butterknife.Bind;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NewestFilmFragment extends BaseFragment implements INewestFilmView {
+public class FragmentNewestFilm extends BaseFragment implements IViewNewestFilm {
 
-    private static final String TAG = "NewestFilmFragment";
+    private static final String TAG = "FragmentNewestFilm";
 
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -39,12 +38,12 @@ public class NewestFilmFragment extends BaseFragment implements INewestFilmView 
     @Bind(R.id.exception)
     LinearLayout exception;
 
-    private NewestFilmFImpl newestFilmF;
+    private ImplFNewestFilm newestFilmF;
 
-    public static NewestFilmFragment newInstance() {
+    public static FragmentNewestFilm newInstance() {
 
         Bundle args = new Bundle();
-        NewestFilmFragment fragment = new NewestFilmFragment();
+        FragmentNewestFilm fragment = new FragmentNewestFilm();
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,7 +51,7 @@ public class NewestFilmFragment extends BaseFragment implements INewestFilmView 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        newestFilmF = new NewestFilmFImpl(baseActivity, this, this);
+        newestFilmF = new ImplFNewestFilm(baseActivity, this, this);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.bzh.dytt.ui.view;
+package com.bzh.dytt.film;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +16,7 @@ import com.bzh.recycler.ExRecyclerView;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface INewestFilmView {
+public interface IViewNewestFilm {
 
     void showException();
 

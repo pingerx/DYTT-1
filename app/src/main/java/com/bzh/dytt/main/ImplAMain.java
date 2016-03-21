@@ -1,17 +1,18 @@
-package com.bzh.dytt.presenter;
+package com.bzh.dytt.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.ui.activity.BaseActivity;
-import com.bzh.dytt.ui.fragment.BaseFragment;
-import com.bzh.dytt.ui.fragment.NewestFilmFragment;
-import com.bzh.dytt.ui.view.IMainView;
+import com.bzh.dytt.film.FragmentNewestFilm;
+import com.bzh.dytt.base.IActivityPersenter;
+import com.bzh.dytt.base.BaseActivity;
+import com.bzh.dytt.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +28,9 @@ import java.util.Map;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class MainAImpl implements IActivityPersenter, NavigationView.OnNavigationItemSelectedListener {
+public class ImplAMain implements IActivityPersenter, NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = "ImplAMain";
 
     public static final String FILM = "film";
     public static final String TV = "tv";
@@ -36,12 +39,12 @@ public class MainAImpl implements IActivityPersenter, NavigationView.OnNavigatio
     public static final String COMIC = "comic";
 
     private final BaseActivity baseActivity;
-    private final IMainView iMainView;
+    private final IViewMain iMainView;
     private InnerPageAdapter innerPageAdapter;
     private ArrayList<String> items;
     private Map<String, BaseFragment> fragments;
 
-    public MainAImpl(BaseActivity baseActivity, IMainView iMainView) {
+    public ImplAMain(BaseActivity baseActivity, IViewMain iMainView) {
         this.baseActivity = baseActivity;
         this.iMainView = iMainView;
         fragments = new HashMap<>();
@@ -58,6 +61,7 @@ public class MainAImpl implements IActivityPersenter, NavigationView.OnNavigatio
         iMainView.initToolbar("电影天堂");
         iMainView.initDrawerToggle();
         iMainView.setNavigationItemSelectedListener(this);
+        innerPageAdapter = new InnerPageAdapter(baseActivity.getSupportFragmentManager());
         iMainView.initContainer(innerPageAdapter, items.size());
     }
 
@@ -109,7 +113,7 @@ public class MainAImpl implements IActivityPersenter, NavigationView.OnNavigatio
         } else if (id == R.id.nav_game) {
             iMainView.setCurrentItem(4);
             iMainView.setTitle("游戏");
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_setting) {
         }
         iMainView.closeDrawer();
 
@@ -129,6 +133,7 @@ public class MainAImpl implements IActivityPersenter, NavigationView.OnNavigatio
                 fragment = newFragment(items.get(position));
                 fragments.put(items.get(position), fragment);
             }
+            Log.d(TAG, "getItem() called with: " + "position = [" + position + "]");
             return fragment;
         }
 
@@ -141,15 +146,15 @@ public class MainAImpl implements IActivityPersenter, NavigationView.OnNavigatio
     private BaseFragment newFragment(String item) {
         switch (item) {
             case FILM:
-                return NewestFilmFragment.newInstance();
+                return FragmentNewestFilm.newInstance();
             case TV:
-                return NewestFilmFragment.newInstance();
+                return FragmentNewestFilm.newInstance();
             case VARIETY:
-                return NewestFilmFragment.newInstance();
+                return FragmentNewestFilm.newInstance();
             case COMIC:
-                return NewestFilmFragment.newInstance();
+                return FragmentNewestFilm.newInstance();
             case GAME:
-                return NewestFilmFragment.newInstance();
+                return FragmentNewestFilm.newInstance();
         }
         throw new RuntimeException("没有指定类型的Fragment");
     }
