@@ -1,10 +1,9 @@
-package com.bzh.dytt.ui.view.film;
+package com.bzh.dytt.ui.view;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.bzh.dytt.presenter.impl.film.NewestFilmFImpl;
 import com.bzh.recycler.ExRecyclerView;
 
 /**

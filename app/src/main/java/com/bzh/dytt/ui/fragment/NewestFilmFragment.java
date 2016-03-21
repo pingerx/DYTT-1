@@ -1,4 +1,4 @@
-package com.bzh.dytt.ui.fragment.film;
+package com.bzh.dytt.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,13 +10,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.presenter.impl.film.NewestFilmFImpl;
-import com.bzh.dytt.ui.fragment.base.BaseFragment;
-import com.bzh.dytt.ui.view.film.INewestFilmView;
+import com.bzh.dytt.presenter.NewestFilmFImpl;
+import com.bzh.dytt.ui.view.INewestFilmView;
 import com.bzh.recycler.ExRecyclerView;
 
 import butterknife.Bind;
-import butterknife.BindInt;
 
 /**
  * ==========================================================<br>

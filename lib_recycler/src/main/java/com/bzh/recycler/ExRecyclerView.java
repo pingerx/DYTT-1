@@ -69,7 +69,7 @@ public class ExRecyclerView extends RecyclerView {
     }
 
     private void initDefaultFooterView(Context context) {
-        yFooterView = LayoutInflater.from(context).inflate(R.layout.item_footer_type, null);
+        yFooterView = LayoutInflater.from(context).inflate(R.layout.common_footer, null);
         yFooterView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 

@@ -1,4 +1,4 @@
-package com.bzh.dytt.ui.fragment.film;
+package com.bzh.dytt.ui.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.ui.fragment.base.BaseFragment;
 
 import butterknife.Bind;
 

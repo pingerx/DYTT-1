@@ -1,4 +1,4 @@
-package com.bzh.dytt.presenter.impl.film;
+package com.bzh.dytt.presenter;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,9 +8,9 @@ import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
 import com.bzh.dytt.presenter.IFragmentPersenter;
-import com.bzh.dytt.ui.activity.base.BaseActivity;
-import com.bzh.dytt.ui.fragment.base.BaseFragment;
-import com.bzh.dytt.ui.view.film.INewestFilmView;
+import com.bzh.dytt.ui.activity.BaseActivity;
+import com.bzh.dytt.ui.fragment.BaseFragment;
+import com.bzh.dytt.ui.view.INewestFilmView;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;

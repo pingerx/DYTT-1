@@ -1,16 +1,14 @@
-package com.bzh.dytt.ui.fragment.base;
+package com.bzh.dytt.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bzh.dytt.presenter.IFragmentPersenter;
-import com.bzh.dytt.ui.activity.base.BaseActivity;
+import com.bzh.dytt.ui.activity.BaseActivity;
 import com.bzh.dytt.ui.config.UIConfig;
 import com.bzh.dytt.eventbus.EventCenter;
 

@@ -1,4 +1,4 @@
-package com.bzh.dytt.ui.activity.base;
+package com.bzh.dytt.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
