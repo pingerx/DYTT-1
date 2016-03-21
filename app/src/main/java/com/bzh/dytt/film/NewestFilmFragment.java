@@ -1,5 +1,7 @@
 package com.bzh.dytt.film;
 
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.bzh.common.utils.UIUtils;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.BaseFragment;
 import com.bzh.recycler.ExRecyclerView;
@@ -88,6 +91,7 @@ public class NewestFilmFragment extends BaseFragment implements NewestFilmIView 
     public void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(new MyItemDecoration());
         recyclerView.setAdapter(adapter);
     }
 
@@ -108,4 +112,24 @@ public class NewestFilmFragment extends BaseFragment implements NewestFilmIView 
     public SwipeRefreshLayout getSwipeRefreshLayout() {
         return swipeRefreshLayout;
     }
+
+    class MyItemDecoration extends RecyclerView.ItemDecoration {
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            outRect.set(0, 0, 0, UIUtils.dip2px(2));
+        }
+
+        @Override
+        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            super.onDrawOver(c, parent, state);
+        }
+
+        @Override
+        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            super.onDraw(c, parent, state);
+        }
+    }
+
 }
