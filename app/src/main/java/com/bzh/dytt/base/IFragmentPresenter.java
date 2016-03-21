@@ -1,7 +1,5 @@
 package com.bzh.dytt.base;
 
-import android.os.Bundle;
-
 /**
  * ==========================================================<br>
  * <b>版权</b>：　　　别志华 版权所有(c)2016<br>
@@ -12,19 +10,11 @@ import android.os.Bundle;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface IActivityPersenter {
+public interface IFragmentPresenter {
 
-    void onCreate(Bundle savedInstanceState);
+    void onFirstUserVisible();
 
-    void onStart();
+    void onUserVisible();
 
-    void onResume();
-
-    void onPause();
-
-    void onStop();
-
-    void onDestroy();
-
-    void onSaveInstanceState(Bundle outState);
+    void onUserInvisible();
 }

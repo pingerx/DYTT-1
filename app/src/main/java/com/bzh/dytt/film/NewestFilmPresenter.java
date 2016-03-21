@@ -7,7 +7,7 @@ import android.util.Log;
 import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
-import com.bzh.dytt.base.IFragmentPersenter;
+import com.bzh.dytt.base.IFragmentPresenter;
 import com.bzh.dytt.base.BaseActivity;
 import com.bzh.dytt.base.BaseFragment;
 import com.bzh.recycler.ExCommonAdapter;
@@ -30,18 +30,18 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class ImplFNewestFilm implements IFragmentPersenter, SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
+public class NewestFilmPresenter implements IFragmentPresenter, SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
 
     private int index = 1;
 
-    private static final String TAG = "ImplFNewestFilm";
+    private static final String TAG = "NewestFilmPresenter";
 
     private final BaseActivity baseActivity;
     private final BaseFragment baseFragment;
-    private final IViewNewestFilm newestFilmView;
+    private final NewestFilmIView newestFilmView;
     private ExCommonAdapter<FilmEntity> filmEntityExCommonAdapter;
 
-    public ImplFNewestFilm(BaseActivity baseActivity, BaseFragment baseFragment, IViewNewestFilm newestFilmView) {
+    public NewestFilmPresenter(BaseActivity baseActivity, BaseFragment baseFragment, NewestFilmIView newestFilmView) {
         this.baseActivity = baseActivity;
         this.baseFragment = baseFragment;
         this.newestFilmView = newestFilmView;

@@ -9,8 +9,9 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.film.FragmentNewestFilm;
-import com.bzh.dytt.base.IActivityPersenter;
+import com.bzh.dytt.film.FilmMainFragment;
+import com.bzh.dytt.film.NewestFilmFragment;
+import com.bzh.dytt.base.IActivityPresenter;
 import com.bzh.dytt.base.BaseActivity;
 import com.bzh.dytt.base.BaseFragment;
 
@@ -28,9 +29,9 @@ import java.util.Map;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class ImplAMain implements IActivityPersenter, NavigationView.OnNavigationItemSelectedListener {
+public class MainPresenter implements IActivityPresenter, NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "ImplAMain";
+    private static final String TAG = "MainPresenter";
 
     public static final String FILM = "film";
     public static final String TV = "tv";
@@ -39,12 +40,12 @@ public class ImplAMain implements IActivityPersenter, NavigationView.OnNavigatio
     public static final String COMIC = "comic";
 
     private final BaseActivity baseActivity;
-    private final IViewMain iMainView;
+    private final MainIView iMainView;
     private InnerPageAdapter innerPageAdapter;
     private ArrayList<String> items;
     private Map<String, BaseFragment> fragments;
 
-    public ImplAMain(BaseActivity baseActivity, IViewMain iMainView) {
+    public MainPresenter(BaseActivity baseActivity, MainIView iMainView) {
         this.baseActivity = baseActivity;
         this.iMainView = iMainView;
         fragments = new HashMap<>();
@@ -133,7 +134,6 @@ public class ImplAMain implements IActivityPersenter, NavigationView.OnNavigatio
                 fragment = newFragment(items.get(position));
                 fragments.put(items.get(position), fragment);
             }
-            Log.d(TAG, "getItem() called with: " + "position = [" + position + "]");
             return fragment;
         }
 
@@ -146,15 +146,15 @@ public class ImplAMain implements IActivityPersenter, NavigationView.OnNavigatio
     private BaseFragment newFragment(String item) {
         switch (item) {
             case FILM:
-                return FragmentNewestFilm.newInstance();
+                return FilmMainFragment.newInstance();
             case TV:
-                return FragmentNewestFilm.newInstance();
+                return NewestFilmFragment.newInstance();
             case VARIETY:
-                return FragmentNewestFilm.newInstance();
+                return NewestFilmFragment.newInstance();
             case COMIC:
-                return FragmentNewestFilm.newInstance();
+                return NewestFilmFragment.newInstance();
             case GAME:
-                return FragmentNewestFilm.newInstance();
+                return NewestFilmFragment.newInstance();
         }
         throw new RuntimeException("没有指定类型的Fragment");
     }

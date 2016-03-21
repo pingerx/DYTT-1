@@ -16,7 +16,7 @@ import com.bzh.recycler.ExRecyclerView;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface IViewNewestFilm {
+public interface NewestFilmIView {
 
     void showException();
 

@@ -25,9 +25,9 @@ import butterknife.Bind;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FragmentNewestFilm extends BaseFragment implements IViewNewestFilm {
+public class NewestFilmFragment extends BaseFragment implements NewestFilmIView {
 
-    private static final String TAG = "FragmentNewestFilm";
+    private static final String TAG = "NewestFilmFragment";
 
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -38,12 +38,12 @@ public class FragmentNewestFilm extends BaseFragment implements IViewNewestFilm 
     @Bind(R.id.exception)
     LinearLayout exception;
 
-    private ImplFNewestFilm newestFilmF;
+    private NewestFilmPresenter newestFilmF;
 
-    public static FragmentNewestFilm newInstance() {
+    public static NewestFilmFragment newInstance() {
 
         Bundle args = new Bundle();
-        FragmentNewestFilm fragment = new FragmentNewestFilm();
+        NewestFilmFragment fragment = new NewestFilmFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +51,7 @@ public class FragmentNewestFilm extends BaseFragment implements IViewNewestFilm 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        newestFilmF = new ImplFNewestFilm(baseActivity, this, this);
+        newestFilmF = new NewestFilmPresenter(baseActivity, this, this);
     }
 
     @Override

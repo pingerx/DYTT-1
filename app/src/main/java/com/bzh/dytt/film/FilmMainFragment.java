@@ -2,11 +2,14 @@ package com.bzh.dytt.film;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.BaseFragment;
@@ -23,14 +26,13 @@ import butterknife.Bind;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FragmentFilmMain extends BaseFragment {
+public class FilmMainFragment extends BaseFragment implements FilmMainIView {
 
-    private static final String TAG = "FragmentFilmMain";
+    private FilmMainPresenter filmMainPresenter;
 
-    public static FragmentFilmMain newInstance() {
+    public static FilmMainFragment newInstance() {
         Bundle args = new Bundle();
-
-        FragmentFilmMain fragment = new FragmentFilmMain();
+        FilmMainFragment fragment = new FilmMainFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -38,10 +40,8 @@ public class FragmentFilmMain extends BaseFragment {
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
 
-    @Bind(R.id.pager)
-    ViewPager pager;
-
-    private MyViewPagerAdapter viewPagerAdapter;
+    @Bind(R.id.viewpager)
+    ViewPager container;
 
     @Override
     protected int getContentView() {
@@ -49,41 +49,36 @@ public class FragmentFilmMain extends BaseFragment {
     }
 
     @Override
-    protected void onFirstUserVisible() {
-        viewPagerAdapter = new MyViewPagerAdapter(baseActivity.getSupportFragmentManager());
-        pager.setOffscreenPageLimit(4);
-        pager.setAdapter(viewPagerAdapter);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        filmMainPresenter = new FilmMainPresenter(baseActivity, this, this);
+    }
 
-        tabLayout.setLayoutMode(TabLayout.MODE_FIXED);
-        tabLayout.setTabTextColors(Color.parseColor("#b3ffffff"), Color.WHITE);
-        tabLayout.setupWithViewPager(pager);
+    @Override
+    protected void onFirstUserVisible() {
+        filmMainPresenter.onFirstUserVisible();
     }
 
     @Override
     protected void onUserVisible() {
-
+        filmMainPresenter.onUserVisible();
     }
 
     @Override
     protected void onUserInvisible() {
-
+        filmMainPresenter.onUserInvisible();
     }
 
-    class MyViewPagerAdapter extends FragmentPagerAdapter {
-
-        public MyViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return FragmentNewestFilm.newInstance();
-        }
-
-        @Override
-        public int getCount() {
-            return 4;
-        }
+    @Override
+    public void initContainer(PagerAdapter pagerAdapter) {
+        container.setOffscreenPageLimit(0);
+        container.setAdapter(pagerAdapter);
     }
 
+    @Override
+    public void initTabLayout() {
+        tabLayout.setLayoutMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabTextColors(Color.parseColor("#b3ffffff"), Color.WHITE);
+        tabLayout.setupWithViewPager(container);
+    }
 }

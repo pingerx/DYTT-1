@@ -16,10 +16,10 @@ import com.bzh.dytt.widget.XViewPager;
 
 import butterknife.Bind;
 
-public class ActivityMain extends BaseActivity
-        implements IViewMain {
+public class MainActivity extends BaseActivity
+        implements MainIView {
 
-    ImplAMain mainA;
+    MainPresenter mainA;
 
     ActionBarDrawerToggle toggle;
 
@@ -39,7 +39,7 @@ public class ActivityMain extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainA = new ImplAMain(this, this);
+        mainA = new MainPresenter(this, this);
         mainA.onCreate(savedInstanceState);
     }
 
@@ -108,7 +108,7 @@ public class ActivityMain extends BaseActivity
     }
 
     @Override
-    public void setNavigationItemSelectedListener(ImplAMain mainA) {
+    public void setNavigationItemSelectedListener(MainPresenter mainA) {
         navigationView.setNavigationItemSelectedListener(mainA);
     }
 

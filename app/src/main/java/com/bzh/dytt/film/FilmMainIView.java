@@ -1,4 +1,4 @@
-package com.bzh.dytt.main;
+package com.bzh.dytt.film;
 
 import android.support.v4.view.PagerAdapter;
 
@@ -12,19 +12,9 @@ import android.support.v4.view.PagerAdapter;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface IViewMain {
+public interface FilmMainIView {
 
-    void initToolbar(String title);
+    void initContainer(PagerAdapter pagerAdapter);
 
-    void setTitle(String title);
-
-    void initDrawerToggle();
-
-    void initContainer(PagerAdapter pagerAdapter, int limit);
-
-    void setCurrentItem(int item);
-
-    void closeDrawer();
-
-    void setNavigationItemSelectedListener(ImplAMain mainA);
+    void initTabLayout();
 }
