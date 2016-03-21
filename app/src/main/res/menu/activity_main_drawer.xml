@@ -3,32 +3,33 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_film"
+            android:icon="@drawable/ic_menu_film"
+            android:title="电影" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_tv"
+            android:icon="@drawable/ic_menu_tv"
+            android:title="电视" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_variety"
+            android:icon="@drawable/ic_menu_variety"
+            android:title="综艺" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_comic"
+            android:icon="@drawable/ic_menu_comic"
+            android:title="动漫" />
         <item
-            android:id="@+id/nav_share"
-            android:icon="@drawable/ic_menu_share"
-            android:title="Share" />
+            android:id="@+id/nav_game"
+            android:icon="@drawable/ic_menu_game"
+            android:title="游戏" />
+
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="设置">
         <menu>
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_menu_setting"
                 android:title="Send" />
         </menu>
     </item>

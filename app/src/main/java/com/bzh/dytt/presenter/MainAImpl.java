@@ -1,12 +1,10 @@
 package com.bzh.dytt.presenter;
 
 import android.os.Bundle;
-import android.support.annotation.StringDef;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.MenuItem;
 
 import com.bzh.dytt.R;
@@ -18,8 +16,6 @@ import com.bzh.dytt.ui.view.IMainView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import rx.schedulers.NewThreadScheduler;
 
 /**
  * ==========================================================<br>
@@ -59,13 +55,10 @@ public class MainAImpl implements IActivityPersenter, NavigationView.OnNavigatio
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        iMainView.initToolbar();
-        iMainView.setTitle("电影天堂");
+        iMainView.initToolbar("电影天堂");
         iMainView.initDrawerToggle();
         iMainView.setNavigationItemSelectedListener(this);
-
-        innerPageAdapter = new InnerPageAdapter(baseActivity.getSupportFragmentManager());
-        iMainView.initContainer(innerPageAdapter);
+        iMainView.initContainer(innerPageAdapter, items.size());
     }
 
     @Override
@@ -101,31 +94,29 @@ public class MainAImpl implements IActivityPersenter, NavigationView.OnNavigatio
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_camera) {
-            // 电影
+        if (id == R.id.nav_film) {
             iMainView.setCurrentItem(0);
-        } else if (id == R.id.nav_gallery) {
-            // 电视
+            iMainView.setTitle("电影");
+        } else if (id == R.id.nav_tv) {
             iMainView.setCurrentItem(1);
-        } else if (id == R.id.nav_slideshow) {
-            // 综艺
+            iMainView.setTitle("电视");
+        } else if (id == R.id.nav_variety) {
             iMainView.setCurrentItem(2);
-        } else if (id == R.id.nav_manage) {
-            // 动漫
+            iMainView.setTitle("综艺");
+        } else if (id == R.id.nav_comic) {
             iMainView.setCurrentItem(3);
-        } else if (id == R.id.nav_share) {
-            // 游戏
+            iMainView.setTitle("动漫");
+        } else if (id == R.id.nav_game) {
             iMainView.setCurrentItem(4);
+            iMainView.setTitle("游戏");
         } else if (id == R.id.nav_send) {
-            // 设置
-            iMainView.setCurrentItem(5);
         }
         iMainView.closeDrawer();
 
         return true;
     }
 
-    private class InnerPageAdapter extends FragmentStatePagerAdapter {
+    private class InnerPageAdapter extends FragmentPagerAdapter {
 
         public InnerPageAdapter(FragmentManager fm) {
             super(fm);

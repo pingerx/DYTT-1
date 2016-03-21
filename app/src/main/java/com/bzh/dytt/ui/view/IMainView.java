@@ -19,14 +19,13 @@ import com.bzh.dytt.presenter.MainAImpl;
  */
 public interface IMainView {
 
-
-    void initToolbar();
+    void initToolbar(String title);
 
     void setTitle(String title);
 
     void initDrawerToggle();
 
-    void initContainer(PagerAdapter pagerAdapter);
+    void initContainer(PagerAdapter pagerAdapter, int limit);
 
     void setCurrentItem(int item);
 

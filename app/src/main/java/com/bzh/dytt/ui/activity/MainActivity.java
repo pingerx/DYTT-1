@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -75,7 +74,8 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void initToolbar() {
+    public void initToolbar(String title) {
+        toolbar.setTitle(title);
         setSupportActionBar(toolbar);
     }
 
@@ -93,13 +93,14 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void initContainer(PagerAdapter pagerAdapter) {
+    public void initContainer(PagerAdapter pagerAdapter, int limit) {
+        container.setOffscreenPageLimit(limit);
         container.setAdapter(pagerAdapter);
     }
 
     @Override
     public void setCurrentItem(int item) {
-        container.setCurrentItem(item);
+        container.setCurrentItem(item, false);
     }
 
     @Override
