@@ -3,6 +3,8 @@ package com.bzh.dytt.ui.activity;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import com.bzh.dytt.R;
 import com.bzh.dytt.presenter.MainAImpl;
 import com.bzh.dytt.ui.view.IMainView;
+import com.bzh.dytt.widget.XViewPager;
 
 import butterknife.Bind;
 
@@ -19,6 +22,8 @@ public class MainActivity extends BaseActivity
         implements IMainView {
 
     MainAImpl mainA;
+
+    ActionBarDrawerToggle toggle;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -28,7 +33,10 @@ public class MainActivity extends BaseActivity
 
     @Bind(R.id.nav_view)
     NavigationView navigationView;
-    private ActionBarDrawerToggle toggle;
+
+
+    @Bind(R.id.viewPager)
+    XViewPager container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +74,6 @@ public class MainActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void initToolbar() {
         setSupportActionBar(toolbar);
@@ -83,6 +90,16 @@ public class MainActivity extends BaseActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    @Override
+    public void initContainer(PagerAdapter pagerAdapter) {
+        container.setAdapter(pagerAdapter);
+    }
+
+    @Override
+    public void setCurrentItem(int item) {
+        container.setCurrentItem(item);
     }
 
     @Override
