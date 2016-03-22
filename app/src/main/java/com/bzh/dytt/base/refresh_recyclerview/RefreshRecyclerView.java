@@ -1,4 +1,4 @@
-package com.bzh.dytt.film;
+package com.bzh.dytt.base.refresh_recyclerview;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;

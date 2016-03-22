@@ -1,11 +1,6 @@
 package com.bzh.dytt.film;
 
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-
-import com.bzh.dytt.base.BaseView;
-import com.bzh.recycler.ExRecyclerView;
+import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
 
 /**
  * ==========================================================<br>
@@ -17,19 +12,6 @@ import com.bzh.recycler.ExRecyclerView;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface NewestFilmIView extends BaseView {
+public interface NewestFilmIView extends RefreshRecyclerView {
 
-    void showException();
-
-    void hideRecyclerView();
-
-    void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter);
-
-    void showSwipeRefreshing();
-
-    void hideSwipeRefreshing();
-
-    ExRecyclerView getRecyclerView();
-
-    SwipeRefreshLayout getSwipeRefreshLayout();
 }

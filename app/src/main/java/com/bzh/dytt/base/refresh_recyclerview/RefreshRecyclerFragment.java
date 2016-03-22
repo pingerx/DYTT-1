@@ -1,14 +1,12 @@
-package com.bzh.dytt.film;
+package com.bzh.dytt.base.refresh_recyclerview;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -32,12 +30,10 @@ import butterknife.Bind;
  */
 public abstract class RefreshRecyclerFragment extends BaseFragment implements RefreshRecyclerView {
 
-    private static final String TAG = "RefreshRecyclerFragment";
-
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    @Bind(R.id.recyclerView)
+    @Bind(R.id.exRecyclerView)
     ExRecyclerView recyclerView;
 
     @Bind(R.id.layoutLoadFailed)
@@ -49,9 +45,9 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     private RefreshRecyclerPresenter refreshRecyclerViewPresenter;
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void initFragmentConfig() {
         refreshRecyclerViewPresenter = initRefreshRecyclerPresenter();
+        refreshRecyclerViewPresenter.initFragmentConfig();
     }
 
     protected abstract RefreshRecyclerPresenter initRefreshRecyclerPresenter();
@@ -62,20 +58,17 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     }
 
     @Override
-    protected void onFirstUserVisible() {
-        Log.d(TAG, "onFirstUserVisible() called with: " + "");
-        refreshRecyclerViewPresenter.onFirstUserVisible();
+    protected void requestData() {
+        refreshRecyclerViewPresenter.requestData();
     }
 
     @Override
     protected void onUserVisible() {
-        Log.d(TAG, "onUserVisible() called with: " + "");
         refreshRecyclerViewPresenter.onUserVisible();
     }
 
     @Override
     protected void onUserInvisible() {
-        Log.d(TAG, "onUserInvisible() called with: " + "");
         refreshRecyclerViewPresenter.onUserInvisible();
     }
 
@@ -115,7 +108,7 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
         return swipeRefreshLayout;
     }
 
-    class MyItemDecoration extends RecyclerView.ItemDecoration {
+    private class MyItemDecoration extends RecyclerView.ItemDecoration {
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {

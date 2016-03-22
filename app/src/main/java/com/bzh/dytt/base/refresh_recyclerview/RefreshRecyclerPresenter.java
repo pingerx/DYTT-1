@@ -1,24 +1,16 @@
-package com.bzh.dytt.film;
+package com.bzh.dytt.base.refresh_recyclerview;
 
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
+import android.view.View;
 
-import com.bzh.data.film.entity.FilmEntity;
-import com.bzh.data.repository.Repository;
 import com.bzh.dytt.base.BaseActivity;
 import com.bzh.dytt.base.BaseFragment;
-import com.bzh.dytt.base.BaseView;
 import com.bzh.dytt.base.IFragmentPresenter;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
-
-import java.util.ArrayList;
-
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * ==========================================================<br>
@@ -45,12 +37,17 @@ public abstract class RefreshRecyclerPresenter<Entity> implements IFragmentPrese
     }
 
     @Override
-    public void onFirstUserVisible() {
+    public void initFragmentConfig() {
         exCommonAdapter = getExCommonAdapter();
         refreshRecyclerView.getRecyclerView().setOnItemClickListener(this);
         refreshRecyclerView.getRecyclerView().setOnLoadingMoreListener(this);
         refreshRecyclerView.initRecyclerView(new LinearLayoutManager(baseActivity), exCommonAdapter);
         refreshRecyclerView.getSwipeRefreshLayout().setOnRefreshListener(this);
+    }
+
+    @Override
+    public void requestData() {
+
     }
 
     @Override
@@ -75,4 +72,21 @@ public abstract class RefreshRecyclerPresenter<Entity> implements IFragmentPrese
     }
 
     public abstract ExCommonAdapter<Entity> getExCommonAdapter();
+
+    public BaseActivity getBaseActivity() {
+        return baseActivity;
+    }
+
+    public BaseFragment getBaseFragment() {
+        return baseFragment;
+    }
+
+    public RefreshRecyclerView getRefreshRecyclerView() {
+        return refreshRecyclerView;
+    }
+
+    public ExCommonAdapter<Entity> getCommonAdapter() {
+        return exCommonAdapter;
+    }
+
 }

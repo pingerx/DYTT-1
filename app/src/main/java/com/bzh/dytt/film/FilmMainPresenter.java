@@ -46,10 +46,15 @@ public class FilmMainPresenter implements IFragmentPresenter {
     }
 
     @Override
-    public void onFirstUserVisible() {
+    public void initFragmentConfig() {
         myViewPagerAdapter = new MyViewPagerAdapter(baseActivity.getSupportFragmentManager());
         filmMainIView.initContainer(myViewPagerAdapter);
         filmMainIView.initTabLayout();
+    }
+
+    @Override
+    public void requestData() {
+
     }
 
     @Override

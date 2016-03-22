@@ -1,5 +1,8 @@
 package com.bzh.dytt.base;
 
+import android.os.Bundle;
+import android.view.View;
+
 /**
  * ==========================================================<br>
  * <b>版权</b>：　　　别志华 版权所有(c)2016<br>
@@ -12,7 +15,9 @@ package com.bzh.dytt.base;
  */
 public interface IFragmentPresenter {
 
-    void onFirstUserVisible();
+    void initFragmentConfig();
+
+    void requestData();
 
     void onUserVisible();
 
