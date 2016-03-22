@@ -30,11 +30,11 @@ public class FilmMainPresenter implements IFragmentPresenter {
     public static final String EUROPE_AMERICA_FILM = "europe_america_film";
     public static final String JAPAN_SOUTH_KOREA_FILM = "japan_south_korea_film";
 
-    private ArrayList<StripTabItem> mItems;
-    private Map<String, BaseFragment> fragments;
     private final BaseActivity baseActivity;
     private final BaseFragment baseFragment;
     private final FilmMainIView filmMainIView;
+    private ArrayList<StripTabItem> mItems;
+    private Map<String, BaseFragment> fragments;
     private MyViewPagerAdapter myViewPagerAdapter;
 
     public FilmMainPresenter(BaseActivity baseActivity, BaseFragment baseFragment, FilmMainFragment filmMainIView) {

@@ -4,11 +4,13 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.bzh.common.utils.UIUtils;
@@ -28,9 +30,9 @@ import butterknife.Bind;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NewestFilmFragment extends BaseFragment implements NewestFilmIView {
+public abstract class RefreshRecyclerFragment extends BaseFragment implements RefreshRecyclerView {
 
-    private static final String TAG = "NewestFilmFragment";
+    private static final String TAG = "RefreshRecyclerFragment";
 
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -41,21 +43,18 @@ public class NewestFilmFragment extends BaseFragment implements NewestFilmIView 
     @Bind(R.id.layoutLoadFailed)
     LinearLayout layoutLoadFailed;
 
-    private NewestFilmPresenter newestFilmF;
+    @Bind(R.id.layoutContent)
+    FrameLayout layoutContent;
 
-    public static NewestFilmFragment newInstance() {
-
-        Bundle args = new Bundle();
-        NewestFilmFragment fragment = new NewestFilmFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private RefreshRecyclerPresenter refreshRecyclerViewPresenter;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        newestFilmF = new NewestFilmPresenter(baseActivity, this, this);
+        refreshRecyclerViewPresenter = initRefreshRecyclerPresenter();
     }
+
+    protected abstract RefreshRecyclerPresenter initRefreshRecyclerPresenter();
 
     @Override
     protected int getContentView() {
@@ -65,29 +64,29 @@ public class NewestFilmFragment extends BaseFragment implements NewestFilmIView 
     @Override
     protected void onFirstUserVisible() {
         Log.d(TAG, "onFirstUserVisible() called with: " + "");
-        newestFilmF.onFirstUserVisible();
+        refreshRecyclerViewPresenter.onFirstUserVisible();
     }
 
     @Override
     protected void onUserVisible() {
         Log.d(TAG, "onUserVisible() called with: " + "");
-        newestFilmF.onUserVisible();
+        refreshRecyclerViewPresenter.onUserVisible();
     }
 
     @Override
     protected void onUserInvisible() {
         Log.d(TAG, "onUserInvisible() called with: " + "");
-        newestFilmF.onUserInvisible();
+        refreshRecyclerViewPresenter.onUserInvisible();
     }
 
     @Override
-    public void showException() {
+    public void showLoadFailedLayout() {
         layoutLoadFailed.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideRecyclerView() {
-        recyclerView.setVisibility(View.GONE);
+    public void hideContentLayout() {
+        layoutContent.setVisibility(View.GONE);
     }
 
     @Override

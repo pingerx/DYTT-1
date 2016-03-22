@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="layoutContent" type="id" />
+    <item name="layoutLoadFailed" type="id" />
+    <item name="swipeRefreshLayout" type="id" />
+    <item name="exRecyclerView" type="id" />
+</resources>
