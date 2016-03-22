@@ -154,7 +154,7 @@ public abstract class BaseFragment extends Fragment {
 
     protected synchronized void initPrepare() {
         if (isPrepared || !isCallSetUserVisibleHint) {
-            onRequestData();
+            onFirstUserVisible();
         } else {
             isPrepared = true;
         }
@@ -174,7 +174,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * when fragment is visible for the first time,  refresh data only once
      */
-    protected abstract void onRequestData();
+    protected abstract void onFirstUserVisible();
 
     /**
      * when fragment is invisible for the first time

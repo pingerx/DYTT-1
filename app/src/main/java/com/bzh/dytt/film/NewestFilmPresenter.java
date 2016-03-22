@@ -13,7 +13,9 @@ import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -37,22 +39,23 @@ public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity> im
     }
 
     @Override
-    public void onRequestData() {
-        super.onRequestData();
+    public void onFirstUserVisible() {
+        super.onFirstUserVisible();
         Repository.getInstance().getNewest(index)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new NewestFilmSubscriber());
     }
 
+
+    public Observable<ArrayList<FilmEntity>> getRequestDataObservable(String nextPage) {
+        return Repository.getInstance().getNewest(Integer.valueOf(index));
+    }
+
     @Override
     public void onRefresh() {
         super.onRefresh();
         index = 1;
-        Repository.getInstance().getNewest(index)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NewestFilmSubscriber());
     }
 
     @Override
@@ -95,7 +98,25 @@ public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity> im
         };
     }
 
+    @Override
+    public void onStart() {
+        
+    }
 
+    @Override
+    public void onCompleted() {
+
+    }
+
+    @Override
+    public void onError(Throwable e) {
+
+    }
+
+    @Override
+    public void onNext(ArrayList<FilmEntity> filmEntities) {
+
+    }
 
     private final class NewestFilmSubscriber extends Subscriber<ArrayList<FilmEntity>> {
 

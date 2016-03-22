@@ -53,7 +53,7 @@ public class FilmMainPresenter implements IFragmentPresenter {
     }
 
     @Override
-    public void onRequestData() {
+    public void onFirstUserVisible() {
 
     }
 

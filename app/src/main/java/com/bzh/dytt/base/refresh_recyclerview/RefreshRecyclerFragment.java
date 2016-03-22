@@ -56,8 +56,8 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     }
 
     @Override
-    protected void onRequestData() {
-        refreshRecyclerViewPresenter.onRequestData();
+    protected void onFirstUserVisible() {
+        refreshRecyclerViewPresenter.onFirstUserVisible();
     }
 
     @Override

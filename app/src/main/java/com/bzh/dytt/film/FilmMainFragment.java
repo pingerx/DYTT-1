@@ -50,8 +50,8 @@ public class FilmMainFragment extends BaseFragment implements FilmMainIView {
     }
 
     @Override
-    protected void onRequestData() {
-        filmMainPresenter.onRequestData();
+    protected void onFirstUserVisible() {
+        filmMainPresenter.onFirstUserVisible();
     }
 
     @Override
