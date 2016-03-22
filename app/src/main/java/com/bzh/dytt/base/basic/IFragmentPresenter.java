@@ -1,4 +1,4 @@
-package com.bzh.dytt.base;
+package com.bzh.dytt.base.basic;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +17,7 @@ public interface IFragmentPresenter {
 
     void initFragmentConfig();
 
-    void requestData();
+    void onRequestData();
 
     void onUserVisible();
 

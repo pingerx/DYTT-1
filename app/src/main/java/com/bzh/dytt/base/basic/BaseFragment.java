@@ -1,4 +1,4 @@
-package com.bzh.dytt.base;
+package com.bzh.dytt.base.basic;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -64,7 +64,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     * 初始化Fragment相关配置
+     * here we can do some initialized work
      */
     protected abstract void initFragmentConfig();
 
@@ -154,7 +154,7 @@ public abstract class BaseFragment extends Fragment {
 
     protected synchronized void initPrepare() {
         if (isPrepared || !isCallSetUserVisibleHint) {
-            requestData();
+            onRequestData();
         } else {
             isPrepared = true;
         }
@@ -172,9 +172,9 @@ public abstract class BaseFragment extends Fragment {
     protected abstract int getContentView();
 
     /**
-     * when fragment is visible for the first time, here we can do some initialized work or refresh data only once
+     * when fragment is visible for the first time,  refresh data only once
      */
-    protected abstract void requestData();
+    protected abstract void onRequestData();
 
     /**
      * when fragment is invisible for the first time

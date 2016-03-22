@@ -1,14 +1,12 @@
 package com.bzh.dytt.film;
 
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.View;
 
 import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
-import com.bzh.dytt.base.BaseActivity;
-import com.bzh.dytt.base.BaseFragment;
+import com.bzh.dytt.base.basic.BaseActivity;
+import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
@@ -39,8 +37,8 @@ public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity> im
     }
 
     @Override
-    public void requestData() {
-        super.requestData();
+    public void onRequestData() {
+        super.onRequestData();
         Repository.getInstance().getNewest(index)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

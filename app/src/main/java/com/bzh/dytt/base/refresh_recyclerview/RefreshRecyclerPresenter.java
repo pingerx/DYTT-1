@@ -1,13 +1,11 @@
 package com.bzh.dytt.base.refresh_recyclerview;
 
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
 
-import com.bzh.dytt.base.BaseActivity;
-import com.bzh.dytt.base.BaseFragment;
-import com.bzh.dytt.base.IFragmentPresenter;
+import com.bzh.dytt.base.basic.BaseActivity;
+import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.basic.IFragmentPresenter;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
@@ -46,7 +44,7 @@ public abstract class RefreshRecyclerPresenter<Entity> implements IFragmentPrese
     }
 
     @Override
-    public void requestData() {
+    public void onRequestData() {
 
     }
 

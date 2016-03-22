@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.bzh.dytt.base.BaseActivity;
-import com.bzh.dytt.base.BaseFragment;
-import com.bzh.dytt.base.IFragmentPresenter;
+import com.bzh.dytt.base.basic.BaseActivity;
+import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.basic.IFragmentPresenter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class FilmMainPresenter implements IFragmentPresenter {
     }
 
     @Override
-    public void requestData() {
+    public void onRequestData() {
 
     }
 
