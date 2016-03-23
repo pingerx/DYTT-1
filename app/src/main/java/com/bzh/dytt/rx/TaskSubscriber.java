@@ -12,17 +12,13 @@ import rx.Subscriber;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public abstract class DefaultSubscriber<T> extends Subscriber<T> {
+public interface TaskSubscriber<T> {
 
-    @Override
-    public abstract void onStart();
+    void onPrepare();
 
-    @Override
-    public abstract void onCompleted();
+    void onFinish();
 
-    @Override
-    public abstract void onError(Throwable e);
+    void onFailure(Throwable e);
 
-    @Override
-    public abstract void onNext(T t);
+    void onSuccess(T t);
 }

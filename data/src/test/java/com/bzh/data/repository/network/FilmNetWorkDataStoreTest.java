@@ -1,11 +1,9 @@
 package com.bzh.data.repository.network;
 
 import com.bzh.data.ApplicationTestCase;
-import com.bzh.data.film.entity.FilmDetailEntity;
 import com.bzh.data.film.entity.FilmEntity;
-import com.bzh.data.exception.DataLayerException;
+import com.bzh.data.exception.TaskException;
 import com.bzh.data.film.datasource.FilmNetWorkDataStore;
-import com.bzh.data.service.RetrofitManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +15,6 @@ import java.util.ArrayList;
 
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Func1;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -45,7 +42,7 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
     FilmNetWorkDataStore mockNetWorkDataStore;
 
     @Mock
-    DataLayerException dataLayerException;
+    TaskException dataLayerException;
 
     @Mock
     ArrayList<FilmEntity> filmEntities;
@@ -66,8 +63,8 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
                 subscriber.onError(dataLayerException);
             }
         }));
-        when(dataLayerException.getCode()).thenReturn(DataLayerException.ERROR_NONE_NETWORK);
-        when(dataLayerException.getMessage()).thenReturn(DataLayerException.LABEL_NONE_NETWORK);
+        when(dataLayerException.getCode()).thenReturn(TaskException.ERROR_NONE_NETWORK);
+        when(dataLayerException.getMessage()).thenReturn(TaskException.LABEL_NONE_NETWORK);
         mockNetWorkDataStore.getNewest(1).subscribe(new Subscriber<ArrayList<FilmEntity>>() {
             @Override
             public void onCompleted() {
@@ -76,10 +73,10 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
             @Override
             public void onError(Throwable e) {
                 assertNotNull(e);
-                assertTrue(e instanceof DataLayerException);
-                DataLayerException exception = (DataLayerException) e;
-                assertEquals(exception.getMessage(), DataLayerException.LABEL_NONE_NETWORK);
-                assertEquals(exception.getCode(), DataLayerException.ERROR_NONE_NETWORK);
+                assertTrue(e instanceof TaskException);
+                TaskException exception = (TaskException) e;
+                assertEquals(exception.getMessage(), TaskException.LABEL_NONE_NETWORK);
+                assertEquals(exception.getCode(), TaskException.ERROR_NONE_NETWORK);
             }
 
             @Override

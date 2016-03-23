@@ -30,7 +30,7 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
+public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity,ArrayList<FilmEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
 
     private int index = 1;
 
@@ -96,26 +96,6 @@ public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity> im
                 viewHolder.setText(R.id.tv_film_publish_time, getBaseActivity().getResources().getString(R.string.label_publish_time, item.getPublishTime()));
             }
         };
-    }
-
-    @Override
-    public void onStart() {
-
-    }
-
-    @Override
-    public void onCompleted() {
-
-    }
-
-    @Override
-    public void onError(Throwable e) {
-
-    }
-
-    @Override
-    public void onNext(ArrayList<FilmEntity> filmEntities) {
-
     }
 
     private final class NewestFilmSubscriber extends Subscriber<ArrayList<FilmEntity>> {

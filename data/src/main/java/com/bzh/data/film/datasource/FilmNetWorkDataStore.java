@@ -4,7 +4,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.bzh.common.utils.SystemUtils;
-import com.bzh.data.exception.DataLayerException;
+import com.bzh.data.exception.TaskException;
 import com.bzh.data.film.entity.FilmDetailEntity;
 import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.service.RetrofitManager;
@@ -174,7 +174,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
             @Override
             public void call(Subscriber<? super ArrayList<FilmEntity>> subscriber) {
                 if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
-                    subscriber.onError(new DataLayerException(DataLayerException.ERROR_NONE_NETWORK));
+                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
                 } else {
                     try {
                         retrofitManager.getFilmService()
@@ -182,7 +182,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
                                 .map(transformCharset)
                                 .map(transformFilmEntity)
                                 .subscribe(subscriber);
-                    } catch (DataLayerException e) {
+                    } catch (TaskException e) {
                         subscriber.onError(e);
                     }
                 }
@@ -199,7 +199,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
             @Override
             public void call(Subscriber<? super FilmDetailEntity> subscriber) {
                 if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
-                    subscriber.onError(new DataLayerException(DataLayerException.ERROR_NONE_NETWORK));
+                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
                 } else {
                     try {
                         retrofitManager
@@ -208,7 +208,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
                                 .map(transformCharset)
                                 .map(transformHtmlToEntity)
                                 .subscribe(subscriber);
-                    } catch (DataLayerException e) {
+                    } catch (TaskException e) {
                         subscriber.onError(e);
                     }
                 }

@@ -4,10 +4,12 @@ import android.support.annotation.IntDef;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 
+import com.bzh.data.exception.TaskException;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.basic.IFragmentPresenter;
 import com.bzh.dytt.base.basic.IPaging;
+import com.bzh.dytt.rx.TaskSubscriber;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 /**
@@ -29,9 +32,9 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public abstract class RefreshRecyclerPresenter<Entity> extends Subscriber<ArrayList<Entity>> implements IFragmentPresenter, SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
+public abstract class RefreshRecyclerPresenter<Entity, Entities> extends Subscriber<Entities> implements IFragmentPresenter, TaskSubscriber<Entities>, SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
 
-    private Observable<ArrayList<Entity>> listObservable;
+    private Observable<Entities> listObservable;
 
     /**
      * The definition of a page request data mode
@@ -107,13 +110,60 @@ public abstract class RefreshRecyclerPresenter<Entity> extends Subscriber<ArrayL
             listObservable = getRequestDataObservable(paging.getNextPage());
             listObservable
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(new Action0() {
+                        @Override
+                        public void call() {
+                            RefreshRecyclerPresenter.this.onPrepare();
+                        }
+                    })
                     .unsubscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this);
         }
     }
 
-    protected abstract Observable<ArrayList<Entity>> getRequestDataObservable(String nextPage);
+    @Override
+    final public void onStart() {
+        // no something to do
+    }
+
+
+    @Override
+    final public void onCompleted() {
+        this.onFinish();
+    }
+
+    @Override
+    final public void onError(Throwable e) {
+        this.onFailure(e);
+    }
+
+    @Override
+    final public void onNext(Entities entities) {
+        this.onSuccess(entities);
+    }
+
+    @Override
+    public void onPrepare() {
+
+    }
+
+    @Override
+    public void onFinish() {
+
+    }
+
+    @Override
+    public void onFailure(Throwable e) {
+
+    }
+
+    @Override
+    public void onSuccess(Entities entities) {
+
+    }
+
+    protected abstract Observable<Entities> getRequestDataObservable(String nextPage);
 
     @Override
     public void onFirstUserVisible() {
