@@ -15,17 +15,17 @@ import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NewestFilmFragment extends RefreshRecyclerFragment implements NewestFilmIView {
+public class CommonFilmFragment extends RefreshRecyclerFragment implements CommonFilmIView {
 
-    public static NewestFilmFragment newInstance() {
+    public static CommonFilmFragment newInstance() {
         Bundle args = new Bundle();
-        NewestFilmFragment fragment = new NewestFilmFragment();
+        CommonFilmFragment fragment = new CommonFilmFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected RefreshRecyclerPresenter initRefreshRecyclerPresenter() {
-        return new NewestFilmPresenter(getBaseActivity(), this, this);
+        return new CommonFilmPresenter(getBaseActivity(), this, this);
     }
 }

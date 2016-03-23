@@ -14,10 +14,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
@@ -163,6 +165,13 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
         this.retrofitManager = retrofitManager;
     }
 
+
+    @Override
+    public Observable<ArrayList<FilmEntity>> getDomestic(@IntRange(from = 1, to = 131) int index) {
+        return getNewWorkObservable(retrofitManager.getFilmService()
+                .getDomestic(index));
+    }
+
     /**
      * 获取最新电影列表
      *
@@ -170,6 +179,15 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
      */
     @Override
     public Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) final int index) {
+        return getNewWorkObservable(retrofitManager.getFilmService()
+                .getNewest(index));
+    }
+
+    /**
+     * network processing
+     */
+    @NonNull
+    private Observable<ArrayList<FilmEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
         return Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
             @Override
             public void call(Subscriber<? super ArrayList<FilmEntity>> subscriber) {
@@ -177,9 +195,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
                     subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
                 } else {
                     try {
-                        retrofitManager.getFilmService()
-                                .getNewest(index)
-                                .map(transformCharset)
+                        observable.map(transformCharset)
                                 .map(transformFilmEntity)
                                 .subscribe(subscriber);
                     } catch (TaskException e) {
