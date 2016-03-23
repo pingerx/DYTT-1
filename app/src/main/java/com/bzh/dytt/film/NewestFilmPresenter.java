@@ -100,7 +100,7 @@ public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity> im
 
     @Override
     public void onStart() {
-        
+
     }
 
     @Override
