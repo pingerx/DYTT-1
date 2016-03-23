@@ -111,6 +111,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> extends Subscri
                     .unsubscribeOn(AndroidSchedulers.mainThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this);
+                    // Ｂ分支
         }
     }
 
