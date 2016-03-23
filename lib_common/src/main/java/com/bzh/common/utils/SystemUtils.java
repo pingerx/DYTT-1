@@ -180,6 +180,8 @@ public class SystemUtils {
         return dimensionPixelSize;
     }
 
+
+
     // below status bar,include actionbar, above softkeyboard
     public static int getAppHeight(Activity paramActivity) {
         Rect localRect = new Rect();
