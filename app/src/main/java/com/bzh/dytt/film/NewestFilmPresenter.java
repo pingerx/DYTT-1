@@ -30,61 +30,18 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity,ArrayList<FilmEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
-
-    private int index = 1;
+public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity, ArrayList<FilmEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
 
     public NewestFilmPresenter(BaseActivity baseActivity, BaseFragment baseFragment, NewestFilmIView newestFilmIView) {
         super(baseActivity, baseFragment, newestFilmIView);
     }
 
-    @Override
-    public void onFirstUserVisible() {
-        super.onFirstUserVisible();
-        Repository.getInstance().getNewest(index)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NewestFilmSubscriber());
-    }
-
-
     public Observable<ArrayList<FilmEntity>> getRequestDataObservable(String nextPage) {
-        return Repository.getInstance().getNewest(Integer.valueOf(index));
-    }
-
-    @Override
-    public void onRefresh() {
-        super.onRefresh();
-        index = 1;
+        return Repository.getInstance().getNewest(Integer.valueOf(nextPage));
     }
 
     @Override
     public void onItemClick(ExViewHolder viewHolder) {
-    }
-
-    @Override
-    public void onLoadingMore() {
-        super.onLoadingMore();
-        Repository.getInstance().getNewest(index)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ArrayList<FilmEntity>>() {
-                    @Override
-                    public void onCompleted() {
-                        index++;
-                        getRefreshRecyclerView().getRecyclerView().finishLoadingMore();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(ArrayList<FilmEntity> filmEntities) {
-                        getCommonAdapter().addData(filmEntities);
-                    }
-                });
     }
 
     @Override
@@ -96,31 +53,5 @@ public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity,Arr
                 viewHolder.setText(R.id.tv_film_publish_time, getBaseActivity().getResources().getString(R.string.label_publish_time, item.getPublishTime()));
             }
         };
-    }
-
-    private final class NewestFilmSubscriber extends Subscriber<ArrayList<FilmEntity>> {
-
-        @Override
-        public void onStart() {
-            super.onStart();
-            getRefreshRecyclerView().showSwipeRefreshing();
-        }
-
-        @Override
-        public void onCompleted() {
-            getRefreshRecyclerView().hideSwipeRefreshing();
-            index++;
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            getRefreshRecyclerView().showLoadFailedLayout();
-            getRefreshRecyclerView().hideContentLayout();
-        }
-
-        @Override
-        public void onNext(ArrayList<FilmEntity> filmEntities) {
-            getCommonAdapter().setData(filmEntities);
-        }
     }
 }

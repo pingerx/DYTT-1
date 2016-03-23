@@ -32,4 +32,6 @@ public interface RefreshRecyclerView extends BaseView {
     ExRecyclerView getRecyclerView();
 
     SwipeRefreshLayout getSwipeRefreshLayout();
+
+    void finishLoadMore();
 }
