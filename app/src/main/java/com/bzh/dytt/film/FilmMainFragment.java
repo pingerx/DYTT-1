@@ -47,6 +47,7 @@ public class FilmMainFragment extends BaseFragment implements FilmMainIView {
     @Override
     protected void initFragmentConfig() {
         filmMainPresenter = new FilmMainPresenter(getBaseActivity(), this, this);
+        filmMainPresenter.initFragmentConfig();
     }
 
     @Override
