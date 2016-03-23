@@ -32,7 +32,7 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public abstract class RefreshRecyclerPresenter<Entity, Entities> extends Subscriber<Entities> implements IFragmentPresenter, TaskSubscriber<Entities>, SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
+public abstract class RefreshRecyclerPresenter<Entity, Entities> extends Subscriber<Entities> implements IFragmentPresenter, TaskSubscriber<Entities>, SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener, Action0 {
 
     private Observable<Entities> listObservable;
 
@@ -64,8 +64,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> extends Subscri
     private final BaseActivity baseActivity;
     private final BaseFragment baseFragment;
     private final RefreshRecyclerView refreshRecyclerView;
-
-
     private ExCommonAdapter<Entity> exCommonAdapter;
 
     /**
@@ -89,7 +87,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> extends Subscri
         refreshRecyclerView.getSwipeRefreshLayout().setOnRefreshListener(this);
     }
 
-
     @Override
     public void onUserVisible() {
     }
@@ -110,12 +107,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> extends Subscri
             listObservable = getRequestDataObservable(paging.getNextPage());
             listObservable
                     .subscribeOn(Schedulers.io())
-                    .doOnSubscribe(new Action0() {
-                        @Override
-                        public void call() {
-                            RefreshRecyclerPresenter.this.onPrepare();
-                        }
-                    })
+                    .doOnSubscribe(this)
                     .unsubscribeOn(AndroidSchedulers.mainThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this);
@@ -123,10 +115,14 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> extends Subscri
     }
 
     @Override
+    final public void call() {
+        RefreshRecyclerPresenter.this.onPrepare();
+    }
+
+    @Override
     final public void onStart() {
         // no something to do
     }
-
 
     @Override
     final public void onCompleted() {
