@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.bzh.dytt.base;
+package com.bzh.dytt.base.basic;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

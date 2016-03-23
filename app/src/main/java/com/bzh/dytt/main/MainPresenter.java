@@ -5,15 +5,14 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.bzh.dytt.R;
 import com.bzh.dytt.film.FilmMainFragment;
 import com.bzh.dytt.film.NewestFilmFragment;
-import com.bzh.dytt.base.IActivityPresenter;
-import com.bzh.dytt.base.BaseActivity;
-import com.bzh.dytt.base.BaseFragment;
+import com.bzh.dytt.base.basic.IActivityPresenter;
+import com.bzh.dytt.base.basic.BaseActivity;
+import com.bzh.dytt.base.basic.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;

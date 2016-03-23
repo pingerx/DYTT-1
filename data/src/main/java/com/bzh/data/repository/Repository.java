@@ -29,14 +29,20 @@ public class Repository implements IFilmDataStore {
 
     private static final String TAG = "Repository";
 
-    private static Repository repository;
+    private static volatile Repository repository;
 
     public static Repository getInstance() {
-
-        if (repository == null) {
-            repository = new Repository();
+        Repository tmp = repository;
+        if (tmp == null) {
+            synchronized (Repository.class) {
+                tmp = repository;
+                if (tmp == null) {
+                    tmp = new Repository();
+                    repository = tmp;
+                }
+            }
         }
-        return repository;
+        return tmp;
     }
 
     private Repository() {

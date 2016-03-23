@@ -1,4 +1,4 @@
-package com.bzh.dytt.base;
+package com.bzh.dytt.base.basic;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bzh.dytt.base.BaseActivity;
-import com.bzh.dytt.base.UIConfig;
 import com.bzh.dytt.eventbus.EventCenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,7 +30,7 @@ public abstract class BaseFragment extends Fragment {
 
     private static final String TAG = "BaseFragment";
 
-    protected BaseActivity baseActivity;
+    private BaseActivity baseActivity;
     private FragmentConfig fragmentConfig;
     private boolean isPrepared;
     private boolean isFirstResume = true;
@@ -49,11 +47,9 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         if (getActivity() instanceof BaseActivity) {
             baseActivity = (BaseActivity) getActivity();
         }
-
         fragmentConfig = new FragmentConfig();
         initUIConfig(fragmentConfig);
         if (fragmentConfig.isApplyButterKnife) {
@@ -63,7 +59,14 @@ public abstract class BaseFragment extends Fragment {
         if (fragmentConfig.isApplyEventBus) {
             EventBus.getDefault().register(this);
         }
+
+        initFragmentConfig();
     }
+
+    /**
+     * here we can do some initialized work
+     */
+    protected abstract void initFragmentConfig();
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -169,7 +172,7 @@ public abstract class BaseFragment extends Fragment {
     protected abstract int getContentView();
 
     /**
-     * when fragment is visible for the first time, here we can do some initialized work or refresh data only once
+     * when fragment is visible for the first time,  refresh data only once
      */
     protected abstract void onFirstUserVisible();
 
@@ -193,5 +196,9 @@ public abstract class BaseFragment extends Fragment {
 
     protected final static class FragmentConfig extends UIConfig {
 
+    }
+
+    public BaseActivity getBaseActivity() {
+        return baseActivity;
     }
 }

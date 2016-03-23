@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.bzh.dytt.base.BaseActivity;
-import com.bzh.dytt.base.BaseFragment;
-import com.bzh.dytt.base.IFragmentPresenter;
+import com.bzh.dytt.base.basic.BaseActivity;
+import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.basic.IFragmentPresenter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,11 +30,11 @@ public class FilmMainPresenter implements IFragmentPresenter {
     public static final String EUROPE_AMERICA_FILM = "europe_america_film";
     public static final String JAPAN_SOUTH_KOREA_FILM = "japan_south_korea_film";
 
-    private ArrayList<StripTabItem> mItems;
-    private Map<String, BaseFragment> fragments;
     private final BaseActivity baseActivity;
     private final BaseFragment baseFragment;
     private final FilmMainIView filmMainIView;
+    private ArrayList<StripTabItem> mItems;
+    private Map<String, BaseFragment> fragments;
     private MyViewPagerAdapter myViewPagerAdapter;
 
     public FilmMainPresenter(BaseActivity baseActivity, BaseFragment baseFragment, FilmMainFragment filmMainIView) {
@@ -46,10 +46,15 @@ public class FilmMainPresenter implements IFragmentPresenter {
     }
 
     @Override
-    public void onFirstUserVisible() {
+    public void initFragmentConfig() {
         myViewPagerAdapter = new MyViewPagerAdapter(baseActivity.getSupportFragmentManager());
         filmMainIView.initContainer(myViewPagerAdapter);
         filmMainIView.initTabLayout();
+    }
+
+    @Override
+    public void onFirstUserVisible() {
+
     }
 
     @Override

@@ -2,17 +2,12 @@ package com.bzh.dytt.film;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.base.BaseFragment;
+import com.bzh.dytt.base.basic.BaseFragment;
 
 import butterknife.Bind;
 
@@ -48,10 +43,10 @@ public class FilmMainFragment extends BaseFragment implements FilmMainIView {
         return R.layout.frag_film_main;
     }
 
+
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        filmMainPresenter = new FilmMainPresenter(baseActivity, this, this);
+    protected void initFragmentConfig() {
+        filmMainPresenter = new FilmMainPresenter(getBaseActivity(), this, this);
     }
 
     @Override
