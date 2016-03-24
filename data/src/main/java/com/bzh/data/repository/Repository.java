@@ -1,5 +1,6 @@
 package com.bzh.data.repository;
 
+import android.net.sip.SipErrorCode;
 import android.support.annotation.IntRange;
 import android.util.Log;
 
@@ -50,6 +51,13 @@ public class Repository implements IFilmDataStore {
     }
 
     private FilmNetWorkDataStore filmNetWorkDataStore;
+
+
+    @Override
+    public Observable<ArrayList<FilmEntity>> getDomestic(@IntRange(from = 1, to = 131) int index) {
+        return getFilmDataStore()
+                .getDomestic(index);
+    }
 
     @Override
     public Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) int index) {

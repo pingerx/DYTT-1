@@ -16,7 +16,7 @@ import java.lang.annotation.RetentionPolicy;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class DataLayerException extends RuntimeException {
+public class TaskException extends RuntimeException {
 
     public static final String LABEL_NONE_NETWORK = "没有网络连接";
     public static final String LABEL_TIMEOUT = "网络不给力";
@@ -41,11 +41,11 @@ public class DataLayerException extends RuntimeException {
 
     private static IExceptionDeclare exceptionDeclare;
 
-    public DataLayerException(@DATA_LAYER_ERROR String code) {
+    public TaskException(@DATA_LAYER_ERROR String code) {
         this.code = code;
     }
 
-    public DataLayerException(String code, String msg) {
+    public TaskException(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }
@@ -84,6 +84,6 @@ public class DataLayerException extends RuntimeException {
     }
 
     public static void config(IExceptionDeclare declare) {
-        DataLayerException.exceptionDeclare = declare;
+        TaskException.exceptionDeclare = declare;
     }
 }

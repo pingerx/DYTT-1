@@ -1,6 +1,6 @@
 package com.bzh.data.repository;
 
-import com.bzh.data.exception.DataLayerException;
+import com.bzh.data.exception.TaskException;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ public interface IHtmlDataStore {
                 return new String(responseBody.bytes(), TO_CHARSET_NAME);
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new DataLayerException(DataLayerException.ERROR_HTML_PARSE);
+                throw new TaskException(TaskException.ERROR_HTML_PARSE);
             }
         }
     };

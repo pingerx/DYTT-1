@@ -4,7 +4,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.bzh.common.utils.SystemUtils;
-import com.bzh.data.exception.DataLayerException;
+import com.bzh.data.exception.TaskException;
 import com.bzh.data.film.entity.FilmDetailEntity;
 import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.service.RetrofitManager;
@@ -14,10 +14,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
@@ -163,6 +165,13 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
         this.retrofitManager = retrofitManager;
     }
 
+
+    @Override
+    public Observable<ArrayList<FilmEntity>> getDomestic(@IntRange(from = 1, to = 131) int index) {
+        return getNewWorkObservable(retrofitManager.getFilmService()
+                .getDomestic(index));
+    }
+
     /**
      * 获取最新电影列表
      *
@@ -170,19 +179,26 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
      */
     @Override
     public Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) final int index) {
+        return getNewWorkObservable(retrofitManager.getFilmService()
+                .getNewest(index));
+    }
+
+    /**
+     * network processing
+     */
+    @NonNull
+    private Observable<ArrayList<FilmEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
         return Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
             @Override
             public void call(Subscriber<? super ArrayList<FilmEntity>> subscriber) {
                 if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
-                    subscriber.onError(new DataLayerException(DataLayerException.ERROR_NONE_NETWORK));
+                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
                 } else {
                     try {
-                        retrofitManager.getFilmService()
-                                .getNewest(index)
-                                .map(transformCharset)
+                        observable.map(transformCharset)
                                 .map(transformFilmEntity)
                                 .subscribe(subscriber);
-                    } catch (DataLayerException e) {
+                    } catch (TaskException e) {
                         subscriber.onError(e);
                     }
                 }
@@ -199,7 +215,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
             @Override
             public void call(Subscriber<? super FilmDetailEntity> subscriber) {
                 if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
-                    subscriber.onError(new DataLayerException(DataLayerException.ERROR_NONE_NETWORK));
+                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
                 } else {
                     try {
                         retrofitManager
@@ -208,7 +224,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
                                 .map(transformCharset)
                                 .map(transformHtmlToEntity)
                                 .subscribe(subscriber);
-                    } catch (DataLayerException e) {
+                    } catch (TaskException e) {
                         subscriber.onError(e);
                     }
                 }

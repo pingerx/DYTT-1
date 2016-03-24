@@ -106,12 +106,17 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
         return swipeRefreshLayout;
     }
 
+    @Override
+    public void finishLoadMore() {
+        recyclerView.finishLoadingMore();
+    }
+
     private class MyItemDecoration extends RecyclerView.ItemDecoration {
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
-            outRect.set(0, 0, 0, UIUtils.dip2px(2));
+            outRect.set(0, 0, 0, UIUtils.dip2px(1));
         }
 
         @Override

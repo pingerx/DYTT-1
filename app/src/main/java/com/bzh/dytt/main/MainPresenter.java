@@ -8,8 +8,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.MenuItem;
 
 import com.bzh.dytt.R;
+import com.bzh.dytt.film.CommonFilmFragment;
 import com.bzh.dytt.film.FilmMainFragment;
-import com.bzh.dytt.film.NewestFilmFragment;
 import com.bzh.dytt.base.basic.IActivityPresenter;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
@@ -147,13 +147,13 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
             case FILM:
                 return FilmMainFragment.newInstance();
             case TV:
-                return NewestFilmFragment.newInstance();
+                return FilmMainFragment.newInstance();
             case VARIETY:
-                return NewestFilmFragment.newInstance();
+                return FilmMainFragment.newInstance();
             case COMIC:
-                return NewestFilmFragment.newInstance();
+                return FilmMainFragment.newInstance();
             case GAME:
-                return NewestFilmFragment.newInstance();
+                return FilmMainFragment.newInstance();
         }
         throw new RuntimeException("没有指定类型的Fragment");
     }

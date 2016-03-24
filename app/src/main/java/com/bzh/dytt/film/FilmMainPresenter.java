@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.bzh.data.film.entity.FilmEntity;
+import com.bzh.data.repository.Repository;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.basic.IFragmentPresenter;
@@ -12,6 +14,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import rx.Observable;
 
 /**
  * ==========================================================<br>
@@ -95,7 +99,8 @@ public class FilmMainPresenter implements IFragmentPresenter {
     }
 
     private BaseFragment newFragment(StripTabItem stripTabItem) {
-        return NewestFilmFragment.newInstance();
+
+        return CommonFilmFragment.newInstance();
     }
 
     private ArrayList<StripTabItem> generateTabs() {
