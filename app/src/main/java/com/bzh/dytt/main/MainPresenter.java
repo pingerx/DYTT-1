@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.MenuItem;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.film.CommonFilmFragment;
 import com.bzh.dytt.film.FilmMainFragment;
 import com.bzh.dytt.base.basic.IActivityPresenter;
 import com.bzh.dytt.base.basic.BaseActivity;

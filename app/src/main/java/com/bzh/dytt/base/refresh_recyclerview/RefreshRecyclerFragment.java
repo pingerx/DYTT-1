@@ -81,6 +81,16 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     }
 
     @Override
+    public void hideLoadFailedLayout() {
+        layoutLoadFailed.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showContentLayout() {
+        layoutContent.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);

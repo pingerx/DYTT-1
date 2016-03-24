@@ -21,7 +21,11 @@ public interface RefreshRecyclerView extends BaseView {
 
     void showLoadFailedLayout();
 
+    void hideLoadFailedLayout();
+
     void hideContentLayout();
+
+    void showContentLayout();
 
     void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter);
 
@@ -34,4 +38,6 @@ public interface RefreshRecyclerView extends BaseView {
     SwipeRefreshLayout getSwipeRefreshLayout();
 
     void finishLoadMore();
+
+
 }

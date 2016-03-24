@@ -1,8 +1,6 @@
 package com.bzh.data.repository;
 
-import android.net.sip.SipErrorCode;
 import android.support.annotation.IntRange;
-import android.util.Log;
 
 import com.bzh.data.film.datasource.FilmNetWorkDataStore;
 import com.bzh.data.film.datasource.IFilmDataStore;
@@ -13,8 +11,6 @@ import com.bzh.data.service.RetrofitManager;
 import java.util.ArrayList;
 
 import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Func1;
 
 /**
  * ==========================================================<br>
@@ -63,6 +59,16 @@ public class Repository implements IFilmDataStore {
     public Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) int index) {
         return getFilmDataStore()
                 .getNewest(index);
+    }
+
+    @Override
+    public Observable<ArrayList<FilmEntity>> getEuropeAmerica(@IntRange(from = 1, to = 131) int index) {
+        return getFilmDataStore().getEuropeAmerica(index);
+    }
+
+    @Override
+    public Observable<ArrayList<FilmEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 131) int index) {
+        return getFilmDataStore().getJapanSouthKorea(index);
     }
 
     @Override

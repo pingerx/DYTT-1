@@ -14,7 +14,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,9 +58,14 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
             Document document = Jsoup.parse(s);
             Elements elements = document.select("div.co_content8").select("ul");
             Elements hrefs = elements.select("a[href]");
+
+            Pattern pattern = Pattern.compile("^\\[.*\\]$");
             ArrayList<FilmEntity> filmEntities = new ArrayList<>();
             for (Element element : hrefs) {
                 String fullName = element.text();
+                if (pattern.matcher(fullName).matches()) {
+                    continue;
+                }
                 FilmEntity filmEntity = new FilmEntity();
                 filmEntity.setName(fullName.substring(0, fullName.lastIndexOf("》") + 1));
                 filmEntity.setUrl(element.attr("href"));
@@ -181,6 +185,18 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
     public Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) final int index) {
         return getNewWorkObservable(retrofitManager.getFilmService()
                 .getNewest(index));
+    }
+
+    @Override
+    public Observable<ArrayList<FilmEntity>> getEuropeAmerica(@IntRange(from = 1, to = 131) int index) {
+        return getNewWorkObservable(retrofitManager.getFilmService()
+                .getEuropeAmerica(index));
+    }
+
+    @Override
+    public Observable<ArrayList<FilmEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 131) int index) {
+        return getNewWorkObservable(retrofitManager.getFilmService()
+                .getJapanSouthKorea(index));
     }
 
     /**

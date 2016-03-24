@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseFragment;
@@ -23,6 +24,8 @@ import butterknife.Bind;
  */
 public class FilmMainFragment extends BaseFragment implements FilmMainIView {
 
+    private static final String TAG = "FilmMainFragment";
+    
     private FilmMainPresenter filmMainPresenter;
 
     public static FilmMainFragment newInstance() {
@@ -52,16 +55,19 @@ public class FilmMainFragment extends BaseFragment implements FilmMainIView {
 
     @Override
     protected void onFirstUserVisible() {
+        Log.d(TAG, "onFirstUserVisible() called with: " + "");
         filmMainPresenter.onFirstUserVisible();
     }
 
     @Override
     protected void onUserVisible() {
+        Log.d(TAG, "onUserVisible() called with: " + "");
         filmMainPresenter.onUserVisible();
     }
 
     @Override
     protected void onUserInvisible() {
+        Log.d(TAG, "onUserInvisible() called with: " + "");
         filmMainPresenter.onUserInvisible();
     }
 
@@ -69,6 +75,7 @@ public class FilmMainFragment extends BaseFragment implements FilmMainIView {
     public void initContainer(PagerAdapter pagerAdapter) {
         container.setOffscreenPageLimit(0);
         container.setAdapter(pagerAdapter);
+        container.setCurrentItem(0, false);
     }
 
     @Override

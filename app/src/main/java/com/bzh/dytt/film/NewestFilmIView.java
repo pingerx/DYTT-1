@@ -12,6 +12,6 @@ import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface CommonFilmIView extends RefreshRecyclerView {
+public interface NewestFilmIView extends RefreshRecyclerView {
 
 }

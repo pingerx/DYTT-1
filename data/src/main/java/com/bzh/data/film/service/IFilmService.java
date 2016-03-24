@@ -30,11 +30,11 @@ public interface IFilmService {
 
     // 欧美电影
     @GET("/html/gndy/oumei/list_7_{index}.html")
-    Observable<ResponseBody> geEuropeAmerica(@Path("index") @IntRange(from = 1, to = 147) int index);
+    Observable<ResponseBody> getEuropeAmerica(@Path("index") @IntRange(from = 1, to = 147) int index);
 
     // 日韩电影
     @GET("/html/gndy/rihan/list_6_{index}.html")
-    Observable<ResponseBody> geJapanSouthKorea(@Path("index") @IntRange(from = 1, to = 25) int index);
+    Observable<ResponseBody> getJapanSouthKorea(@Path("index") @IntRange(from = 1, to = 25) int index);
 
     // 获取电影详情
     @GET("{filmDetailUrl}")

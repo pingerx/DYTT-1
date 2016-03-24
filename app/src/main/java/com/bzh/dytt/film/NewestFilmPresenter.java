@@ -26,10 +26,10 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class CommonFilmPresenter extends RefreshRecyclerPresenter<FilmEntity, ArrayList<FilmEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
+public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity, ArrayList<FilmEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
 
-    public CommonFilmPresenter(BaseActivity baseActivity, BaseFragment baseFragment, CommonFilmIView commonFilmIView) {
-        super(baseActivity, baseFragment, commonFilmIView);
+    public NewestFilmPresenter(BaseActivity baseActivity, BaseFragment baseFragment, NewestFilmIView newestFilmIView) {
+        super(baseActivity, baseFragment, newestFilmIView);
     }
 
     public Observable<ArrayList<FilmEntity>> getRequestDataObservable(String nextPage) {

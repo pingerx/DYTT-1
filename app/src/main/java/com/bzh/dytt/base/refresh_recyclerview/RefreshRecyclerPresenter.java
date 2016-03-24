@@ -234,12 +234,19 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
         @Override
         public void onFailure(Throwable e) {
+            refreshRecyclerView.hideSwipeRefreshing();
             refreshRecyclerView.showLoadFailedLayout();
             refreshRecyclerView.hideContentLayout();
         }
 
         @Override
         public void onSuccess(Entities entities) {
+
+            if (requestMode == REQUEST_MODE_DATA_FIRST || requestMode == REQUEST_MODE_DATA_REFRESH) {
+                refreshRecyclerView.showContentLayout();
+                refreshRecyclerView.hideLoadFailedLayout();
+            }
+
             if (entities == null || exCommonAdapter == null) {
                 return;
             }

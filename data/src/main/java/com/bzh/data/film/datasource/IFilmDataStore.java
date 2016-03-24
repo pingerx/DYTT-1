@@ -23,9 +23,14 @@ import rx.Observable;
  */
 public interface IFilmDataStore extends IHtmlDataStore {
 
+
     Observable<ArrayList<FilmEntity>> getDomestic(@IntRange(from = 1, to = 131) int index);
 
     Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) final int index);
+
+    Observable<ArrayList<FilmEntity>> getEuropeAmerica(@IntRange(from = 1, to = 131) int index);
+
+    Observable<ArrayList<FilmEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 131) int index);
 
     Observable<FilmDetailEntity> getFilmDetail(final String filmStr);
 }

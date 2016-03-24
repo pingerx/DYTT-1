@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -36,8 +37,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
 
-//    FilmNetWorkDataStore realNetWorkDataStore;
-
     @Mock
     FilmNetWorkDataStore mockNetWorkDataStore;
 
@@ -52,7 +51,14 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
 
     @Before
     public void setUp() {
-//        realNetWorkDataStore = new FilmNetWorkDataStore(RetrofitManager.getInstance());
+    }
+
+    @Test
+    public void test1() {
+        Pattern pattern = Pattern.compile("^\\[.*\\]$");
+        assertTrue(pattern.matcher("[电影]").matches());
+        assertTrue(pattern.matcher("[综合电影]").matches());
+        assertTrue(!pattern.matcher("[电影").matches());
     }
 
     @Test
@@ -113,83 +119,4 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
             }
         });
     }
-
-//    @Deprecated
-//    @Test
-//    public void testGetNewestReal() {
-//        // 真实数据
-//        realNetWorkDataStore.getNewest(1).subscribe(new Subscriber<FilmEntity>() {
-//            @Override
-//            public void onCompleted() {
-//                System.out.println("FilmNetWorkDataStoreTest.onCompleted");
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//                System.out.println("e = [" + e + "]");
-//            }
-//
-//            @Override
-//            public void onNext(FilmEntity s) {
-//                assertNotNull(s);
-//                System.out.println("s = [" + s + "]");
-//            }
-//        });
-//    }
-
-//    @Deprecated
-//    @Test
-//    public void testGetFilmDetail() throws Exception {
-//        realNetWorkDataStore.getFilmDetail("/html/gndy/dyzz/20160309/50431.html")
-//                .subscribe(new Subscriber<FilmDetailEntity>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(FilmDetailEntity s) {
-//                        assertNotNull(s);
-//                        System.out.println("FilmDetailEntity = [" + s.toString() + "]");
-//                    }
-//                });
-//    }
-
-//    @Deprecated
-//    @Test
-//    public void testGetFilmDetailList() {
-//        final long start = System.currentTimeMillis();
-//        realNetWorkDataStore.getNewest(1)
-//                .flatMap(new Func1<FilmEntity, Observable<FilmDetailEntity>>() {
-//                    @Override
-//                    public Observable<FilmDetailEntity> call(FilmEntity s) {
-//                        return realNetWorkDataStore.getFilmDetail(s.getUrl());
-//                    }
-//                })
-//                .subscribe(new Subscriber<FilmDetailEntity>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        long end = System.currentTimeMillis();
-//                        System.out.println("total time = [" + (end - start) / 1000 + "]");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(FilmDetailEntity filmDetailEntity) {
-//                        assertNotNull(filmDetailEntity);
-//                        assertNotNull(filmDetailEntity.getTitle());
-//                        System.out.println("filmDetailEntity = [" + filmDetailEntity.getTitle() + "]");
-//                    }
-//                });
-//    }
-
 }
