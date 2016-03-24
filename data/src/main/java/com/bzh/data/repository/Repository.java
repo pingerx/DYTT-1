@@ -50,7 +50,7 @@ public class Repository implements IFilmDataStore {
 
 
     @Override
-    public Observable<ArrayList<FilmEntity>> getDomestic(@IntRange(from = 1, to = 131) int index) {
+    public Observable<ArrayList<FilmEntity>> getDomestic(@IntRange(from = 1, to = 87) int index) {
         return getFilmDataStore()
                 .getDomestic(index);
     }
@@ -62,12 +62,12 @@ public class Repository implements IFilmDataStore {
     }
 
     @Override
-    public Observable<ArrayList<FilmEntity>> getEuropeAmerica(@IntRange(from = 1, to = 131) int index) {
+    public Observable<ArrayList<FilmEntity>> getEuropeAmerica(@IntRange(from = 1, to = 147) int index) {
         return getFilmDataStore().getEuropeAmerica(index);
     }
 
     @Override
-    public Observable<ArrayList<FilmEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 131) int index) {
+    public Observable<ArrayList<FilmEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 25) int index) {
         return getFilmDataStore().getJapanSouthKorea(index);
     }
 

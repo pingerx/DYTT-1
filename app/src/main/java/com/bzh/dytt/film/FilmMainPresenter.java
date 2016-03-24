@@ -100,6 +100,10 @@ public class FilmMainPresenter implements IFragmentPresenter {
                 return NewestFilmFragment.newInstance();
             case DOMESTIC_FILM:
                 return DomesticFilmFragment.newInstance();
+            case EUROPE_AMERICA_FILM:
+                return EAFilmFragment.newInstance();
+            case JAPAN_SOUTH_KOREA_FILM:
+                return JSKFilmFragment.newInstance();
         }
         return NewestFilmFragment.newInstance();
     }
