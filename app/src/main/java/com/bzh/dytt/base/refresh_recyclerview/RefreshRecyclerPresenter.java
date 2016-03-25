@@ -16,7 +16,6 @@ import com.bzh.recycler.ExViewHolder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -41,7 +40,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         ExRecyclerView.OnLoadMoreListener {
 
     private Observable<Entities> listObservable;
-    private DefaultSubscriber subscriber;
+    private DefaultTaskSubscriber subscriber;
     private RefreshConfig refreshConfig;
 
     /**
@@ -66,6 +65,17 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
      */
     private static final int REQUEST_MODE_DATA_LOAD_MORE = REQUEST_MODE_DATA_REFRESH << 1;
 
+
+    @IntDef({TASK_STATE_PREPARE, TASK_STATE_SUCCESS, TASK_STATE_FINISHED, TASK_STATE_FAILED})
+    public @interface TASK_STATE {
+    }
+
+
+    private static final int TASK_STATE_PREPARE = 1;
+    private static final int TASK_STATE_SUCCESS = TASK_STATE_PREPARE << 1;
+    private static final int TASK_STATE_FINISHED = TASK_STATE_SUCCESS << 1;
+    private static final int TASK_STATE_FAILED = TASK_STATE_FINISHED << 1;
+
     /**
      * structure
      */
@@ -87,6 +97,10 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
     @Override
     public void initFragmentConfig() {
+
+        refreshRecyclerView.layoutEmptyVisibility(true);
+        refreshRecyclerView.layoutContentVisibility(false);
+
         paging = configPaging();
         refreshConfig = new RefreshConfig();
         exCommonAdapter = getExCommonAdapter();
@@ -118,7 +132,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
             paging = configPaging();
         }
 
-        subscriber = new DefaultSubscriber(requestMode);
+        subscriber = new DefaultTaskSubscriber(requestMode);
 
         if (null != paging) {
             listObservable = getRequestDataObservable(paging.getNextPage());
@@ -199,11 +213,13 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         public boolean canLoadMore = true;
     }
 
-    public class DefaultSubscriber extends Subscriber<Entities> implements TaskSubscriber<Entities>, Action0 {
+    public abstract String getMaxPage();
+
+    public class DefaultTaskSubscriber extends Subscriber<Entities> implements TaskSubscriber<Entities>, Action0 {
 
         private int requestMode;
 
-        public DefaultSubscriber(int requestMode) {
+        public DefaultTaskSubscriber(int requestMode) {
             this.requestMode = requestMode;
         }
 
@@ -232,8 +248,14 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
             this.onPrepare();
         }
 
+        ///////////////////////////////////////////////////////////////////////////
+        //
+        ///////////////////////////////////////////////////////////////////////////
+
         @Override
         public void onPrepare() {
+            taskStateChanged(TASK_STATE_SUCCESS, null);
+
             if (requestMode == REQUEST_MODE_DATA_FIRST || requestMode == REQUEST_MODE_DATA_REFRESH) {
                 refreshRecyclerView.showSwipeRefreshing();
             }
@@ -245,11 +267,13 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
                 refreshRecyclerView.hideSwipeRefreshing();
             } else if (requestMode == REQUEST_MODE_DATA_LOAD_MORE) {
                 refreshRecyclerView.finishLoadMore();
+
             }
         }
 
         @Override
         public void onFailure(Throwable e) {
+            refreshRecyclerView.finishLoadMore();
             refreshRecyclerView.hideSwipeRefreshing();
             refreshRecyclerView.showLoadFailedLayout();
             refreshRecyclerView.hideContentLayout();
@@ -295,5 +319,15 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
                 refreshConfig.canLoadMore = false;
             }
         }
+    }
+
+
+    /**
+     * According to the task execution state to update the page display state.
+     *
+     * @param tag May result in a task execution process information
+     */
+    public void taskStateChanged(@TASK_STATE int taskState, Serializable tag) {
+
     }
 }

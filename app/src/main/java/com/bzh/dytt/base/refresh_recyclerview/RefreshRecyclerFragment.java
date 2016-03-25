@@ -13,6 +13,7 @@ import com.bzh.common.utils.UIUtils;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.recycler.ExRecyclerView;
+import com.jakewharton.rxbinding.view.RxView;
 
 import butterknife.Bind;
 
@@ -28,17 +29,23 @@ import butterknife.Bind;
  */
 public abstract class RefreshRecyclerFragment extends BaseFragment implements RefreshRecyclerView {
 
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
-    @Bind(R.id.exRecyclerView)
-    ExRecyclerView recyclerView;
+    @Bind(R.id.layoutLoading)
+    LinearLayout layoutLoading;
 
     @Bind(R.id.layoutLoadFailed)
     LinearLayout layoutLoadFailed;
 
+    @Bind(R.id.layoutEmpty)
+    LinearLayout layoutEmpty;
+
     @Bind(R.id.layoutContent)
-    FrameLayout layoutContent;
+    LinearLayout layoutContent;
+
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    @Bind(R.id.recyclerView)
+    ExRecyclerView recyclerView;
 
     private RefreshRecyclerPresenter refreshRecyclerViewPresenter;
 
@@ -52,7 +59,7 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
 
     @Override
     protected int getContentView() {
-        return R.layout.comm_frag_refresh_recyclerview;
+        return R.layout.comm_lay_refresh_recyclerview;
     }
 
     @Override
@@ -71,13 +78,23 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     }
 
     @Override
-    public void showLoadFailedLayout() {
-        layoutLoadFailed.setVisibility(View.VISIBLE);
+    public void showLoadingLayout() {
+        layoutLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideContentLayout() {
-        layoutContent.setVisibility(View.GONE);
+    public void hideLoadingLayout() {
+        layoutLoading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void layoutLoadingVisibility(boolean isVisible) {
+        RxView.visibility(layoutLoading, View.GONE).call(isVisible);
+    }
+
+    @Override
+    public void showLoadFailedLayout() {
+        layoutLoadFailed.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -86,16 +103,38 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     }
 
     @Override
+    public void layoutLoadFailedVisibility(boolean isVisible) {
+        RxView.visibility(layoutLoadFailed, View.GONE).call(isVisible);
+    }
+
+    @Override
+    public void showEmptyLayout() {
+        layoutEmpty.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyLayout() {
+        layoutEmpty.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void layoutEmptyVisibility(boolean isVisible) {
+        RxView.visibility(layoutEmpty, View.GONE).call(isVisible);
+    }
+
+    @Override
     public void showContentLayout() {
         layoutContent.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter) {
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new MyItemDecoration());
-        recyclerView.setAdapter(adapter);
+    public void hideContentLayout() {
+        layoutContent.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void layoutContentVisibility(boolean isVisible) {
+        RxView.visibility(layoutContent, View.GONE).call(isVisible);
     }
 
     @Override
@@ -107,6 +146,15 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     public void hideSwipeRefreshing() {
         swipeRefreshLayout.setRefreshing(false);
     }
+
+    @Override
+    public void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter) {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(new MyItemDecoration());
+        recyclerView.setAdapter(adapter);
+    }
+
 
     public ExRecyclerView getRecyclerView() {
         return recyclerView;

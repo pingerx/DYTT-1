@@ -19,15 +19,31 @@ import com.bzh.recycler.ExRecyclerView;
  */
 public interface RefreshRecyclerView extends BaseView {
 
+    void showLoadingLayout();
+
+    void hideLoadingLayout();
+
+    void layoutLoadingVisibility(boolean isVisible);
+
     void showLoadFailedLayout();
 
     void hideLoadFailedLayout();
 
     void hideContentLayout();
 
+    void layoutLoadFailedVisibility(boolean isVisible);
+
+    void showEmptyLayout();
+
+    void hideEmptyLayout();
+
+    void layoutEmptyVisibility(boolean isVisible);
+
     void showContentLayout();
 
     void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter);
+
+    void layoutContentVisibility(boolean isVisible);
 
     void showSwipeRefreshing();
 
