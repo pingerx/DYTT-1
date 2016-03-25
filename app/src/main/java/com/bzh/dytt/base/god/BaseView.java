@@ -1,4 +1,4 @@
-package com.bzh.dytt.base.basic;
+package com.bzh.dytt.base.god;
 
 /**
  * ==========================================================<br>
@@ -10,11 +10,6 @@ package com.bzh.dytt.base.basic;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface IPaging {
+public interface BaseView {
 
-    String getMaxPage();
-
-    void processData();
-
-    String getNextPage();
 }

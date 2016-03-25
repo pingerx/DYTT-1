@@ -1,7 +1,4 @@
-package com.bzh.dytt.base.basic;
-
-import android.os.Bundle;
-import android.view.View;
+package com.bzh.dytt.base.god;
 
 /**
  * ==========================================================<br>

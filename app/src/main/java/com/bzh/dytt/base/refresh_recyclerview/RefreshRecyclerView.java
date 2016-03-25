@@ -4,7 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.bzh.dytt.base.basic.BaseView;
+import com.bzh.dytt.base.god.BaseView;
 import com.bzh.recycler.ExRecyclerView;
 
 /**
@@ -40,6 +40,12 @@ public interface RefreshRecyclerView extends BaseView {
     void layoutEmptyVisibility(boolean isVisible);
 
     void showContentLayout();
+
+    boolean isRefreshing();
+
+    boolean isLoadingMore();
+
+    void setTextLoadFailed(String content);
 
     void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter);
 

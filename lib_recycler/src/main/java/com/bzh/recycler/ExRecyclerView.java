@@ -25,14 +25,14 @@ import com.bzh.lib_recycler.R;
  */
 public class ExRecyclerView extends RecyclerView {
 
-    private ExCommonAdapter.OnItemLongClickListener yOnItemLongClickListener;
-    private ExCommonAdapter.OnItemClickListener yOnItemClickListener;
+    private ExCommonAdapter.OnItemLongClickListener onItemLongClickListener;
+    private ExCommonAdapter.OnItemClickListener onItemClickListener;
 
-    private boolean yIsLoadingMore;
-    private OnLoadMoreListener yOnLoadingMoreListener;
+    private boolean isLoadingMore;
+    private OnLoadMoreListener onLoadingMoreListener;
 
-    private View yHeaderView;
-    private View yFooterView;
+    private View headerView;
+    private View footerView;
 
     public ExRecyclerView(Context context) {
         this(context, null);
@@ -49,8 +49,8 @@ public class ExRecyclerView extends RecyclerView {
             @Override
             public void onBottom() {
                 super.onBottom();
-                if (yOnLoadingMoreListener != null) {
-                    onLoadMore(yOnLoadingMoreListener);
+                if (onLoadingMoreListener != null) {
+                    onLoadMore(onLoadingMoreListener);
                 }
             }
         });
@@ -69,27 +69,27 @@ public class ExRecyclerView extends RecyclerView {
     }
 
     private void initDefaultFooterView(Context context) {
-        yFooterView = LayoutInflater.from(context).inflate(R.layout.common_footer, null);
-        yFooterView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        footerView = LayoutInflater.from(context).inflate(R.layout.common_footer, null);
+        footerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
 
     public void addFooterView(View footerView) {
-        yFooterView = footerView;
+        this.footerView = footerView;
     }
 
     public void addHeaderView(View headerView) {
-        yHeaderView = headerView;
+        this.headerView = headerView;
     }
 
     @Override
     public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);
         if (adapter instanceof ExCommonAdapter) {
-            ((ExCommonAdapter) adapter).setOnItemClickListener(yOnItemClickListener);
-            ((ExCommonAdapter) adapter).setOnItemLongClickListener(yOnItemLongClickListener);
-            ((ExCommonAdapter) adapter).setHeaderView(yHeaderView);
-            ((ExCommonAdapter) adapter).setFooterView(yFooterView);
+            ((ExCommonAdapter) adapter).setOnItemClickListener(onItemClickListener);
+            ((ExCommonAdapter) adapter).setOnItemLongClickListener(onItemLongClickListener);
+            ((ExCommonAdapter) adapter).setHeaderView(headerView);
+            ((ExCommonAdapter) adapter).setFooterView(footerView);
         }
     }
 
@@ -123,11 +123,11 @@ public class ExRecyclerView extends RecyclerView {
      * 执行加载更多的逻辑，需要传入加载更多时加载数据的监听
      */
     public void onLoadMore(final OnLoadMoreListener onLoadingMoreListener) {
-        if (yFooterView != null) {
-            if (!yIsLoadingMore) {
-                yIsLoadingMore = true;
-                yFooterView.setVisibility(View.VISIBLE);
-                yFooterView.postDelayed(new Runnable() {
+        if (footerView != null) {
+            if (!isLoadingMore) {
+                isLoadingMore = true;
+                footerView.setVisibility(View.VISIBLE);
+                footerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         onLoadingMoreListener.onLoadingMore();
@@ -138,26 +138,30 @@ public class ExRecyclerView extends RecyclerView {
     }
 
     public void finishLoadingMore() {
-        if (yIsLoadingMore) {
-            yIsLoadingMore = false;
-            yFooterView.setVisibility(View.GONE);
+        if (isLoadingMore) {
+            isLoadingMore = false;
+            footerView.setVisibility(View.GONE);
         }
     }
 
+    public boolean isLoadingMore() {
+        return isLoadingMore;
+    }
+
     public void setOnItemLongClickListener(ExCommonAdapter.OnItemLongClickListener mOnItemLongClickListener) {
-        this.yOnItemLongClickListener = mOnItemLongClickListener;
+        this.onItemLongClickListener = mOnItemLongClickListener;
     }
 
     public void setOnItemClickListener(ExCommonAdapter.OnItemClickListener mOnItemClickListener) {
-        this.yOnItemClickListener = mOnItemClickListener;
+        this.onItemClickListener = mOnItemClickListener;
     }
 
     public void setOnLoadingMoreListener(OnLoadMoreListener onLoadingMoreListener) {
-        this.yOnLoadingMoreListener = onLoadingMoreListener;
+        this.onLoadingMoreListener = onLoadingMoreListener;
     }
 
     public View getFooterView() {
-        return yFooterView;
+        return footerView;
     }
 
     public interface OnLoadMoreListener {
@@ -165,7 +169,7 @@ public class ExRecyclerView extends RecyclerView {
     }
 
     public View getHeaderView() {
-        return yHeaderView;
+        return headerView;
     }
 
     @Override

@@ -5,8 +5,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import com.bzh.data.film.entity.FilmEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
-import com.bzh.dytt.base.basic.BaseActivity;
-import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.god.BaseActivity;
+import com.bzh.dytt.base.god.BaseFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
@@ -49,5 +49,10 @@ public class EAFilmPresenter extends RefreshRecyclerPresenter<FilmEntity, ArrayL
                 viewHolder.setText(R.id.tv_film_publish_time, getBaseActivity().getResources().getString(R.string.label_publish_time, item.getPublishTime()));
             }
         };
+    }
+
+    @Override
+    public String getMaxPage() {
+        return 147 + "";
     }
 }

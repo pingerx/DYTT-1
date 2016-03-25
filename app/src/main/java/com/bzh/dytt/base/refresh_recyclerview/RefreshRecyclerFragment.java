@@ -5,13 +5,15 @@ import android.graphics.Rect;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bzh.common.utils.UIUtils;
 import com.bzh.dytt.R;
-import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.god.BaseFragment;
 import com.bzh.recycler.ExRecyclerView;
 import com.jakewharton.rxbinding.view.RxView;
 
@@ -29,11 +31,16 @@ import butterknife.Bind;
  */
 public abstract class RefreshRecyclerFragment extends BaseFragment implements RefreshRecyclerView {
 
+    private static final String TAG = "RefreshRecyclerFragment";
+
     @Bind(R.id.layoutLoading)
     LinearLayout layoutLoading;
 
     @Bind(R.id.layoutLoadFailed)
     LinearLayout layoutLoadFailed;
+
+    @Bind(R.id.txtLoadFailed)
+    TextView txtLoadFailed;
 
     @Bind(R.id.layoutEmpty)
     LinearLayout layoutEmpty;
@@ -145,6 +152,25 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     @Override
     public void hideSwipeRefreshing() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public boolean isRefreshing() {
+        return swipeRefreshLayout.isRefreshing();
+    }
+
+    @Override
+    public boolean isLoadingMore() {
+        return recyclerView.isLoadingMore();
+    }
+
+    @Override
+    public void setTextLoadFailed(String content) {
+        if (!TextUtils.isEmpty(content)) {
+            txtLoadFailed.setText(content);
+        } else {
+            Log.i(TAG, "setTextLoadFailed: content is empty");
+        }
     }
 
     @Override

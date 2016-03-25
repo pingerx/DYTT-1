@@ -62,6 +62,32 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
     }
 
     @Test
+    public void testSub() {
+        Subscriber<Integer> subscriber = new Subscriber<Integer>() {
+            @Override
+            public void onCompleted() {
+                if (!isUnsubscribed()) {
+                    unsubscribe();
+                }
+
+                System.out.println(isUnsubscribed());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println(isUnsubscribed());
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                System.out.println(isUnsubscribed());
+            }
+        };
+        Observable.just(1,2)
+                .subscribe(subscriber);
+    }
+
+    @Test
     public void testGetNewest() throws Exception {
         when(mockNetWorkDataStore.getNewest(1)).thenReturn(Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
             @Override

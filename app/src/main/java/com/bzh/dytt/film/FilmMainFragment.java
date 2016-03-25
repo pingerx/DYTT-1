@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.god.BaseFragment;
 
 import butterknife.Bind;
 

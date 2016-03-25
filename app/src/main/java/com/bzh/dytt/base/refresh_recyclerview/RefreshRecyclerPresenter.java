@@ -4,11 +4,12 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 
-import com.bzh.dytt.base.basic.BaseActivity;
-import com.bzh.dytt.base.basic.BaseFragment;
-import com.bzh.dytt.base.basic.IFragmentPresenter;
-import com.bzh.dytt.base.basic.IPaging;
+import com.bzh.dytt.base.god.BaseActivity;
+import com.bzh.dytt.base.god.BaseFragment;
+import com.bzh.dytt.base.god.IFragmentPresenter;
+import com.bzh.dytt.base.god.IPaging;
 import com.bzh.dytt.rx.TaskSubscriber;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
@@ -39,9 +40,12 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         ExCommonAdapter.OnItemClickListener,
         ExRecyclerView.OnLoadMoreListener {
 
+    private static final String TAG = "REPresenter";
+
     private Observable<Entities> listObservable;
     private DefaultTaskSubscriber subscriber;
     private RefreshConfig refreshConfig;
+    private boolean contentEmpty = true;
 
     /**
      * The definition of a page request data mode
@@ -66,22 +70,22 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
     private static final int REQUEST_MODE_DATA_LOAD_MORE = REQUEST_MODE_DATA_REFRESH << 1;
 
 
-    @IntDef({TASK_STATE_PREPARE, TASK_STATE_SUCCESS, TASK_STATE_FINISHED, TASK_STATE_FAILED})
+    @IntDef({TASK_STATE_PREPARE, TASK_STATE_SUCCESS, TASK_STATE_FINISH, TASK_STATE_FAILED})
     public @interface TASK_STATE {
     }
 
 
     private static final int TASK_STATE_PREPARE = 1;
     private static final int TASK_STATE_SUCCESS = TASK_STATE_PREPARE << 1;
-    private static final int TASK_STATE_FINISHED = TASK_STATE_SUCCESS << 1;
-    private static final int TASK_STATE_FAILED = TASK_STATE_FINISHED << 1;
+    private static final int TASK_STATE_FINISH = TASK_STATE_SUCCESS << 1;
+    private static final int TASK_STATE_FAILED = TASK_STATE_FINISH << 1;
 
     /**
      * structure
      */
     private final BaseActivity baseActivity;
     private final BaseFragment baseFragment;
-    private final RefreshRecyclerView refreshRecyclerView;
+    private final RefreshRecyclerView iView;
     private ExCommonAdapter<Entity> exCommonAdapter;
 
     /**
@@ -89,25 +93,25 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
      */
     private IPaging paging;
 
-    public RefreshRecyclerPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView refreshRecyclerView) {
+    public RefreshRecyclerPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
         this.baseActivity = baseActivity;
         this.baseFragment = baseFragment;
-        this.refreshRecyclerView = refreshRecyclerView;
+        this.iView = iView;
     }
 
     @Override
     public void initFragmentConfig() {
 
-        refreshRecyclerView.layoutEmptyVisibility(true);
-        refreshRecyclerView.layoutContentVisibility(false);
+        iView.layoutEmptyVisibility(true);
+        iView.layoutContentVisibility(false);
 
         paging = configPaging();
         refreshConfig = new RefreshConfig();
         exCommonAdapter = getExCommonAdapter();
-        refreshRecyclerView.getRecyclerView().setOnItemClickListener(this);
-        refreshRecyclerView.getRecyclerView().setOnLoadingMoreListener(this);
-        refreshRecyclerView.initRecyclerView(new LinearLayoutManager(baseActivity), exCommonAdapter);
-        refreshRecyclerView.getSwipeRefreshLayout().setOnRefreshListener(this);
+        iView.getRecyclerView().setOnItemClickListener(this);
+        iView.getRecyclerView().setOnLoadingMoreListener(this);
+        iView.initRecyclerView(new LinearLayoutManager(baseActivity), exCommonAdapter);
+        iView.getSwipeRefreshLayout().setOnRefreshListener(this);
     }
 
     @NonNull
@@ -127,6 +131,8 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
     }
 
     public void onRequestData(@MODE_REQUEST_DATA int requestMode) {
+
+        Log.d(TAG, "onRequestData() called with: " + "requestMode = [" + requestMode + "]");
 
         if (REQUEST_MODE_DATA_FIRST == requestMode || REQUEST_MODE_DATA_REFRESH == requestMode) {
             paging = configPaging();
@@ -177,8 +183,8 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         return baseFragment;
     }
 
-    public RefreshRecyclerView getRefreshRecyclerView() {
-        return refreshRecyclerView;
+    public RefreshRecyclerView getiView() {
+        return iView;
     }
 
     public ExCommonAdapter<Entity> getCommonAdapter() {
@@ -230,11 +236,17 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
         @Override
         final public void onCompleted() {
+            if (!isUnsubscribed()) {
+                unsubscribe();
+            }
             this.onFinish();
         }
 
         @Override
         final public void onError(Throwable e) {
+            if (!isUnsubscribed()) {
+                unsubscribe();
+            }
             this.onFailure(e);
         }
 
@@ -255,38 +267,23 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         @Override
         public void onPrepare() {
             taskStateChanged(TASK_STATE_SUCCESS, null);
-
-            if (requestMode == REQUEST_MODE_DATA_FIRST || requestMode == REQUEST_MODE_DATA_REFRESH) {
-                refreshRecyclerView.showSwipeRefreshing();
-            }
         }
 
         @Override
         public void onFinish() {
-            if (requestMode == REQUEST_MODE_DATA_FIRST || requestMode == REQUEST_MODE_DATA_REFRESH) {
-                refreshRecyclerView.hideSwipeRefreshing();
-            } else if (requestMode == REQUEST_MODE_DATA_LOAD_MORE) {
-                refreshRecyclerView.finishLoadMore();
-
-            }
+            taskStateChanged(TASK_STATE_FINISH, null);
         }
 
         @Override
         public void onFailure(Throwable e) {
-            refreshRecyclerView.finishLoadMore();
-            refreshRecyclerView.hideSwipeRefreshing();
-            refreshRecyclerView.showLoadFailedLayout();
-            refreshRecyclerView.hideContentLayout();
+            taskStateChanged(TASK_STATE_FAILED, e.getMessage());
         }
 
         @SuppressWarnings("unchecked")
         @Override
         public void onSuccess(Entities entities) {
-
-            if (requestMode == REQUEST_MODE_DATA_FIRST || requestMode == REQUEST_MODE_DATA_REFRESH) {
-                refreshRecyclerView.showContentLayout();
-                refreshRecyclerView.hideLoadFailedLayout();
-            }
+            setContentEmpty(resultIsEmpty(entities));
+            taskStateChanged(TASK_STATE_SUCCESS, null);
 
             if (entities == null || exCommonAdapter == null) {
                 return;
@@ -319,6 +316,23 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
                 refreshConfig.canLoadMore = false;
             }
         }
+
+        public boolean resultIsEmpty(Entities entities) {
+            return entities == null;
+        }
+    }
+
+    public void onRefreshViewComplete() {
+        if (iView.isRefreshing()) {
+            iView.hideSwipeRefreshing();
+        }
+        if (iView.isLoadingMore()) {
+            iView.finishLoadMore();
+        }
+    }
+
+    public boolean isRefreshing() {
+        return subscriber != null && subscriber.isUnsubscribed();
     }
 
 
@@ -328,6 +342,43 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
      * @param tag May result in a task execution process information
      */
     public void taskStateChanged(@TASK_STATE int taskState, Serializable tag) {
+        switch (taskState) {
+            case TASK_STATE_PREPARE: {
+                iView.layoutLoadingVisibility(isContentEmpty());
+                iView.layoutContentVisibility(!isContentEmpty());
+                iView.layoutContentVisibility(false);
+                iView.layoutLoadFailedVisibility(false);
+            }
+            break;
+            case TASK_STATE_SUCCESS: {
+                iView.layoutLoadingVisibility(false);
+                iView.layoutEmptyVisibility(isContentEmpty());
+                iView.layoutContentVisibility(!isContentEmpty());
+            }
+            break;
+            case TASK_STATE_FAILED: {
+                iView.layoutEmptyVisibility(!isContentEmpty());
+                iView.layoutLoadingVisibility(!isContentEmpty());
+                iView.layoutLoadFailedVisibility(isContentEmpty());
+                if (tag != null) {
+                    iView.setTextLoadFailed(tag.toString());
+                }
+            }
+            break;
+            case TASK_STATE_FINISH: {
+                if (isRefreshing()) {
+                    onRefreshViewComplete();
+                }
+            }
+            break;
+        }
+    }
 
+    public void setContentEmpty(boolean empty) {
+        this.contentEmpty = empty;
+    }
+
+    public boolean isContentEmpty() {
+        return contentEmpty;
     }
 }

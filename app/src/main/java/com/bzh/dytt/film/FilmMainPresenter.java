@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.bzh.dytt.base.basic.BaseActivity;
-import com.bzh.dytt.base.basic.BaseFragment;
-import com.bzh.dytt.base.basic.IFragmentPresenter;
+import com.bzh.dytt.base.god.BaseActivity;
+import com.bzh.dytt.base.god.BaseFragment;
+import com.bzh.dytt.base.god.IFragmentPresenter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
