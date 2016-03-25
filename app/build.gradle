@@ -58,7 +58,11 @@ dependencies {
     // Espresso core
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     // Espresso-contrib for DatePicker, RecyclerView, Drawer actions, Accessibility checks, CountingIdlingResource
-    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
     // Espresso-web for WebView support
     androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.2'
     // Espresso-idling-resource for synchronization with background jobs
