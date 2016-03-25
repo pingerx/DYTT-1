@@ -34,7 +34,8 @@ public class MainActivityTest {
 
     @Test
     public void testTitleDisplay() {
-        onView(withText("电影天堂")).check(matches(isDisplayed()));
+        onView(withText("电影天堂"))
+                .check(matches(isDisplayed()));
     }
 
 }
