@@ -1,6 +1,7 @@
 package com.bzh.dytt.base.refresh_recyclerview;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 
@@ -13,6 +14,7 @@ import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -34,14 +36,13 @@ import rx.schedulers.Schedulers;
  */
 public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         IFragmentPresenter,
-
         SwipeRefreshLayout.OnRefreshListener,
         ExCommonAdapter.OnItemClickListener,
         ExRecyclerView.OnLoadMoreListener {
 
     private Observable<Entities> listObservable;
-
     private DefaultSubscriber subscriber;
+    private RefreshConfig refreshConfig;
 
     /**
      * The definition of a page request data mode
@@ -86,12 +87,18 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
     @Override
     public void initFragmentConfig() {
-        paging = new DefaultPaging();
+        paging = configPaging();
+        refreshConfig = new RefreshConfig();
         exCommonAdapter = getExCommonAdapter();
         refreshRecyclerView.getRecyclerView().setOnItemClickListener(this);
         refreshRecyclerView.getRecyclerView().setOnLoadingMoreListener(this);
         refreshRecyclerView.initRecyclerView(new LinearLayoutManager(baseActivity), exCommonAdapter);
         refreshRecyclerView.getSwipeRefreshLayout().setOnRefreshListener(this);
+    }
+
+    @NonNull
+    public IPaging configPaging() {
+        return new DefaultPaging();
     }
 
     @Override
@@ -108,7 +115,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
     public void onRequestData(@MODE_REQUEST_DATA int requestMode) {
 
         if (REQUEST_MODE_DATA_FIRST == requestMode || REQUEST_MODE_DATA_REFRESH == requestMode) {
-            paging = new DefaultPaging();
+            paging = configPaging();
         }
 
         subscriber = new DefaultSubscriber(requestMode);
@@ -125,7 +132,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
     }
 
 
-    protected abstract Observable<Entities> getRequestDataObservable(String nextPage);
+    public abstract Observable<Entities> getRequestDataObservable(String nextPage);
 
     @Override
     public void onFirstUserVisible() {
@@ -168,9 +175,14 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         return paging;
     }
 
-    static class DefaultPaging implements IPaging {
+    public class DefaultPaging implements IPaging {
 
         private int mIndex = 1;
+
+        @Override
+        public String getMaxPage() {
+            return RefreshRecyclerPresenter.this.getMaxPage();
+        }
 
         @Override
         public void processData() {
@@ -183,7 +195,11 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         }
     }
 
-    protected class DefaultSubscriber extends Subscriber<Entities> implements TaskSubscriber<Entities>, Action0 {
+    public static class RefreshConfig implements Serializable {
+        public boolean canLoadMore = true;
+    }
+
+    public class DefaultSubscriber extends Subscriber<Entities> implements TaskSubscriber<Entities>, Action0 {
 
         private int requestMode;
 
@@ -239,6 +255,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
             refreshRecyclerView.hideContentLayout();
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public void onSuccess(Entities entities) {
 
@@ -251,14 +268,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
                 return;
             }
 
-            ArrayList<Entity> resultList = null;
-            if (entities instanceof ArrayList) {
-                resultList = (ArrayList<Entity>) entities;
-            } else {
-                if (resultList == null) {
-                    resultList = new ArrayList<>();
-                }
-            }
+            ArrayList<Entity> resultList = (ArrayList<Entity>) entities;
 
             if (requestMode == REQUEST_MODE_DATA_FIRST || requestMode == REQUEST_MODE_DATA_REFRESH) {
                 exCommonAdapter.setData(resultList);
@@ -268,6 +278,21 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
             if (null != paging) {
                 paging.processData();
+            }
+
+            if (requestMode == REQUEST_MODE_DATA_FIRST) {
+                refreshConfig.canLoadMore = true;
+            }
+
+            try {
+                if (null != paging) {
+                    if (Integer.valueOf(paging.getNextPage()) > Integer.valueOf(paging.getMaxPage())) {
+                        refreshConfig.canLoadMore = false;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                refreshConfig.canLoadMore = false;
             }
         }
     }

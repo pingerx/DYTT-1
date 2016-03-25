@@ -11,6 +11,9 @@ package com.bzh.dytt.base.basic;
  * ==========================================================<br>
  */
 public interface IPaging {
+
+    String getMaxPage();
+
     void processData();
 
     String getNextPage();

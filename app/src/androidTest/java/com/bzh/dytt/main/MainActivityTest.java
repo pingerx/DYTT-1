@@ -1,18 +1,26 @@
 package com.bzh.dytt.main;
 
-import android.support.test.espresso.assertion.ViewAssertions;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.widget.Toolbar;
 
+import com.bzh.dytt.R;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.core.Is.is;
 
 /**
  * ==========================================================<br>
@@ -34,8 +42,25 @@ public class MainActivityTest {
 
     @Test
     public void testTitleDisplay() {
-        onView(withText("电影天堂"))
-                .check(matches(isDisplayed()));
+        onView(isAssignableFrom(Toolbar.class))
+                .check(matches(withToolbarTitle(is("电影天堂"))));
+        onView(withContentDescription(R.string.navigation_drawer_open))
+                .perform(click());
     }
 
+
+    private static Matcher<Object> withToolbarTitle(final Matcher<String> textMatcher) {
+        return new BoundedMatcher<Object, Toolbar>(Toolbar.class) {
+            @Override
+            public boolean matchesSafely(Toolbar toolbar) {
+                return textMatcher.matches(toolbar.getTitle());
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with toolbar title: ");
+                textMatcher.describeTo(description);
+            }
+        };
+    }
 }
