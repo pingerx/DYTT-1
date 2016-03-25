@@ -70,10 +70,21 @@ public class RetrofitManager {
     }
 
     public static RetrofitManager getInstance() {
-        if (retrofitManager == null && GlobalContext.getInstance() != null) {
-            retrofitManager = new RetrofitManager(GlobalContext.getInstance());
+        RetrofitManager tmp = retrofitManager;
+        if (tmp == null) {
+            synchronized (RetrofitManager.class) {
+                tmp = retrofitManager;
+                if (tmp == null) {
+                    if (GlobalContext.getInstance() != null) {
+                        tmp = new RetrofitManager(GlobalContext.getInstance());
+                    } else {
+                        tmp = new RetrofitManager(null);
+                    }
+                    retrofitManager = tmp;
+                }
+            }
         }
-        return retrofitManager;
+        return tmp;
     }
 
     public IHomePageService getHomePageService() {

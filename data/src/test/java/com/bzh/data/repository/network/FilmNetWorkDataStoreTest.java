@@ -54,7 +54,7 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
     }
 
     @Test
-    public void test1() {
+    public void testIllegalInformation() {
         Pattern pattern = Pattern.compile("^\\[.*\\]$");
         assertTrue(pattern.matcher("[电影]").matches());
         assertTrue(pattern.matcher("[综合电影]").matches());

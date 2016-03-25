@@ -21,7 +21,11 @@ import java.util.regex.Pattern;
 import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 /**
  * ==========================================================<br>
@@ -164,11 +168,9 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
         }
     };
 
-
     public FilmNetWorkDataStore(RetrofitManager retrofitManager) {
         this.retrofitManager = retrofitManager;
     }
-
 
     @Override
     public Observable<ArrayList<FilmEntity>> getDomestic(@IntRange(from = 1, to = 87) int index) {
@@ -176,13 +178,53 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
                 .getDomestic(index));
     }
 
-    /**
-     * 获取最新电影列表
-     *
-     * @param index 索引范围为1 ~ 131
-     */
     @Override
     public Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) final int index) {
+//        retrofitManager.getFilmService().getNewest(index)
+//                .map(transformCharset)
+//                .map(transformFilmEntity)
+//                .flatMap(new Func1<ArrayList<FilmEntity>, Observable<FilmEntity>>() {
+//                    @Override
+//                    public Observable<FilmEntity> call(ArrayList<FilmEntity> filmEntities) {
+//                        return Observable.from(filmEntities);
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<FilmEntity>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(FilmEntity filmEntity) {
+//                        getFilmDetail(filmEntity.getUrl())
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .subscribe(new Subscriber<FilmDetailEntity>() {
+//                                    @Override
+//                                    public void onCompleted() {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Throwable e) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onNext(FilmDetailEntity filmDetailEntity) {
+//                                        System.out.println("filmDetailEntity = [" + filmDetailEntity.getName() + "]");
+//                                    }
+//                                });
+//                    }
+//                });
         return getNewWorkObservable(retrofitManager.getFilmService()
                 .getNewest(index));
     }
@@ -199,9 +241,6 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
                 .getJapanSouthKorea(index));
     }
 
-    /**
-     * network processing
-     */
     @NonNull
     private Observable<ArrayList<FilmEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
         return Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
@@ -211,6 +250,8 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
                     subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
                 } else {
                     try {
+
+
                         observable.map(transformCharset)
                                 .map(transformFilmEntity)
                                 .subscribe(subscriber);
@@ -222,9 +263,6 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
         });
     }
 
-    /**
-     * 获取某电影的详细信息
-     */
     @Override
     public Observable<FilmDetailEntity> getFilmDetail(final String filmStr) {
         return Observable.create(new Observable.OnSubscribe<FilmDetailEntity>() {
