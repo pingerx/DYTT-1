@@ -21,11 +21,7 @@ import java.util.regex.Pattern;
 import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.functions.Func2;
-import rx.schedulers.Schedulers;
 
 /**
  * ==========================================================<br>

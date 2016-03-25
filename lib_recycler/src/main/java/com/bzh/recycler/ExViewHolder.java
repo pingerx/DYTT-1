@@ -37,7 +37,6 @@ public class ExViewHolder extends RecyclerView.ViewHolder {
             view = itemView.findViewById(viewId);
             yViews.put(viewId, view);
         }
-        //noinspection unchecked
         return (T) view;
     }
 
