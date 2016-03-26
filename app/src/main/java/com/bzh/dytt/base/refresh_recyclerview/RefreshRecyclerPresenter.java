@@ -62,23 +62,21 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
     /**
      * The refresh current page to reset data
      */
-    private static final int REQUEST_MODE_DATA_REFRESH = REQUEST_MODE_DATA_FIRST << 1;
+    private static final int REQUEST_MODE_DATA_REFRESH = 2;
 
     /**
      * Loading more data
      */
-    private static final int REQUEST_MODE_DATA_LOAD_MORE = REQUEST_MODE_DATA_REFRESH << 1;
+    private static final int REQUEST_MODE_DATA_LOAD_MORE = 3;
 
 
     @IntDef({TASK_STATE_PREPARE, TASK_STATE_SUCCESS, TASK_STATE_FINISH, TASK_STATE_FAILED})
     public @interface TASK_STATE {
     }
-
-
     private static final int TASK_STATE_PREPARE = 1;
-    private static final int TASK_STATE_SUCCESS = TASK_STATE_PREPARE << 1;
-    private static final int TASK_STATE_FINISH = TASK_STATE_SUCCESS << 1;
-    private static final int TASK_STATE_FAILED = TASK_STATE_FINISH << 1;
+    private static final int TASK_STATE_SUCCESS = 2;
+    private static final int TASK_STATE_FINISH = 3;
+    private static final int TASK_STATE_FAILED = 4;
 
     /**
      * structure
@@ -101,10 +99,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
     @Override
     public void initFragmentConfig() {
-
-        iView.layoutEmptyVisibility(true);
-        iView.layoutContentVisibility(false);
-
         paging = configPaging();
         refreshConfig = new RefreshConfig();
         exCommonAdapter = getExCommonAdapter();
@@ -266,7 +260,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
         @Override
         public void onPrepare() {
-            taskStateChanged(TASK_STATE_SUCCESS, null);
+            taskStateChanged(TASK_STATE_PREPARE, null);
         }
 
         @Override
@@ -335,7 +329,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         return subscriber != null && subscriber.isUnsubscribed();
     }
 
-
     /**
      * According to the task execution state to update the page display state.
      *
@@ -346,7 +339,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
             case TASK_STATE_PREPARE: {
                 iView.layoutLoadingVisibility(isContentEmpty());
                 iView.layoutContentVisibility(!isContentEmpty());
-                iView.layoutContentVisibility(false);
+                iView.layoutEmptyVisibility(false);
                 iView.layoutLoadFailedVisibility(false);
             }
             break;

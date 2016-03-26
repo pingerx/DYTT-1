@@ -85,58 +85,17 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     }
 
     @Override
-    public void showLoadingLayout() {
-        layoutLoading.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideLoadingLayout() {
-        layoutLoading.setVisibility(View.GONE);
-    }
-
-    @Override
     public void layoutLoadingVisibility(boolean isVisible) {
         RxView.visibility(layoutLoading, View.GONE).call(isVisible);
-    }
-
-    @Override
-    public void showLoadFailedLayout() {
-        layoutLoadFailed.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideLoadFailedLayout() {
-        layoutLoadFailed.setVisibility(View.GONE);
     }
 
     @Override
     public void layoutLoadFailedVisibility(boolean isVisible) {
         RxView.visibility(layoutLoadFailed, View.GONE).call(isVisible);
     }
-
-    @Override
-    public void showEmptyLayout() {
-        layoutEmpty.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideEmptyLayout() {
-        layoutEmpty.setVisibility(View.GONE);
-    }
-
     @Override
     public void layoutEmptyVisibility(boolean isVisible) {
         RxView.visibility(layoutEmpty, View.GONE).call(isVisible);
-    }
-
-    @Override
-    public void showContentLayout() {
-        layoutContent.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideContentLayout() {
-        layoutContent.setVisibility(View.GONE);
     }
 
     @Override
