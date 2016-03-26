@@ -20,15 +20,15 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public abstract class IFilmDataStore extends IHtmlDataStore {
+public interface IFilmDataStore extends IHtmlDataStore {
 
-    abstract Observable<ArrayList<BaseInfoEntity>> getNewest(@IntRange(from = 1, to = 131) final int index);
+    Observable<ArrayList<BaseInfoEntity>> getNewest(@IntRange(from = 1, to = 131) final int index);
 
-    abstract Observable<ArrayList<BaseInfoEntity>> getDomestic(@IntRange(from = 1, to = 87) final int index);
+    Observable<ArrayList<BaseInfoEntity>> getDomestic(@IntRange(from = 1, to = 87) final int index);
 
-    abstract Observable<ArrayList<BaseInfoEntity>> getEuropeAmerica(@IntRange(from = 1, to = 147) final int index);
+    Observable<ArrayList<BaseInfoEntity>> getEuropeAmerica(@IntRange(from = 1, to = 147) final int index);
 
-    abstract Observable<ArrayList<BaseInfoEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 25) final int index);
+    Observable<ArrayList<BaseInfoEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 25) final int index);
 
-    abstract Observable<FilmDetailEntity> getFilmDetail(final String filmStr);
+    Observable<FilmDetailEntity> getFilmDetail(final String filmStr);
 }

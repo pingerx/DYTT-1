@@ -1,8 +1,5 @@
 package com.bzh.data.repository;
 
-import android.support.annotation.NonNull;
-
-import com.bzh.common.utils.SystemUtils;
 import com.bzh.data.exception.TaskException;
 import com.bzh.data.film.entity.BaseInfoEntity;
 
@@ -16,8 +13,6 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
-import rx.Observable;
-import rx.Subscriber;
 import rx.functions.Func1;
 
 /**
@@ -30,30 +25,9 @@ import rx.functions.Func1;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public abstract class IHtmlDataStore {
+public interface IHtmlDataStore {
 
-    @NonNull
-    public Observable<ArrayList<BaseInfoEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
-        return Observable.create(new Observable.OnSubscribe<ArrayList<BaseInfoEntity>>() {
-            @Override
-            public void call(Subscriber<? super ArrayList<BaseInfoEntity>> subscriber) {
-                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
-                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
-                } else {
-                    try {
-                        observable.map(transformCharset)
-                                .map(transformEntity)
-                                .subscribe(subscriber);
-                    } catch (TaskException e) {
-                        subscriber.onError(e);
-                    }
-                }
-            }
-        });
-    }
-
-
-    public Func1<String, ArrayList<BaseInfoEntity>> transformEntity = new Func1<String, ArrayList<BaseInfoEntity>>() {
+    Func1<String, ArrayList<BaseInfoEntity>> transformEntity = new Func1<String, ArrayList<BaseInfoEntity>>() {
         @Override
         public ArrayList<BaseInfoEntity> call(String s) {
             Document document = Jsoup.parse(s);
@@ -83,12 +57,12 @@ public abstract class IHtmlDataStore {
     };
 
 
-    public String TO_CHARSET_NAME = "GB2312";
+    String TO_CHARSET_NAME = "GB2312";
 
     /**
      * 将html解析成字符串
      */
-    public Func1<ResponseBody, String> transformCharset = new Func1<ResponseBody, String>() {
+    Func1<ResponseBody, String> transformCharset = new Func1<ResponseBody, String>() {
         @Override
         public String call(ResponseBody responseBody) {
             try {

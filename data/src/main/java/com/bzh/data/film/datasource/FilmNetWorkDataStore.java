@@ -32,7 +32,7 @@ import rx.functions.Func1;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmNetWorkDataStore extends IFilmDataStore {
+public class FilmNetWorkDataStore implements IFilmDataStore {
 
     public static final String NAME = "◎片名";
     public static final String YEARS = "◎年代";
@@ -205,6 +205,26 @@ public class FilmNetWorkDataStore extends IFilmDataStore {
     public Observable<ArrayList<BaseInfoEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 25) int index) {
         return getNewWorkObservable(iFilmService
                 .getJapanSouthKorea(index));
+    }
+
+    @NonNull
+    private Observable<ArrayList<BaseInfoEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
+        return Observable.create(new Observable.OnSubscribe<ArrayList<BaseInfoEntity>>() {
+            @Override
+            public void call(Subscriber<? super ArrayList<BaseInfoEntity>> subscriber) {
+                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
+                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
+                } else {
+                    try {
+                        observable.map(transformCharset)
+                                .map(transformEntity)
+                                .subscribe(subscriber);
+                    } catch (TaskException e) {
+                        subscriber.onError(e);
+                    }
+                }
+            }
+        });
     }
 
     @Override
