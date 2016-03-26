@@ -18,7 +18,6 @@ import com.bzh.recycler.ExRecyclerView;
 import com.jakewharton.rxbinding.view.RxView;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * ==========================================================<br>
@@ -121,6 +120,11 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
         if (!TextUtils.isEmpty(content)) {
             ((TextView) recyclerView.getFooterView().findViewById(R.id.txtLoadingHint)).setText(content);
         }
+    }
+
+    @Override
+    public void footerVisibility(boolean isVisible) {
+        RxView.visibility(recyclerView.getFooterView(), View.GONE).call(isVisible);
     }
 
     @Override

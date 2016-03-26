@@ -1,5 +1,7 @@
 package com.bzh.dytt.base.refresh_recyclerview;
 
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +18,7 @@ import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import rx.Observable;
@@ -92,6 +95,15 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
      */
     private IPaging paging;
 
+    private WeakReference<Handler> handlerWR = new WeakReference<Handler>(new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    });
+
+
     public RefreshRecyclerPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
         this.baseActivity = baseActivity;
         this.baseFragment = baseFragment;
@@ -115,6 +127,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
      * Update the page some state when the configuration changed.
      */
     public void onRefreshConfigChanged(RefreshConfig refreshConfig) {
+        iView.footerVisibility(isRefreshing());
         iView.layLoadingVisibility(refreshConfig.canLoadMore);
         iView.btnLoadMoreVisibility(!refreshConfig.canLoadMore);
         iView.setTextLoadingHint(loadingHintLabel());
@@ -245,7 +258,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
     }
 
     public static class RefreshConfig implements Serializable {
-        public boolean canLoadMore = true;
+        public boolean canLoadMore = true; // initial value must be true;
     }
 
     /**
@@ -329,10 +342,12 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
                 exCommonAdapter.addData(resultList);
             }
 
+            // process paging
             if (null != paging) {
                 paging.processData();
             }
 
+            // process canLoadMOre
             if (requestMode == REQUEST_MODE_DATA_FIRST) {
                 refreshConfig.canLoadMore = true;
             }

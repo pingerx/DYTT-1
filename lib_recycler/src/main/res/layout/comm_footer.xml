@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="58dip"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <ProgressBar
             style="@android:style/Widget.Material.ProgressBar"

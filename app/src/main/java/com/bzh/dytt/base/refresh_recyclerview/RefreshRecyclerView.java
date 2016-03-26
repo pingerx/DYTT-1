@@ -35,6 +35,8 @@ public interface RefreshRecyclerView extends BaseView {
 
     void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter);
 
+    void footerVisibility(boolean isVisible);
+
     void btnLoadMoreVisibility(boolean isVisible);
 
     void layLoadingVisibility(boolean isVisible);
@@ -52,6 +54,5 @@ public interface RefreshRecyclerView extends BaseView {
     SwipeRefreshLayout getSwipeRefreshLayout();
 
     void finishLoadMore();
-
 
 }
