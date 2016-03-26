@@ -119,6 +119,10 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         iView.getRecyclerView().setOnLoadingMoreListener(this);
         iView.initRecyclerView(new LinearLayoutManager(baseActivity), exCommonAdapter);
         iView.getSwipeRefreshLayout().setOnRefreshListener(this);
+        iView.getSwipeRefreshLayout().setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         onRefreshConfigChanged(refreshConfig);
     }

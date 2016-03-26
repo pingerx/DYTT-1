@@ -1,0 +1,18 @@
+http://www.ygdy8.net/html/tv/rihantv/list_8_1.html
+GET
+1
+Accept-Encoding: gzip
+HTTP/1.1 200 OK
+12
+Content-Encoding: gzip
+Last-Modified: Sat, 26 Mar 2016 00:05:20 GMT
+Vary: Accept-Encoding
+Connection: keep-alive
+Accept-Ranges: bytes
+Server: Microsoft-IIS/6.0
+Date: Sat, 26 Mar 2016 09:58:16 GMT
+Etag: "020592ff386d11:458"
+Content-Type: text/html
+X-Via: 231-696-988-634-377 Fikker/Webcache/3.6.6
+OkHttp-Sent-Millis: 1459000694560
+OkHttp-Received-Millis: 1459000694733

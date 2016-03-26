@@ -1,7 +1,7 @@
 package com.bzh.data.repository.network;
 
 import com.bzh.data.ApplicationTestCase;
-import com.bzh.data.film.entity.FilmEntity;
+import com.bzh.data.film.entity.BaseInfoEntity;
 import com.bzh.data.exception.TaskException;
 import com.bzh.data.film.datasource.FilmNetWorkDataStore;
 
@@ -44,10 +44,10 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
     TaskException dataLayerException;
 
     @Mock
-    ArrayList<FilmEntity> filmEntities;
+    ArrayList<BaseInfoEntity> filmEntities;
 
     @Mock
-    FilmEntity filmEntity;
+    BaseInfoEntity baseInfoEntity;
 
     @Before
     public void setUp() {
@@ -89,15 +89,15 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
 
     @Test
     public void testGetNewest() throws Exception {
-        when(mockNetWorkDataStore.getNewest(1)).thenReturn(Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
+        when(mockNetWorkDataStore.getNewest(1)).thenReturn(Observable.create(new Observable.OnSubscribe<ArrayList<BaseInfoEntity>>() {
             @Override
-            public void call(Subscriber<? super ArrayList<FilmEntity>> subscriber) {
+            public void call(Subscriber<? super ArrayList<BaseInfoEntity>> subscriber) {
                 subscriber.onError(dataLayerException);
             }
         }));
         when(dataLayerException.getCode()).thenReturn(TaskException.ERROR_NONE_NETWORK);
         when(dataLayerException.getMessage()).thenReturn(TaskException.LABEL_NONE_NETWORK);
-        mockNetWorkDataStore.getNewest(1).subscribe(new Subscriber<ArrayList<FilmEntity>>() {
+        mockNetWorkDataStore.getNewest(1).subscribe(new Subscriber<ArrayList<BaseInfoEntity>>() {
             @Override
             public void onCompleted() {
             }
@@ -112,23 +112,23 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
             }
 
             @Override
-            public void onNext(ArrayList<FilmEntity> filmEntities) {
+            public void onNext(ArrayList<BaseInfoEntity> filmEntities) {
             }
         });
 
 
-        when(mockNetWorkDataStore.getNewest(131)).thenReturn(Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
+        when(mockNetWorkDataStore.getNewest(131)).thenReturn(Observable.create(new Observable.OnSubscribe<ArrayList<BaseInfoEntity>>() {
             @Override
-            public void call(Subscriber<? super ArrayList<FilmEntity>> subscriber) {
+            public void call(Subscriber<? super ArrayList<BaseInfoEntity>> subscriber) {
                 subscriber.onNext(filmEntities);
                 subscriber.onCompleted();
             }
         }));
 
-        when(filmEntities.get(0)).thenReturn(filmEntity);
+        when(filmEntities.get(0)).thenReturn(baseInfoEntity);
         when(filmEntities.get(0).getName()).thenReturn("道士下山");
         when(filmEntities.get(0).getUrl()).thenReturn("http://www.baidu.com");
-        mockNetWorkDataStore.getNewest(131).subscribe(new Subscriber<ArrayList<FilmEntity>>() {
+        mockNetWorkDataStore.getNewest(131).subscribe(new Subscriber<ArrayList<BaseInfoEntity>>() {
             @Override
             public void onCompleted() {
             }
@@ -138,7 +138,7 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
             }
 
             @Override
-            public void onNext(ArrayList<FilmEntity> filmEntities) {
+            public void onNext(ArrayList<BaseInfoEntity> filmEntities) {
                 assertNotNull(filmEntities);
                 assertEquals(filmEntities.get(0).getName(), "道士下山");
                 assertEquals(filmEntities.get(0).getUrl(), "http://www.baidu.com");

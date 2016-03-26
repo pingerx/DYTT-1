@@ -3,12 +3,11 @@ package com.bzh.data.film.datasource;
 import android.support.annotation.IntRange;
 
 import com.bzh.data.film.entity.FilmDetailEntity;
-import com.bzh.data.film.entity.FilmEntity;
+import com.bzh.data.film.entity.BaseInfoEntity;
 import com.bzh.data.repository.IHtmlDataStore;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
 import rx.Observable;
 
 /**
@@ -21,15 +20,15 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface IFilmDataStore extends IHtmlDataStore {
+public abstract class IFilmDataStore extends IHtmlDataStore {
 
-    Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) final int index);
+    abstract Observable<ArrayList<BaseInfoEntity>> getNewest(@IntRange(from = 1, to = 131) final int index);
 
-    Observable<ArrayList<FilmEntity>> getDomestic(@IntRange(from = 1, to = 87) final int index);
+    abstract Observable<ArrayList<BaseInfoEntity>> getDomestic(@IntRange(from = 1, to = 87) final int index);
 
-    Observable<ArrayList<FilmEntity>> getEuropeAmerica(@IntRange(from = 1, to = 147) final int index);
+    abstract Observable<ArrayList<BaseInfoEntity>> getEuropeAmerica(@IntRange(from = 1, to = 147) final int index);
 
-    Observable<ArrayList<FilmEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 25) final int index);
+    abstract Observable<ArrayList<BaseInfoEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 25) final int index);
 
-    Observable<FilmDetailEntity> getFilmDetail(final String filmStr);
+    abstract Observable<FilmDetailEntity> getFilmDetail(final String filmStr);
 }

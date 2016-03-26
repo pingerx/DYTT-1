@@ -1,0 +1,18 @@
+http://www.ygdy8.net/html/tv/hepai/guochanlist_59_1.html
+GET
+1
+Accept-Encoding: gzip
+HTTP/1.1 200 OK
+12
+Content-Length: 1279
+Content-Type: text/html
+Content-Encoding: gzip
+Content-Location: http://www.ygdy8.net/error.htm?404;http://www.ygdy8.net:80/html/tv/hepai/guochanlist_59_1.html
+Last-Modified: Tue, 29 Apr 2014 04:54:22 GMT
+Accept-Ranges: bytes
+ETag: "09310166763cf1:458"
+Vary: Accept-Encoding
+Server: Microsoft-IIS/6.0
+Date: Sat, 26 Mar 2016 13:58:56 GMT
+OkHttp-Sent-Millis: 1459000739942
+OkHttp-Received-Millis: 1459000740224

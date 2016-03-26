@@ -5,6 +5,7 @@ import android.content.Context;
 import com.bzh.common.context.GlobalContext;
 import com.bzh.data.film.service.IFilmService;
 import com.bzh.data.home.IHomePageService;
+import com.bzh.data.tv.service.ITvService;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;

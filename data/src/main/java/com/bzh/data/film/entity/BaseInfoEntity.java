@@ -13,7 +13,7 @@ import android.os.Parcelable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmEntity  {
+public class BaseInfoEntity {
 
     private String name;
     private String url;
@@ -45,7 +45,7 @@ public class FilmEntity  {
 
     @Override
     public String toString() {
-        return "FilmEntity{" +
+        return "BaseInfoEntity{" +
                 "name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", publishTime='" + publishTime + '\'' +

@@ -10,7 +10,7 @@ package com.bzh.recycler;
  * <b>修订历史</b>：　<br>
  * ========================================================== <br>
  */
-public interface IModelType {
+public interface IExModelType {
 
     int getModelType();
 }

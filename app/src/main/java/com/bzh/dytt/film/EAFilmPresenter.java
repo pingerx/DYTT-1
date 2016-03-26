@@ -2,7 +2,7 @@ package com.bzh.dytt.film;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.bzh.data.film.entity.FilmEntity;
+import com.bzh.data.film.entity.BaseInfoEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.god.BaseActivity;
@@ -26,13 +26,13 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class EAFilmPresenter extends RefreshRecyclerPresenter<FilmEntity, ArrayList<FilmEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
+public class EAFilmPresenter extends RefreshRecyclerPresenter<BaseInfoEntity, ArrayList<BaseInfoEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
 
     public EAFilmPresenter(BaseActivity baseActivity, BaseFragment baseFragment, EAFilmIView view) {
         super(baseActivity, baseFragment, view);
     }
 
-    public Observable<ArrayList<FilmEntity>> getRequestDataObservable(String nextPage) {
+    public Observable<ArrayList<BaseInfoEntity>> getRequestDataObservable(String nextPage) {
         return Repository.getInstance().getEuropeAmerica(Integer.valueOf(nextPage));
     }
 
@@ -41,10 +41,10 @@ public class EAFilmPresenter extends RefreshRecyclerPresenter<FilmEntity, ArrayL
     }
 
     @Override
-    public ExCommonAdapter<FilmEntity> getExCommonAdapter() {
-        return new ExCommonAdapter<FilmEntity>(getBaseActivity(), R.layout.item_newestfilm) {
+    public ExCommonAdapter<BaseInfoEntity> getExCommonAdapter() {
+        return new ExCommonAdapter<BaseInfoEntity>(getBaseActivity(), R.layout.item_newestfilm) {
             @Override
-            protected void convert(ExViewHolder viewHolder, FilmEntity item) {
+            protected void convert(ExViewHolder viewHolder, BaseInfoEntity item) {
                 viewHolder.setText(R.id.tv_film_name, item.getName());
                 viewHolder.setText(R.id.tv_film_publish_time, getBaseActivity().getResources().getString(R.string.label_publish_time, item.getPublishTime()));
             }

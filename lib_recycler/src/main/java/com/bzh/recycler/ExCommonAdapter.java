@@ -65,8 +65,8 @@ public abstract class ExCommonAdapter<T> extends RecyclerView.Adapter<ExViewHold
             } else {
                 T item = getItem(yCurrentDataIndex);
                 int itemLayout = 0;
-                if (item instanceof IModelType) {
-                    itemLayout = inflateItemView(((IModelType) item).getModelType());
+                if (item instanceof IExModelType) {
+                    itemLayout = inflateItemView(((IExModelType) item).getModelType());
                 }
                 if (0 == itemLayout) {
                     throw new IllegalArgumentException("布局文件不存在");
@@ -168,15 +168,15 @@ public abstract class ExCommonAdapter<T> extends RecyclerView.Adapter<ExViewHold
         } else if (null != yHeaderView) {
             yCurrentDataIndex = position - 1;
             T item = getItem(yCurrentDataIndex);
-            if (item instanceof IModelType) {
-                return ((IModelType) item).getModelType();
+            if (item instanceof IExModelType) {
+                return ((IExModelType) item).getModelType();
             }
             return super.getItemViewType(position);
         } else {
             yCurrentDataIndex = position;
             T item = getItem(yCurrentDataIndex);
-            if (item instanceof IModelType) {
-                return ((IModelType) item).getModelType();
+            if (item instanceof IExModelType) {
+                return ((IExModelType) item).getModelType();
             }
             return super.getItemViewType(position);
         }

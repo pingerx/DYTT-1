@@ -5,14 +5,13 @@ import android.support.annotation.NonNull;
 
 import com.bzh.common.utils.SystemUtils;
 import com.bzh.data.exception.TaskException;
+import com.bzh.data.film.entity.BaseInfoEntity;
 import com.bzh.data.film.entity.FilmDetailEntity;
-import com.bzh.data.film.entity.FilmEntity;
+import com.bzh.data.film.service.IFilmService;
 import com.bzh.data.service.RetrofitManager;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -33,7 +32,7 @@ import rx.functions.Func1;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmNetWorkDataStore implements IFilmDataStore {
+public class FilmNetWorkDataStore extends IFilmDataStore {
 
     public static final String NAME = "◎片名";
     public static final String YEARS = "◎年代";
@@ -50,36 +49,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
     public static final String DESCRIPTION = "◎简介";
     public static final String TRANSLATIONNAME = "◎译名";
 
-    private final RetrofitManager retrofitManager;
-
-    private Func1<String, ArrayList<FilmEntity>> transformFilmEntity = new Func1<String, ArrayList<FilmEntity>>() {
-        @Override
-        public ArrayList<FilmEntity> call(String s) {
-            Document document = Jsoup.parse(s);
-            Elements elements = document.select("div.co_content8").select("ul");
-            Elements hrefs = elements.select("a[href]");
-
-            Pattern pattern = Pattern.compile("^\\[.*\\]$");
-            ArrayList<FilmEntity> filmEntities = new ArrayList<>();
-            for (Element element : hrefs) {
-                String fullName = element.text();
-                if (pattern.matcher(fullName).matches()) {
-                    continue;
-                }
-                FilmEntity filmEntity = new FilmEntity();
-                filmEntity.setName(fullName.substring(0, fullName.lastIndexOf("》") + 1));
-                filmEntity.setUrl(element.attr("href"));
-                filmEntities.add(filmEntity);
-            }
-
-            Elements fonts = elements.select("font");
-            for (int i = 0; i < fonts.size(); i++) {
-                String fullName = fonts.get(i).text();
-                filmEntities.get(i).setPublishTime(fullName.substring(fullName.indexOf("：") + 1, fullName.indexOf("点击")).trim());
-            }
-            return filmEntities;
-        }
-    };
+    private final IFilmService iFilmService;
 
     private Func1<String, FilmDetailEntity> transformHtmlToEntity = new Func1<String, FilmDetailEntity>() {
         @Override
@@ -164,30 +134,30 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
         }
     };
 
-    public FilmNetWorkDataStore(RetrofitManager retrofitManager) {
-        this.retrofitManager = retrofitManager;
+    public FilmNetWorkDataStore(IFilmService iFilmService) {
+        this.iFilmService = iFilmService;
     }
 
     @Override
-    public Observable<ArrayList<FilmEntity>> getDomestic(@IntRange(from = 1, to = 87) int index) {
-        return getNewWorkObservable(retrofitManager.getFilmService()
+    public Observable<ArrayList<BaseInfoEntity>> getDomestic(@IntRange(from = 1, to = 87) int index) {
+        return getNewWorkObservable(iFilmService
                 .getDomestic(index));
     }
 
     @Override
-    public Observable<ArrayList<FilmEntity>> getNewest(@IntRange(from = 1, to = 131) final int index) {
+    public Observable<ArrayList<BaseInfoEntity>> getNewest(@IntRange(from = 1, to = 131) final int index) {
 //        retrofitManager.getFilmService().getNewest(index)
 //                .map(transformCharset)
-//                .map(transformFilmEntity)
-//                .flatMap(new Func1<ArrayList<FilmEntity>, Observable<FilmEntity>>() {
+//                .map(transformEntity)
+//                .flatMap(new Func1<ArrayList<BaseInfoEntity>, Observable<BaseInfoEntity>>() {
 //                    @Override
-//                    public Observable<FilmEntity> call(ArrayList<FilmEntity> filmEntities) {
+//                    public Observable<BaseInfoEntity> call(ArrayList<BaseInfoEntity> filmEntities) {
 //                        return Observable.from(filmEntities);
 //                    }
 //                })
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<FilmEntity>() {
+//                .subscribe(new Subscriber<BaseInfoEntity>() {
 //                    @Override
 //                    public void onCompleted() {
 //
@@ -199,7 +169,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
 //                    }
 //
 //                    @Override
-//                    public void onNext(FilmEntity filmEntity) {
+//                    public void onNext(BaseInfoEntity filmEntity) {
 //                        getFilmDetail(filmEntity.getUrl())
 //                                .subscribeOn(Schedulers.io())
 //                                .observeOn(AndroidSchedulers.mainThread())
@@ -221,42 +191,20 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
 //                                });
 //                    }
 //                });
-        return getNewWorkObservable(retrofitManager.getFilmService()
+        return getNewWorkObservable(iFilmService
                 .getNewest(index));
     }
 
     @Override
-    public Observable<ArrayList<FilmEntity>> getEuropeAmerica(@IntRange(from = 1, to = 147) int index) {
-        return getNewWorkObservable(retrofitManager.getFilmService()
+    public Observable<ArrayList<BaseInfoEntity>> getEuropeAmerica(@IntRange(from = 1, to = 147) int index) {
+        return getNewWorkObservable(iFilmService
                 .getEuropeAmerica(index));
     }
 
     @Override
-    public Observable<ArrayList<FilmEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 25) int index) {
-        return getNewWorkObservable(retrofitManager.getFilmService()
+    public Observable<ArrayList<BaseInfoEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 25) int index) {
+        return getNewWorkObservable(iFilmService
                 .getJapanSouthKorea(index));
-    }
-
-    @NonNull
-    private Observable<ArrayList<FilmEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
-        return Observable.create(new Observable.OnSubscribe<ArrayList<FilmEntity>>() {
-            @Override
-            public void call(Subscriber<? super ArrayList<FilmEntity>> subscriber) {
-                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
-                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
-                } else {
-                    try {
-
-
-                        observable.map(transformCharset)
-                                .map(transformFilmEntity)
-                                .subscribe(subscriber);
-                    } catch (TaskException e) {
-                        subscriber.onError(e);
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -268,8 +216,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
                     subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
                 } else {
                     try {
-                        retrofitManager
-                                .getFilmService()
+                        iFilmService
                                 .getFilmDetail(filmStr)
                                 .map(transformCharset)
                                 .map(transformHtmlToEntity)
