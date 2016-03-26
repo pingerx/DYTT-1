@@ -18,6 +18,7 @@ import com.bzh.recycler.ExRecyclerView;
 import com.jakewharton.rxbinding.view.RxView;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * ==========================================================<br>
@@ -53,6 +54,7 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
 
     @Bind(R.id.recyclerView)
     ExRecyclerView recyclerView;
+
 
     private RefreshRecyclerPresenter refreshRecyclerViewPresenter;
 
@@ -93,6 +95,7 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     public void layoutLoadFailedVisibility(boolean isVisible) {
         RxView.visibility(layoutLoadFailed, View.GONE).call(isVisible);
     }
+
     @Override
     public void layoutEmptyVisibility(boolean isVisible) {
         RxView.visibility(layoutEmpty, View.GONE).call(isVisible);
@@ -101,6 +104,30 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     @Override
     public void layoutContentVisibility(boolean isVisible) {
         RxView.visibility(layoutContent, View.GONE).call(isVisible);
+    }
+
+    @Override
+    public void btnLoadMoreVisibility(boolean isVisible) {
+        RxView.visibility(recyclerView.getFooterView().findViewById(R.id.btnLoadMore), View.GONE).call(isVisible);
+    }
+
+    @Override
+    public void layLoadingVisibility(boolean isVisible) {
+        RxView.visibility(recyclerView.getFooterView().findViewById(R.id.layLoading), View.GONE).call(isVisible);
+    }
+
+    @Override
+    public void setTextLoadingHint(String content) {
+        if (!TextUtils.isEmpty(content)) {
+            ((TextView) recyclerView.getFooterView().findViewById(R.id.txtLoadingHint)).setText(content);
+        }
+    }
+
+    @Override
+    public void setTextLoadMoreHint(String content) {
+        if (!TextUtils.isEmpty(content)) {
+            ((TextView) recyclerView.getFooterView().findViewById(R.id.btnLoadMore)).setText(content);
+        }
     }
 
     @Override
@@ -131,6 +158,7 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
             Log.i(TAG, "setTextLoadFailed: content is empty");
         }
     }
+
 
     @Override
     public void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter) {

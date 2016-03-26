@@ -53,6 +53,6 @@ public class NewestFilmPresenter extends RefreshRecyclerPresenter<FilmEntity, Ar
 
     @Override
     public String getMaxPage() {
-        return 131 + "";
+        return 2 + "";
     }
 }

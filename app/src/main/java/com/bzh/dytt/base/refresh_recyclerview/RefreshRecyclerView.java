@@ -35,6 +35,14 @@ public interface RefreshRecyclerView extends BaseView {
 
     void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter);
 
+    void btnLoadMoreVisibility(boolean isVisible);
+
+    void layLoadingVisibility(boolean isVisible);
+
+    void setTextLoadingHint(String content);
+
+    void setTextLoadMoreHint(String content);
+
     void showSwipeRefreshing();
 
     void hideSwipeRefreshing();

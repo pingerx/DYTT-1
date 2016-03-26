@@ -73,6 +73,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
     @IntDef({TASK_STATE_PREPARE, TASK_STATE_SUCCESS, TASK_STATE_FINISH, TASK_STATE_FAILED})
     public @interface TASK_STATE {
     }
+
     private static final int TASK_STATE_PREPARE = 1;
     private static final int TASK_STATE_SUCCESS = 2;
     private static final int TASK_STATE_FINISH = 3;
@@ -106,6 +107,26 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         iView.getRecyclerView().setOnLoadingMoreListener(this);
         iView.initRecyclerView(new LinearLayoutManager(baseActivity), exCommonAdapter);
         iView.getSwipeRefreshLayout().setOnRefreshListener(this);
+
+        onRefreshConfigChanged(refreshConfig);
+    }
+
+    /**
+     * Update the page some state when the configuration changed.
+     */
+    public void onRefreshConfigChanged(RefreshConfig refreshConfig) {
+        iView.layLoadingVisibility(refreshConfig.canLoadMore);
+        iView.btnLoadMoreVisibility(!refreshConfig.canLoadMore);
+        iView.setTextLoadingHint(loadingHintLabel());
+        iView.setTextLoadMoreHint(loadDisabledLabel());
+    }
+
+    public String loadingHintLabel() {
+        return "加载中...";
+    }
+
+    public String loadDisabledLabel() {
+        return "全部都加载完了";
     }
 
     @NonNull
@@ -126,7 +147,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
     public void onRequestData(@MODE_REQUEST_DATA int requestMode) {
 
-        Log.d(TAG, "onRequestData() called with: " + "requestMode = [" + requestMode + "]");
+        Log.d(TAG, "onRequestData() called with: " + "requestMode = [" + getRequestModeName(requestMode) + "]");
 
         if (REQUEST_MODE_DATA_FIRST == requestMode || REQUEST_MODE_DATA_REFRESH == requestMode) {
             paging = configPaging();
@@ -145,6 +166,18 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         }
     }
 
+    private String getRequestModeName(int requestMode) {
+        switch (requestMode) {
+            case REQUEST_MODE_DATA_FIRST:
+                return "第一次请求数据";
+            case REQUEST_MODE_DATA_REFRESH:
+                return "刷新数据";
+            case REQUEST_MODE_DATA_LOAD_MORE:
+                return "加载更多数据";
+        }
+        return "未知状态";
+    }
+
 
     public abstract Observable<Entities> getRequestDataObservable(String nextPage);
 
@@ -160,7 +193,9 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
     @Override
     public void onLoadingMore() {
-        onRequestData(REQUEST_MODE_DATA_LOAD_MORE);
+        if (refreshConfig != null && refreshConfig.canLoadMore) {
+            onRequestData(REQUEST_MODE_DATA_LOAD_MORE);
+        }
     }
 
     @Override
@@ -213,6 +248,9 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         public boolean canLoadMore = true;
     }
 
+    /**
+     * Maximum value of the current page request index.
+     */
     public abstract String getMaxPage();
 
     public class DefaultTaskSubscriber extends Subscriber<Entities> implements TaskSubscriber<Entities>, Action0 {
@@ -230,18 +268,18 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
         @Override
         final public void onCompleted() {
+            this.onFinish();
             if (!isUnsubscribed()) {
                 unsubscribe();
             }
-            this.onFinish();
         }
 
         @Override
         final public void onError(Throwable e) {
+            this.onFailure(e);
             if (!isUnsubscribed()) {
                 unsubscribe();
             }
-            this.onFailure(e);
         }
 
         @Override
@@ -303,12 +341,16 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
                 if (null != paging) {
                     if (Integer.valueOf(paging.getNextPage()) > Integer.valueOf(paging.getMaxPage())) {
                         refreshConfig.canLoadMore = false;
+                    } else {
+                        refreshConfig.canLoadMore = true;
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 refreshConfig.canLoadMore = false;
             }
+
+            onRefreshConfigChanged(refreshConfig);
         }
 
         public boolean resultIsEmpty(Entities entities) {
@@ -325,8 +367,11 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         }
     }
 
+    /**
+     * Whether the page is refreshing or loading state.
+     */
     public boolean isRefreshing() {
-        return subscriber != null && subscriber.isUnsubscribed();
+        return subscriber != null && !subscriber.isUnsubscribed();
     }
 
     /**

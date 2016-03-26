@@ -69,7 +69,7 @@ public class ExRecyclerView extends RecyclerView {
     }
 
     private void initDefaultFooterView(Context context) {
-        footerView = LayoutInflater.from(context).inflate(R.layout.common_footer, null);
+        footerView = LayoutInflater.from(context).inflate(R.layout.comm_footer, null);
         footerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
@@ -123,24 +123,20 @@ public class ExRecyclerView extends RecyclerView {
      * 执行加载更多的逻辑，需要传入加载更多时加载数据的监听
      */
     public void onLoadMore(final OnLoadMoreListener onLoadingMoreListener) {
-        if (footerView != null) {
-            if (!isLoadingMore) {
-                isLoadingMore = true;
-                footerView.setVisibility(View.VISIBLE);
-                footerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        onLoadingMoreListener.onLoadingMore();
-                    }
-                }, 300);
-            }
+        if (footerView != null && !isLoadingMore) {
+            isLoadingMore = true;
+            footerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onLoadingMoreListener.onLoadingMore();
+                }
+            }, 300);
         }
     }
 
     public void finishLoadingMore() {
-        if (isLoadingMore) {
+        if (footerView != null && isLoadingMore) {
             isLoadingMore = false;
-            footerView.setVisibility(View.GONE);
         }
     }
 
