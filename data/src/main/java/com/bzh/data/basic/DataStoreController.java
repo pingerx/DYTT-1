@@ -36,6 +36,7 @@ public class DataStoreController {
     ///////////////////////////////////////////////////////////////////////////
     // Single Instance
     private static DataStoreController dataStoreController;
+
     public static DataStoreController getInstance() {
         DataStoreController tmp = dataStoreController;
         if (tmp == null) {
@@ -99,7 +100,11 @@ public class DataStoreController {
                             continue;
                         }
                         BaseInfoEntity baseInfoEntity = new BaseInfoEntity();
-                        baseInfoEntity.setName(fullName.substring(0, fullName.lastIndexOf("》") + 1));
+                        if (isFilmType(fullName)) {
+                            baseInfoEntity.setName(fullName.substring(0, fullName.lastIndexOf("》") + 1));
+                        } else {
+                            baseInfoEntity.setName(fullName);
+                        }
                         baseInfoEntity.setUrl(element.attr("href"));
                         filmEntities.add(baseInfoEntity);
                     }
@@ -114,6 +119,10 @@ public class DataStoreController {
             };
         }
         return listFun;
+    }
+
+    private boolean isFilmType(String fullName) {
+        return fullName.contains("》");
     }
 
     @NonNull

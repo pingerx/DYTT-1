@@ -1,4 +1,4 @@
-package com.bzh.data.service;
+package com.bzh.data.comic;
 
 import android.support.annotation.IntRange;
 

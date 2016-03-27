@@ -1,10 +1,13 @@
-package com.bzh.data.service;
+package com.bzh.data.repository;
 
 import android.content.Context;
 
 import com.bzh.common.context.GlobalContext;
 import com.bzh.data.film.IFilmService;
+import com.bzh.data.comic.IComicService;
+import com.bzh.data.game.IGameService;
 import com.bzh.data.tv.ITvService;
+import com.bzh.data.variety.IVarietyService;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;

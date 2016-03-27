@@ -2,7 +2,7 @@ package com.bzh.data.film;
 
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.basic.BaseInfoEntity;
-import com.bzh.data.service.RetrofitManager;
+import com.bzh.data.repository.RetrofitManager;
 import com.google.gson.Gson;
 
 import org.junit.After;

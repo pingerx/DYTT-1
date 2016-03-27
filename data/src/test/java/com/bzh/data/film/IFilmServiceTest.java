@@ -1,7 +1,6 @@
 package com.bzh.data.film;
 
-import com.bzh.data.film.IFilmService;
-import com.bzh.data.service.RetrofitManager;
+import com.bzh.data.repository.RetrofitManager;
 
 import org.junit.Before;
 import org.junit.Test;

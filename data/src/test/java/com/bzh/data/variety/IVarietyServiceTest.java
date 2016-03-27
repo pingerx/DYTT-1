@@ -1,10 +1,12 @@
-package com.bzh.data.tv;
+package com.bzh.data.variety;
 
 import com.bzh.data.repository.RetrofitManager;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import rx.Subscriber;
@@ -21,22 +23,23 @@ import static org.junit.Assert.*;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class ITvServiceTest {
+public class IVarietyServiceTest {
 
-    private ITvService tvService;
+    private IVarietyService varietyService;
     private Subscriber<ResponseBody> subscriber;
 
     @Before
     public void setUp() throws Exception {
-        tvService = RetrofitManager.getInstance().getTvService();
+        varietyService = RetrofitManager.getInstance().getVarietyService();
         subscriber = new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
-
+                System.out.println("IVarietyServiceTest.onCompleted");
             }
 
             @Override
             public void onError(Throwable e) {
+                System.out.println("IVarietyServiceTest.onError");
                 System.out.println("e = [" + e + "]");
                 assertNull(e);
             }
@@ -44,6 +47,11 @@ public class ITvServiceTest {
             @Override
             public void onNext(ResponseBody responseBody) {
                 assertNotNull(responseBody);
+                try {
+                    assertNotNull(responseBody.string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         };
     }
@@ -54,37 +62,27 @@ public class ITvServiceTest {
     }
 
     @Test
-    public void testGetChineseDomesticTv() throws Exception {
-        tvService.getChineseDomesticTv(1).subscribe(subscriber);
+    public void testGet2013NewestChineseVariety() throws Exception {
+        varietyService.get2013NewestChineseVariety(1).subscribe(subscriber);
     }
 
     @Test
-    public void testGetChineseDomesticTv_1() throws Exception {
-        tvService.getChineseDomesticTv_1(1).subscribe(subscriber);
+    public void testGet2013ChineseVariety() throws Exception {
+        varietyService.get2013ChineseVariety(1).subscribe(subscriber);
     }
 
     @Test
-    public void testGetChineseDomesticTv_2() throws Exception {
-        tvService.getChineseDomesticTv_2(1).subscribe(subscriber);
+    public void testGet2013HKTVariety() throws Exception {
+        varietyService.get2013HKTVariety(1).subscribe(subscriber);
     }
 
     @Test
-    public void testGetHKTTv() throws Exception {
-        tvService.getHKTTv(1).subscribe(subscriber);
+    public void testGet2013OtherVariety() throws Exception {
+        varietyService.get2013OtherVariety(1).subscribe(subscriber);
     }
 
     @Test
-    public void testGetChineseTv() throws Exception {
-        tvService.getChineseTv(1).subscribe(subscriber);
-    }
-
-    @Test
-    public void testGetJapanSouthKoreaTV() throws Exception {
-        tvService.getJapanSouthKoreaTV(1).subscribe(subscriber);
-    }
-
-    @Test
-    public void testGetEuropeAmericaTV() throws Exception {
-        tvService.getEuropeAmericaTV(1).subscribe(subscriber);
+    public void testGet2009ChineseVariety() throws Exception {
+        varietyService.get2009ChineseVariety(1).subscribe(subscriber);
     }
 }
