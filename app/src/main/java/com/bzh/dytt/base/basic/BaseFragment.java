@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bzh.dytt.eventbus.EventCenter;
+import com.bzh.dytt.base.eventbus.EventCenter;
 
 import org.greenrobot.eventbus.EventBus;
 

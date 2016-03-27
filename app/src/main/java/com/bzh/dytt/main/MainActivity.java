@@ -12,7 +12,7 @@ import android.view.MenuItem;
 
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseActivity;
-import com.bzh.dytt.widget.XViewPager;
+import com.bzh.dytt.base.widget.XViewPager;
 
 import butterknife.Bind;
 

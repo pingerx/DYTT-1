@@ -140,4 +140,28 @@ public class RepositoryTest extends ApplicationTestCase {
     }
 
 
+    @Test
+    public void testGet2013NewestChineseVariety() throws Exception {
+        instance.get2013NewestChineseVariety(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGet2013ChineseVariety() throws Exception {
+        instance.get2013ChineseVariety(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGet2013HKTVariety() throws Exception {
+        instance.get2013HKTVariety(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGet2013OtherVariety() throws Exception {
+        instance.get2013OtherVariety(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGet2009ChineseVariety() throws Exception {
+        instance.get2009ChineseVariety(1).subscribe(listSubscriber);
+    }
 }

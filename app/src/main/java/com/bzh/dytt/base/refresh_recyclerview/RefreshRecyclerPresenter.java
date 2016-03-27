@@ -12,7 +12,7 @@ import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.basic.IFragmentPresenter;
 import com.bzh.dytt.base.basic.IPaging;
-import com.bzh.dytt.rx.TaskSubscriber;
+import com.bzh.dytt.base.rx.TaskSubscriber;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;

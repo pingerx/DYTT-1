@@ -13,6 +13,7 @@ import com.bzh.dytt.base.basic.IActivityPresenter;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.tv.TvMainFragment;
+import com.bzh.dytt.variety.VarietyMainFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -149,7 +150,7 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
             case TV:
                 return TvMainFragment.newInstance();
             case VARIETY:
-                return FilmMainFragment.newInstance();
+                return VarietyMainFragment.newInstance();
             case COMIC:
                 return FilmMainFragment.newInstance();
             case GAME:

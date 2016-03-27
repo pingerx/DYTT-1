@@ -21,8 +21,8 @@ import java.util.ArrayList;
  */
 public class TvMainPresenter extends TabLayoutPresenter implements IFragmentPresenter {
 
-    public static final String GCHP = "GCHP";
-    public static final String GC = "GC";
+    public static final String GCHP = "XBZY";
+    public static final String GC = "JBZY";
     private static final String HP = "HP";
     private static final String GT = "GT";
     private static final String HY = "HY";

@@ -1,4 +1,4 @@
-package com.bzh.dytt.eventbus;
+package com.bzh.dytt.base.eventbus;
 
 /**
  * ========================================================== <br>

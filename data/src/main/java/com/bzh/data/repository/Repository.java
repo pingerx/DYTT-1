@@ -10,6 +10,9 @@ import com.bzh.data.film.IFilmService;
 import com.bzh.data.tv.ITvDataStore;
 import com.bzh.data.tv.TvNetWorkDataStore;
 import com.bzh.data.tv.ITvService;
+import com.bzh.data.variety.IVarietyDataStore;
+import com.bzh.data.variety.IVarietyService;
+import com.bzh.data.variety.VarietyNetWorkDataStore;
 
 import java.util.ArrayList;
 
@@ -25,12 +28,13 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class Repository implements IFilmDataStore, ITvDataStore {
+public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataStore {
 
     private static final String TAG = "Repository";
     private static volatile Repository repository;
     private static volatile IFilmService filmService;
     private static volatile ITvService tvService;
+    private static IVarietyService varietyService;
 
     public static Repository getInstance() {
         Repository tmp = repository;
@@ -42,6 +46,7 @@ public class Repository implements IFilmDataStore, ITvDataStore {
                     repository = tmp;
                     filmService = RetrofitManager.getInstance().getFilmService();
                     tvService = RetrofitManager.getInstance().getTvService();
+                    varietyService = RetrofitManager.getInstance().getVarietyService();
                 }
             }
         }
@@ -54,6 +59,7 @@ public class Repository implements IFilmDataStore, ITvDataStore {
 
     private FilmNetWorkDataStore filmNetWorkDataStore;
     private TvNetWorkDataStore tvNetWorkDataStore;
+    private VarietyNetWorkDataStore varietyNetWorkDataStore;
 
     private IFilmDataStore getFilmDataStore() {
         if (filmNetWorkDataStore == null) {
@@ -67,6 +73,13 @@ public class Repository implements IFilmDataStore, ITvDataStore {
             tvNetWorkDataStore = new TvNetWorkDataStore(tvService);
         }
         return tvNetWorkDataStore;
+    }
+
+    private IVarietyDataStore getVarietyDataStore() {
+        if (varietyNetWorkDataStore == null) {
+            varietyNetWorkDataStore = new VarietyNetWorkDataStore(varietyService);
+        }
+        return varietyNetWorkDataStore;
     }
 
     @Override
@@ -127,5 +140,30 @@ public class Repository implements IFilmDataStore, ITvDataStore {
     @Override
     public Observable<ArrayList<BaseInfoEntity>> getEuropeAmericaTV(@IntRange(from = 1, to = 22) int index) {
         return getTvDataStore().getEuropeAmericaTV(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> get2013NewestChineseVariety(@IntRange(from = 1, to = 98) int index) {
+        return getVarietyDataStore().get2013NewestChineseVariety(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> get2013ChineseVariety(@IntRange(from = 1, to = 46) int index) {
+        return getVarietyDataStore().get2013ChineseVariety(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> get2013HKTVariety(@IntRange(from = 1, to = 44) int index) {
+        return getVarietyDataStore().get2013HKTVariety(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> get2013OtherVariety(@IntRange(from = 1, to = 8) int index) {
+        return getVarietyDataStore().get2013OtherVariety(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> get2009ChineseVariety(@IntRange(from = 1, to = 69) int index) {
+        return getVarietyDataStore().get2009ChineseVariety(index);
     }
 }
