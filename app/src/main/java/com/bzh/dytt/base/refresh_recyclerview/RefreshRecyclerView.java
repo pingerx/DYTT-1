@@ -4,7 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.bzh.dytt.base.god.BaseView;
+import com.bzh.dytt.base.basic.BaseView;
 import com.bzh.recycler.ExRecyclerView;
 
 /**

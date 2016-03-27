@@ -1,6 +1,8 @@
-package com.bzh.dytt.film;
+package com.bzh.dytt.tv;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 
 import com.bzh.dytt.base.tablayoutview.TabLayoutFragment;
 
@@ -14,20 +16,20 @@ import com.bzh.dytt.base.tablayoutview.TabLayoutFragment;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmMainFragment extends TabLayoutFragment implements FilmMainIView {
+public class TvMainFragment extends TabLayoutFragment implements TvMainIView {
 
-    public static FilmMainFragment newInstance() {
-        
+    public static TvMainFragment newInstance() {
+
         Bundle args = new Bundle();
-        
-        FilmMainFragment fragment = new FilmMainFragment();
+
+        TvMainFragment fragment = new TvMainFragment();
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Override
     protected void initFragmentConfig() {
-        tabLayoutPresenter = new FilmMainPresenter(getBaseActivity(), this, this);
+        tabLayoutPresenter = new TvMainPresenter(getBaseActivity(), this, this);
         tabLayoutPresenter.initFragmentConfig();
     }
 }

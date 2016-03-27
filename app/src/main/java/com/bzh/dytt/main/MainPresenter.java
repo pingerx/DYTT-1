@@ -9,9 +9,10 @@ import android.view.MenuItem;
 
 import com.bzh.dytt.R;
 import com.bzh.dytt.film.FilmMainFragment;
-import com.bzh.dytt.base.god.IActivityPresenter;
-import com.bzh.dytt.base.god.BaseActivity;
-import com.bzh.dytt.base.god.BaseFragment;
+import com.bzh.dytt.base.basic.IActivityPresenter;
+import com.bzh.dytt.base.basic.BaseActivity;
+import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.tv.TvMainFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,7 +147,7 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
             case FILM:
                 return FilmMainFragment.newInstance();
             case TV:
-                return FilmMainFragment.newInstance();
+                return TvMainFragment.newInstance();
             case VARIETY:
                 return FilmMainFragment.newInstance();
             case COMIC:

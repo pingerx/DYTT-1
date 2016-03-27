@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.bzh.common.utils.UIUtils;
 import com.bzh.dytt.R;
-import com.bzh.dytt.base.god.BaseFragment;
+import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.recycler.ExRecyclerView;
 import com.jakewharton.rxbinding.view.RxView;
 
@@ -54,7 +54,6 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     @Bind(R.id.recyclerView)
     ExRecyclerView recyclerView;
 
-
     private RefreshRecyclerPresenter refreshRecyclerViewPresenter;
 
     @Override
@@ -87,79 +86,107 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
 
     @Override
     public void layoutLoadingVisibility(boolean isVisible) {
-        RxView.visibility(layoutLoading, View.GONE).call(isVisible);
-    }
-
-    @Override
-    public void layoutLoadFailedVisibility(boolean isVisible) {
-        RxView.visibility(layoutLoadFailed, View.GONE).call(isVisible);
-    }
-
-    @Override
-    public void layoutEmptyVisibility(boolean isVisible) {
-        RxView.visibility(layoutEmpty, View.GONE).call(isVisible);
-    }
-
-    @Override
-    public void layoutContentVisibility(boolean isVisible) {
-        RxView.visibility(layoutContent, View.GONE).call(isVisible);
-    }
-
-    @Override
-    public void btnLoadMoreVisibility(boolean isVisible) {
-        RxView.visibility(recyclerView.getFooterView().findViewById(R.id.btnLoadMore), View.GONE).call(isVisible);
-    }
-
-    @Override
-    public void layLoadingVisibility(boolean isVisible) {
-        RxView.visibility(recyclerView.getFooterView().findViewById(R.id.layLoading), View.GONE).call(isVisible);
-    }
-
-    @Override
-    public void setTextLoadingHint(String content) {
-        if (!TextUtils.isEmpty(content)) {
-            ((TextView) recyclerView.getFooterView().findViewById(R.id.txtLoadingHint)).setText(content);
+        if (layoutLoading != null) {
+            RxView.visibility(layoutLoading, View.GONE).call(isVisible);
         }
     }
 
     @Override
+    public void layoutLoadFailedVisibility(boolean isVisible) {
+        if (layoutLoadFailed != null) {
+            RxView.visibility(layoutLoadFailed, View.GONE).call(isVisible);
+        }
+    }
+
+    @Override
+    public void layoutEmptyVisibility(boolean isVisible) {
+        if (layoutEmpty != null) {
+            RxView.visibility(layoutEmpty, View.GONE).call(isVisible);
+        }
+    }
+
+    @Override
+    public void layoutContentVisibility(boolean isVisible) {
+        if (layoutContent != null) {
+            RxView.visibility(layoutContent, View.GONE).call(isVisible);
+        }
+    }
+
+    @Override
+    public void btnLoadMoreVisibility(boolean isVisible) {
+        if (recyclerView.getFooterView().findViewById(R.id.btnLoadMore) != null) {
+            RxView.visibility(recyclerView.getFooterView().findViewById(R.id.btnLoadMore), View.GONE).call(isVisible);
+        }
+    }
+
+    @Override
+    public void layLoadingVisibility(boolean isVisible) {
+        if (recyclerView.getFooterView().findViewById(R.id.layLoading) != null) {
+            RxView.visibility(recyclerView.getFooterView().findViewById(R.id.layLoading), View.GONE).call(isVisible);
+        }
+    }
+
+    @Override
+    public void setTextLoadingHint(String content) {
+        if (recyclerView.getFooterView().findViewById(R.id.txtLoadingHint) != null) {
+            if (!TextUtils.isEmpty(content)) {
+                ((TextView) recyclerView.getFooterView().findViewById(R.id.txtLoadingHint)).setText(content);
+            }
+        }
+    }
+
+
+    @Override
     public void footerVisibility(boolean isVisible) {
-        RxView.visibility(recyclerView.getFooterView(), View.GONE).call(isVisible);
+        if (recyclerView.getFooterView() != null) {
+            RxView.visibility(recyclerView.getFooterView(), View.GONE).call(isVisible);
+        }
     }
 
     @Override
     public void setTextLoadMoreHint(String content) {
-        if (!TextUtils.isEmpty(content)) {
-            ((TextView) recyclerView.getFooterView().findViewById(R.id.btnLoadMore)).setText(content);
+        if (recyclerView.getFooterView().findViewById(R.id.btnLoadMore) != null) {
+            if (!TextUtils.isEmpty(content)) {
+                ((TextView) recyclerView.getFooterView().findViewById(R.id.btnLoadMore)).setText(content);
+            }
         }
     }
 
     @Override
     public void showSwipeRefreshing() {
-        swipeRefreshLayout.setRefreshing(true);
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(true);
+        }
     }
 
     @Override
     public void hideSwipeRefreshing() {
-        swipeRefreshLayout.setRefreshing(false);
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public boolean isRefreshing() {
-        return swipeRefreshLayout.isRefreshing();
+        if (swipeRefreshLayout != null) {
+            return swipeRefreshLayout.isRefreshing();
+        }
+        return false;
     }
 
     @Override
     public boolean isLoadingMore() {
-        return recyclerView.isLoadingMore();
+        return recyclerView != null && recyclerView.isLoadingMore();
     }
 
     @Override
     public void setTextLoadFailed(String content) {
-        if (!TextUtils.isEmpty(content)) {
-            txtLoadFailed.setText(content);
-        } else {
-            Log.i(TAG, "setTextLoadFailed: content is empty");
+        if (txtLoadFailed != null) {
+            if (!TextUtils.isEmpty(content)) {
+                txtLoadFailed.setText(content);
+            } else {
+                Log.i(TAG, "setTextLoadFailed: content is empty");
+            }
         }
     }
 
@@ -204,4 +231,5 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
             super.onDraw(c, parent, state);
         }
     }
+
 }

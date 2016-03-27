@@ -1,16 +1,11 @@
 package com.bzh.dytt.film;
 
-import android.support.v4.widget.SwipeRefreshLayout;
-
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.repository.Repository;
-import com.bzh.dytt.R;
-import com.bzh.dytt.base.god.BaseActivity;
-import com.bzh.dytt.base.god.BaseFragment;
-import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
-import com.bzh.recycler.ExCommonAdapter;
-import com.bzh.recycler.ExRecyclerView;
-import com.bzh.recycler.ExViewHolder;
+import com.bzh.dytt.base.baseinfo.BaseInfoPresenter;
+import com.bzh.dytt.base.basic.BaseActivity;
+import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
 
 import java.util.ArrayList;
 
@@ -26,29 +21,14 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class JSKFilmPresenter extends RefreshRecyclerPresenter<BaseInfoEntity, ArrayList<BaseInfoEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
+public class JSKFilmPresenter extends BaseInfoPresenter {
 
-    public JSKFilmPresenter(BaseActivity baseActivity, BaseFragment baseFragment, JSKFilmIView view) {
-        super(baseActivity, baseFragment, view);
+    public JSKFilmPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
+        super(baseActivity, baseFragment, iView);
     }
 
     public Observable<ArrayList<BaseInfoEntity>> getRequestListDataObservable(String nextPage) {
         return Repository.getInstance().getJapanSouthKorea(Integer.valueOf(nextPage));
-    }
-
-    @Override
-    public void onItemClick(ExViewHolder viewHolder) {
-    }
-
-    @Override
-    public ExCommonAdapter<BaseInfoEntity> getExCommonAdapter() {
-        return new ExCommonAdapter<BaseInfoEntity>(getBaseActivity(), R.layout.item_newestfilm) {
-            @Override
-            protected void convert(ExViewHolder viewHolder, BaseInfoEntity item) {
-                viewHolder.setText(R.id.tv_film_name, item.getName());
-                viewHolder.setText(R.id.tv_film_publish_time, getBaseActivity().getResources().getString(R.string.label_publish_time, item.getPublishTime()));
-            }
-        };
     }
 
     @Override

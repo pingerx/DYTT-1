@@ -2,6 +2,8 @@ package com.bzh.dytt.film;
 
 import android.support.v4.view.PagerAdapter;
 
+import com.bzh.dytt.base.tablayoutview.TabLayoutIView;
+
 /**
  * ==========================================================<br>
  * <b>版权</b>：　　　音悦台 版权所有(c)2016<br>
@@ -12,9 +14,5 @@ import android.support.v4.view.PagerAdapter;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface FilmMainIView {
-
-    void initContainer(PagerAdapter pagerAdapter);
-
-    void initTabLayout();
+public interface FilmMainIView extends TabLayoutIView{
 }

@@ -1,4 +1,4 @@
-package com.bzh.dytt.film;
+package com.bzh.dytt.tv;
 
 import android.os.Bundle;
 
@@ -16,17 +16,17 @@ import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class DomesticFilmFragment extends RefreshRecyclerFragment implements BaseInfoIView {
+public class GCHPTvFragment extends RefreshRecyclerFragment implements BaseInfoIView {
 
-    public static DomesticFilmFragment newInstance() {
+    public static GCHPTvFragment newInstance() {
         Bundle args = new Bundle();
-        DomesticFilmFragment fragment = new DomesticFilmFragment();
+        GCHPTvFragment fragment = new GCHPTvFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected RefreshRecyclerPresenter initRefreshRecyclerPresenter() {
-        return new DomesticFilmPresenter(getBaseActivity(), this, this);
+        return new GCHPTvPresenter(getBaseActivity(), this, this);
     }
 }

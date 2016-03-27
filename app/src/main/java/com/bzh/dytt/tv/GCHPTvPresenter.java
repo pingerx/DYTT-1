@@ -1,4 +1,4 @@
-package com.bzh.dytt.film;
+package com.bzh.dytt.tv;
 
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.repository.Repository;
@@ -21,14 +21,14 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NewestFilmPresenter extends BaseInfoPresenter {
+public class GCHPTvPresenter extends BaseInfoPresenter {
 
-    public NewestFilmPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
+    public GCHPTvPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
         super(baseActivity, baseFragment, iView);
     }
 
     public Observable<ArrayList<BaseInfoEntity>> getRequestListDataObservable(String nextPage) {
-        return Repository.getInstance().getNewest(Integer.valueOf(nextPage));
+        return Repository.getInstance().getChineseDomesticTv(Integer.valueOf(nextPage));
     }
 
     @Override

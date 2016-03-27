@@ -8,10 +8,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 
-import com.bzh.dytt.base.god.BaseActivity;
-import com.bzh.dytt.base.god.BaseFragment;
-import com.bzh.dytt.base.god.IFragmentPresenter;
-import com.bzh.dytt.base.god.IPaging;
+import com.bzh.dytt.base.basic.BaseActivity;
+import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.basic.IFragmentPresenter;
+import com.bzh.dytt.base.basic.IPaging;
 import com.bzh.dytt.rx.TaskSubscriber;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
