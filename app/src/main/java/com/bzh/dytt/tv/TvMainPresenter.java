@@ -35,6 +35,22 @@ public class TvMainPresenter extends TabLayoutPresenter implements IFragmentPres
 
     @Override
     public BaseFragment newFragment(StripTabItem stripTabItem) {
+        switch (stripTabItem.getType()) {
+            case GCHP:
+                return GCHPTvFragment.newInstance();
+            case GC:
+                return GCTvFragment.newInstance();
+            case HP:
+                return HPTvFragment.newInstance();
+            case GT:
+                return GTTvFragment.newInstance();
+            case HY:
+                return HYTvFragment.newInstance();
+            case RH:
+                return RHTvFragment.newInstance();
+            case OM:
+                return OMTvFragment.newInstance();
+        }
         return GCHPTvFragment.newInstance();
     }
 
