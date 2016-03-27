@@ -164,4 +164,39 @@ public class RepositoryTest extends ApplicationTestCase {
     public void testGet2009ChineseVariety() throws Exception {
         instance.get2009ChineseVariety(1).subscribe(listSubscriber);
     }
+
+    @Test
+    public void testGetComic() throws Exception {
+        instance.getComic(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGetNewComic() throws Exception {
+        instance.getNewComic(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGetSSComic() throws Exception {
+        instance.getSSComic(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGetOtherComic() throws Exception {
+        instance.getOtherComic(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGetGCComic() throws Exception {
+        instance.getGCComic(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGetHZWComic() throws Exception {
+        instance.getHZWComic(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGetHYComic() throws Exception {
+        instance.getHYComic(1).subscribe(listSubscriber);
+    }
 }

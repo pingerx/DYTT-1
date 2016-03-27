@@ -19,7 +19,46 @@ import rx.Observable;
  */
 public interface IComicService {
 
+    /**
+     * 动漫
+     */
     @GET("/html/dongman/list_16_{index}.html")
     Observable<ResponseBody> getComic(@Path("index") @IntRange(from = 1, to = 45) int index);
+
+    /**
+     * 新番
+     */
+    @GET("/html/dongman/new/list_79_{index}.html")
+    Observable<ResponseBody> getNewComic(@Path("index") @IntRange(from = 1, to = 8) int index);
+
+    /**
+     * 死神专区
+     */
+    @GET("/html/dongman/ss/list_67_{index}.html")
+    Observable<ResponseBody> getSSComic(@Path("index") @IntRange(from = 1, to = 5) int index);
+
+    /**
+     * 其他动漫
+     */
+    @GET("/html/dongman/qitadongman/list_70_{index}.html")
+    Observable<ResponseBody> getOtherComic(@Path("index") @IntRange(from = 1, to = 3) int index);
+
+    /**
+     * 国产动漫
+     */
+    @GET("/html/dongman/gcdh/list_62_{index}.html")
+    Observable<ResponseBody> getGCComic(@Path("index") @IntRange(from = 1, to = 2) int index);
+
+    /**
+     * 海贼王
+     */
+    @GET("/html/dongman/haizeiwangqu/list_69_{index}.html")
+    Observable<ResponseBody> getHZWComic(@Path("index") @IntRange(from = 1, to = 5) int index);
+
+    /**
+     * 海贼王
+     */
+    @GET("/html/dongman/hy/list_66_{index}.html")
+    Observable<ResponseBody> getHYComic(@Path("index") @IntRange(from = 1, to = 5) int index);
 
 }

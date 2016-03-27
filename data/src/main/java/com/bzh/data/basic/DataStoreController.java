@@ -110,9 +110,16 @@ public class DataStoreController {
                     }
 
                     Elements fonts = elements.select("font");
-                    for (int i = 0; i < fonts.size(); i++) {
+                    for (int i = 0; i < fonts.size() && filmEntities.size() >= fonts.size(); i++) {
                         String fullName = fonts.get(i).text();
-                        filmEntities.get(i).setPublishTime(fullName.substring(fullName.indexOf("：") + 1, fullName.indexOf("点击")).trim());
+                        int start = fullName.indexOf("：") + 1;
+                        int end = fullName.indexOf("点击");
+                        if (start > 0 && end > 0 && end > start && end < fullName.length()) {
+                            fullName = fullName.substring(start, end).trim();
+                            filmEntities.get(i).setPublishTime(fullName);
+                        } else {
+                            filmEntities.get(i).setPublishTime(fullName.trim());
+                        }
                     }
                     return filmEntities;
                 }

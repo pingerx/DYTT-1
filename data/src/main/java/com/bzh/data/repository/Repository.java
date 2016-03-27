@@ -2,6 +2,9 @@ package com.bzh.data.repository;
 
 import android.support.annotation.IntRange;
 
+import com.bzh.data.comic.ComicNetWorkData;
+import com.bzh.data.comic.IComicDataStore;
+import com.bzh.data.comic.IComicService;
 import com.bzh.data.film.FilmNetWorkDataStore;
 import com.bzh.data.film.IFilmDataStore;
 import com.bzh.data.basic.BaseInfoEntity;
@@ -28,13 +31,13 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataStore {
+public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataStore, IComicDataStore {
 
-    private static final String TAG = "Repository";
     private static volatile Repository repository;
     private static volatile IFilmService filmService;
     private static volatile ITvService tvService;
-    private static IVarietyService varietyService;
+    private static volatile IVarietyService varietyService;
+    private static volatile IComicService iComicService;
 
     public static Repository getInstance() {
         Repository tmp = repository;
@@ -47,6 +50,7 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
                     filmService = RetrofitManager.getInstance().getFilmService();
                     tvService = RetrofitManager.getInstance().getTvService();
                     varietyService = RetrofitManager.getInstance().getVarietyService();
+                    iComicService = RetrofitManager.getInstance().getComicService();
                 }
             }
         }
@@ -60,6 +64,7 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
     private FilmNetWorkDataStore filmNetWorkDataStore;
     private TvNetWorkDataStore tvNetWorkDataStore;
     private VarietyNetWorkDataStore varietyNetWorkDataStore;
+    private ComicNetWorkData comicNetWorkData;
 
     private IFilmDataStore getFilmDataStore() {
         if (filmNetWorkDataStore == null) {
@@ -80,6 +85,13 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
             varietyNetWorkDataStore = new VarietyNetWorkDataStore(varietyService);
         }
         return varietyNetWorkDataStore;
+    }
+
+    private ComicNetWorkData getComicDataStore() {
+        if (comicNetWorkData == null) {
+            comicNetWorkData = new ComicNetWorkData(iComicService);
+        }
+        return comicNetWorkData;
     }
 
     @Override
@@ -165,5 +177,40 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
     @Override
     public Observable<ArrayList<BaseInfoEntity>> get2009ChineseVariety(@IntRange(from = 1, to = 69) int index) {
         return getVarietyDataStore().get2009ChineseVariety(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getComic(@IntRange(from = 1, to = 45) int index) {
+        return getComicDataStore().getComic(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getNewComic(@IntRange(from = 1, to = 8) int index) {
+        return getComicDataStore().getNewComic(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getSSComic(@IntRange(from = 1, to = 5) int index) {
+        return getComicDataStore().getSSComic(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getOtherComic(@IntRange(from = 1, to = 3) int index) {
+        return getComicDataStore().getOtherComic(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getGCComic(@IntRange(from = 1, to = 2) int index) {
+        return getComicDataStore().getGCComic(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getHZWComic(@IntRange(from = 1, to = 5) int index) {
+        return getComicDataStore().getHZWComic(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getHYComic(@IntRange(from = 1, to = 5) int index) {
+        return getComicDataStore().getHYComic(index);
     }
 }
