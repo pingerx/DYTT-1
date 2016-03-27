@@ -1,18 +1,14 @@
 package com.bzh.data.tv.datasource;
 
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 
-import com.bzh.common.utils.SystemUtils;
-import com.bzh.data.exception.TaskException;
-import com.bzh.data.film.entity.BaseInfoEntity;
+import com.bzh.data.basic.BaseInfoEntity;
+import com.bzh.data.basic.DataStoreController;
 import com.bzh.data.tv.service.ITvService;
 
 import java.util.ArrayList;
 
-import okhttp3.ResponseBody;
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * ==========================================================<br>
@@ -32,59 +28,38 @@ public class TvNetWorkDataStore implements ITvDataStore {
         this.iTvService = iTvService;
     }
 
-
-    @NonNull
-    private Observable<ArrayList<BaseInfoEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
-        return Observable.create(new Observable.OnSubscribe<ArrayList<BaseInfoEntity>>() {
-            @Override
-            public void call(Subscriber<? super ArrayList<BaseInfoEntity>> subscriber) {
-                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
-                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
-                } else {
-                    try {
-                        observable.map(transformCharset)
-                                .map(transformEntity)
-                                .subscribe(subscriber);
-                    } catch (TaskException e) {
-                        subscriber.onError(e);
-                    }
-                }
-            }
-        });
-    }
-
     @Override
     public Observable<ArrayList<BaseInfoEntity>> getChineseDomesticTv(@IntRange(from = 1, to = 2) int index) {
-        return getNewWorkObservable(iTvService.getChineseDomesticTv(index));
+        return DataStoreController.getInstance().getNewWorkObservable(iTvService.getChineseDomesticTv(index));
     }
 
     @Override
     public Observable<ArrayList<BaseInfoEntity>> getChineseDomesticTv_1(@IntRange(from = 1, to = 25) int index) {
-        return getNewWorkObservable(iTvService.getChineseDomesticTv_1(index));
+        return DataStoreController.getInstance().getNewWorkObservable(iTvService.getChineseDomesticTv_1(index));
     }
 
     @Override
     public Observable<ArrayList<BaseInfoEntity>> getChineseDomesticTv_2(@IntRange(from = 1, to = 7) int index) {
-        return getNewWorkObservable(iTvService.getChineseDomesticTv_2(index));
+        return DataStoreController.getInstance().getNewWorkObservable(iTvService.getChineseDomesticTv_2(index));
     }
 
     @Override
     public Observable<ArrayList<BaseInfoEntity>> getHKTTv(@IntRange(from = 1, to = 5) int index) {
-        return getNewWorkObservable(iTvService.getHKTTv(index));
+        return DataStoreController.getInstance().getNewWorkObservable(iTvService.getHKTTv(index));
     }
 
     @Override
     public Observable<ArrayList<BaseInfoEntity>> getChineseTv(@IntRange(from = 1, to = 33) int index) {
-        return getNewWorkObservable(iTvService.getChineseTv(index));
+        return DataStoreController.getInstance().getNewWorkObservable(iTvService.getChineseTv(index));
     }
 
     @Override
     public Observable<ArrayList<BaseInfoEntity>> getJapanSouthKoreaTV(@IntRange(from = 1, to = 45) int index) {
-        return getNewWorkObservable(iTvService.getJapanSouthKoreaTV(index));
+        return DataStoreController.getInstance().getNewWorkObservable(iTvService.getJapanSouthKoreaTV(index));
     }
 
     @Override
     public Observable<ArrayList<BaseInfoEntity>> getEuropeAmericaTV(@IntRange(from = 1, to = 22) int index) {
-        return getNewWorkObservable(iTvService.getEuropeAmericaTV(index));
+        return DataStoreController.getInstance().getNewWorkObservable(iTvService.getEuropeAmericaTV(index));
     }
 }

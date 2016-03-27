@@ -2,9 +2,8 @@ package com.bzh.data.film.datasource;
 
 import android.support.annotation.IntRange;
 
+import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.film.entity.FilmDetailEntity;
-import com.bzh.data.film.entity.BaseInfoEntity;
-import com.bzh.data.repository.IHtmlDataStore;
 
 import java.util.ArrayList;
 
@@ -20,7 +19,7 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface IFilmDataStore extends IHtmlDataStore {
+public interface IFilmDataStore {
 
     Observable<ArrayList<BaseInfoEntity>> getNewest(@IntRange(from = 1, to = 131) final int index);
 

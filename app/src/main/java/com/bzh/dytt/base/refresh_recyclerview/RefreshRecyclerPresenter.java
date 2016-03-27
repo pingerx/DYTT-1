@@ -45,11 +45,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
     private static final String TAG = "REPresenter";
 
-    private Observable<Entities> listObservable;
-    private DefaultTaskSubscriber subscriber;
-    private RefreshConfig refreshConfig;
-    private boolean contentEmpty = true;
-
     /**
      * The definition of a page request data mode
      */
@@ -61,26 +56,46 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
      * The first request data
      */
     private static final int REQUEST_MODE_DATA_FIRST = 1;
-
     /**
      * The refresh current page to reset data
      */
     private static final int REQUEST_MODE_DATA_REFRESH = 2;
-
     /**
      * Loading more data
      */
     private static final int REQUEST_MODE_DATA_LOAD_MORE = 3;
 
-
+    /**
+     * task state
+     */
     @IntDef({TASK_STATE_PREPARE, TASK_STATE_SUCCESS, TASK_STATE_FINISH, TASK_STATE_FAILED})
     public @interface TASK_STATE {
     }
 
+    /**
+     * Task preparation stage, you can update the UI.
+     */
     private static final int TASK_STATE_PREPARE = 1;
+
+    /**
+     * Task success stage, you can update the UI.
+     */
     private static final int TASK_STATE_SUCCESS = 2;
+
+    /**
+     * Task finish stage, you can update the UI.
+     */
     private static final int TASK_STATE_FINISH = 3;
+
+    /**
+     * Task fail stage, you can update the UI.
+     */
     private static final int TASK_STATE_FAILED = 4;
+
+    private Observable<Entities> listObservable;
+    private DefaultTaskSubscriber subscriber;
+    private RefreshConfig refreshConfig;
+    private boolean contentEmpty = true;
 
     /**
      * structure
@@ -103,7 +118,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         }
     });
 
-
     public RefreshRecyclerPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
         this.baseActivity = baseActivity;
         this.baseFragment = baseFragment;
@@ -125,25 +139,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
                 android.R.color.holo_red_light);
 
         onRefreshConfigChanged(refreshConfig);
-    }
-
-    /**
-     * Update the page some state when the configuration changed.
-     */
-    public void onRefreshConfigChanged(RefreshConfig refreshConfig) {
-        iView.footerVisibility(isRefreshing());
-        iView.layLoadingVisibility(refreshConfig.canLoadMore);
-        iView.btnLoadMoreVisibility(!refreshConfig.canLoadMore);
-        iView.setTextLoadingHint(loadingHintLabel());
-        iView.setTextLoadMoreHint(loadDisabledLabel());
-    }
-
-    public String loadingHintLabel() {
-        return "加载中...";
-    }
-
-    public String loadDisabledLabel() {
-        return "全部都加载完了";
     }
 
     @NonNull
@@ -173,7 +168,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         subscriber = new DefaultTaskSubscriber(requestMode);
 
         if (null != paging) {
-            listObservable = getRequestDataObservable(paging.getNextPage());
+            listObservable = getRequestListDataObservable(paging.getNextPage());
             listObservable
                     .subscribeOn(Schedulers.io())
                     .doOnSubscribe(subscriber)
@@ -194,9 +189,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         }
         return "未知状态";
     }
-
-
-    public abstract Observable<Entities> getRequestDataObservable(String nextPage);
 
     @Override
     public void onFirstUserVisible() {
@@ -219,8 +211,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
     public void onItemClick(ExViewHolder viewHolder) {
     }
 
-    public abstract ExCommonAdapter<Entity> getExCommonAdapter();
-
     public BaseActivity getBaseActivity() {
         return baseActivity;
     }
@@ -241,34 +231,92 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         return paging;
     }
 
-    public class DefaultPaging implements IPaging {
-
-        private int mIndex = 1;
-
-        @Override
-        public String getMaxPage() {
-            return RefreshRecyclerPresenter.this.getMaxPage();
-        }
-
-        @Override
-        public void processData() {
-            mIndex++;
-        }
-
-        @Override
-        public String getNextPage() {
-            return mIndex + "";
+    /**
+     * According to the task execution state to update the page display state.
+     *
+     * @param tag May result in a task execution process information
+     */
+    public void taskStateChanged(@TASK_STATE int taskState, Serializable tag) {
+        switch (taskState) {
+            case TASK_STATE_PREPARE: {
+                iView.layoutLoadingVisibility(isContentEmpty());
+                iView.layoutContentVisibility(!isContentEmpty());
+                iView.layoutEmptyVisibility(false);
+                iView.layoutLoadFailedVisibility(false);
+            }
+            break;
+            case TASK_STATE_SUCCESS: {
+                iView.layoutLoadingVisibility(false);
+                iView.layoutEmptyVisibility(isContentEmpty());
+                iView.layoutContentVisibility(!isContentEmpty());
+            }
+            break;
+            case TASK_STATE_FAILED: {
+                iView.layoutEmptyVisibility(!isContentEmpty());
+                iView.layoutLoadingVisibility(!isContentEmpty());
+                iView.layoutLoadFailedVisibility(isContentEmpty());
+                if (tag != null) {
+                    iView.setTextLoadFailed(tag.toString());
+                }
+            }
+            break;
+            case TASK_STATE_FINISH: {
+                if (isRefreshing()) {
+                    onRefreshViewComplete();
+                }
+            }
+            break;
         }
     }
 
-    public static class RefreshConfig implements Serializable {
-        public boolean canLoadMore = true; // initial value must be true;
+    public void onRefreshViewComplete() {
+        if (iView.isRefreshing()) {
+            iView.hideSwipeRefreshing();
+        }
+        if (iView.isLoadingMore()) {
+            iView.finishLoadMore();
+        }
     }
 
     /**
-     * Maximum value of the current page request index.
+     * Whether the page is refreshing or loading state.
      */
-    public abstract String getMaxPage();
+    public boolean isRefreshing() {
+        return subscriber != null && !subscriber.isUnsubscribed();
+    }
+
+    /**
+     * Update the page some state when the configuration changed.
+     */
+    public void onRefreshConfigChanged(RefreshConfig refreshConfig) {
+        iView.footerVisibility(isRefreshing());
+        iView.layLoadingVisibility(refreshConfig.canLoadMore);
+        iView.btnLoadMoreVisibility(!refreshConfig.canLoadMore);
+        iView.setTextLoadingHint(loadingHintLabel());
+        iView.setTextLoadMoreHint(loadDisabledLabel());
+    }
+
+    public String loadingHintLabel() {
+        return "加载中...";
+    }
+
+    public String loadDisabledLabel() {
+        return "全部都加载完了";
+    }
+
+    public void setContentEmpty(boolean empty) {
+        this.contentEmpty = empty;
+    }
+
+    public boolean isContentEmpty() {
+        return contentEmpty;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Inner class
+    public static class RefreshConfig implements Serializable {
+        public boolean canLoadMore = true; // initial value must be true;
+    }
 
     public class DefaultTaskSubscriber extends Subscriber<Entities> implements TaskSubscriber<Entities>, Action0 {
 
@@ -377,65 +425,36 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         }
     }
 
-    public void onRefreshViewComplete() {
-        if (iView.isRefreshing()) {
-            iView.hideSwipeRefreshing();
+    public class DefaultPaging implements IPaging {
+
+        private int mIndex = 1;
+
+        @Override
+        public String getMaxPage() {
+            return RefreshRecyclerPresenter.this.getMaxPage();
         }
-        if (iView.isLoadingMore()) {
-            iView.finishLoadMore();
+
+        @Override
+        public void processData() {
+            mIndex++;
+        }
+
+        @Override
+        public String getNextPage() {
+            return mIndex + "";
         }
     }
+    ///////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Abstract method
+    public abstract ExCommonAdapter<Entity> getExCommonAdapter();
 
     /**
-     * Whether the page is refreshing or loading state.
+     * Maximum value of the current page request index.
      */
-    public boolean isRefreshing() {
-        return subscriber != null && !subscriber.isUnsubscribed();
-    }
+    public abstract String getMaxPage();
 
-    /**
-     * According to the task execution state to update the page display state.
-     *
-     * @param tag May result in a task execution process information
-     */
-    public void taskStateChanged(@TASK_STATE int taskState, Serializable tag) {
-        switch (taskState) {
-            case TASK_STATE_PREPARE: {
-                iView.layoutLoadingVisibility(isContentEmpty());
-                iView.layoutContentVisibility(!isContentEmpty());
-                iView.layoutEmptyVisibility(false);
-                iView.layoutLoadFailedVisibility(false);
-            }
-            break;
-            case TASK_STATE_SUCCESS: {
-                iView.layoutLoadingVisibility(false);
-                iView.layoutEmptyVisibility(isContentEmpty());
-                iView.layoutContentVisibility(!isContentEmpty());
-            }
-            break;
-            case TASK_STATE_FAILED: {
-                iView.layoutEmptyVisibility(!isContentEmpty());
-                iView.layoutLoadingVisibility(!isContentEmpty());
-                iView.layoutLoadFailedVisibility(isContentEmpty());
-                if (tag != null) {
-                    iView.setTextLoadFailed(tag.toString());
-                }
-            }
-            break;
-            case TASK_STATE_FINISH: {
-                if (isRefreshing()) {
-                    onRefreshViewComplete();
-                }
-            }
-            break;
-        }
-    }
-
-    public void setContentEmpty(boolean empty) {
-        this.contentEmpty = empty;
-    }
-
-    public boolean isContentEmpty() {
-        return contentEmpty;
-    }
+    public abstract Observable<Entities> getRequestListDataObservable(String nextPage);
+    ///////////////////////////////////////////////////////////////////////////
 }

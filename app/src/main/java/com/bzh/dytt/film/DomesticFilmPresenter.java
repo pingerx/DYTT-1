@@ -2,7 +2,7 @@ package com.bzh.dytt.film;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.bzh.data.film.entity.BaseInfoEntity;
+import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.god.BaseActivity;
@@ -32,7 +32,7 @@ public class DomesticFilmPresenter extends RefreshRecyclerPresenter<BaseInfoEnti
         super(baseActivity, baseFragment, view);
     }
 
-    public Observable<ArrayList<BaseInfoEntity>> getRequestDataObservable(String nextPage) {
+    public Observable<ArrayList<BaseInfoEntity>> getRequestListDataObservable(String nextPage) {
         return Repository.getInstance().getDomestic(Integer.valueOf(nextPage));
     }
 

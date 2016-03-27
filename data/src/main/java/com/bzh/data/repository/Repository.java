@@ -4,7 +4,7 @@ import android.support.annotation.IntRange;
 
 import com.bzh.data.film.datasource.FilmNetWorkDataStore;
 import com.bzh.data.film.datasource.IFilmDataStore;
-import com.bzh.data.film.entity.BaseInfoEntity;
+import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.film.entity.FilmDetailEntity;
 import com.bzh.data.film.service.IFilmService;
 import com.bzh.data.service.RetrofitManager;

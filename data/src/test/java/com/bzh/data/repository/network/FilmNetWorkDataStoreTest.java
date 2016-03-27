@@ -1,7 +1,7 @@
 package com.bzh.data.repository.network;
 
 import com.bzh.data.ApplicationTestCase;
-import com.bzh.data.film.entity.BaseInfoEntity;
+import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.exception.TaskException;
 import com.bzh.data.film.datasource.FilmNetWorkDataStore;
 

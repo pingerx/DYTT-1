@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.bzh.common.context.GlobalContext;
 import com.bzh.data.film.service.IFilmService;
-import com.bzh.data.home.IHomePageService;
 import com.bzh.data.tv.service.ITvService;
 
 import java.io.File;
@@ -33,7 +32,6 @@ public class RetrofitManager {
     private final IGameService gameService;
     private final ITvService tvService;
     private final IVarietyService varietyService;
-    private final IHomePageService homePageService;
 
     private static RetrofitManager retrofitManager;
 
@@ -62,7 +60,6 @@ public class RetrofitManager {
                 .client(okHttpClient)
                 .build();
 
-        homePageService = retrofit.create(IHomePageService.class);
         comicService = retrofit.create(IComicService.class);
         filmService = retrofit.create(IFilmService.class);
         gameService = retrofit.create(IGameService.class);
@@ -86,10 +83,6 @@ public class RetrofitManager {
             }
         }
         return tmp;
-    }
-
-    public IHomePageService getHomePageService() {
-        return homePageService;
     }
 
     public IComicService getComicService() {

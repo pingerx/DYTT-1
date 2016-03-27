@@ -2,8 +2,7 @@ package com.bzh.data.tv.datasource;
 
 import android.support.annotation.IntRange;
 
-import com.bzh.data.film.entity.BaseInfoEntity;
-import com.bzh.data.repository.IHtmlDataStore;
+import com.bzh.data.basic.BaseInfoEntity;
 
 import java.util.ArrayList;
 
@@ -19,7 +18,7 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface ITvDataStore extends IHtmlDataStore {
+public interface ITvDataStore {
 
     /**
      * 国产合拍电视剧

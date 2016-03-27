@@ -1,6 +1,6 @@
 package com.bzh.data.tv.datasource;
 
-import com.bzh.data.film.entity.BaseInfoEntity;
+import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.service.RetrofitManager;
 import com.bzh.data.tv.service.ITvService;
 import com.google.gson.Gson;
