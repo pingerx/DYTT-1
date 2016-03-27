@@ -2,7 +2,6 @@ package com.bzh.dytt.tv;
 
 import android.os.Bundle;
 
-import com.bzh.dytt.base.baseinfo.BaseInfoIView;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
 
@@ -16,7 +15,7 @@ import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class GCHPTvFragment extends RefreshRecyclerFragment implements BaseInfoIView {
+public class GCHPTvFragment extends RefreshRecyclerFragment implements BaseTvInfoIView {
 
     public static GCHPTvFragment newInstance() {
         Bundle args = new Bundle();

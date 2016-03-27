@@ -1,4 +1,4 @@
-package com.bzh.dytt.base.baseinfo;
+package com.bzh.dytt.tv;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 
@@ -24,15 +24,15 @@ import java.util.ArrayList;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public abstract class BaseInfoPresenter extends RefreshRecyclerPresenter<BaseInfoEntity, ArrayList<BaseInfoEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
+public abstract class BaseTvInfoPresenter extends RefreshRecyclerPresenter<BaseInfoEntity, ArrayList<BaseInfoEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
 
-    public BaseInfoPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
+    public BaseTvInfoPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
         super(baseActivity, baseFragment, iView);
     }
 
     @Override
     public ExCommonAdapter<BaseInfoEntity> getExCommonAdapter() {
-        return new ExCommonAdapter<BaseInfoEntity>(getBaseActivity(), R.layout.item_newestfilm) {
+        return new ExCommonAdapter<BaseInfoEntity>(getBaseActivity(), R.layout.item_tv) {
             @Override
             protected void convert(ExViewHolder viewHolder, BaseInfoEntity item) {
                 viewHolder.setText(R.id.tv_film_name, item.getName());

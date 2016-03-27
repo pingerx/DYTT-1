@@ -1,4 +1,4 @@
-package com.bzh.dytt.base.baseinfo;
+package com.bzh.dytt.film;
 
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
 
@@ -12,5 +12,5 @@ import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface BaseInfoIView extends RefreshRecyclerView {
+public interface BaseFilmInfoIView extends RefreshRecyclerView {
 }

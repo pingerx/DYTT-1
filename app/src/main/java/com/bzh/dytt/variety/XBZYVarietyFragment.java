@@ -2,7 +2,7 @@ package com.bzh.dytt.variety;
 
 import android.os.Bundle;
 
-import com.bzh.dytt.base.baseinfo.BaseInfoIView;
+import com.bzh.dytt.film.BaseFilmInfoIView;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
 
@@ -16,7 +16,7 @@ import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class XBZYVarietyFragment extends RefreshRecyclerFragment implements BaseInfoIView {
+public class XBZYVarietyFragment extends RefreshRecyclerFragment implements BaseVarietyInfoIView {
 
     public static XBZYVarietyFragment newInstance() {
         Bundle args = new Bundle();

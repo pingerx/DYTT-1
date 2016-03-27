@@ -2,7 +2,7 @@ package com.bzh.dytt.tv;
 
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.repository.Repository;
-import com.bzh.dytt.base.baseinfo.BaseInfoPresenter;
+import com.bzh.dytt.film.BaseFilmInfoPresenter;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
@@ -21,7 +21,7 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class HPTvPresenter extends BaseInfoPresenter {
+public class HPTvPresenter extends BaseTvInfoPresenter {
 
     public HPTvPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
         super(baseActivity, baseFragment, iView);

@@ -2,7 +2,6 @@ package com.bzh.dytt.film;
 
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.repository.Repository;
-import com.bzh.dytt.base.baseinfo.BaseInfoPresenter;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
@@ -21,18 +20,19 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class NewestFilmPresenter extends BaseInfoPresenter {
+public class EAFilmPresenterFilm extends BaseFilmInfoPresenter {
 
-    public NewestFilmPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
+
+    public EAFilmPresenterFilm(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
         super(baseActivity, baseFragment, iView);
     }
 
     public Observable<ArrayList<BaseInfoEntity>> getRequestListDataObservable(String nextPage) {
-        return Repository.getInstance().getNewest(Integer.valueOf(nextPage));
+        return Repository.getInstance().getEuropeAmerica(Integer.valueOf(nextPage));
     }
 
     @Override
     public String getMaxPage() {
-        return 131 + "";
+        return 147 + "";
     }
 }
