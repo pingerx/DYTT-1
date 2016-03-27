@@ -35,51 +35,6 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
 
     @Override
     public Observable<ArrayList<BaseInfoEntity>> getNewest(@IntRange(from = 1, to = 131) final int index) {
-//        retrofitManager.getFilmService().getNewest(index)
-//                .map(transformCharset)
-//                .map(listFun)
-//                .flatMap(new Func1<ArrayList<BaseInfoEntity>, Observable<BaseInfoEntity>>() {
-//                    @Override
-//                    public Observable<BaseInfoEntity> call(ArrayList<BaseInfoEntity> filmEntities) {
-//                        return Observable.from(filmEntities);
-//                    }
-//                })
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<BaseInfoEntity>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(BaseInfoEntity filmEntity) {
-//                        getFilmDetail(filmEntity.getUrl())
-//                                .subscribeOn(Schedulers.io())
-//                                .observeOn(AndroidSchedulers.mainThread())
-//                                .subscribe(new Subscriber<FilmDetailEntity>() {
-//                                    @Override
-//                                    public void onCompleted() {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(Throwable e) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onNext(FilmDetailEntity filmDetailEntity) {
-//                                        System.out.println("filmDetailEntity = [" + filmDetailEntity.getName() + "]");
-//                                    }
-//                                });
-//                    }
-//                });
         return DataStoreController.getInstance().getNewWorkObservable(iFilmService
                 .getNewest(index));
     }

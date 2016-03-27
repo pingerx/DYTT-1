@@ -1,4 +1,4 @@
-package com.bzh.data.film.service;
+package com.bzh.data.film;
 
 import com.bzh.data.film.IFilmService;
 import com.bzh.data.service.RetrofitManager;
@@ -24,7 +24,6 @@ import static org.junit.Assert.*;
  * ==========================================================<br>
  */
 public class IFilmServiceTest {
-
 
     private IFilmService iFilmService;
     private Subscriber<ResponseBody> action1;

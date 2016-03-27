@@ -33,8 +33,9 @@ import rx.functions.Func1;
  */
 public class DataStoreController {
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Single Instance
     private static DataStoreController dataStoreController;
-
     public static DataStoreController getInstance() {
         DataStoreController tmp = dataStoreController;
         if (tmp == null) {
@@ -48,7 +49,10 @@ public class DataStoreController {
         }
         return tmp;
     }
+    ///////////////////////////////////////////////////////////////////////////
 
+    ///////////////////////////////////////////////////////////////////////////
+    // FilmDetail
     public static final String NAME = "◎片名";
     public static final String YEARS = "◎年代";
     public static final String COUNTRY = "◎国家";
@@ -63,10 +67,19 @@ public class DataStoreController {
     public static final String LEADINGPLAYERS = "◎主演";
     public static final String DESCRIPTION = "◎简介";
     public static final String TRANSLATIONNAME = "◎译名";
+    ///////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Charset
     public final String TO_CHARSET_NAME = "GB2312";
+    ///////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////
+    // variable
     public Func1<ResponseBody, String> transformCharset;
     public Func1<String, ArrayList<BaseInfoEntity>> listFun;
     public Func1<String, FilmDetailEntity> filmDetailFun;
+    ///////////////////////////////////////////////////////////////////////////
 
     @NonNull
     private Func1<String, ArrayList<BaseInfoEntity>> getListFun() {
@@ -211,6 +224,20 @@ public class DataStoreController {
     }
 
     @NonNull
+    private String getPublishTime(String html) {
+        String publishTime;
+        Pattern pattern = Pattern.compile("发布时间：.*&");
+        Matcher matcher = pattern.matcher(html);
+        if (matcher.find()) {
+            publishTime = matcher.group();
+            publishTime = publishTime.substring(publishTime.indexOf("：") + 1, publishTime.length() - 1);
+        } else {
+            publishTime = "";
+        }
+        return publishTime;
+    }
+
+    @NonNull
     public Observable<ArrayList<BaseInfoEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
         return Observable.create(new Observable.OnSubscribe<ArrayList<BaseInfoEntity>>() {
             @Override
@@ -230,6 +257,7 @@ public class DataStoreController {
         });
     }
 
+    @NonNull
     public Observable<FilmDetailEntity> getNewWorkDetailObservable(final Observable<ResponseBody> observable) {
         return Observable.create(new Observable.OnSubscribe<FilmDetailEntity>() {
             @Override
@@ -248,19 +276,5 @@ public class DataStoreController {
                 }
             }
         });
-    }
-
-    @NonNull
-    private String getPublishTime(String html) {
-        String publishTime;
-        Pattern pattern = Pattern.compile("发布时间：.*&");
-        Matcher matcher = pattern.matcher(html);
-        if (matcher.find()) {
-            publishTime = matcher.group();
-            publishTime = publishTime.substring(publishTime.indexOf("：") + 1, publishTime.length() - 1);
-        } else {
-            publishTime = "";
-        }
-        return publishTime;
     }
 }

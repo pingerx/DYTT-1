@@ -1,5 +1,7 @@
 package com.bzh.data;
 
+import com.bzh.common.context.GlobalContext;
+
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
@@ -16,6 +18,6 @@ import org.robolectric.annotation.Config;
  */
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, application = ApplicationStub.class, sdk = 21)
+@Config(constants = BuildConfig.class, application = GlobalContext.class, sdk = 21)
 public abstract class ApplicationTestCase {
 }

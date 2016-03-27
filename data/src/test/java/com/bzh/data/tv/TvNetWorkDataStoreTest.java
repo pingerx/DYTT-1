@@ -1,5 +1,8 @@
 package com.bzh.data.tv;
 
+import com.bzh.common.context.GlobalContext;
+import com.bzh.common.utils.SystemUtils;
+import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.service.RetrofitManager;
 import com.bzh.data.tv.TvNetWorkDataStore;
@@ -9,6 +12,7 @@ import com.google.gson.Gson;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 
@@ -26,7 +30,7 @@ import static org.junit.Assert.*;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class TvNetWorkDataStoreTest {
+public class TvNetWorkDataStoreTest extends ApplicationTestCase {
 
     private ITvService tvService;
     private TvNetWorkDataStore tvNetWorkDataStore;
