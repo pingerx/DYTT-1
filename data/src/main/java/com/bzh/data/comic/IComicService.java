@@ -56,7 +56,7 @@ public interface IComicService {
     Observable<ResponseBody> getHZWComic(@Path("index") @IntRange(from = 1, to = 5) int index);
 
     /**
-     * 海贼王
+     * 火影
      */
     @GET("/html/dongman/hy/list_66_{index}.html")
     Observable<ResponseBody> getHYComic(@Path("index") @IntRange(from = 1, to = 5) int index);
