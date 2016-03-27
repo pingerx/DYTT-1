@@ -1,4 +1,4 @@
-package com.bzh.data.tv.service;
+package com.bzh.data.tv;
 
 import android.support.annotation.IntRange;
 

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.bzh.common.utils.SystemUtils;
 import com.bzh.data.exception.TaskException;
-import com.bzh.data.film.entity.FilmDetailEntity;
+import com.bzh.data.film.FilmDetailEntity;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

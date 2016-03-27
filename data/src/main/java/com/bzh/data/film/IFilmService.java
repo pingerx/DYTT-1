@@ -1,4 +1,4 @@
-package com.bzh.data.film.service;
+package com.bzh.data.film;
 
 import android.support.annotation.IntRange;
 

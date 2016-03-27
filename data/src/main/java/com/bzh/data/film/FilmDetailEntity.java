@@ -1,4 +1,4 @@
-package com.bzh.data.film.entity;
+package com.bzh.data.film;
 
 import android.os.Parcel;
 import android.os.Parcelable;

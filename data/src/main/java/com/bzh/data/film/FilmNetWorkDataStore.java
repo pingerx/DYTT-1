@@ -1,10 +1,8 @@
-package com.bzh.data.film.datasource;
+package com.bzh.data.film;
 
 import android.support.annotation.IntRange;
 
 import com.bzh.data.basic.BaseInfoEntity;
-import com.bzh.data.film.entity.FilmDetailEntity;
-import com.bzh.data.film.service.IFilmService;
 import com.bzh.data.basic.DataStoreController;
 
 import java.util.ArrayList;

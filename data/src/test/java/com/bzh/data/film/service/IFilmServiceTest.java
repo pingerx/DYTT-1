@@ -1,5 +1,6 @@
 package com.bzh.data.film.service;
 
+import com.bzh.data.film.IFilmService;
 import com.bzh.data.service.RetrofitManager;
 
 import org.junit.Before;
@@ -9,7 +10,6 @@ import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import rx.Subscriber;
-import rx.functions.Action1;
 
 import static org.junit.Assert.*;
 
@@ -26,80 +26,61 @@ import static org.junit.Assert.*;
 public class IFilmServiceTest {
 
 
-    private RetrofitManager retrofitManager;
+    private IFilmService iFilmService;
+    private Subscriber<ResponseBody> action1;
 
     @Before
     public void setUp() {
-        retrofitManager = RetrofitManager.getInstance();
+        iFilmService = RetrofitManager.getInstance().getFilmService();
+        action1 = new Subscriber<ResponseBody>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                assertNull(e);
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                assertNotNull(responseBody);
+                try {
+                    assertNotNull(responseBody.string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
     @Test
     public void testGetNewest() throws Exception {
-        retrofitManager.getFilmService().getNewest(1)
-                .subscribe(new Action1<ResponseBody>() {
-                    @Override
-                    public void call(ResponseBody responseBody) {
-                        assertNotNull(responseBody);
-                        try {
-                            assertNotNull(responseBody.string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+        iFilmService.getNewest(1)
+                .subscribe(action1);
 
     }
 
     @Test
     public void testGetDomestic() throws Exception {
-        retrofitManager.getFilmService().getDomestic(2)
-                .subscribe(new Action1<ResponseBody>() {
-                    @Override
-                    public void call(ResponseBody responseBody) {
-                        assertNotNull(responseBody);
-                        try {
-                            assertNotNull(responseBody.string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+        iFilmService.getDomestic(2)
+                .subscribe(action1);
     }
 
     @Test
     public void testGetEuropeAmerica() throws Exception {
-        retrofitManager.getFilmService().getEuropeAmerica(3)
-                .subscribe(new Action1<ResponseBody>() {
-                    @Override
-                    public void call(ResponseBody responseBody) {
-                        assertNotNull(responseBody);
-                        try {
-                            assertNotNull(responseBody.string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+        iFilmService.getEuropeAmerica(3)
+                .subscribe(action1);
     }
 
     @Test
     public void testGetJapanSouthKorea() throws Exception {
-        retrofitManager.getFilmService().getJapanSouthKorea(4)
-                .subscribe(new Action1<ResponseBody>() {
-                    @Override
-                    public void call(ResponseBody responseBody) {
-                        assertNotNull(responseBody);
-                        try {
-                            assertNotNull(responseBody.string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+        iFilmService.getJapanSouthKorea(4)
+                .subscribe(action1);
     }
 
     @Test
     public void testGetFilmDetail() throws Exception {
-
     }
 }

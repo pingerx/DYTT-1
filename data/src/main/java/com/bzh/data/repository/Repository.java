@@ -2,15 +2,15 @@ package com.bzh.data.repository;
 
 import android.support.annotation.IntRange;
 
-import com.bzh.data.film.datasource.FilmNetWorkDataStore;
-import com.bzh.data.film.datasource.IFilmDataStore;
+import com.bzh.data.film.FilmNetWorkDataStore;
+import com.bzh.data.film.IFilmDataStore;
 import com.bzh.data.basic.BaseInfoEntity;
-import com.bzh.data.film.entity.FilmDetailEntity;
-import com.bzh.data.film.service.IFilmService;
+import com.bzh.data.film.FilmDetailEntity;
+import com.bzh.data.film.IFilmService;
 import com.bzh.data.service.RetrofitManager;
-import com.bzh.data.tv.datasource.ITvDataStore;
-import com.bzh.data.tv.datasource.TvNetWorkDataStore;
-import com.bzh.data.tv.service.ITvService;
+import com.bzh.data.tv.ITvDataStore;
+import com.bzh.data.tv.TvNetWorkDataStore;
+import com.bzh.data.tv.ITvService;
 
 import java.util.ArrayList;
 

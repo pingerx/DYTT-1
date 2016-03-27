@@ -1,8 +1,9 @@
-package com.bzh.data.tv.datasource;
+package com.bzh.data.tv;
 
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.service.RetrofitManager;
-import com.bzh.data.tv.service.ITvService;
+import com.bzh.data.tv.TvNetWorkDataStore;
+import com.bzh.data.tv.ITvService;
 import com.google.gson.Gson;
 
 import org.junit.After;
@@ -45,6 +46,7 @@ public class TvNetWorkDataStoreTest {
 
             @Override
             public void onError(Throwable e) {
+                assertNull(e);
                 System.out.println("e = [" + e + "]");
             }
 

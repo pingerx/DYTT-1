@@ -1,10 +1,9 @@
-package com.bzh.data.tv.datasource;
+package com.bzh.data.tv;
 
 import android.support.annotation.IntRange;
 
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.basic.DataStoreController;
-import com.bzh.data.tv.service.ITvService;
 
 import java.util.ArrayList;
 
