@@ -199,4 +199,24 @@ public class RepositoryTest extends ApplicationTestCase {
     public void testGetHYComic() throws Exception {
         instance.getHYComic(1).subscribe(listSubscriber);
     }
+
+    @Test
+    public void testGetGame() throws Exception {
+        instance.getGame(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGetHotGame() throws Exception {
+        instance.getHotGame(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGetClassicGame() throws Exception {
+        instance.getClassicGame(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testGetNewestGame() throws Exception {
+        instance.getNewComic(1).subscribe(listSubscriber);
+    }
 }

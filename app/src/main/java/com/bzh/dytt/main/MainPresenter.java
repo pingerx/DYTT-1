@@ -13,6 +13,7 @@ import com.bzh.dytt.film.FilmMainFragment;
 import com.bzh.dytt.base.basic.IActivityPresenter;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.game.GameMainFragment;
 import com.bzh.dytt.tv.TvMainFragment;
 import com.bzh.dytt.variety.VarietyMainFragment;
 
@@ -55,7 +56,7 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
         items.add(TV);        // 电视
         items.add(VARIETY);   // 综艺
         items.add(COMIC);     // 动漫
-//        items.add(GAME);      // 游戏
+        items.add(GAME);      // 游戏
     }
 
     @Override
@@ -113,8 +114,8 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
             iMainView.setCurrentItem(3);
             iMainView.setTitle("动漫");
         } else if (id == R.id.nav_game) {
-//            iMainView.setCurrentItem(4);
-//            iMainView.setTitle("游戏");
+            iMainView.setCurrentItem(4);
+            iMainView.setTitle("游戏");
         } else if (id == R.id.nav_setting) {
         }
         iMainView.closeDrawer();
@@ -154,8 +155,8 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
                 return VarietyMainFragment.newInstance();
             case COMIC:
                 return ComicMainFragment.newInstance();
-//            case GAME:
-//                return FilmMainFragment.newInstance();
+            case GAME:
+                return GameMainFragment.newInstance();
         }
         throw new RuntimeException("没有指定类型的Fragment");
     }
