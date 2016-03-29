@@ -7,19 +7,26 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.MenuItem;
 
+import com.bzh.data.basic.MeiZiEntity;
+import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
-import com.bzh.dytt.comic.ComicMainFragment;
-import com.bzh.dytt.film.FilmMainFragment;
-import com.bzh.dytt.base.basic.IActivityPresenter;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.basic.IActivityPresenter;
+import com.bzh.dytt.comic.ComicMainFragment;
+import com.bzh.dytt.film.FilmMainFragment;
 import com.bzh.dytt.game.GameMainFragment;
+import com.bzh.dytt.meizi.MeiZiFragment;
 import com.bzh.dytt.tv.TvMainFragment;
 import com.bzh.dytt.variety.VarietyMainFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * ==========================================================<br>
@@ -40,6 +47,7 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
     public static final String VARIETY = "variety";
     public static final String GAME = "game";
     public static final String COMIC = "comic";
+    public static final String MEIZI = "meizi";
 
     private final BaseActivity baseActivity;
     private final MainIView iMainView;
@@ -57,6 +65,7 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
         items.add(VARIETY);   // 综艺
         items.add(COMIC);     // 动漫
         items.add(GAME);      // 游戏
+        items.add(MEIZI);      // 妹子
     }
 
     @Override
@@ -66,6 +75,22 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
         iMainView.setNavigationItemSelectedListener(this);
         innerPageAdapter = new InnerPageAdapter(baseActivity.getSupportFragmentManager());
         iMainView.initContainer(innerPageAdapter, items.size());
+        iMainView.setHeadView("https://raw.githubusercontent.com/biezhihua/MyResource/master/biezhihua.png");
+        loadMeiZi();
+    }
+
+    private void loadMeiZi() {
+        Repository.getInstance().getMeiZi(0)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<ArrayList<MeiZiEntity>>() {
+                    @Override
+                    public void call(ArrayList<MeiZiEntity> meiZiEntities) {
+                        if (meiZiEntities != null && meiZiEntities.size() > 0) {
+                            iMainView.setHeaderViewBackground(meiZiEntities.get(0).getUrl());
+                        }
+                    }
+                });
     }
 
     @Override
@@ -101,25 +126,42 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_film) {
-            iMainView.setCurrentItem(0);
-            iMainView.setTitle("电影");
-        } else if (id == R.id.nav_tv) {
-            iMainView.setCurrentItem(1);
-            iMainView.setTitle("电视");
-        } else if (id == R.id.nav_variety) {
-            iMainView.setCurrentItem(2);
-            iMainView.setTitle("综艺");
-        } else if (id == R.id.nav_comic) {
-            iMainView.setCurrentItem(3);
-            iMainView.setTitle("动漫");
-        } else if (id == R.id.nav_game) {
-            iMainView.setCurrentItem(4);
-            iMainView.setTitle("游戏");
-        } else if (id == R.id.nav_setting) {
+        switch (id) {
+            case R.id.nav_film: {
+                iMainView.setCurrentItem(0);
+                iMainView.setTitle("电影");
+            }
+            break;
+            case R.id.nav_tv: {
+                iMainView.setCurrentItem(1);
+                iMainView.setTitle("电视");
+            }
+            break;
+            case R.id.nav_variety: {
+                iMainView.setCurrentItem(2);
+                iMainView.setTitle("综艺");
+            }
+            break;
+            case R.id.nav_comic: {
+                iMainView.setCurrentItem(3);
+                iMainView.setTitle("动漫");
+            }
+            break;
+            case R.id.nav_game: {
+                iMainView.setCurrentItem(4);
+                iMainView.setTitle("游戏");
+            }
+            break;
+            case R.id.nav_meizi: {
+                iMainView.setCurrentItem(5);
+                iMainView.setTitle("妹子");
+            }
+            break;
+            case R.id.nav_setting: {
+            }
+            break;
         }
         iMainView.closeDrawer();
-
         return true;
     }
 
@@ -157,6 +199,8 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
                 return ComicMainFragment.newInstance();
             case GAME:
                 return GameMainFragment.newInstance();
+            case MEIZI:
+                return MeiZiFragment.newInstance();
         }
         throw new RuntimeException("没有指定类型的Fragment");
     }

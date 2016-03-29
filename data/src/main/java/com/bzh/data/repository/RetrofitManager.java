@@ -6,6 +6,7 @@ import com.bzh.common.context.GlobalContext;
 import com.bzh.data.film.IFilmService;
 import com.bzh.data.comic.IComicService;
 import com.bzh.data.game.IGameService;
+import com.bzh.data.meizi.IMeiZiService;
 import com.bzh.data.tv.ITvService;
 import com.bzh.data.variety.IVarietyService;
 
@@ -37,6 +38,7 @@ public class RetrofitManager {
     private final IVarietyService varietyService;
 
     private static RetrofitManager retrofitManager;
+    private final IMeiZiService iMeiZiService;
 
     private RetrofitManager(Context context) {
 
@@ -62,11 +64,22 @@ public class RetrofitManager {
                 .client(okHttpClient)
                 .build();
 
+
+        Retrofit meiZiRetrofit = new Retrofit.Builder()
+                .baseUrl("http://www.mzitu.com")
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .client(okHttpClient)
+                .build();
+
+
         comicService = retrofit.create(IComicService.class);
         filmService = retrofit.create(IFilmService.class);
         gameService = retrofit.create(IGameService.class);
         tvService = retrofit.create(ITvService.class);
         varietyService = retrofit.create(IVarietyService.class);
+
+        iMeiZiService = meiZiRetrofit.create(IMeiZiService.class);
     }
 
     public static RetrofitManager getInstance() {
@@ -105,6 +118,10 @@ public class RetrofitManager {
 
     public IVarietyService getVarietyService() {
         return varietyService;
+    }
+
+    public IMeiZiService getiMeiZiService() {
+        return iMeiZiService;
     }
 }
 

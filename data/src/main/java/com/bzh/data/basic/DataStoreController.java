@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,7 +37,8 @@ public class DataStoreController {
 
     ///////////////////////////////////////////////////////////////////////////
     // Single Instance
-    private static DataStoreController dataStoreController;
+    public static DataStoreController dataStoreController;
+    public Func1<String, ArrayList<MeiZiEntity>> meiziListFun;
 
     public static DataStoreController getInstance() {
         DataStoreController tmp = dataStoreController;
@@ -83,8 +85,30 @@ public class DataStoreController {
     public Func1<String, FilmDetailEntity> filmDetailFun;
     ///////////////////////////////////////////////////////////////////////////
 
+    public Func1<String, ArrayList<MeiZiEntity>> getMeiZiFun() {
+        if (meiziListFun == null) {
+            meiziListFun = new Func1<String, ArrayList<MeiZiEntity>>() {
+                @Override
+                public ArrayList<MeiZiEntity> call(String s) {
+                    Document document = Jsoup.parse(s);
+                    Elements elements = document.select("div#comments").select("ul");
+                    Elements srcs = elements.select("img[src]");
+
+                    ArrayList<MeiZiEntity> meiZiEntities = new ArrayList<MeiZiEntity>();
+                    for (Element element : srcs) {
+                        MeiZiEntity meiZiEntity = new MeiZiEntity();
+                        meiZiEntity.setUrl(element.attr("src"));
+                        meiZiEntities.add(meiZiEntity);
+                    }
+                    return meiZiEntities;
+                }
+            };
+        }
+        return meiziListFun;
+    }
+
     @NonNull
-    private Func1<String, ArrayList<BaseInfoEntity>> getListFun() {
+    public Func1<String, ArrayList<BaseInfoEntity>> getListFun() {
         if (listFun == null) {
             listFun = new Func1<String, ArrayList<BaseInfoEntity>>() {
                 @Override
@@ -129,12 +153,12 @@ public class DataStoreController {
         return listFun;
     }
 
-    private boolean isFilmType(String fullName) {
+    public boolean isFilmType(String fullName) {
         return fullName.contains("》");
     }
 
     @NonNull
-    private Func1<String, FilmDetailEntity> getFilmDetailFun() {
+    public Func1<String, FilmDetailEntity> getFilmDetailFun() {
         if (filmDetailFun == null) {
             filmDetailFun = new Func1<String, FilmDetailEntity>() {
                 @Override
@@ -222,8 +246,22 @@ public class DataStoreController {
         return filmDetailFun;
     }
 
+    public Func1<ResponseBody, String> getTransformCharset(final String charset) {
+        return new Func1<ResponseBody, String>() {
+            @Override
+            public String call(ResponseBody responseBody) {
+                try {
+                    return new String(responseBody.bytes(), charset);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new TaskException(TaskException.ERROR_HTML_PARSE);
+                }
+            }
+        };
+    }
+
     @NonNull
-    private Func1<ResponseBody, String> getTransformCharset() {
+    public Func1<ResponseBody, String> getTransformCharset() {
         if (transformCharset == null) {
             transformCharset = new Func1<ResponseBody, String>() {
                 @Override
@@ -241,7 +279,7 @@ public class DataStoreController {
     }
 
     @NonNull
-    private String getPublishTime(String html) {
+    public String getPublishTime(String html) {
         String publishTime;
         Pattern pattern = Pattern.compile("发布时间：.*&");
         Matcher matcher = pattern.matcher(html);
@@ -286,6 +324,27 @@ public class DataStoreController {
                         observable
                                 .map(getTransformCharset())
                                 .map(getFilmDetailFun())
+                                .subscribe(subscriber);
+                    } catch (TaskException e) {
+                        subscriber.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    @NonNull
+    public Observable<ArrayList<MeiZiEntity>> getNewWorkMeiZiObservable(final Observable<ResponseBody> observable) {
+        return Observable.create(new Observable.OnSubscribe<ArrayList<MeiZiEntity>>() {
+            @Override
+            public void call(Subscriber<? super ArrayList<MeiZiEntity>> subscriber) {
+                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
+                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
+                } else {
+                    try {
+                        observable
+                                .map(getTransformCharset("UTF-8"))
+                                .map(getMeiZiFun())
                                 .subscribe(subscriber);
                     } catch (TaskException e) {
                         subscriber.onError(e);

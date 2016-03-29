@@ -32,7 +32,7 @@ public abstract class BaseGameInfoPresenter extends RefreshRecyclerPresenter<Bas
 
     @Override
     public ExCommonAdapter<BaseInfoEntity> getExCommonAdapter() {
-        return new ExCommonAdapter<BaseInfoEntity>(getBaseActivity(), R.layout.item_film) {
+        return new ExCommonAdapter<BaseInfoEntity>(getBaseActivity(), R.layout.item_game) {
             @Override
             protected void convert(ExViewHolder viewHolder, BaseInfoEntity item) {
                 viewHolder.setText(R.id.tv_film_name, item.getName());
