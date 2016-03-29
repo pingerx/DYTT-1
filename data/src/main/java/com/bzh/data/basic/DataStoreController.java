@@ -17,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;

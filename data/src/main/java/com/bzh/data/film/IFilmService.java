@@ -4,7 +4,10 @@ import android.support.annotation.IntRange;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import rx.Observable;
 
@@ -19,6 +22,13 @@ import rx.Observable;
  * ==========================================================<br>
  */
 public interface IFilmService {
+    //    @Headers("Cache-Control: no-cache") // 强制网络
+//    @Headers("Cache-Control: max-stale=2147483647, only-if-cached")  // 强制缓存
+
+    @Headers("Cache-Control:public, max-age=30, max-stale=10")
+    @GET("/html/gndy/dyzz/list_23_{index}.html")
+    Observable<Response<ResponseBody>> getTest(@Path("index") @IntRange(from = 1, to = 131) int index);
+
 
     // 获取最新电影
     @GET("/html/gndy/dyzz/list_23_{index}.html")
