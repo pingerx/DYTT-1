@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 import rx.Subscriber;
 
 import static org.junit.Assert.*;
@@ -80,5 +81,28 @@ public class IFilmServiceTest {
 
     @Test
     public void testGetFilmDetail() throws Exception {
+    }
+
+    @Test
+    public void testGetTest() throws Exception {
+        iFilmService.getTest(1).subscribe(new Subscriber<Response<ResponseBody>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Response<ResponseBody> responseBodyResponse) {
+                okhttp3.Response raw = responseBodyResponse.raw();
+                System.out.println(raw.cacheControl().maxStaleSeconds());
+                System.out.println("cacheResponse=[" + raw.cacheResponse() + "]");
+                System.out.println("networkResponse=[" + raw.networkResponse() + "]");
+            }
+        });
     }
 }

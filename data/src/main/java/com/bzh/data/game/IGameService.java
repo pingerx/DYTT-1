@@ -20,6 +20,14 @@ import rx.Observable;
 public interface IGameService {
 
     @GET("/html/game/list_19_{index}.html")
-    Observable<ResponseBody> getGame(@Path("index") @IntRange(from = 1, to = 367) int index);
+    Observable<ResponseBody> getGame(@Path("index") @IntRange(from = 1, to = 369) int index);
 
+    @GET("/html/game/remenyouxi/list_98_{index}.html")
+    Observable<ResponseBody> getHotGame(@Path("index") @IntRange(from = 1, to = 8) int index);
+
+    @GET("/html/game/jingdianyouxifabu/list_87_{index}.html")
+    Observable<ResponseBody> getClassicGame(@Path("index") @IntRange(from = 1, to = 199) int index);
+
+    @GET("/html/game/zuixinyouxifabu/list_86_{index}.html")
+    Observable<ResponseBody> getNewestGame(@Path("index") @IntRange(from = 1, to = 146) int index);
 }

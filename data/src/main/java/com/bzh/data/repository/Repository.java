@@ -2,6 +2,7 @@ package com.bzh.data.repository;
 
 import android.support.annotation.IntRange;
 
+import com.bzh.data.basic.MeiZiEntity;
 import com.bzh.data.comic.ComicNetWorkData;
 import com.bzh.data.comic.IComicDataStore;
 import com.bzh.data.comic.IComicService;
@@ -10,6 +11,12 @@ import com.bzh.data.film.IFilmDataStore;
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.film.FilmDetailEntity;
 import com.bzh.data.film.IFilmService;
+import com.bzh.data.game.GameNetWorkDataStore;
+import com.bzh.data.game.IGameDataStore;
+import com.bzh.data.game.IGameService;
+import com.bzh.data.meizi.IMeiZiDataStore;
+import com.bzh.data.meizi.IMeiZiService;
+import com.bzh.data.meizi.MeiZiNetWorkDataStore;
 import com.bzh.data.tv.ITvDataStore;
 import com.bzh.data.tv.TvNetWorkDataStore;
 import com.bzh.data.tv.ITvService;
@@ -19,6 +26,7 @@ import com.bzh.data.variety.VarietyNetWorkDataStore;
 
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
 
 /**
@@ -31,13 +39,15 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataStore, IComicDataStore {
+public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataStore, IComicDataStore, IGameDataStore, IMeiZiDataStore {
 
     private static volatile Repository repository;
     private static volatile IFilmService filmService;
     private static volatile ITvService tvService;
     private static volatile IVarietyService varietyService;
     private static volatile IComicService iComicService;
+    private static volatile IGameService iGameService;
+    private static volatile IMeiZiService iMeiZiService;
 
     public static Repository getInstance() {
         Repository tmp = repository;
@@ -51,6 +61,8 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
                     tvService = RetrofitManager.getInstance().getTvService();
                     varietyService = RetrofitManager.getInstance().getVarietyService();
                     iComicService = RetrofitManager.getInstance().getComicService();
+                    iGameService = RetrofitManager.getInstance().getGameService();
+                    iMeiZiService = RetrofitManager.getInstance().getiMeiZiService();
                 }
             }
         }
@@ -65,6 +77,15 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
     private TvNetWorkDataStore tvNetWorkDataStore;
     private VarietyNetWorkDataStore varietyNetWorkDataStore;
     private ComicNetWorkData comicNetWorkData;
+    private GameNetWorkDataStore gameNetWorkDataStore;
+    private MeiZiNetWorkDataStore meiZiNetWorkDataStore;
+
+    private IMeiZiDataStore getMeiZiDataStore() {
+        if (meiZiNetWorkDataStore == null) {
+            meiZiNetWorkDataStore = new MeiZiNetWorkDataStore(iMeiZiService);
+        }
+        return meiZiNetWorkDataStore;
+    }
 
     private IFilmDataStore getFilmDataStore() {
         if (filmNetWorkDataStore == null) {
@@ -92,6 +113,13 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
             comicNetWorkData = new ComicNetWorkData(iComicService);
         }
         return comicNetWorkData;
+    }
+
+    private GameNetWorkDataStore getGameDataStore() {
+        if (gameNetWorkDataStore == null) {
+            gameNetWorkDataStore = new GameNetWorkDataStore(iGameService);
+        }
+        return gameNetWorkDataStore;
     }
 
     @Override
@@ -212,5 +240,31 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
     @Override
     public Observable<ArrayList<BaseInfoEntity>> getHYComic(@IntRange(from = 1, to = 5) int index) {
         return getComicDataStore().getHYComic(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getGame(@IntRange(from = 1, to = 369) int index) {
+        return getGameDataStore().getGame(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getHotGame(@IntRange(from = 1, to = 8) int index) {
+        return getGameDataStore().getHotGame(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getClassicGame(@IntRange(from = 1, to = 199) int index) {
+        return getGameDataStore().getClassicGame(index);
+    }
+
+    @Override
+    public Observable<ArrayList<BaseInfoEntity>> getNewestGame(@IntRange(from = 1, to = 146) int index) {
+        return getGameDataStore().getNewestGame(index);
+    }
+
+
+    @Override
+    public Observable<ArrayList<MeiZiEntity>> getMeiZi(int index) {
+        return getMeiZiDataStore().getMeiZi(index);
     }
 }

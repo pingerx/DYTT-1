@@ -14,6 +14,10 @@ import android.support.v4.view.PagerAdapter;
  */
 public interface MainIView {
 
+    void setHeaderViewBackground(String url);
+
+    void setHeadView(String url);
+
     void initToolbar(String title);
 
     void setTitle(String title);
