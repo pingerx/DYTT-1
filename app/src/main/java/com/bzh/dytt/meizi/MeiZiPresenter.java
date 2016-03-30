@@ -5,6 +5,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
+import com.bzh.common.utils.SystemUtils;
+import com.bzh.common.utils.UIUtils;
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.basic.MeiZiEntity;
 import com.bzh.data.repository.Repository;
@@ -60,6 +63,8 @@ public class MeiZiPresenter extends RefreshRecyclerPresenter<MeiZiEntity, ArrayL
                 ImageView iv_meizi = (ImageView) viewHolder.getView(R.id.iv_meizi);
                 Glide.with(getBaseActivity())
                         .load(item.getUrl())
+                        .centerCrop()
+                        .override(UIUtils.getScreenWidth(), UIUtils.dip2px(400))
                         .placeholder(R.drawable.ic_placeholder)
                         .into(iv_meizi);
             }
