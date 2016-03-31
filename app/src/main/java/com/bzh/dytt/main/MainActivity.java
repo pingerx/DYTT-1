@@ -51,14 +51,14 @@ public class MainActivity extends BaseActivity
 
     @Bind(R.id.viewPager)
     XViewPager container;
-    private ImageView iv_head;
-    private CircleImageView iv_header_view_background;
+    private CircleImageView iv_head;
+    private ImageView iv_header_view_background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        iv_head = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_head);
-        iv_header_view_background = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_header_view_background);
+        iv_head = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_head);
+        iv_header_view_background = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_header_view_background);
 
         mainA = new MainPresenter(this, this);
         mainA.onCreate(savedInstanceState);
@@ -97,10 +97,7 @@ public class MainActivity extends BaseActivity
                     .into(new BitmapImageViewTarget(iv_head) {
                         @Override
                         protected void setResource(Bitmap resource) {
-                            RoundedBitmapDrawable circularBitmapDrawable =
-                                    RoundedBitmapDrawableFactory.create(getResources(), resource);
-                            circularBitmapDrawable.setCircular(true);
-                            iv_head.setImageDrawable(circularBitmapDrawable);
+                            iv_head.setImageBitmap(resource);
                         }
                     });
     }
