@@ -15,8 +15,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bzh.data.basic.MeiZiEntity;
+import com.bzh.data.meizi.FastBlurUtil;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseActivity;
@@ -63,11 +65,26 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void setHeaderViewBackground(String url) {
-        if (iv_header_view_background != null)
+        if (iv_header_view_background != null) {
+
+
             Glide.with(this)
                     .load(url)
+                    .asBitmap()
                     .placeholder(R.drawable.ic_placeholder)
-                    .into(iv_header_view_background);
+                    .into(new BitmapImageViewTarget(iv_header_view_background) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            int scaleRatio = 10;
+                            Bitmap scaledBitmap = Bitmap.createScaledBitmap(resource,
+                                    resource.getWidth() / scaleRatio,
+                                    resource.getHeight() / scaleRatio,
+                                    false);
+                            Bitmap blurBitmap = FastBlurUtil.doBlur(scaledBitmap, 8, true);
+                            iv_header_view_background.setImageBitmap(blurBitmap);
+                        }
+                    });
+        }
     }
 
     @Override
