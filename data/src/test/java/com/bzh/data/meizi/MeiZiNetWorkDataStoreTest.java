@@ -65,6 +65,7 @@ public class MeiZiNetWorkDataStoreTest extends ApplicationTestCase {
             public void onNext(ArrayList<MeiZiEntity> meiZiEntities) {
                 System.out.println("IMeiZiServiceTest.onNext");
                 System.out.println(gson.toJson(meiZiEntities));
+                System.out.println(MeiZiNetWorkDataStore.MAX_INDEX);
             }
         });
     }

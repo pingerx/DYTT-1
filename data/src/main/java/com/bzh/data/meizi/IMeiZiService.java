@@ -18,7 +18,7 @@ import rx.Observable;
  */
 public interface IMeiZiService {
 
+
     @GET("/share/comment-page-{index}")
     Observable<ResponseBody> getMeiZi(@Path("index") int index);
-
 }

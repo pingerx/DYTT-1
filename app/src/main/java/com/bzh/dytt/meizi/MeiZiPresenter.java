@@ -1,19 +1,18 @@
 package com.bzh.dytt.meizi;
 
-import android.support.annotation.IntegerRes;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
-import com.bzh.common.utils.SystemUtils;
 import com.bzh.common.utils.UIUtils;
-import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.basic.MeiZiEntity;
+import com.bzh.data.meizi.MeiZiNetWorkDataStore;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.basic.IPaging;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
 import com.bzh.recycler.ExCommonAdapter;
@@ -38,6 +37,37 @@ public class MeiZiPresenter extends RefreshRecyclerPresenter<MeiZiEntity, ArrayL
 
     public MeiZiPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
         super(baseActivity, baseFragment, iView);
+    }
+
+    @NonNull
+    @Override
+    public IPaging configPaging() {
+        return new MyPaging();
+    }
+
+    @Override
+    public boolean isNotCanLoadMore(IPaging paging) {
+        return Integer.valueOf(paging.getNextPage()) < Integer.valueOf(paging.getMaxPage());
+    }
+
+    public class MyPaging implements IPaging {
+
+        public int index = MeiZiNetWorkDataStore.MAX_INDEX;
+
+        @Override
+        public String getMaxPage() {
+            return String.valueOf(0);
+        }
+
+        @Override
+        public void processData() {
+            index--;
+        }
+
+        @Override
+        public String getNextPage() {
+            return String.valueOf(index);
+        }
     }
 
     @Override

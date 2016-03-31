@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import com.bzh.common.utils.SystemUtils;
 import com.bzh.data.exception.TaskException;
 import com.bzh.data.film.FilmDetailEntity;
+import com.bzh.data.meizi.IMeiZiService;
+import com.bzh.data.meizi.MeiZiNetWorkDataStore;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -91,6 +93,14 @@ public class DataStoreController {
                 @Override
                 public ArrayList<MeiZiEntity> call(String s) {
                     Document document = Jsoup.parse(s);
+                    Element pageNumbers = document.select("a.page-numbers").select(":not(.next)").last();
+
+                    if (pageNumbers.text() != null && !"".equals(pageNumbers.text()) && MeiZiNetWorkDataStore.MAX_INDEX == -1) {
+                        MeiZiNetWorkDataStore.MAX_INDEX = Integer.valueOf(pageNumbers.text());
+                    } else {
+                        MeiZiNetWorkDataStore.MAX_INDEX = 202;
+                    }
+
                     Elements elements = document.select("div#comments").select("ul");
                     Elements srcs = elements.select("img[src]");
 

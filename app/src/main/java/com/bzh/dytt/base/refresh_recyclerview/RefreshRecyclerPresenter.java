@@ -406,7 +406,7 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
             try {
                 if (null != paging) {
-                    if (Integer.valueOf(paging.getNextPage()) > Integer.valueOf(paging.getMaxPage())) {
+                    if (isNotCanLoadMore(paging)) {
                         refreshConfig.canLoadMore = false;
                     } else {
                         refreshConfig.canLoadMore = true;
@@ -423,6 +423,10 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         public boolean resultIsEmpty(Entities entities) {
             return entities == null;
         }
+    }
+
+    public boolean isNotCanLoadMore(IPaging paging) {
+        return Integer.valueOf(paging.getNextPage()) > Integer.valueOf(paging.getMaxPage());
     }
 
     public class DefaultPaging implements IPaging {

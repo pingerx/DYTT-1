@@ -20,6 +20,8 @@ import rx.Observable;
  */
 public class MeiZiNetWorkDataStore implements IMeiZiDataStore {
 
+    public static int MAX_INDEX = -1;
+
     private IMeiZiService iMeiZiService;
 
     public MeiZiNetWorkDataStore(IMeiZiService iMeiZiService) {
