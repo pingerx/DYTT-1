@@ -126,16 +126,21 @@ public abstract class PagePresenter implements
             break;
             case TASK_STATE_SUCCESS: {
                 iView.layoutLoadingVisibility(false);
-                iView.layoutEmptyVisibility(isContentEmpty());
-                iView.layoutContentVisibility(!isContentEmpty());
+                if (isContentEmpty()) {
+                    iView.layoutEmptyVisibility(true);
+                } else {
+                    iView.layoutContentVisibility(true);
+                }
             }
             break;
             case TASK_STATE_FAILED: {
-                iView.layoutEmptyVisibility(!isContentEmpty());
-                iView.layoutLoadingVisibility(!isContentEmpty());
-                iView.layoutLoadFailedVisibility(isContentEmpty());
-                if (tag != null) {
-                    iView.setTextLoadFailed(tag.toString());
+                if (isContentEmpty()) {
+                    iView.layoutEmptyVisibility(false);
+                    iView.layoutLoadingVisibility(false);
+                    iView.layoutLoadFailedVisibility(true);
+                    if (tag != null) {
+                        iView.setTextLoadFailed(tag.toString());
+                    }
                 }
             }
             break;

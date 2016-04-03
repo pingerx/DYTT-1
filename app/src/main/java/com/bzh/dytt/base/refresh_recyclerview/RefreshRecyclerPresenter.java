@@ -188,6 +188,15 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities>
      */
     public void taskStateChanged(@TASK_STATE int taskState, Serializable tag) {
         super.taskStateChanged(taskState, tag);
+        if (taskState == TASK_STATE_FAILED) {
+            if (!isContentEmpty()) {
+                refreshConfig.canLoadMore = false;
+                iView.layLoadingVisibility(false);
+                iView.btnLoadMoreVisibility(true);
+                iView.setTextLoadingHint(loadingHintLabel());
+                iView.setTextLoadMoreHint(tag.toString());
+            }
+        }
         if (taskState == TASK_STATE_FINISH) {
             if (isRefreshing()) {
                 onRefreshViewComplete();
@@ -243,7 +252,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities>
         public DefaultTaskSubscriber(int requestMode) {
             this.requestMode = requestMode;
         }
-
 
 
         @Override

@@ -23,6 +23,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
 import rx.functions.Func1;
 
 /**
@@ -302,21 +303,50 @@ public class DataStoreController {
 
     @NonNull
     public Observable<ArrayList<BaseInfoEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
-        return observable.map(getTransformCharset())
-                .map(getListFun());
+        return getObservable(observable, getTransformCharset(), getListFun());
     }
 
     @NonNull
     public Observable<FilmDetailEntity> getNewWorkDetailObservable(final Observable<ResponseBody> observable) {
-        return observable
-                .map(getTransformCharset())
-                .map(getFilmDetailFun());
+        return getObservable(observable, getTransformCharset(), getFilmDetailFun());
     }
 
     @NonNull
     public Observable<ArrayList<MeiZiEntity>> getNewWorkMeiZiObservable(final Observable<ResponseBody> observable) {
-        return observable
-                .map(getTransformCharset("UTF-8"))
-                .map(getMeiZiFun());
+        return getObservable(observable, getTransformCharset(), getMeiZiFun());
+    }
+
+    public <Entity> Observable<Entity> getObservable(final Observable<ResponseBody> observable, final Func1<ResponseBody, String> transformCharset, final Func1<String, Entity> transformToEntity) {
+        return Observable.create(new Observable.OnSubscribe<Entity>() {
+            @Override
+            public void call(final Subscriber<? super Entity> subscriber) {
+                observable
+                        .map(transformCharset)
+                        .map(transformToEntity)
+                        .subscribe(new Action1<Entity>() {
+                            @Override
+                            public void call(Entity entity) {
+                                Observable.just(entity)
+                                        .subscribe(subscriber);
+                            }
+                        }, getOnErrorProcess(subscriber));
+            }
+        });
+    }
+
+
+    @NonNull
+    private Action1<Throwable> getOnErrorProcess(final Subscriber subscriber) {
+        return new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                System.out.println("throwable = [" + throwable + "]");
+                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
+                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
+                } else {
+                    subscriber.onError(new TaskException(TaskException.ERROR_UNKNOWN));
+                }
+            }
+        };
     }
 }
