@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.bzh.common.utils.UIUtils;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.basic_pageswitch.PageFragment;
+import com.bzh.dytt.base.basic_pageswitch.PagePresenter;
 import com.bzh.recycler.ExRecyclerView;
 import com.jakewharton.rxbinding.view.RxView;
 
@@ -29,24 +31,9 @@ import butterknife.Bind;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public abstract class RefreshRecyclerFragment extends BaseFragment implements RefreshRecyclerView {
+public abstract class RefreshRecyclerFragment extends PageFragment implements RefreshRecyclerView {
 
-    private static final String TAG = "RefreshRecyclerFragment";
-
-    @Bind(R.id.layoutLoading)
-    LinearLayout layoutLoading;
-
-    @Bind(R.id.layoutLoadFailed)
-    LinearLayout layoutLoadFailed;
-
-    @Bind(R.id.txtLoadFailed)
-    TextView txtLoadFailed;
-
-    @Bind(R.id.layoutEmpty)
-    LinearLayout layoutEmpty;
-
-    @Bind(R.id.layoutContent)
-    LinearLayout layoutContent;
+    private static final String TAG = "PageFragment";
 
     @Bind(R.id.refreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -54,12 +41,14 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     @Bind(R.id.recyclerView)
     ExRecyclerView recyclerView;
 
-    private RefreshRecyclerPresenter refreshRecyclerViewPresenter;
-
     @Override
     protected void initFragmentConfig() {
-        refreshRecyclerViewPresenter = initRefreshRecyclerPresenter();
-        refreshRecyclerViewPresenter.initFragmentConfig();
+        super.initFragmentConfig();
+    }
+
+    @Override
+    protected PagePresenter initPresenter() {
+        return initRefreshRecyclerPresenter();
     }
 
     protected abstract RefreshRecyclerPresenter initRefreshRecyclerPresenter();
@@ -67,49 +56,6 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     @Override
     protected int getContentView() {
         return R.layout.comm_lay_refresh_recyclerview;
-    }
-
-    @Override
-    protected void onFirstUserVisible() {
-        refreshRecyclerViewPresenter.onFirstUserVisible();
-    }
-
-    @Override
-    protected void onUserVisible() {
-        refreshRecyclerViewPresenter.onUserVisible();
-    }
-
-    @Override
-    protected void onUserInvisible() {
-        refreshRecyclerViewPresenter.onUserInvisible();
-    }
-
-    @Override
-    public void layoutLoadingVisibility(boolean isVisible) {
-        if (layoutLoading != null) {
-            RxView.visibility(layoutLoading, View.GONE).call(isVisible);
-        }
-    }
-
-    @Override
-    public void layoutLoadFailedVisibility(boolean isVisible) {
-        if (layoutLoadFailed != null) {
-            RxView.visibility(layoutLoadFailed, View.GONE).call(isVisible);
-        }
-    }
-
-    @Override
-    public void layoutEmptyVisibility(boolean isVisible) {
-        if (layoutEmpty != null) {
-            RxView.visibility(layoutEmpty, View.GONE).call(isVisible);
-        }
-    }
-
-    @Override
-    public void layoutContentVisibility(boolean isVisible) {
-        if (layoutContent != null) {
-            RxView.visibility(layoutContent, View.GONE).call(isVisible);
-        }
     }
 
     @Override
@@ -178,18 +124,6 @@ public abstract class RefreshRecyclerFragment extends BaseFragment implements Re
     public boolean isLoadingMore() {
         return recyclerView != null && recyclerView.isLoadingMore();
     }
-
-    @Override
-    public void setTextLoadFailed(String content) {
-        if (txtLoadFailed != null) {
-            if (!TextUtils.isEmpty(content)) {
-                txtLoadFailed.setText(content);
-            } else {
-                Log.i(TAG, "setTextLoadFailed: content is empty");
-            }
-        }
-    }
-
 
     @Override
     public void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter) {

@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.bzh.dytt.base.basic.BaseView;
+import com.bzh.dytt.base.basic_pageswitch.IPageView;
 import com.bzh.recycler.ExRecyclerView;
 
 /**
@@ -17,21 +18,11 @@ import com.bzh.recycler.ExRecyclerView;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface RefreshRecyclerView extends BaseView {
-
-    void layoutLoadingVisibility(boolean isVisible);
-
-    void layoutLoadFailedVisibility(boolean isVisible);
-
-    void layoutEmptyVisibility(boolean isVisible);
-
-    void layoutContentVisibility(boolean isVisible);
+public interface RefreshRecyclerView extends IPageView {
 
     boolean isRefreshing();
 
     boolean isLoadingMore();
-
-    void setTextLoadFailed(String content);
 
     void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter);
 

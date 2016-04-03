@@ -1,7 +1,5 @@
 package com.bzh.dytt.base.refresh_recyclerview;
 
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,15 +8,14 @@ import android.util.Log;
 
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
-import com.bzh.dytt.base.basic.IFragmentPresenter;
 import com.bzh.dytt.base.basic.IPaging;
+import com.bzh.dytt.base.basic_pageswitch.PagePresenter;
 import com.bzh.dytt.base.rx.TaskSubscriber;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
 
 import java.io.Serializable;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import rx.Observable;
@@ -37,8 +34,9 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
-        IFragmentPresenter,
+public abstract class RefreshRecyclerPresenter<Entity, Entities>
+        extends PagePresenter
+        implements
         SwipeRefreshLayout.OnRefreshListener,
         ExCommonAdapter.OnItemClickListener,
         ExRecyclerView.OnLoadMoreListener {
@@ -65,43 +63,13 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
      */
     private static final int REQUEST_MODE_DATA_LOAD_MORE = 3;
 
-    /**
-     * task state
-     */
-    @IntDef({TASK_STATE_PREPARE, TASK_STATE_SUCCESS, TASK_STATE_FINISH, TASK_STATE_FAILED})
-    public @interface TASK_STATE {
-    }
-
-    /**
-     * Task preparation stage, you can update the UI.
-     */
-    private static final int TASK_STATE_PREPARE = 1;
-
-    /**
-     * Task success stage, you can update the UI.
-     */
-    private static final int TASK_STATE_SUCCESS = 2;
-
-    /**
-     * Task finish stage, you can update the UI.
-     */
-    private static final int TASK_STATE_FINISH = 3;
-
-    /**
-     * Task fail stage, you can update the UI.
-     */
-    private static final int TASK_STATE_FAILED = 4;
-
     private Observable<Entities> listObservable;
     private DefaultTaskSubscriber subscriber;
     private RefreshConfig refreshConfig;
-    private boolean contentEmpty = true;
 
     /**
      * structure
      */
-    private final BaseActivity baseActivity;
-    private final BaseFragment baseFragment;
     private final RefreshRecyclerView iView;
     private ExCommonAdapter<Entity> exCommonAdapter;
 
@@ -110,22 +78,14 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
      */
     private IPaging paging;
 
-    private WeakReference<Handler> handlerWR = new WeakReference<Handler>(new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-        }
-    });
-
     public RefreshRecyclerPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
-        this.baseActivity = baseActivity;
-        this.baseFragment = baseFragment;
+        super(baseActivity, baseFragment, iView);
         this.iView = iView;
     }
 
     @Override
     public void initFragmentConfig() {
+        super.initFragmentConfig();
         paging = configPaging();
         refreshConfig = new RefreshConfig();
         exCommonAdapter = getExCommonAdapter();
@@ -147,14 +107,16 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
     }
 
     @Override
-    public void onUserVisible() {
-    }
-
-    @Override
     public void onUserInvisible() {
         if (subscriber != null && subscriber.isUnsubscribed()) {
             subscriber.unsubscribe();
         }
+    }
+
+    @Override
+    public void onRequestData() {
+        super.onRequestData();
+        onRequestData(REQUEST_MODE_DATA_FIRST);
     }
 
     public void onRequestData(@MODE_REQUEST_DATA int requestMode) {
@@ -191,11 +153,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
     }
 
     @Override
-    public void onFirstUserVisible() {
-        onRequestData(REQUEST_MODE_DATA_FIRST);
-    }
-
-    @Override
     public void onRefresh() {
         onRequestData(REQUEST_MODE_DATA_REFRESH);
     }
@@ -209,14 +166,6 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
 
     @Override
     public void onItemClick(ExViewHolder viewHolder) {
-    }
-
-    public BaseActivity getBaseActivity() {
-        return baseActivity;
-    }
-
-    public BaseFragment getBaseFragment() {
-        return baseFragment;
     }
 
     public RefreshRecyclerView getiView() {
@@ -237,35 +186,11 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
      * @param tag May result in a task execution process information
      */
     public void taskStateChanged(@TASK_STATE int taskState, Serializable tag) {
-        switch (taskState) {
-            case TASK_STATE_PREPARE: {
-                iView.layoutLoadingVisibility(isContentEmpty());
-                iView.layoutContentVisibility(!isContentEmpty());
-                iView.layoutEmptyVisibility(false);
-                iView.layoutLoadFailedVisibility(false);
+        super.taskStateChanged(taskState, tag);
+        if (taskState == TASK_STATE_FINISH) {
+            if (isRefreshing()) {
+                onRefreshViewComplete();
             }
-            break;
-            case TASK_STATE_SUCCESS: {
-                iView.layoutLoadingVisibility(false);
-                iView.layoutEmptyVisibility(isContentEmpty());
-                iView.layoutContentVisibility(!isContentEmpty());
-            }
-            break;
-            case TASK_STATE_FAILED: {
-                iView.layoutEmptyVisibility(!isContentEmpty());
-                iView.layoutLoadingVisibility(!isContentEmpty());
-                iView.layoutLoadFailedVisibility(isContentEmpty());
-                if (tag != null) {
-                    iView.setTextLoadFailed(tag.toString());
-                }
-            }
-            break;
-            case TASK_STATE_FINISH: {
-                if (isRefreshing()) {
-                    onRefreshViewComplete();
-                }
-            }
-            break;
         }
     }
 
@@ -304,21 +229,13 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         return "全部都加载完了";
     }
 
-    public void setContentEmpty(boolean empty) {
-        this.contentEmpty = empty;
-    }
-
-    public boolean isContentEmpty() {
-        return contentEmpty;
-    }
-
     ///////////////////////////////////////////////////////////////////////////
     // Inner class
     public static class RefreshConfig implements Serializable {
         public boolean canLoadMore = true; // initial value must be true;
     }
 
-    public class DefaultTaskSubscriber extends Subscriber<Entities> implements TaskSubscriber<Entities>, Action0 {
+    public class DefaultTaskSubscriber extends AbstractTaskSubscriber<Entities> {
 
         private int requestMode;
 
@@ -327,60 +244,8 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities> implements
         }
 
         @Override
-        final public void onStart() {
-            // no something to do
-        }
-
-        @Override
-        final public void onCompleted() {
-            this.onFinish();
-            if (!isUnsubscribed()) {
-                unsubscribe();
-            }
-        }
-
-        @Override
-        final public void onError(Throwable e) {
-            this.onFailure(e);
-            if (!isUnsubscribed()) {
-                unsubscribe();
-            }
-        }
-
-        @Override
-        public void onNext(Entities entities) {
-            this.onSuccess(entities);
-        }
-
-        @Override
-        final public void call() {
-            this.onPrepare();
-        }
-
-        ///////////////////////////////////////////////////////////////////////////
-        //
-        ///////////////////////////////////////////////////////////////////////////
-
-        @Override
-        public void onPrepare() {
-            taskStateChanged(TASK_STATE_PREPARE, null);
-        }
-
-        @Override
-        public void onFinish() {
-            taskStateChanged(TASK_STATE_FINISH, null);
-        }
-
-        @Override
-        public void onFailure(Throwable e) {
-            taskStateChanged(TASK_STATE_FAILED, e.getMessage());
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
         public void onSuccess(Entities entities) {
-            setContentEmpty(resultIsEmpty(entities));
-            taskStateChanged(TASK_STATE_SUCCESS, null);
+            super.onSuccess(entities);
 
             if (entities == null || exCommonAdapter == null) {
                 return;
