@@ -2,7 +2,6 @@ package com.bzh.dytt.variety;
 
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.repository.Repository;
-import com.bzh.dytt.film.BaseFilmInfoPresenter;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;

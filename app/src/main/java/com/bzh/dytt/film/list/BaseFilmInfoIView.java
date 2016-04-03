@@ -1,4 +1,4 @@
-package com.bzh.dytt.film;
+package com.bzh.dytt.film.list;
 
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
 

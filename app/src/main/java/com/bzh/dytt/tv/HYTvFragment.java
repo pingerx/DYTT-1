@@ -2,7 +2,6 @@ package com.bzh.dytt.tv;
 
 import android.os.Bundle;
 
-import com.bzh.dytt.film.BaseFilmInfoIView;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
 

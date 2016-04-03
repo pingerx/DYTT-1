@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
-import com.bzh.dytt.film.DomesticFilmPresenterFilm;
 
 /**
  * ==========================================================<br>

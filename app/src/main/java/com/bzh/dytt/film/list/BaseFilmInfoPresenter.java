@@ -1,17 +1,19 @@
-package com.bzh.dytt.film;
+package com.bzh.dytt.film.list;
+
+import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.bzh.data.basic.BaseInfoEntity;
-import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
+import com.bzh.dytt.film.detail.FilmDetailFragment;
 import com.bzh.recycler.ExCommonAdapter;
+import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
 
 import java.util.ArrayList;
-
-import rx.Observable;
 
 /**
  * ==========================================================<br>
@@ -23,14 +25,10 @@ import rx.Observable;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class DomesticFilmPresenterFilm extends BaseFilmInfoPresenter {
+public abstract class BaseFilmInfoPresenter extends RefreshRecyclerPresenter<BaseInfoEntity, ArrayList<BaseInfoEntity>> implements SwipeRefreshLayout.OnRefreshListener, ExCommonAdapter.OnItemClickListener, ExRecyclerView.OnLoadMoreListener {
 
-    public DomesticFilmPresenterFilm(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
+    public BaseFilmInfoPresenter(BaseActivity baseActivity, BaseFragment baseFragment, RefreshRecyclerView iView) {
         super(baseActivity, baseFragment, iView);
-    }
-
-    public Observable<ArrayList<BaseInfoEntity>> getRequestListDataObservable(String nextPage) {
-        return Repository.getInstance().getDomestic(Integer.valueOf(nextPage));
     }
 
     @Override
@@ -45,7 +43,9 @@ public class DomesticFilmPresenterFilm extends BaseFilmInfoPresenter {
     }
 
     @Override
-    public String getMaxPage() {
-        return 87 + "";
+    public void onItemClick(ExViewHolder viewHolder) {
+        super.onItemClick(viewHolder);
+        BaseInfoEntity baseInfoEntity = getCommonAdapter().getData().get(viewHolder.getAdapterPosition());
+        FilmDetailFragment.launch(getBaseActivity(), baseInfoEntity.getUrl());
     }
 }

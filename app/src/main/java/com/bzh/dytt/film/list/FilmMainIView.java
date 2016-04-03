@@ -1,4 +1,4 @@
-package com.bzh.dytt.film;
+package com.bzh.dytt.film.list;
 
 import android.support.v4.view.PagerAdapter;
 

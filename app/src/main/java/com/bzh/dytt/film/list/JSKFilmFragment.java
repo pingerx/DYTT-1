@@ -1,8 +1,9 @@
-package com.bzh.dytt.film;
+package com.bzh.dytt.film.list;
 
 import android.os.Bundle;
 
-import com.bzh.dytt.base.tablayoutview.TabLayoutFragment;
+import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerFragment;
+import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
 
 /**
  * ==========================================================<br>
@@ -14,20 +15,17 @@ import com.bzh.dytt.base.tablayoutview.TabLayoutFragment;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmMainFragment extends TabLayoutFragment implements FilmMainIView {
+public class JSKFilmFragment extends RefreshRecyclerFragment implements BaseFilmInfoIView {
 
-    public static FilmMainFragment newInstance() {
-        
+    public static JSKFilmFragment newInstance() {
         Bundle args = new Bundle();
-        
-        FilmMainFragment fragment = new FilmMainFragment();
+        JSKFilmFragment fragment = new JSKFilmFragment();
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Override
-    protected void initFragmentConfig() {
-        tabLayoutPresenter = new FilmMainPresenter(getBaseActivity(), this, this);
-        tabLayoutPresenter.initFragmentConfig();
+    protected RefreshRecyclerPresenter initRefreshRecyclerPresenter() {
+        return new JSKFilmPresenterFilm(getBaseActivity(), this, this);
     }
 }
