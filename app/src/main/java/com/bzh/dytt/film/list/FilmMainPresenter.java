@@ -1,4 +1,4 @@
-package com.bzh.dytt.film.detail;
+package com.bzh.dytt.film.list;
 
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;

@@ -279,4 +279,6 @@ public class FilmDetailEntity implements Parcelable {
             return new FilmDetailEntity[size];
         }
     };
+
+
 }

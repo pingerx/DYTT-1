@@ -17,6 +17,7 @@ import com.bzh.recycler.ExViewHolder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -242,6 +243,8 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities>
         public DefaultTaskSubscriber(int requestMode) {
             this.requestMode = requestMode;
         }
+
+
 
         @Override
         public void onSuccess(Entities entities) {

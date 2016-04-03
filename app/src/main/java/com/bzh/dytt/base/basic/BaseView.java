@@ -12,4 +12,5 @@ package com.bzh.dytt.base.basic;
  */
 public interface BaseView {
 
+
 }

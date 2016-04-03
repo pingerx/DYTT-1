@@ -97,8 +97,6 @@ public class DataStoreController {
 
                     if (pageNumbers.text() != null && !"".equals(pageNumbers.text()) && MeiZiNetWorkDataStore.MAX_INDEX == -1) {
                         MeiZiNetWorkDataStore.MAX_INDEX = Integer.valueOf(pageNumbers.text());
-                    } else {
-                        MeiZiNetWorkDataStore.MAX_INDEX = 202;
                     }
 
                     Elements elements = document.select("div#comments").select("ul");
@@ -304,63 +302,21 @@ public class DataStoreController {
 
     @NonNull
     public Observable<ArrayList<BaseInfoEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
-        return Observable.create(new Observable.OnSubscribe<ArrayList<BaseInfoEntity>>() {
-            @Override
-            public void call(Subscriber<? super ArrayList<BaseInfoEntity>> subscriber) {
-                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
-                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
-                } else {
-                    try {
-                        observable.map(getTransformCharset())
-                                .map(getListFun())
-                                .subscribe(subscriber);
-                    } catch (TaskException e) {
-                        subscriber.onError(e);
-                    }
-                }
-            }
-        });
+        return observable.map(getTransformCharset())
+                .map(getListFun());
     }
 
     @NonNull
     public Observable<FilmDetailEntity> getNewWorkDetailObservable(final Observable<ResponseBody> observable) {
-        return Observable.create(new Observable.OnSubscribe<FilmDetailEntity>() {
-            @Override
-            public void call(Subscriber<? super FilmDetailEntity> subscriber) {
-                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
-                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
-                } else {
-                    try {
-                        observable
-                                .map(getTransformCharset())
-                                .map(getFilmDetailFun())
-                                .subscribe(subscriber);
-                    } catch (TaskException e) {
-                        subscriber.onError(e);
-                    }
-                }
-            }
-        });
+        return observable
+                .map(getTransformCharset())
+                .map(getFilmDetailFun());
     }
 
     @NonNull
     public Observable<ArrayList<MeiZiEntity>> getNewWorkMeiZiObservable(final Observable<ResponseBody> observable) {
-        return Observable.create(new Observable.OnSubscribe<ArrayList<MeiZiEntity>>() {
-            @Override
-            public void call(Subscriber<? super ArrayList<MeiZiEntity>> subscriber) {
-                if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
-                    subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
-                } else {
-                    try {
-                        observable
-                                .map(getTransformCharset("UTF-8"))
-                                .map(getMeiZiFun())
-                                .subscribe(subscriber);
-                    } catch (TaskException e) {
-                        subscriber.onError(e);
-                    }
-                }
-            }
-        });
+        return observable
+                .map(getTransformCharset("UTF-8"))
+                .map(getMeiZiFun());
     }
 }

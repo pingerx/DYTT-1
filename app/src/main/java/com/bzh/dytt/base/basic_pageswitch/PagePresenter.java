@@ -80,7 +80,6 @@ public abstract class PagePresenter implements
 
     @Override
     public void initFragmentConfig() {
-
     }
 
     @Override
@@ -155,7 +154,7 @@ public abstract class PagePresenter implements
 
     ///////////////////////////////////////////////////////////////////////////
     // Inner class
-    protected abstract class AbstractTaskSubscriber<Entity> extends Subscriber<Entity> implements TaskSubscriber<Entity>, Action0 {
+    public class AbstractTaskSubscriber<Entity> extends Subscriber<Entity> implements TaskSubscriber<Entity>, Action0 {
 
         @Override
         final public void onStart() {

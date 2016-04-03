@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -83,9 +83,19 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
         Repository.getInstance().getMeiZi(0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ArrayList<MeiZiEntity>>() {
+                .subscribe(new Subscriber<ArrayList<MeiZiEntity>>() {
                     @Override
-                    public void call(ArrayList<MeiZiEntity> meiZiEntities) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<MeiZiEntity> meiZiEntities) {
                         if (meiZiEntities != null && meiZiEntities.size() > 0) {
                             iMainView.setHeaderViewBackground(meiZiEntities.get(0).getUrl());
                         }

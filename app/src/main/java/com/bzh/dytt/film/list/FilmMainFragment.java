@@ -3,7 +3,6 @@ package com.bzh.dytt.film.list;
 import android.os.Bundle;
 
 import com.bzh.dytt.base.tablayoutview.TabLayoutFragment;
-import com.bzh.dytt.film.detail.FilmMainPresenter;
 
 /**
  * ==========================================================<br>

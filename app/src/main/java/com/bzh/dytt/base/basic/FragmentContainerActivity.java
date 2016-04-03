@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
 
 import com.bzh.dytt.R;
 
@@ -22,11 +23,12 @@ import java.lang.reflect.Method;
  * <b>修订历史</b>：　<br>
  * ========================================================== <br>
  */
-public class FragmentContainerActivity extends AppCompatActivity {
+public class FragmentContainerActivity extends BaseActivity {
 
     public static final String FRAGMENT_TAG = "fragment_container";
     public static final String KEY_CLASS_NAME = "className";
     public static final String KEY_ARGS = "args";
+    private Fragment fragment;
 
     public static void launch(Activity activity,
                               Class<? extends Fragment> clazz,
@@ -76,19 +78,12 @@ public class FragmentContainerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         String className = getIntent().getStringExtra(KEY_CLASS_NAME);
         if (TextUtils.isEmpty(className)) {
             finish();
             return;
         }
-
-        int contentId = R.layout.comm_frag_container;
-
         FragmentArgs values = (FragmentArgs) getIntent().getSerializableExtra(KEY_ARGS);
-
-        Fragment fragment;
-
         if (savedInstanceState == null) {
             try {
                 Class clazz = Class.forName(className);
@@ -109,15 +104,17 @@ public class FragmentContainerActivity extends AppCompatActivity {
                 finish();
                 return;
             }
-
-            setContentView(contentId);
-
             if (fragment != null) {
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragmentContainer, fragment, FRAGMENT_TAG)
                         .commit();
             }
         }
+    }
+
+    @Override
+    protected int getContentViewResId() {
+        return R.layout.comm_frag_container;
     }
 
     @Override
@@ -130,4 +127,11 @@ public class FragmentContainerActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (fragment != null) {
+            fragment.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

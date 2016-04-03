@@ -54,7 +54,7 @@ public class RetrofitManager {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cache(cache)
-                .connectTimeout(30, TimeUnit.SECONDS)
+//                .connectTimeout(30, TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()

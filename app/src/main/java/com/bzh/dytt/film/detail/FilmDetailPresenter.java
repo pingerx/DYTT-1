@@ -8,12 +8,9 @@ import com.bzh.data.film.FilmDetailEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
-import com.bzh.dytt.base.basic.IFragmentPresenter;
-import com.bzh.dytt.film.list.IFilmDetailView;
-import com.bzh.log.MyLog;
+import com.bzh.dytt.base.basic_pageswitch.PagePresenter;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -26,24 +23,25 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmDetailPresenter implements IFragmentPresenter, View.OnClickListener {
+public class FilmDetailPresenter extends PagePresenter implements View.OnClickListener {
 
-    private final BaseActivity baseActivity;
-    private BaseFragment baseFragment;
     private final IFilmDetailView filmDetailView;
     private String url;
+    private FilmDetailEntity filmDetailEntity;
 
     public FilmDetailPresenter(BaseActivity baseActivity, BaseFragment baseFragment, IFilmDetailView filmDetailView) {
-        this.baseActivity = baseActivity;
-        this.baseFragment = baseFragment;
+        super(baseActivity, baseFragment, filmDetailView);
         this.filmDetailView = filmDetailView;
     }
-
 
     @Override
     public void onClick(View v) {
         Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+
+        if (v.getId() == android.R.id.home) {
+            getBaseActivity().finish();
+        }
     }
 
     @Override
@@ -51,32 +49,31 @@ public class FilmDetailPresenter implements IFragmentPresenter, View.OnClickList
         if (null != baseFragment.getArguments()) {
             url = baseFragment.getArguments().getString(FilmDetailFragment.FILM_URL);
             if (!TextUtils.isEmpty(url)) {
+                FilmDetailTaskSubscriber taskSubscriber = new FilmDetailTaskSubscriber();
                 Repository.getInstance().getFilmDetail(url)
+                        .doOnSubscribe(taskSubscriber)
                         .subscribeOn(Schedulers.io())
                         .unsubscribeOn(AndroidSchedulers.mainThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<FilmDetailEntity>() {
-                            @Override
-                            public void call(FilmDetailEntity filmDetailEntity) {
-                                filmDetailView.setFilmPoster(filmDetailEntity.getCoverUrl());
-                            }
-                        });
+                        .subscribe(taskSubscriber);
             }
+        }
+        filmDetailView.initToolbar();
+        filmDetailView.initFab();
+    }
+
+    private class FilmDetailTaskSubscriber extends AbstractTaskSubscriber<FilmDetailEntity> {
+
+        @Override
+        public void onSuccess(FilmDetailEntity filmDetailEntity) {
+            super.onSuccess(filmDetailEntity);
+            FilmDetailPresenter.this.filmDetailEntity = filmDetailEntity;
+            updateFileDetailStatus();
         }
     }
 
-    @Override
-    public void onFirstUserVisible() {
-
-    }
-
-    @Override
-    public void onUserVisible() {
-
-    }
-
-    @Override
-    public void onUserInvisible() {
+    private void updateFileDetailStatus() {
+        filmDetailView.setFilmDetail(filmDetailEntity);
 
     }
 }

@@ -1,4 +1,7 @@
-package com.bzh.dytt.film.list;
+package com.bzh.dytt.film.detail;
+
+import com.bzh.data.film.FilmDetailEntity;
+import com.bzh.dytt.base.basic_pageswitch.IPageView;
 
 /**
  * ==========================================================<br>
@@ -10,10 +13,11 @@ package com.bzh.dytt.film.list;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public interface IFilmDetailView {
-
+public interface IFilmDetailView extends IPageView {
 
     void initFab();
 
-    void setFilmPoster(String url);
+    void setFilmDetail(FilmDetailEntity filmDetailEntity);
+
+    void initToolbar();
 }
