@@ -6,9 +6,11 @@ import android.view.View;
 
 import com.bzh.data.film.FilmDetailEntity;
 import com.bzh.data.repository.Repository;
+import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.basic_pageswitch.PagePresenter;
+import com.bzh.log.MyLog;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -36,11 +38,13 @@ public class FilmDetailPresenter extends PagePresenter implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+
 
         if (v.getId() == android.R.id.home) {
             getBaseActivity().finish();
+        } else if (v.getId() == R.id.fab) {
+            Snackbar.make(v, filmDetailEntity.getDownloadUrl(), Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         }
     }
 

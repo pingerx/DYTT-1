@@ -1,15 +1,19 @@
 package com.bzh.dytt.film.detail;
 
+import android.graphics.Bitmap;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bzh.common.utils.UIUtils;
 import com.bzh.data.film.FilmDetailEntity;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseActivity;
@@ -20,6 +24,7 @@ import com.bzh.dytt.base.basic_pageswitch.PagePresenter;
 import com.jakewharton.rxbinding.support.design.widget.RxAppBarLayout;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 public class FilmDetailFragment extends PageFragment implements IFilmDetailView {
 
@@ -45,7 +50,8 @@ public class FilmDetailFragment extends PageFragment implements IFilmDetailView 
 
     @Bind(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
-
+    @Bind(R.id.translationName)
+    TextView translationName;
     @Bind(R.id.years)
     TextView years;
     @Bind(R.id.country)
@@ -80,7 +86,8 @@ public class FilmDetailFragment extends PageFragment implements IFilmDetailView 
 
     @Override
     public void setFilmDetail(FilmDetailEntity filmDetailEntity) {
-        collapsingToolbar.setTitle(filmDetailEntity.getTitle());
+        collapsingToolbar.setTitle(filmDetailEntity.getTranslationName());
+        translationName.setText(filmDetailEntity.getTitle());
         years.setText(filmDetailEntity.getYears());
         country.setText(filmDetailEntity.getCountry());
         category.setText(filmDetailEntity.getCategory());
@@ -94,7 +101,23 @@ public class FilmDetailFragment extends PageFragment implements IFilmDetailView 
                 .into(filmPoster);
         Glide.with(this)
                 .load(filmDetailEntity.getPreviewImage())
-                .into(previewImage);
+                .asBitmap()
+                .into(new BitmapImageViewTarget(previewImage) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        super.setResource(resource);
+                        int width = resource.getWidth();
+                        int height = resource.getHeight();
+                        float ratio = width * 1.0F / height;
+                        float targetHeight = UIUtils.getScreenWidth() * 1.0F / ratio;
+
+                        ViewGroup.LayoutParams params = previewImage.getLayoutParams();
+                        params.height = (int) targetHeight;
+                        previewImage.setLayoutParams(params);
+
+                        previewImage.setImageBitmap(resource);
+                    }
+                });
 
     }
 
@@ -119,5 +142,10 @@ public class FilmDetailFragment extends PageFragment implements IFilmDetailView 
     @Override
     protected int getContentView() {
         return R.layout.activity_film_detail;
+    }
+
+    @OnClick(R.id.fab)
+    public void onClickFab(View v) {
+        filmDetailPresenter.onClick(v);
     }
 }
