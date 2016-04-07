@@ -1,5 +1,9 @@
 package com.bzh.data.repository;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+
+import com.bzh.common.context.GlobalContext;
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.film.FilmDetailEntity;
@@ -10,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import rx.Subscriber;
 
@@ -218,5 +223,13 @@ public class RepositoryTest extends ApplicationTestCase {
     @Test
     public void testGetNewestGame() throws Exception {
         instance.getNewComic(1).subscribe(listSubscriber);
+    }
+
+    @Test
+    public void testApp() {
+        PackageManager manager = GlobalContext.getInstance().getPackageManager();
+        List<ApplicationInfo> installedApplications = manager.getInstalledApplications(0);
+        System.out.println(manager);
+        System.out.println(installedApplications);
     }
 }

@@ -1,16 +1,26 @@
 package com.bzh.dytt.film.detail;
 
-import android.support.design.widget.Snackbar;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.bzh.data.film.FilmDetailEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
+import com.bzh.dytt.Utils;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.basic_pageswitch.PagePresenter;
-import com.bzh.log.MyLog;
+import com.bzh.log.Util;
+
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -43,10 +53,12 @@ public class FilmDetailPresenter extends PagePresenter implements View.OnClickLi
         if (v.getId() == android.R.id.home) {
             getBaseActivity().finish();
         } else if (v.getId() == R.id.fab) {
-            Snackbar.make(v, filmDetailEntity.getDownloadUrl(), Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Utils.copyUrlToClipboard(baseActivity, filmDetailEntity.getDownloadUrl());
+            Utils.startXunlei(baseActivity);
         }
     }
+
+
 
     @Override
     public void initFragmentConfig() {
