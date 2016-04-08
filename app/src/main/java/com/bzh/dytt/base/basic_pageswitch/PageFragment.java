@@ -104,4 +104,5 @@ public abstract class PageFragment extends BaseFragment implements IPageView {
             }
         }
     }
+
 }
