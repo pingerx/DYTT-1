@@ -23,9 +23,13 @@ import java.util.List;
  */
 public class Utils {
 
+    public static String getThunderEncode(String ftpUrl) {
+        return "thunder://" + XunLeiBase64.base64encode(("AA" + ftpUrl + "ZZ").getBytes());
+    }
+
     public static void copyUrlToClipboard(Context context, String data) {
         ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("downloadUrl", data);
+        ClipData clipData = ClipData.newPlainText("downloadUrl", getThunderEncode(data));
         clipboardManager.setPrimaryClip(clipData);
     }
 
@@ -54,4 +58,16 @@ public class Utils {
             }
         }
     }
+
+    public static boolean checkIsInstall(Context paramContext, String paramString) {
+        if ((paramString == null) || ("".equals(paramString)))
+            return false;
+        try {
+            paramContext.getPackageManager().getApplicationInfo(paramString, 8192);
+            return true;
+        } catch (PackageManager.NameNotFoundException localNameNotFoundException) {
+        }
+        return false;
+    }
+
 }

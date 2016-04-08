@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -37,6 +39,7 @@ import rx.schedulers.Schedulers;
  */
 public class FilmDetailPresenter extends PagePresenter implements View.OnClickListener {
 
+    public static final String XUNLEI_PACKAGENAME = "com.xunlei.downloadprovider";
     private final IFilmDetailView filmDetailView;
     private String url;
     private FilmDetailEntity filmDetailEntity;
@@ -48,17 +51,16 @@ public class FilmDetailPresenter extends PagePresenter implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-
-
         if (v.getId() == android.R.id.home) {
             getBaseActivity().finish();
         } else if (v.getId() == R.id.fab) {
-            Utils.copyUrlToClipboard(baseActivity, filmDetailEntity.getDownloadUrl());
-            Utils.startXunlei(baseActivity);
+            if (Utils.checkIsInstall(baseActivity, XUNLEI_PACKAGENAME)) {
+                baseActivity.startActivity(new Intent("android.intent.action.VIEW", Uri.parse(Utils.getThunderEncode(filmDetailEntity.getDownloadUrl()))));
+            } else {
+                Snackbar.make(v, "未安装迅雷", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
         }
     }
-
-
 
     @Override
     public void initFragmentConfig() {

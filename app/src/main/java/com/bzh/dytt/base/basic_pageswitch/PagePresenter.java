@@ -64,13 +64,13 @@ public abstract class PagePresenter implements
     protected final BaseFragment baseFragment;
     protected final IPageView iView;
 
-    protected WeakReference<Handler> handlerWR = new WeakReference<Handler>(new Handler() {
+    protected Handler handlerWR = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
         }
-    });
+    };
 
     public PagePresenter(BaseActivity baseActivity, BaseFragment baseFragment, IPageView iView) {
         this.baseActivity = baseActivity;
