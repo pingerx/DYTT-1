@@ -55,7 +55,5 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
             android:src="@drawable/ic_arrow_right" />
-
-
     </RelativeLayout>
 </FrameLayout>

@@ -25,7 +25,7 @@ android {
 
 dependencies {
     compile project(':lib_common')
-    compile project(':lib_recycler')
+
     compile 'io.reactivex:rxjava:1.1.1'
     compile 'javax.annotation:jsr250-api:1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
@@ -33,7 +33,6 @@ dependencies {
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.squareup.retrofit2:converter-scalars:2.0.0-beta4'
     compile 'com.google.code.gson:gson:2.6.2'
-
 
     compile 'junit:junit:4.12'
     testCompile 'junit:junit:4.12'

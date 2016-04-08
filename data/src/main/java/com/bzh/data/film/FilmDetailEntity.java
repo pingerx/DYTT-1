@@ -36,6 +36,7 @@ public class FilmDetailEntity implements Parcelable {
     private String description;         // 简介
     private String previewImage;     // 预览图
     private String downloadUrl;         // 下载地址
+    private String imdb;         // 评分
 
     public String getTitle() {
         return title;
@@ -189,30 +190,12 @@ public class FilmDetailEntity implements Parcelable {
         this.downloadUrl = downloadUrl;
     }
 
+    public String getImdb() {
+        return imdb;
+    }
 
-    @Override
-    public String toString() {
-        return "FilmDetailEntity{\n" +
-                "title='" + title + '\'' + "\n" +
-                ", publishTime='" + publishTime + '\'' + "\n" +
-                ", coverUrl='" + coverUrl + '\'' + "\n" +
-                ", name='" + name + '\'' + "\n" +
-                ", translationName='" + translationName + '\'' + "\n" +
-                ", years='" + years + '\'' + "\n" +
-                ", country='" + country + '\'' + "\n" +
-                ", category='" + category + '\'' + "\n" +
-                ", language='" + language + '\'' + "\n" +
-                ", subtitle='" + subtitle + '\'' + "\n" +
-                ", fileFormat='" + fileFormat + '\'' + "\n" +
-                ", videoSize='" + videoSize + '\'' + "\n" +
-                ", fileSize='" + fileSize + '\'' + "\n" +
-                ", showTime='" + showTime + '\'' + "\n" +
-                ", director='" + director + '\'' + "\n" +
-                ", leadingPlayers=" + leadingPlayers + "\n" +
-                ", description='" + description + '\'' + "\n" +
-                ", previewImage='" + previewImage + '\'' + "\n" +
-                ", downloadUrl='" + downloadUrl + '\'' + "\n" +
-                '}';
+    public void setImdb(String imdb) {
+        this.imdb = imdb;
     }
 
     @Override
@@ -241,6 +224,7 @@ public class FilmDetailEntity implements Parcelable {
         dest.writeString(this.description);
         dest.writeString(this.previewImage);
         dest.writeString(this.downloadUrl);
+        dest.writeString(this.imdb);
     }
 
     public FilmDetailEntity() {
@@ -266,6 +250,7 @@ public class FilmDetailEntity implements Parcelable {
         this.description = in.readString();
         this.previewImage = in.readString();
         this.downloadUrl = in.readString();
+        this.imdb = in.readString();
     }
 
     public static final Creator<FilmDetailEntity> CREATOR = new Creator<FilmDetailEntity>() {
@@ -279,6 +264,4 @@ public class FilmDetailEntity implements Parcelable {
             return new FilmDetailEntity[size];
         }
     };
-
-
 }

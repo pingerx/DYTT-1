@@ -7,6 +7,8 @@ import com.bzh.data.exception.TaskException;
 import com.bzh.data.film.FilmDetailEntity;
 import com.bzh.data.meizi.IMeiZiService;
 import com.bzh.data.meizi.MeiZiNetWorkDataStore;
+import com.bzh.log.MyLog;
+import com.google.gson.Gson;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -63,6 +65,7 @@ public class DataStoreController {
     public static final String NAME = "◎片名";
     public static final String YEARS = "◎年代";
     public static final String COUNTRY = "◎国家";
+    public static final String AREA = "◎地区";
     public static final String CATEGORY = "◎类别";
     public static final String LANGUAGE = "◎语言";
     public static final String SUBTITLE = "◎字幕";
@@ -74,12 +77,15 @@ public class DataStoreController {
     public static final String LEADINGPLAYERS = "◎主演";
     public static final String DESCRIPTION = "◎简介";
     public static final String TRANSLATIONNAME = "◎译名";
+    public static final String IMDB = "◎IMDb评分";
     ///////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
     // Charset
     public final String TO_CHARSET_NAME = "GB2312";
     ///////////////////////////////////////////////////////////////////////////
+
+    private Gson gson = new Gson();
 
     ///////////////////////////////////////////////////////////////////////////
     // variable
@@ -202,6 +208,9 @@ public class DataStoreController {
                             } else if (info.contains(COUNTRY)) {
                                 info = info.substring(info.indexOf(COUNTRY) + COUNTRY.length());
                                 entity.setCountry(info);
+                            } else if (info.contains(AREA)) {
+                                info = info.substring(info.indexOf(AREA) + AREA.length());
+                                entity.setCountry(info);
                             } else if (info.contains(CATEGORY)) {
                                 info = info.substring(info.indexOf(CATEGORY) + CATEGORY.length());
                                 entity.setCategory(info);
@@ -214,6 +223,9 @@ public class DataStoreController {
                             } else if (info.contains(FILEFORMAT)) {
                                 info = info.substring(info.indexOf(FILEFORMAT) + FILEFORMAT.length());
                                 entity.setFileFormat(info);
+                            } else if (info.toLowerCase().contains(IMDB.toLowerCase())) {
+                                info = info.substring(info.toLowerCase().indexOf(IMDB.toLowerCase()) + IMDB.length());
+                                entity.setImdb(info);
                             } else if (info.contains(VIDEOSIZE)) {
                                 info = info.substring(info.indexOf(VIDEOSIZE) + VIDEOSIZE.length());
                                 entity.setVideoSize(info);
@@ -326,6 +338,8 @@ public class DataStoreController {
                         .subscribe(new Action1<Entity>() {
                             @Override
                             public void call(Entity entity) {
+
+                                MyLog.json(gson.toJson(entity));
                                 Observable.just(entity)
                                         .subscribe(subscriber);
                             }

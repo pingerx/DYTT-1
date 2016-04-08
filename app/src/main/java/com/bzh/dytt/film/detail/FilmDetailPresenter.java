@@ -41,7 +41,9 @@ public class FilmDetailPresenter extends PagePresenter implements View.OnClickLi
         if (v.getId() == android.R.id.home) {
             getBaseActivity().finish();
         } else if (v.getId() == R.id.fab) {
-            ThunderHelper.getInstance(getBaseActivity()).onClickDownload(v, filmDetailEntity.getDownloadUrl());
+            if (filmDetailEntity != null) {
+                ThunderHelper.getInstance(getBaseActivity()).onClickDownload(v, filmDetailEntity.getDownloadUrl());
+            }
         }
     }
 
