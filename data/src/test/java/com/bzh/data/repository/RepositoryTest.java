@@ -115,16 +115,6 @@ public class RepositoryTest extends ApplicationTestCase {
     }
 
     @Test
-    public void testGetChineseDomesticTv_1() throws Exception {
-        instance.getChineseDomesticTv_1(1).subscribe(listSubscriber);
-    }
-
-    @Test
-    public void testGetChineseDomesticTv_2() throws Exception {
-        instance.getChineseDomesticTv_2(1).subscribe(listSubscriber);
-    }
-
-    @Test
     public void testGetHKTTv() throws Exception {
         instance.getHKTTv(1).subscribe(listSubscriber);
     }

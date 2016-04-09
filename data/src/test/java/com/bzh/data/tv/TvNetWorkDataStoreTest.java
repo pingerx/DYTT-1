@@ -62,7 +62,7 @@ public class TvNetWorkDataStoreTest extends ApplicationTestCase {
     }
 
     @NonNull
-    private Subscriber<FilmDetailEntity> getSubscriber() {
+    private Subscriber<FilmDetailEntity> getRiHanSubscriber() {
         return new Subscriber<FilmDetailEntity>() {
             @Override
             public void onCompleted() {
@@ -123,16 +123,6 @@ public class TvNetWorkDataStoreTest extends ApplicationTestCase {
     }
 
     @Test
-    public void testGetChineseDomesticTv_1() throws Exception {
-        tvNetWorkDataStore.getChineseDomesticTv_1(1).subscribe(subscriber);
-    }
-
-    @Test
-    public void testGetChineseDomesticTv_2() throws Exception {
-        tvNetWorkDataStore.getChineseDomesticTv_2(1).subscribe(subscriber);
-    }
-
-    @Test
     public void testGetTvDetail() throws Exception {
         tvNetWorkDataStore.getTvDetail("/html/tv/hytv/20160226/50311.html").subscribe(new Subscriber<FilmDetailEntity>() {
             @Override
@@ -154,13 +144,40 @@ public class TvNetWorkDataStoreTest extends ApplicationTestCase {
 
     @Test
     public void testGetRIHanTvDetail() throws Exception {
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50567.html").subscribe(getSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50566.html").subscribe(getSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50565.html").subscribe(getSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160328/50558.html").subscribe(getSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160320/50506.html").subscribe(getSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160123/50028.html").subscribe(getSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20150519/48105.html").subscribe(getSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50567.html").subscribe(getRiHanSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50566.html").subscribe(getRiHanSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50565.html").subscribe(getRiHanSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160328/50558.html").subscribe(getRiHanSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160320/50506.html").subscribe(getRiHanSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160123/50028.html").subscribe(getRiHanSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20150519/48105.html").subscribe(getRiHanSubscriber());
 
     }
+
+    @Test
+    public void testGet欧美TvDetail() throws Exception {
+        tvNetWorkDataStore.getTvDetail("/html/tv/oumeitv/20160404/50634.html").subscribe(getOMSubscriber());
+    }
+
+    @NonNull
+    private Subscriber<FilmDetailEntity> getOMSubscriber() {
+        return new Subscriber<FilmDetailEntity>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                assertNull(e);
+            }
+
+            @Override
+            public void onNext(FilmDetailEntity filmDetailEntity) {
+                System.out.println(gson.toJson(filmDetailEntity));
+                assertNotNull(filmDetailEntity);
+            }
+        };
+    }
+
 }

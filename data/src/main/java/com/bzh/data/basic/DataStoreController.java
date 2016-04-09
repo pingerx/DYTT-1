@@ -59,21 +59,25 @@ public class DataStoreController {
     ///////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
+
+    // 公共
     private static final String TRANSLATIONNAME = "译名";
     private static final String NAME = "片名";
     private static final String YEARS = "年代";
     private static final String COUNTRY = "国家";
-    private static final String AREA = "地区";
     private static final String CATEGORY = "类别";
     private static final String LANGUAGE = "语言";
-    private static final String SUBTITLE = "字幕";
-    private static final String FILEFORMAT = "文件格式";
-    private static final String VIDEOSIZE = "视频尺寸";
-    private static final String FILESIZE = "文件大小";
     private static final String SHOWTIME = "片长";
     private static final String DIRECTOR = "导演";
     private static final String LEADINGPLAYERS = "主演";
     private static final String DESCRIPTION = "简介";
+    private static final String AREA = "地区";
+
+    // 电影
+    private static final String SUBTITLE = "字幕";
+    private static final String FILEFORMAT = "文件格式";
+    private static final String VIDEOSIZE = "视频尺寸";
+    private static final String FILESIZE = "文件大小";
     private static final String IMDB = "IMDb评分";
 
     // 电视剧
@@ -88,6 +92,11 @@ public class DataStoreController {
     private static final String TIME = "时间";
     private static final String JIE_DANG = "接档";
     private static final String SCREENWRITER = "编剧";
+
+
+    // 欧美电视剧
+    private static final String TVSTATION = "电视台";
+    private static final String PERFORMER = "演员";
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -226,6 +235,11 @@ public class DataStoreController {
                     splitRegular = "\\[";
                     fillFormat(patterRegular, splitRegular, entity, html);
 
+                    // 【译 　名】： 黑吃黑
+                    patterRegular = "【.*<br>";
+                    splitRegular = "【";
+                    fillFormat(patterRegular, splitRegular, entity, html);
+
                     entity.setTitle(title);
                     entity.setPublishTime(publishTime);
                     entity.setCoverUrl(coverUrl);
@@ -360,6 +374,25 @@ public class DataStoreController {
                     info = info.substring(info.indexOf(SCREENWRITER) + SCREENWRITER.length());
                     entity.setScreenWriter(info);
                 }
+                // 欧美电视剧
+                else if (info.startsWith(TVSTATION)) {
+                    // 电视台
+                    info = info.substring(info.indexOf(TVSTATION) + TVSTATION.length());
+                    entity.setTvStation(info);
+                }
+                else if (info.startsWith(PERFORMER)) {
+                    // 演员
+                    info = info.substring(info.indexOf(PERFORMER) + PERFORMER.length());
+                    if (entity.getPerformers() == null) {
+                        entity.setPerformers(new ArrayList<String>());
+                    }
+                    if (info.contains("•")) {
+                        String[] strings = info.split("•");
+                        entity.getPerformers().addAll(Arrays.asList(strings));
+                    } else {
+                        entity.getPerformers().add(info);
+                    }
+                }
             }
         }
     }
@@ -411,7 +444,7 @@ public class DataStoreController {
 
     private static final String regEx_html = "<[^>]+>"; // 定义HTML标签的正则表达式
     private static final String regEx_space = "\\s*|\t|\r|\n";//定义空格回车换行符
-    private static final String regEx_regular = "\\]:*";
+    private static final String regEx_regular = "\\]:】：*";
 
     private String rejectHtmlSpaceCharacters(String str) {
         Pattern p_html = Pattern.compile(regEx_html);

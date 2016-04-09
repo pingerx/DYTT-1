@@ -52,6 +52,26 @@ public class FilmDetailEntity {
     private String jieDang;             // 接档
     private String screenWriter;       // 编辑
 
+    // 欧美电视剧
+    private String tvStation;             // 电视台
+    private ArrayList<String> performers;       // 演员
+
+    public String getTvStation() {
+        return tvStation;
+    }
+
+    public void setTvStation(String tvStation) {
+        this.tvStation = tvStation;
+    }
+
+    public ArrayList<String> getPerformers() {
+        return performers;
+    }
+
+    public void setPerformers(ArrayList<String> performers) {
+        this.performers = performers;
+    }
+
     public String getTitle() {
         return title;
     }

@@ -58,15 +58,6 @@ public class ITvServiceTest {
         tvService.getChineseDomesticTv(1).subscribe(subscriber);
     }
 
-    @Test
-    public void testGetChineseDomesticTv_1() throws Exception {
-        tvService.getChineseDomesticTv_1(1).subscribe(subscriber);
-    }
-
-    @Test
-    public void testGetChineseDomesticTv_2() throws Exception {
-        tvService.getChineseDomesticTv_2(1).subscribe(subscriber);
-    }
 
     @Test
     public void testGetHKTTv() throws Exception {
