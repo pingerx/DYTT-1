@@ -34,16 +34,6 @@ public class TvNetWorkDataStore implements ITvDataStore {
     }
 
     @Override
-    public Observable<ArrayList<BaseInfoEntity>> getChineseDomesticTv_1(@IntRange(from = 1, to = 25) int index) {
-        return DataStoreController.getInstance().getNewWorkObservable(iTvService.getChineseDomesticTv_1(index));
-    }
-
-    @Override
-    public Observable<ArrayList<BaseInfoEntity>> getChineseDomesticTv_2(@IntRange(from = 1, to = 7) int index) {
-        return DataStoreController.getInstance().getNewWorkObservable(iTvService.getChineseDomesticTv_2(index));
-    }
-
-    @Override
     public Observable<ArrayList<BaseInfoEntity>> getHKTTv(@IntRange(from = 1, to = 5) int index) {
         return DataStoreController.getInstance().getNewWorkObservable(iTvService.getHKTTv(index));
     }

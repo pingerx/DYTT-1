@@ -1,5 +1,7 @@
 package com.bzh.data.tv;
 
+import android.support.annotation.NonNull;
+
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.film.FilmDetailEntity;
@@ -55,6 +57,36 @@ public class TvNetWorkDataStoreTest extends ApplicationTestCase {
                 assertNotNull(baseInfoEntities);
                 assertTrue(baseInfoEntities.size() > 0);
                 System.out.println(gson.toJson(baseInfoEntities));
+            }
+        };
+    }
+
+    @NonNull
+    private Subscriber<FilmDetailEntity> getSubscriber() {
+        return new Subscriber<FilmDetailEntity>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                assertNull(e);
+            }
+
+            @Override
+            public void onNext(FilmDetailEntity filmDetailEntity) {
+                System.out.println(gson.toJson(filmDetailEntity));
+                assertNotNull(filmDetailEntity);
+                assertNotNull(filmDetailEntity.getPlayName());
+                assertNotNull(filmDetailEntity.getSource());
+                assertNotNull(filmDetailEntity.getType());
+                assertNotNull(filmDetailEntity.getPremiere());
+                assertNotNull(filmDetailEntity.getScreenWriter());
+                assertNotNull(filmDetailEntity.getDirector());
+                assertNotNull(filmDetailEntity.getLeadingPlayers());
+                assertNotNull(filmDetailEntity.getEpisodeNumber());
+                assertNotNull(filmDetailEntity.getDescription());
             }
         };
     }
@@ -122,33 +154,13 @@ public class TvNetWorkDataStoreTest extends ApplicationTestCase {
 
     @Test
     public void testGetRIHanTvDetail() throws Exception {
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50567.html").subscribe(new Subscriber<FilmDetailEntity>() {
-            @Override
-            public void onCompleted() {
-                System.out.println("");
-            }
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50567.html").subscribe(getSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50566.html").subscribe(getSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50565.html").subscribe(getSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160328/50558.html").subscribe(getSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160320/50506.html").subscribe(getSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160123/50028.html").subscribe(getSubscriber());
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20150519/48105.html").subscribe(getSubscriber());
 
-            @Override
-            public void onError(Throwable e) {
-               assertNull(e);
-            }
-
-            @Override
-            public void onNext(FilmDetailEntity filmDetailEntity) {
-                System.out.println(gson.toJson(filmDetailEntity));
-                assertNotNull(filmDetailEntity);
-                assertNotNull(filmDetailEntity.getPlayName());
-                assertNotNull(filmDetailEntity.getSource());
-                assertNotNull(filmDetailEntity.getType());
-                assertNotNull(filmDetailEntity.getPremiere());
-                assertNotNull(filmDetailEntity.getTime());
-                assertNotNull(filmDetailEntity.getJieDang());
-                assertNotNull(filmDetailEntity.getScreenWriter());
-                assertNotNull(filmDetailEntity.getDirector());
-                assertNotNull(filmDetailEntity.getLeadingPlayers());
-                assertNotNull(filmDetailEntity.getEpisodeNumber());
-                assertNotNull(filmDetailEntity.getDescription());
-            }
-        });
     }
 }

@@ -21,8 +21,6 @@ import java.util.ArrayList;
 public class TvMainPresenter extends TabLayoutPresenter implements IFragmentPresenter {
 
     public static final String GCHP = "XBZY";
-    public static final String GC = "JBZY";
-    private static final String HP = "HP";
     private static final String GT = "GT";
     private static final String HY = "HY";
     private static final String RH = "RH";
@@ -37,10 +35,6 @@ public class TvMainPresenter extends TabLayoutPresenter implements IFragmentPres
         switch (stripTabItem.getType()) {
             case GCHP:
                 return GCHPTvFragment.newInstance();
-            case GC:
-                return GCTvFragment.newInstance();
-            case HP:
-                return HPTvFragment.newInstance();
             case GT:
                 return GTTvFragment.newInstance();
             case HY:
@@ -57,8 +51,6 @@ public class TvMainPresenter extends TabLayoutPresenter implements IFragmentPres
     public ArrayList<StripTabItem> generateTabs() {
         ArrayList<StripTabItem> items = new ArrayList<>();
         items.add(new StripTabItem(GCHP, "国产合拍"));
-        items.add(new StripTabItem(GC, "国产"));
-        items.add(new StripTabItem(HP, "合拍"));
         items.add(new StripTabItem(GT, "港台"));
         items.add(new StripTabItem(HY, "华语"));
         items.add(new StripTabItem(RH, "日韩"));

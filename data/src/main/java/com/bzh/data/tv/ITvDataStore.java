@@ -30,17 +30,6 @@ public interface ITvDataStore {
     Observable<ArrayList<BaseInfoEntity>> getChineseDomesticTv(@IntRange(from = 1, to = 31) final int index);
 
     /**
-     * 国产
-     */
-    Observable<ArrayList<BaseInfoEntity>> getChineseDomesticTv_1(@IntRange(from = 1, to = 25) final int index);
-
-    /**
-     * 合拍电视剧
-     */
-    Observable<ArrayList<BaseInfoEntity>> getChineseDomesticTv_2(@IntRange(from = 1, to = 7) final int index);
-
-
-    /**
      * 港台电视剧
      */
     Observable<ArrayList<BaseInfoEntity>> getHKTTv(@IntRange(from = 1, to = 5) final int index);

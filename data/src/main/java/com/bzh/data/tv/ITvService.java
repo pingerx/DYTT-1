@@ -26,18 +26,6 @@ public interface ITvService {
     Observable<ResponseBody> getChineseDomesticTv(@Path("index") @IntRange(from = 1, to = 31) int index);
 
     /**
-     * 国产电视剧
-     */
-    @GET("/html/tv/hepai/guochan/list_59_{index}.html")
-    Observable<ResponseBody> getChineseDomesticTv_1(@Path("index") @IntRange(from = 1, to = 25) int index);
-
-    /**
-     * 合拍电视剧
-     */
-    @GET("/html/tv/hepai/hepaitv/list_60_{index}.html")
-    Observable<ResponseBody> getChineseDomesticTv_2(@Path("index") @IntRange(from = 1, to = 7) int index);
-
-    /**
      * 港台电视剧
      */
     @GET("/html/tv/gangtai/list_3_{index}.html")
