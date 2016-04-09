@@ -3,9 +3,13 @@ package com.bzh.data.tv;
 import android.support.annotation.IntRange;
 
 import com.bzh.data.basic.BaseInfoEntity;
+import com.bzh.data.film.FilmDetailEntity;
 
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -55,4 +59,7 @@ public interface ITvDataStore {
      * 欧美电视
      */
     Observable<ArrayList<BaseInfoEntity>> getEuropeAmericaTV(@IntRange(from = 1, to = 22) final int index);
+
+    @GET("{tvDetailUrl}")
+    Observable<FilmDetailEntity> getTvDetail(String tvDetailUrl);
 }

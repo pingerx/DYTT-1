@@ -183,6 +183,11 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
     }
 
     @Override
+    public Observable<FilmDetailEntity> getTvDetail(String tvDetailUrl) {
+        return null;
+    }
+
+    @Override
     public Observable<ArrayList<BaseInfoEntity>> get2013NewestChineseVariety(@IntRange(from = 1, to = 98) int index) {
         return getVarietyDataStore().get2013NewestChineseVariety(index);
     }

@@ -15,28 +15,42 @@ import java.util.ArrayList;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmDetailEntity implements Parcelable {
+public class FilmDetailEntity {
 
-    private String title;               // 标题
+    private String translationName;    // 译名
+    private String name;                 // 电影名
+    private String title;                // 标题
+
     private String publishTime;         // 发布时间
     private String coverUrl;            // 封面
-    private String name;                 // 电影名
-    private String translationName;     // 译名
     private String years;               // 年代
     private String country;             // 国家
     private String category;            // 类别
     private String language;            // 语言
     private String subtitle;            // 字幕
+    private String playtime;            // 上映时间
     private String fileFormat;          // 文件格式
     private String videoSize;           // 视频尺寸
     private String fileSize;            // 文件大小
     private String showTime;            // 片长
     private String director;            // 导演
-    private ArrayList<String> leadingPlayers;   // 主演
+    private ArrayList<String> leadingPlayers;// 主演
     private String description;         // 简介
     private String previewImage;     // 预览图
-    private String downloadUrl;         // 下载地址
+    private ArrayList<String> downloadUrls; // 下载地址
     private String imdb;         // 评分
+
+    // 华语电视剧
+    private String episodeNumber;       // 集数
+
+    // 日韩电视剧
+    private String playName;            // 剧名
+    private String source;              // 来源
+    private String type;                // 类型
+    private String premiere;            // 首播
+    private String time;                // 时间
+    private String jieDang;             // 接档
+    private String screenWriter;       // 编辑
 
     public String getTitle() {
         return title;
@@ -150,6 +164,7 @@ public class FilmDetailEntity implements Parcelable {
         this.showTime = showTime;
     }
 
+
     public String getDirector() {
         return director;
     }
@@ -182,14 +197,6 @@ public class FilmDetailEntity implements Parcelable {
         this.previewImage = previewImage;
     }
 
-    public String getDownloadUrl() {
-        return downloadUrl;
-    }
-
-    public void setDownloadUrl(String downloadUrl) {
-        this.downloadUrl = downloadUrl;
-    }
-
     public String getImdb() {
         return imdb;
     }
@@ -198,70 +205,83 @@ public class FilmDetailEntity implements Parcelable {
         this.imdb = imdb;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public ArrayList<String> getDownloadUrls() {
+        return downloadUrls;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.title);
-        dest.writeString(this.publishTime);
-        dest.writeString(this.coverUrl);
-        dest.writeString(this.name);
-        dest.writeString(this.translationName);
-        dest.writeString(this.years);
-        dest.writeString(this.country);
-        dest.writeString(this.category);
-        dest.writeString(this.language);
-        dest.writeString(this.subtitle);
-        dest.writeString(this.fileFormat);
-        dest.writeString(this.videoSize);
-        dest.writeString(this.fileSize);
-        dest.writeString(this.showTime);
-        dest.writeString(this.director);
-        dest.writeStringList(this.leadingPlayers);
-        dest.writeString(this.description);
-        dest.writeString(this.previewImage);
-        dest.writeString(this.downloadUrl);
-        dest.writeString(this.imdb);
+    public void setDownloadUrls(ArrayList<String> downloadUrls) {
+        this.downloadUrls = downloadUrls;
     }
 
-    public FilmDetailEntity() {
+    public String getEpisodeNumber() {
+        return episodeNumber;
     }
 
-    protected FilmDetailEntity(Parcel in) {
-        this.title = in.readString();
-        this.publishTime = in.readString();
-        this.coverUrl = in.readString();
-        this.name = in.readString();
-        this.translationName = in.readString();
-        this.years = in.readString();
-        this.country = in.readString();
-        this.category = in.readString();
-        this.language = in.readString();
-        this.subtitle = in.readString();
-        this.fileFormat = in.readString();
-        this.videoSize = in.readString();
-        this.fileSize = in.readString();
-        this.showTime = in.readString();
-        this.director = in.readString();
-        this.leadingPlayers = in.createStringArrayList();
-        this.description = in.readString();
-        this.previewImage = in.readString();
-        this.downloadUrl = in.readString();
-        this.imdb = in.readString();
+    public void setEpisodeNumber(String episodeNumber) {
+        this.episodeNumber = episodeNumber;
     }
 
-    public static final Creator<FilmDetailEntity> CREATOR = new Creator<FilmDetailEntity>() {
-        @Override
-        public FilmDetailEntity createFromParcel(Parcel source) {
-            return new FilmDetailEntity(source);
-        }
+    public String getPlaytime() {
+        return playtime;
+    }
 
-        @Override
-        public FilmDetailEntity[] newArray(int size) {
-            return new FilmDetailEntity[size];
-        }
-    };
+    public void setPlaytime(String playtime) {
+        this.playtime = playtime;
+    }
+
+    public String getPlayName() {
+        return playName;
+    }
+
+    public void setPlayName(String playName) {
+        this.playName = playName;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPremiere() {
+        return premiere;
+    }
+
+    public void setPremiere(String premiere) {
+        this.premiere = premiere;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getJieDang() {
+        return jieDang;
+    }
+
+    public void setJieDang(String jieDang) {
+        this.jieDang = jieDang;
+    }
+
+    public String getScreenWriter() {
+        return screenWriter;
+    }
+
+    public void setScreenWriter(String screenWriter) {
+        this.screenWriter = screenWriter;
+    }
 }

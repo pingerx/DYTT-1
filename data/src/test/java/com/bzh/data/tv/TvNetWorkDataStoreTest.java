@@ -2,6 +2,7 @@ package com.bzh.data.tv;
 
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.basic.BaseInfoEntity;
+import com.bzh.data.film.FilmDetailEntity;
 import com.bzh.data.repository.RetrofitManager;
 import com.google.gson.Gson;
 
@@ -97,5 +98,57 @@ public class TvNetWorkDataStoreTest extends ApplicationTestCase {
     @Test
     public void testGetChineseDomesticTv_2() throws Exception {
         tvNetWorkDataStore.getChineseDomesticTv_2(1).subscribe(subscriber);
+    }
+
+    @Test
+    public void testGetTvDetail() throws Exception {
+        tvNetWorkDataStore.getTvDetail("/html/tv/hytv/20160226/50311.html").subscribe(new Subscriber<FilmDetailEntity>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("e = [" + e + "]");
+            }
+
+            @Override
+            public void onNext(FilmDetailEntity filmDetailEntity) {
+                System.out.println("filmDetailEntity = [" + filmDetailEntity + "]");
+            }
+        });
+    }
+
+    @Test
+    public void testGetRIHanTvDetail() throws Exception {
+        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50567.html").subscribe(new Subscriber<FilmDetailEntity>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+               assertNull(e);
+            }
+
+            @Override
+            public void onNext(FilmDetailEntity filmDetailEntity) {
+                System.out.println(gson.toJson(filmDetailEntity));
+                assertNotNull(filmDetailEntity);
+                assertNotNull(filmDetailEntity.getPlayName());
+                assertNotNull(filmDetailEntity.getSource());
+                assertNotNull(filmDetailEntity.getType());
+                assertNotNull(filmDetailEntity.getPremiere());
+                assertNotNull(filmDetailEntity.getTime());
+                assertNotNull(filmDetailEntity.getJieDang());
+                assertNotNull(filmDetailEntity.getScreenWriter());
+                assertNotNull(filmDetailEntity.getDirector());
+                assertNotNull(filmDetailEntity.getLeadingPlayers());
+                assertNotNull(filmDetailEntity.getEpisodeNumber());
+                assertNotNull(filmDetailEntity.getDescription());
+            }
+        });
     }
 }

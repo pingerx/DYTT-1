@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.bzh.common.utils.SystemUtils;
 import com.bzh.data.exception.TaskException;
 import com.bzh.data.film.FilmDetailEntity;
-import com.bzh.data.meizi.IMeiZiService;
 import com.bzh.data.meizi.MeiZiNetWorkDataStore;
 import com.bzh.log.MyLog;
 import com.google.gson.Gson;
@@ -16,13 +15,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
-import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -43,7 +41,7 @@ public class DataStoreController {
     ///////////////////////////////////////////////////////////////////////////
     // Single Instance
     public static DataStoreController dataStoreController;
-    public Func1<String, ArrayList<MeiZiEntity>> meiziListFun;
+
 
     public static DataStoreController getInstance() {
         DataStoreController tmp = dataStoreController;
@@ -61,40 +59,69 @@ public class DataStoreController {
     ///////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
-    // FilmDetail
-    public static final String NAME = "◎片名";
-    public static final String YEARS = "◎年代";
-    public static final String COUNTRY = "◎国家";
-    public static final String AREA = "◎地区";
-    public static final String CATEGORY = "◎类别";
-    public static final String LANGUAGE = "◎语言";
-    public static final String SUBTITLE = "◎字幕";
-    public static final String FILEFORMAT = "◎文件格式";
-    public static final String VIDEOSIZE = "◎视频尺寸";
-    public static final String FILESIZE = "◎文件大小";
-    public static final String SHOWTIME = "◎片长";
-    public static final String DIRECTOR = "◎导演";
-    public static final String LEADINGPLAYERS = "◎主演";
-    public static final String DESCRIPTION = "◎简介";
-    public static final String TRANSLATIONNAME = "◎译名";
-    public static final String IMDB = "◎IMDb评分";
+    private static final String TRANSLATIONNAME = "译名";
+    private static final String NAME = "片名";
+    private static final String YEARS = "年代";
+    private static final String COUNTRY = "国家";
+    private static final String AREA = "地区";
+    private static final String CATEGORY = "类别";
+    private static final String LANGUAGE = "语言";
+    private static final String SUBTITLE = "字幕";
+    private static final String FILEFORMAT = "文件格式";
+    private static final String VIDEOSIZE = "视频尺寸";
+    private static final String FILESIZE = "文件大小";
+    private static final String SHOWTIME = "片长";
+    private static final String DIRECTOR = "导演";
+    private static final String LEADINGPLAYERS = "主演";
+    private static final String DESCRIPTION = "简介";
+    private static final String IMDB = "IMDb评分";
+
+    // 电视剧
+    private static final String EPISODENUMBER = "集数";
+    private static final String PLAYTIME = "上映日期";
+
+    // 日韩电视剧
+    private static final String PLAYNAME = "剧名";
+    private static final String SOURCE = "播送";
+    private static final String TYPE = "类型";
+    private static final String PREMIERE = "首播";
+    private static final String TIME = "时间";
+    private static final String JIE_DANG = "接档";
+    private static final String SCREENWRITER = "编剧";
+
     ///////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
     // Charset
-    public final String TO_CHARSET_NAME = "GB2312";
+    private final String TO_CHARSET_NAME = "GB2312";
     ///////////////////////////////////////////////////////////////////////////
 
     private Gson gson = new Gson();
 
     ///////////////////////////////////////////////////////////////////////////
     // variable
-    public Func1<ResponseBody, String> transformCharset;
-    public Func1<String, ArrayList<BaseInfoEntity>> listFun;
-    public Func1<String, FilmDetailEntity> filmDetailFun;
+    private Func1<ResponseBody, String> transformCharset;
+    private Func1<String, ArrayList<BaseInfoEntity>> listFun;
+    private Func1<String, FilmDetailEntity> filmDetailFun;
+    private Func1<String, ArrayList<MeiZiEntity>> meiziListFun;
     ///////////////////////////////////////////////////////////////////////////
 
-    public Func1<String, ArrayList<MeiZiEntity>> getMeiZiFun() {
+    @NonNull
+    public Observable<ArrayList<BaseInfoEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
+        return getObservable(observable, getTransformCharset(), getListFun());
+    }
+
+    @NonNull
+    public Observable<FilmDetailEntity> getNewWorkDetailObservable(final Observable<ResponseBody> observable) {
+        return getObservable(observable, getTransformCharset(), getFilmDetailFun());
+    }
+
+    @NonNull
+    public Observable<ArrayList<MeiZiEntity>> getNewWorkMeiZiObservable(final Observable<ResponseBody> observable) {
+        return getObservable(observable, getTransformCharset(), getMeiZiFun());
+    }
+
+    private Func1<String, ArrayList<MeiZiEntity>> getMeiZiFun() {
         if (meiziListFun == null) {
             meiziListFun = new Func1<String, ArrayList<MeiZiEntity>>() {
                 @Override
@@ -109,7 +136,7 @@ public class DataStoreController {
                     Elements elements = document.select("div#comments").select("ul");
                     Elements srcs = elements.select("img[src]");
 
-                    ArrayList<MeiZiEntity> meiZiEntities = new ArrayList<MeiZiEntity>();
+                    ArrayList<MeiZiEntity> meiZiEntities = new ArrayList<>();
                     for (Element element : srcs) {
                         MeiZiEntity meiZiEntity = new MeiZiEntity();
                         meiZiEntity.setUrl(element.attr("src"));
@@ -123,7 +150,7 @@ public class DataStoreController {
     }
 
     @NonNull
-    public Func1<String, ArrayList<BaseInfoEntity>> getListFun() {
+    private Func1<String, ArrayList<BaseInfoEntity>> getListFun() {
         if (listFun == null) {
             listFun = new Func1<String, ArrayList<BaseInfoEntity>>() {
                 @Override
@@ -168,12 +195,12 @@ public class DataStoreController {
         return listFun;
     }
 
-    public boolean isFilmType(String fullName) {
+    private boolean isFilmType(String fullName) {
         return fullName.contains("》");
     }
 
     @NonNull
-    public Func1<String, FilmDetailEntity> getFilmDetailFun() {
+    private Func1<String, FilmDetailEntity> getFilmDetailFun() {
         if (filmDetailFun == null) {
             filmDetailFun = new Func1<String, FilmDetailEntity>() {
                 @Override
@@ -187,79 +214,23 @@ public class DataStoreController {
                     String title = document.select("div.co_area2").select("div.title_all").select("font").first().text();
                     String coverUrl = document.select("div.co_content8").select("ul").select("img").first().attr("src");
                     String previewImage = document.select("div.co_content8").select("ul").select("img").last().attr("src");
-                    String downloadUrl = document.select("div.co_content8").select("ul").select("a").first().attr("href");
+                    ArrayList<String> downloadUrls = getDownloadUrls(document);
 
-                    Pattern pattern = Pattern.compile("◎译　　名.*<br>");
-                    Matcher matcher = pattern.matcher(html);
-                    if (matcher.find()) {
-                        String result = matcher.group();
-                        String[] split = result.split("<br>");
-                        for (int i = 0; i < split.length; i++) {
-                            String info = split[i].replaceAll("　", "").trim();
-                            if (info.contains(NAME)) {
-                                info = info.substring(info.indexOf(NAME) + NAME.length());
-                                entity.setName(info);
-                            } else if (info.contains(TRANSLATIONNAME)) {
-                                info = info.substring(info.indexOf(TRANSLATIONNAME) + TRANSLATIONNAME.length());
-                                entity.setTranslationName(info);
-                            } else if (info.contains(YEARS)) {
-                                info = info.substring(info.indexOf(YEARS) + YEARS.length());
-                                entity.setYears(info);
-                            } else if (info.contains(COUNTRY)) {
-                                info = info.substring(info.indexOf(COUNTRY) + COUNTRY.length());
-                                entity.setCountry(info);
-                            } else if (info.contains(AREA)) {
-                                info = info.substring(info.indexOf(AREA) + AREA.length());
-                                entity.setCountry(info);
-                            } else if (info.contains(CATEGORY)) {
-                                info = info.substring(info.indexOf(CATEGORY) + CATEGORY.length());
-                                entity.setCategory(info);
-                            } else if (info.contains(LANGUAGE)) {
-                                info = info.substring(info.indexOf(LANGUAGE) + LANGUAGE.length());
-                                entity.setLanguage(info);
-                            } else if (info.contains(SUBTITLE)) {
-                                info = info.substring(info.indexOf(SUBTITLE) + SUBTITLE.length());
-                                entity.setSubtitle(info);
-                            } else if (info.contains(FILEFORMAT)) {
-                                info = info.substring(info.indexOf(FILEFORMAT) + FILEFORMAT.length());
-                                entity.setFileFormat(info);
-                            } else if (info.toLowerCase().contains(IMDB.toLowerCase())) {
-                                info = info.substring(info.toLowerCase().indexOf(IMDB.toLowerCase()) + IMDB.length());
-                                entity.setImdb(info);
-                            } else if (info.contains(VIDEOSIZE)) {
-                                info = info.substring(info.indexOf(VIDEOSIZE) + VIDEOSIZE.length());
-                                entity.setVideoSize(info);
-                            } else if (info.contains(FILESIZE)) {
-                                info = info.substring(info.indexOf(FILESIZE) + FILESIZE.length());
-                                entity.setFileSize(info);
-                            } else if (info.contains(SHOWTIME)) {
-                                info = info.substring(info.indexOf(SHOWTIME) + SHOWTIME.length());
-                                entity.setShowTime(info);
-                            } else if (info.contains(DIRECTOR)) {
-                                info = info.substring(info.indexOf(DIRECTOR) + DIRECTOR.length());
-                                entity.setDirector(info);
-                            } else if (info.contains(LEADINGPLAYERS)) {
-                                info = info.substring(info.indexOf(LEADINGPLAYERS) + LEADINGPLAYERS.length());
-                                if (entity.getLeadingPlayers() == null) {
-                                    entity.setLeadingPlayers(new ArrayList<String>());
-                                }
-                                entity.getLeadingPlayers().add(info);
-                            } else if (i == split.length - 1) {
-                                entity.setDescription(info);
-                            } else {
-                                if (entity.getLeadingPlayers() == null) {
-                                    entity.setLeadingPlayers(new ArrayList<String>());
-                                }
-                                entity.getLeadingPlayers().add(info);
-                            }
-                        }
-                    }
+                    // "◎译　　名.*<br>"
+                    String patterRegular = "◎.*<br>";
+                    String splitRegular = "◎";
+                    fillFormat(patterRegular, splitRegular, entity, html);
+
+                    // [剧　名]:
+                    patterRegular = "\\[.*<br>";
+                    splitRegular = "\\[";
+                    fillFormat(patterRegular, splitRegular, entity, html);
 
                     entity.setTitle(title);
                     entity.setPublishTime(publishTime);
                     entity.setCoverUrl(coverUrl);
                     entity.setPreviewImage(previewImage);
-                    entity.setDownloadUrl(downloadUrl);
+                    entity.setDownloadUrls(downloadUrls);
                     return entity;
                 }
             };
@@ -267,22 +238,147 @@ public class DataStoreController {
         return filmDetailFun;
     }
 
-    public Func1<ResponseBody, String> getTransformCharset(final String charset) {
-        return new Func1<ResponseBody, String>() {
-            @Override
-            public String call(ResponseBody responseBody) {
-                try {
-                    return new String(responseBody.bytes(), charset);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new TaskException(TaskException.ERROR_HTML_PARSE);
+    private void fillFormat(String regular, String splitRegular, FilmDetailEntity entity, String html) {
+        Pattern pattern = Pattern.compile(regular);
+        Matcher matcher = pattern.matcher(html);
+        if (matcher.find()) {
+            String result = rejectHtmlSpaceCharacters(matcher.group());
+            String[] split = result.split(splitRegular);
+            for (String aSplit : split) {
+                String info = rejectSpecialCharacter(aSplit);
+                MyLog.d("Info = [" + info + "]");
+                if (info.startsWith(NAME)) {
+                    // 片名
+                    info = info.substring(info.indexOf(NAME) + NAME.length());
+                    entity.setName(info);
+                } else if (info.startsWith(TRANSLATIONNAME)) {
+                    // 译名
+                    info = info.substring(info.indexOf(TRANSLATIONNAME) + TRANSLATIONNAME.length());
+                    entity.setTranslationName(info);
+                } else if (info.startsWith(YEARS)) {
+                    // 年代
+                    info = info.substring(info.indexOf(YEARS) + YEARS.length());
+                    entity.setYears(info);
+                } else if (info.startsWith(COUNTRY)) {
+                    // 国家
+                    info = info.substring(info.indexOf(COUNTRY) + COUNTRY.length());
+                    entity.setCountry(info);
+                } else if (info.startsWith(AREA)) {
+                    // 地区
+                    info = info.substring(info.indexOf(AREA) + AREA.length());
+                    entity.setCountry(info);
+                } else if (info.startsWith(CATEGORY)) {
+                    // 类别
+                    info = info.substring(info.indexOf(CATEGORY) + CATEGORY.length());
+                    entity.setCategory(info);
+                } else if (info.startsWith(LANGUAGE)) {
+                    // 语言
+                    info = info.substring(info.indexOf(LANGUAGE) + LANGUAGE.length());
+                    entity.setLanguage(info);
+                } else if (info.startsWith(SUBTITLE)) {
+                    // 字幕
+                    info = info.substring(info.indexOf(SUBTITLE) + SUBTITLE.length());
+                    entity.setSubtitle(info);
+                } else if (info.startsWith(FILEFORMAT)) {
+                    // 文件格式
+                    info = info.substring(info.indexOf(FILEFORMAT) + FILEFORMAT.length());
+                    entity.setFileFormat(info);
+                } else if (info.toLowerCase().startsWith(IMDB.toLowerCase())) {
+                    // IMDB评分
+                    info = info.substring(info.toLowerCase().indexOf(IMDB.toLowerCase()) + IMDB.length());
+                    entity.setImdb(info);
+                } else if (info.startsWith(VIDEOSIZE)) {
+                    // 视频尺寸
+                    info = info.substring(info.indexOf(VIDEOSIZE) + VIDEOSIZE.length());
+                    entity.setVideoSize(info);
+                } else if (info.startsWith(FILESIZE)) {
+                    // 文件大小
+                    info = info.substring(info.indexOf(FILESIZE) + FILESIZE.length());
+                    entity.setFileSize(info);
+                } else if (info.startsWith(SHOWTIME)) {
+                    // 片场
+                    info = info.substring(info.indexOf(SHOWTIME) + SHOWTIME.length());
+                    entity.setShowTime(info);
+                } else if (info.startsWith(DIRECTOR)) {
+                    // 导演
+                    info = info.substring(info.indexOf(DIRECTOR) + DIRECTOR.length());
+                    entity.setDirector(info);
+                } else if (info.startsWith(LEADINGPLAYERS)) {
+                    // 主演
+                    info = info.substring(info.indexOf(LEADINGPLAYERS) + LEADINGPLAYERS.length());
+                    if (entity.getLeadingPlayers() == null) {
+                        entity.setLeadingPlayers(new ArrayList<String>());
+                    }
+                    if (info.startsWith("<br>")) {
+                        String[] leadingplayers = info.split("<br>");
+                        entity.getLeadingPlayers().addAll(Arrays.asList(leadingplayers));
+                    } else {
+                        entity.getLeadingPlayers().add(info);
+                    }
+                } else if (info.startsWith(DESCRIPTION)) {
+                    // 描述
+                    info = info.substring(info.indexOf(DESCRIPTION) + DESCRIPTION.length());
+                    entity.setDescription(info);
+                }
+                // 话语电视剧
+                else if (info.startsWith(PLAYTIME)) {
+                    // 上映日期
+                    info = info.substring(info.indexOf(PLAYTIME) + PLAYTIME.length());
+                    entity.setPlaytime(info);
+                } else if (info.startsWith(EPISODENUMBER)) {
+                    // 集数
+                    info = info.substring(info.indexOf(EPISODENUMBER) + EPISODENUMBER.length());
+                    entity.setEpisodeNumber(info);
+                }
+                // 日韩电视剧
+                else if (info.startsWith(PLAYNAME)) {
+                    // 剧名
+                    info = info.substring(info.indexOf(PLAYNAME) + PLAYNAME.length());
+                    entity.setPlayName(info);
+                } else if (info.startsWith(SOURCE)) {
+                    // 来源
+                    info = info.substring(info.indexOf(SOURCE) + SOURCE.length());
+                    entity.setSource(info);
+                } else if (info.startsWith(TYPE)) {
+                    // 类型
+                    info = info.substring(info.indexOf(TYPE) + TYPE.length());
+                    entity.setType(info);
+                } else if (info.startsWith(PREMIERE)) {
+                    // 首播
+                    info = info.substring(info.indexOf(PREMIERE) + PREMIERE.length());
+                    entity.setPremiere(info);
+                } else if (info.startsWith(TIME)) {
+                    // 时间
+                    info = info.substring(info.indexOf(TIME) + TIME.length());
+                    entity.setTime(info);
+                } else if (info.startsWith(JIE_DANG)) {
+                    // 接档
+                    info = info.substring(info.indexOf(JIE_DANG) + JIE_DANG.length());
+                    entity.setJieDang(info);
+                } else if (info.startsWith(SCREENWRITER)) {
+                    // 编辑
+                    info = info.substring(info.indexOf(SCREENWRITER) + SCREENWRITER.length());
+                    entity.setScreenWriter(info);
                 }
             }
-        };
+        }
+    }
+
+
+    private ArrayList<String> getDownloadUrls(Document document) {
+        ArrayList<String> strings = new ArrayList<>();
+        Elements elements = document.select("div.co_content8").select("ul").select("a");
+        for (Element e : elements) {
+            String href = e.attr("href");
+            if (href.startsWith("ftp")) {
+                strings.add(href);
+            }
+        }
+        return strings;
     }
 
     @NonNull
-    public Func1<ResponseBody, String> getTransformCharset() {
+    private Func1<ResponseBody, String> getTransformCharset() {
         if (transformCharset == null) {
             transformCharset = new Func1<ResponseBody, String>() {
                 @Override
@@ -300,7 +396,7 @@ public class DataStoreController {
     }
 
     @NonNull
-    public String getPublishTime(String html) {
+    private String getPublishTime(String html) {
         String publishTime;
         Pattern pattern = Pattern.compile("发布时间：.*&");
         Matcher matcher = pattern.matcher(html);
@@ -310,25 +406,33 @@ public class DataStoreController {
         } else {
             publishTime = "";
         }
-        return publishTime;
+        return rejectHtmlSpaceCharacters(publishTime);
     }
 
-    @NonNull
-    public Observable<ArrayList<BaseInfoEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
-        return getObservable(observable, getTransformCharset(), getListFun());
+    private static final String regEx_html = "<[^>]+>"; // 定义HTML标签的正则表达式
+    private static final String regEx_space = "\\s*|\t|\r|\n";//定义空格回车换行符
+    private static final String regEx_regular = "\\]:*";
+
+    private String rejectHtmlSpaceCharacters(String str) {
+        Pattern p_html = Pattern.compile(regEx_html);
+        Matcher m_html = p_html.matcher(str);
+        str = m_html.replaceAll(""); // 过滤html标签
+        Pattern p_space = Pattern.compile(regEx_space);
+        Matcher m_space = p_space.matcher(str);
+        str = m_space.replaceAll(""); // 过滤空格回车标签
+        return str.replaceAll("　", "").trim(); // 返回文本字符串
     }
 
-    @NonNull
-    public Observable<FilmDetailEntity> getNewWorkDetailObservable(final Observable<ResponseBody> observable) {
-        return getObservable(observable, getTransformCharset(), getFilmDetailFun());
+    private String rejectSpecialCharacter(String str) {
+        Pattern compile = Pattern.compile(regEx_regular);
+        Matcher matcher = compile.matcher(str);
+        if (matcher.find()) {
+            return matcher.replaceAll("");
+        }
+        return str;
     }
 
-    @NonNull
-    public Observable<ArrayList<MeiZiEntity>> getNewWorkMeiZiObservable(final Observable<ResponseBody> observable) {
-        return getObservable(observable, getTransformCharset(), getMeiZiFun());
-    }
-
-    public <Entity> Observable<Entity> getObservable(final Observable<ResponseBody> observable, final Func1<ResponseBody, String> transformCharset, final Func1<String, Entity> transformToEntity) {
+    private <Entity> Observable<Entity> getObservable(final Observable<ResponseBody> observable, final Func1<ResponseBody, String> transformCharset, final Func1<String, Entity> transformToEntity) {
         return Observable.create(new Observable.OnSubscribe<Entity>() {
             @Override
             public void call(final Subscriber<? super Entity> subscriber) {
@@ -338,7 +442,6 @@ public class DataStoreController {
                         .subscribe(new Action1<Entity>() {
                             @Override
                             public void call(Entity entity) {
-
                                 MyLog.json(gson.toJson(entity));
                                 Observable.just(entity)
                                         .subscribe(subscriber);
@@ -348,13 +451,11 @@ public class DataStoreController {
         });
     }
 
-
     @NonNull
     private Action1<Throwable> getOnErrorProcess(final Subscriber subscriber) {
         return new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                System.out.println("throwable = [" + throwable + "]");
                 if (SystemUtils.getNetworkType() == SystemUtils.NETWORK_TYPE_NONE) {
                     subscriber.onError(new TaskException(TaskException.ERROR_NONE_NETWORK));
                 } else {
@@ -363,4 +464,5 @@ public class DataStoreController {
             }
         };
     }
+
 }

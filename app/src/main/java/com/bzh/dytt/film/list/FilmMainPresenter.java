@@ -5,10 +5,6 @@ import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.basic.IFragmentPresenter;
 import com.bzh.dytt.base.tablayoutview.TabLayoutFragment;
 import com.bzh.dytt.base.tablayoutview.TabLayoutPresenter;
-import com.bzh.dytt.film.list.DomesticFilmFragment;
-import com.bzh.dytt.film.list.EAFilmFragment;
-import com.bzh.dytt.film.list.JSKFilmFragment;
-import com.bzh.dytt.film.list.NewestFilmFragment;
 
 import java.util.ArrayList;
 
