@@ -89,6 +89,7 @@ public class DataStoreController {
     private static final String SOURCE = "播送";
     private static final String TYPE = "类型";
     private static final String PREMIERE = "首播";
+    private static final String PREMIERE_TIME = "首播日期";
     private static final String TIME = "时间";
     private static final String JIE_DANG = "接档";
     private static final String SCREENWRITER = "编剧";
@@ -96,7 +97,9 @@ public class DataStoreController {
 
     // 欧美电视剧
     private static final String TVSTATION = "电视台";
+    private static final String TVSTATION_1 = "播放平台";
     private static final String PERFORMER = "演员";
+    private static final String SOURCENAME = "原名";
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -114,6 +117,178 @@ public class DataStoreController {
     private Func1<String, FilmDetailEntity> filmDetailFun;
     private Func1<String, ArrayList<MeiZiEntity>> meiziListFun;
     ///////////////////////////////////////////////////////////////////////////
+
+    private void fillFormat(String regular, String splitRegular, FilmDetailEntity entity, String html) {
+        Pattern pattern = Pattern.compile(regular);
+        Matcher matcher = pattern.matcher(html);
+        if (matcher.find()) {
+            String result = rejectHtmlSpaceCharacters(matcher.group());
+            String[] split = result.split(splitRegular);
+            for (String aSplit : split) {
+                String info = rejectSpecialCharacter(aSplit);
+                MyLog.d("Info = [" + info + "]");
+                if (info.startsWith(NAME)) {
+                    // 片名
+                    info = info.substring(info.indexOf(NAME) + NAME.length());
+                    entity.setName(info);
+                } else if (info.startsWith(SOURCENAME)) {
+                    // 原名
+                    info = info.substring(info.indexOf(SOURCENAME) + SOURCENAME.length());
+                    entity.setName(info);
+                } else if (info.startsWith(TRANSLATIONNAME)) {
+                    // 译名
+                    info = info.substring(info.indexOf(TRANSLATIONNAME) + TRANSLATIONNAME.length());
+                    entity.setTranslationName(info);
+                } else if (info.startsWith(YEARS)) {
+                    // 年代
+                    info = info.substring(info.indexOf(YEARS) + YEARS.length());
+                    entity.setYears(info);
+                } else if (info.startsWith(COUNTRY)) {
+                    // 国家
+                    info = info.substring(info.indexOf(COUNTRY) + COUNTRY.length());
+                    entity.setCountry(info);
+                } else if (info.startsWith(AREA)) {
+                    // 地区
+                    info = info.substring(info.indexOf(AREA) + AREA.length());
+                    entity.setCountry(info);
+                } else if (info.startsWith(CATEGORY)) {
+                    // 类别
+                    info = info.substring(info.indexOf(CATEGORY) + CATEGORY.length());
+                    entity.setCategory(info);
+                } else if (info.startsWith(LANGUAGE)) {
+                    // 语言
+                    info = info.substring(info.indexOf(LANGUAGE) + LANGUAGE.length());
+                    entity.setLanguage(info);
+                } else if (info.startsWith(SUBTITLE)) {
+                    // 字幕
+                    info = info.substring(info.indexOf(SUBTITLE) + SUBTITLE.length());
+                    entity.setSubtitle(info);
+                } else if (info.startsWith(FILEFORMAT)) {
+                    // 文件格式
+                    info = info.substring(info.indexOf(FILEFORMAT) + FILEFORMAT.length());
+                    entity.setFileFormat(info);
+                } else if (info.toLowerCase().startsWith(IMDB.toLowerCase())) {
+                    // IMDB评分
+                    info = info.substring(info.toLowerCase().indexOf(IMDB.toLowerCase()) + IMDB.length());
+                    entity.setImdb(info);
+                } else if (info.startsWith(VIDEOSIZE)) {
+                    // 视频尺寸
+                    info = info.substring(info.indexOf(VIDEOSIZE) + VIDEOSIZE.length());
+                    entity.setVideoSize(info);
+                } else if (info.startsWith(FILESIZE)) {
+                    // 文件大小
+                    info = info.substring(info.indexOf(FILESIZE) + FILESIZE.length());
+                    entity.setFileSize(info);
+                } else if (info.startsWith(SHOWTIME)) {
+                    // 片场
+                    info = info.substring(info.indexOf(SHOWTIME) + SHOWTIME.length());
+                    entity.setShowTime(info);
+                } else if (info.startsWith(DIRECTOR)) {
+                    // 导演
+                    info = info.substring(info.indexOf(DIRECTOR) + DIRECTOR.length());
+                    if (entity.getDirectors() == null) {
+                        entity.setDirectors(new ArrayList<String>());
+                    }
+                    if (info.contains("•")) {
+                        String[] strings = info.split("•");
+                        entity.getDirectors().addAll(Arrays.asList(strings));
+                    } else {
+                        entity.getDirectors().add(info);
+                    }
+                } else if (info.startsWith(LEADINGPLAYERS)) {
+                    // 主演
+                    info = info.substring(info.indexOf(LEADINGPLAYERS) + LEADINGPLAYERS.length());
+                    if (entity.getLeadingPlayers() == null) {
+                        entity.setLeadingPlayers(new ArrayList<String>());
+                    }
+                    if (info.startsWith("<br>")) {
+                        String[] leadingplayers = info.split("<br>");
+                        entity.getLeadingPlayers().addAll(Arrays.asList(leadingplayers));
+                    } else {
+                        entity.getLeadingPlayers().add(info);
+                    }
+                } else if (info.startsWith(DESCRIPTION)) {
+                    // 描述
+                    info = info.substring(info.indexOf(DESCRIPTION) + DESCRIPTION.length());
+                    entity.setDescription(info);
+                }
+                // 话语电视剧
+                else if (info.startsWith(PLAYTIME)) {
+                    // 上映日期
+                    info = info.substring(info.indexOf(PLAYTIME) + PLAYTIME.length());
+                    entity.setPlaytime(info);
+                } else if (info.startsWith(EPISODENUMBER)) {
+                    // 集数
+                    info = info.substring(info.indexOf(EPISODENUMBER) + EPISODENUMBER.length());
+                    entity.setEpisodeNumber(info);
+                }
+                // 日韩电视剧
+                else if (info.startsWith(PLAYNAME)) {
+                    // 剧名
+                    info = info.substring(info.indexOf(PLAYNAME) + PLAYNAME.length());
+                    entity.setName(info);
+                } else if (info.startsWith(SOURCE)) {
+                    // 来源
+                    info = info.substring(info.indexOf(SOURCE) + SOURCE.length());
+                    entity.setSource(info);
+                } else if (info.startsWith(TYPE)) {
+                    // 类型
+                    info = info.substring(info.indexOf(TYPE) + TYPE.length());
+                    entity.setCategory(info);
+                } else if (info.startsWith(PREMIERE)) {
+                    // 首播
+                    info = info.substring(info.indexOf(PREMIERE) + PREMIERE.length());
+                    entity.setPlaytime(info);
+                } else if (info.startsWith(PREMIERE_TIME)) {
+                    // 首播时间
+                    info = info.substring(info.indexOf(PREMIERE_TIME) + PREMIERE_TIME.length());
+                    entity.setPlaytime(info);
+                } else if (info.startsWith(TIME)) {
+                    // 时间
+                    info = info.substring(info.indexOf(TIME) + TIME.length());
+                    entity.setPlaytime(info);
+                } else if (info.startsWith(JIE_DANG)) {
+                    // 接档
+                    info = info.substring(info.indexOf(JIE_DANG) + JIE_DANG.length());
+                    entity.setJieDang(info);
+                } else if (info.startsWith(SCREENWRITER)) {
+                    // 编剧
+                    info = info.substring(info.indexOf(SCREENWRITER) + SCREENWRITER.length());
+                    if (entity.getScreenWriters() == null) {
+                        entity.setScreenWriters(new ArrayList<String>());
+                    }
+                    if (info.contains("•")) {
+                        String[] strings = info.split("•");
+                        entity.getScreenWriters().addAll(Arrays.asList(strings));
+                    } else {
+                        entity.getScreenWriters().add(info);
+                    }
+                }
+                // 欧美电视剧
+                else if (info.startsWith(TVSTATION)) {
+                    // 电视台
+                    info = info.substring(info.indexOf(TVSTATION) + TVSTATION.length());
+                    entity.setSource(info);
+                } else if (info.startsWith(TVSTATION_1)) {
+                    // 电视台
+                    info = info.substring(info.indexOf(TVSTATION_1) + TVSTATION_1.length());
+                    entity.setSource(info);
+                } else if (info.startsWith(PERFORMER)) {
+                    // 演员
+                    info = info.substring(info.indexOf(PERFORMER) + PERFORMER.length());
+                    if (entity.getLeadingPlayers() == null) {
+                        entity.setLeadingPlayers(new ArrayList<String>());
+                    }
+                    if (info.contains("•")) {
+                        String[] strings = info.split("•");
+                        entity.getLeadingPlayers().addAll(Arrays.asList(strings));
+                    } else {
+                        entity.getLeadingPlayers().add(info);
+                    }
+                }
+            }
+        }
+    }
 
     @NonNull
     public Observable<ArrayList<BaseInfoEntity>> getNewWorkObservable(final Observable<ResponseBody> observable) {
@@ -252,151 +427,6 @@ public class DataStoreController {
         return filmDetailFun;
     }
 
-    private void fillFormat(String regular, String splitRegular, FilmDetailEntity entity, String html) {
-        Pattern pattern = Pattern.compile(regular);
-        Matcher matcher = pattern.matcher(html);
-        if (matcher.find()) {
-            String result = rejectHtmlSpaceCharacters(matcher.group());
-            String[] split = result.split(splitRegular);
-            for (String aSplit : split) {
-                String info = rejectSpecialCharacter(aSplit);
-                MyLog.d("Info = [" + info + "]");
-                if (info.startsWith(NAME)) {
-                    // 片名
-                    info = info.substring(info.indexOf(NAME) + NAME.length());
-                    entity.setName(info);
-                } else if (info.startsWith(TRANSLATIONNAME)) {
-                    // 译名
-                    info = info.substring(info.indexOf(TRANSLATIONNAME) + TRANSLATIONNAME.length());
-                    entity.setTranslationName(info);
-                } else if (info.startsWith(YEARS)) {
-                    // 年代
-                    info = info.substring(info.indexOf(YEARS) + YEARS.length());
-                    entity.setYears(info);
-                } else if (info.startsWith(COUNTRY)) {
-                    // 国家
-                    info = info.substring(info.indexOf(COUNTRY) + COUNTRY.length());
-                    entity.setCountry(info);
-                } else if (info.startsWith(AREA)) {
-                    // 地区
-                    info = info.substring(info.indexOf(AREA) + AREA.length());
-                    entity.setCountry(info);
-                } else if (info.startsWith(CATEGORY)) {
-                    // 类别
-                    info = info.substring(info.indexOf(CATEGORY) + CATEGORY.length());
-                    entity.setCategory(info);
-                } else if (info.startsWith(LANGUAGE)) {
-                    // 语言
-                    info = info.substring(info.indexOf(LANGUAGE) + LANGUAGE.length());
-                    entity.setLanguage(info);
-                } else if (info.startsWith(SUBTITLE)) {
-                    // 字幕
-                    info = info.substring(info.indexOf(SUBTITLE) + SUBTITLE.length());
-                    entity.setSubtitle(info);
-                } else if (info.startsWith(FILEFORMAT)) {
-                    // 文件格式
-                    info = info.substring(info.indexOf(FILEFORMAT) + FILEFORMAT.length());
-                    entity.setFileFormat(info);
-                } else if (info.toLowerCase().startsWith(IMDB.toLowerCase())) {
-                    // IMDB评分
-                    info = info.substring(info.toLowerCase().indexOf(IMDB.toLowerCase()) + IMDB.length());
-                    entity.setImdb(info);
-                } else if (info.startsWith(VIDEOSIZE)) {
-                    // 视频尺寸
-                    info = info.substring(info.indexOf(VIDEOSIZE) + VIDEOSIZE.length());
-                    entity.setVideoSize(info);
-                } else if (info.startsWith(FILESIZE)) {
-                    // 文件大小
-                    info = info.substring(info.indexOf(FILESIZE) + FILESIZE.length());
-                    entity.setFileSize(info);
-                } else if (info.startsWith(SHOWTIME)) {
-                    // 片场
-                    info = info.substring(info.indexOf(SHOWTIME) + SHOWTIME.length());
-                    entity.setShowTime(info);
-                } else if (info.startsWith(DIRECTOR)) {
-                    // 导演
-                    info = info.substring(info.indexOf(DIRECTOR) + DIRECTOR.length());
-                    entity.setDirector(info);
-                } else if (info.startsWith(LEADINGPLAYERS)) {
-                    // 主演
-                    info = info.substring(info.indexOf(LEADINGPLAYERS) + LEADINGPLAYERS.length());
-                    if (entity.getLeadingPlayers() == null) {
-                        entity.setLeadingPlayers(new ArrayList<String>());
-                    }
-                    if (info.startsWith("<br>")) {
-                        String[] leadingplayers = info.split("<br>");
-                        entity.getLeadingPlayers().addAll(Arrays.asList(leadingplayers));
-                    } else {
-                        entity.getLeadingPlayers().add(info);
-                    }
-                } else if (info.startsWith(DESCRIPTION)) {
-                    // 描述
-                    info = info.substring(info.indexOf(DESCRIPTION) + DESCRIPTION.length());
-                    entity.setDescription(info);
-                }
-                // 话语电视剧
-                else if (info.startsWith(PLAYTIME)) {
-                    // 上映日期
-                    info = info.substring(info.indexOf(PLAYTIME) + PLAYTIME.length());
-                    entity.setPlaytime(info);
-                } else if (info.startsWith(EPISODENUMBER)) {
-                    // 集数
-                    info = info.substring(info.indexOf(EPISODENUMBER) + EPISODENUMBER.length());
-                    entity.setEpisodeNumber(info);
-                }
-                // 日韩电视剧
-                else if (info.startsWith(PLAYNAME)) {
-                    // 剧名
-                    info = info.substring(info.indexOf(PLAYNAME) + PLAYNAME.length());
-                    entity.setPlayName(info);
-                } else if (info.startsWith(SOURCE)) {
-                    // 来源
-                    info = info.substring(info.indexOf(SOURCE) + SOURCE.length());
-                    entity.setSource(info);
-                } else if (info.startsWith(TYPE)) {
-                    // 类型
-                    info = info.substring(info.indexOf(TYPE) + TYPE.length());
-                    entity.setType(info);
-                } else if (info.startsWith(PREMIERE)) {
-                    // 首播
-                    info = info.substring(info.indexOf(PREMIERE) + PREMIERE.length());
-                    entity.setPremiere(info);
-                } else if (info.startsWith(TIME)) {
-                    // 时间
-                    info = info.substring(info.indexOf(TIME) + TIME.length());
-                    entity.setTime(info);
-                } else if (info.startsWith(JIE_DANG)) {
-                    // 接档
-                    info = info.substring(info.indexOf(JIE_DANG) + JIE_DANG.length());
-                    entity.setJieDang(info);
-                } else if (info.startsWith(SCREENWRITER)) {
-                    // 编辑
-                    info = info.substring(info.indexOf(SCREENWRITER) + SCREENWRITER.length());
-                    entity.setScreenWriter(info);
-                }
-                // 欧美电视剧
-                else if (info.startsWith(TVSTATION)) {
-                    // 电视台
-                    info = info.substring(info.indexOf(TVSTATION) + TVSTATION.length());
-                    entity.setTvStation(info);
-                }
-                else if (info.startsWith(PERFORMER)) {
-                    // 演员
-                    info = info.substring(info.indexOf(PERFORMER) + PERFORMER.length());
-                    if (entity.getPerformers() == null) {
-                        entity.setPerformers(new ArrayList<String>());
-                    }
-                    if (info.contains("•")) {
-                        String[] strings = info.split("•");
-                        entity.getPerformers().addAll(Arrays.asList(strings));
-                    } else {
-                        entity.getPerformers().add(info);
-                    }
-                }
-            }
-        }
-    }
-
 
     private ArrayList<String> getDownloadUrls(Document document) {
         ArrayList<String> strings = new ArrayList<>();
@@ -443,8 +473,8 @@ public class DataStoreController {
     }
 
     private static final String regEx_html = "<[^>]+>"; // 定义HTML标签的正则表达式
-    private static final String regEx_space = "\\s*|\t|\r|\n";//定义空格回车换行符
-    private static final String regEx_regular = "\\]:】：*";
+    private static final String regEx_space = "(\\s|　|&nbsp;)*|\t|\r|\n";//定义空格回车换行符
+    private static final String regEx_regular = "(\\]|:|】|：)*";
 
     private String rejectHtmlSpaceCharacters(String str) {
         Pattern p_html = Pattern.compile(regEx_html);
@@ -453,7 +483,7 @@ public class DataStoreController {
         Pattern p_space = Pattern.compile(regEx_space);
         Matcher m_space = p_space.matcher(str);
         str = m_space.replaceAll(""); // 过滤空格回车标签
-        return str.replaceAll("　", "").trim(); // 返回文本字符串
+        return str.trim(); // 返回文本字符串
     }
 
     private String rejectSpecialCharacter(String str) {

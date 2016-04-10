@@ -5,13 +5,6 @@ import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.basic.IFragmentPresenter;
 import com.bzh.dytt.base.tablayoutview.TabLayoutFragment;
 import com.bzh.dytt.base.tablayoutview.TabLayoutPresenter;
-import com.bzh.dytt.tv.GCHPTvFragment;
-import com.bzh.dytt.tv.GCTvFragment;
-import com.bzh.dytt.tv.GTTvFragment;
-import com.bzh.dytt.tv.HPTvFragment;
-import com.bzh.dytt.tv.HYTvFragment;
-import com.bzh.dytt.tv.OMTvFragment;
-import com.bzh.dytt.tv.RHTvFragment;
 
 import java.util.ArrayList;
 

@@ -61,35 +61,6 @@ public class TvNetWorkDataStoreTest extends ApplicationTestCase {
         };
     }
 
-    @NonNull
-    private Subscriber<FilmDetailEntity> getRiHanSubscriber() {
-        return new Subscriber<FilmDetailEntity>() {
-            @Override
-            public void onCompleted() {
-                System.out.println("");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                assertNull(e);
-            }
-
-            @Override
-            public void onNext(FilmDetailEntity filmDetailEntity) {
-                System.out.println(gson.toJson(filmDetailEntity));
-                assertNotNull(filmDetailEntity);
-                assertNotNull(filmDetailEntity.getPlayName());
-                assertNotNull(filmDetailEntity.getSource());
-                assertNotNull(filmDetailEntity.getType());
-                assertNotNull(filmDetailEntity.getPremiere());
-                assertNotNull(filmDetailEntity.getScreenWriter());
-                assertNotNull(filmDetailEntity.getDirector());
-                assertNotNull(filmDetailEntity.getLeadingPlayers());
-                assertNotNull(filmDetailEntity.getEpisodeNumber());
-                assertNotNull(filmDetailEntity.getDescription());
-            }
-        };
-    }
 
     @After
     public void tearDown() throws Exception {
@@ -121,63 +92,4 @@ public class TvNetWorkDataStoreTest extends ApplicationTestCase {
     public void testGetEuropeAmericaTV() throws Exception {
         tvNetWorkDataStore.getEuropeAmericaTV(1).subscribe(subscriber);
     }
-
-    @Test
-    public void testGetTvDetail() throws Exception {
-        tvNetWorkDataStore.getTvDetail("/html/tv/hytv/20160226/50311.html").subscribe(new Subscriber<FilmDetailEntity>() {
-            @Override
-            public void onCompleted() {
-                System.out.println("");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                System.out.println("e = [" + e + "]");
-            }
-
-            @Override
-            public void onNext(FilmDetailEntity filmDetailEntity) {
-                System.out.println("filmDetailEntity = [" + filmDetailEntity + "]");
-            }
-        });
-    }
-
-    @Test
-    public void testGetRIHanTvDetail() throws Exception {
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50567.html").subscribe(getRiHanSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50566.html").subscribe(getRiHanSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160329/50565.html").subscribe(getRiHanSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160328/50558.html").subscribe(getRiHanSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160320/50506.html").subscribe(getRiHanSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20160123/50028.html").subscribe(getRiHanSubscriber());
-        tvNetWorkDataStore.getTvDetail("/html/tv/rihantv/20150519/48105.html").subscribe(getRiHanSubscriber());
-
-    }
-
-    @Test
-    public void testGet欧美TvDetail() throws Exception {
-        tvNetWorkDataStore.getTvDetail("/html/tv/oumeitv/20160404/50634.html").subscribe(getOMSubscriber());
-    }
-
-    @NonNull
-    private Subscriber<FilmDetailEntity> getOMSubscriber() {
-        return new Subscriber<FilmDetailEntity>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                assertNull(e);
-            }
-
-            @Override
-            public void onNext(FilmDetailEntity filmDetailEntity) {
-                System.out.println(gson.toJson(filmDetailEntity));
-                assertNotNull(filmDetailEntity);
-            }
-        };
-    }
-
 }

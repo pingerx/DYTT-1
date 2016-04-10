@@ -82,24 +82,5 @@ public class FilmNetWorkDataStoreTest extends ApplicationTestCase {
         filmNetWorkDataStore.getJapanSouthKorea(1).subscribe(listSubscriber);
     }
 
-    @Test
-    public void testGetFilmDetail() throws Exception {
-        filmNetWorkDataStore.getFilmDetail("/html/gndy/dyzz/20160324/50538.html").subscribe(new Subscriber<FilmDetailEntity>() {
-            @Override
-            public void onCompleted() {
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                assertNull(e);
-            }
-
-            @Override
-            public void onNext(FilmDetailEntity filmDetailEntity) {
-                assertNotNull(filmDetailEntity);
-                System.out.println(gson.toJson(filmDetailEntity));
-            }
-        });
-    }
 }

@@ -17,60 +17,31 @@ import java.util.ArrayList;
  */
 public class FilmDetailEntity {
 
-    private String translationName;    // 译名
-    private String name;                 // 电影名
-    private String title;                // 标题
-
-    private String publishTime;         // 发布时间
-    private String coverUrl;            // 封面
-    private String years;               // 年代
-    private String country;             // 国家
-    private String category;            // 类别
-    private String language;            // 语言
-    private String subtitle;            // 字幕
-    private String playtime;            // 上映时间
-    private String fileFormat;          // 文件格式
-    private String videoSize;           // 视频尺寸
-    private String fileSize;            // 文件大小
-    private String showTime;            // 片长
-    private String director;            // 导演
-    private ArrayList<String> leadingPlayers;// 主演
-    private String description;         // 简介
-    private String previewImage;     // 预览图
+    private String title;                    // 标题
+    private String translationName;         // 译名
+    private String name;                     // 电影名 剧名
+    private String publishTime;             // 发布时间
+    private String playtime;                // 上映时间 首播   首播时间  时间
+    private String coverUrl;                // 封面
+    private String years;                   // 年代
+    private String country;                 // 国家
+    private String category;                // 类别 类型
+    private String language;                // 语言
+    private String subtitle;                // 字幕
+    private String fileFormat;              // 文件格式
+    private String videoSize;               // 视频尺寸
+    private String fileSize;                // 文件大小
+    private String showTime;                // 片长
+    private String description;             // 简介
+    private String previewImage;            // 预览图
+    private String imdb;                     // 评分
+    private String episodeNumber;           // 集数
+    private String source;                   // 来源 电视台 播放平台
+    private String jieDang;                  // 接档
     private ArrayList<String> downloadUrls; // 下载地址
-    private String imdb;         // 评分
-
-    // 华语电视剧
-    private String episodeNumber;       // 集数
-
-    // 日韩电视剧
-    private String playName;            // 剧名
-    private String source;              // 来源
-    private String type;                // 类型
-    private String premiere;            // 首播
-    private String time;                // 时间
-    private String jieDang;             // 接档
-    private String screenWriter;       // 编辑
-
-    // 欧美电视剧
-    private String tvStation;             // 电视台
-    private ArrayList<String> performers;       // 演员
-
-    public String getTvStation() {
-        return tvStation;
-    }
-
-    public void setTvStation(String tvStation) {
-        this.tvStation = tvStation;
-    }
-
-    public ArrayList<String> getPerformers() {
-        return performers;
-    }
-
-    public void setPerformers(ArrayList<String> performers) {
-        this.performers = performers;
-    }
+    private ArrayList<String> directors;    // 导演
+    private ArrayList<String> leadingPlayers;// 主演 演员
+    private ArrayList<String> screenWriters;// 编辑
 
     public String getTitle() {
         return title;
@@ -184,13 +155,12 @@ public class FilmDetailEntity {
         this.showTime = showTime;
     }
 
-
-    public String getDirector() {
-        return director;
+    public ArrayList<String> getDirectors() {
+        return directors;
     }
 
-    public void setDirector(String director) {
-        this.director = director;
+    public void setDirectors(ArrayList<String> directors) {
+        this.directors = directors;
     }
 
     public ArrayList<String> getLeadingPlayers() {
@@ -249,44 +219,12 @@ public class FilmDetailEntity {
         this.playtime = playtime;
     }
 
-    public String getPlayName() {
-        return playName;
-    }
-
-    public void setPlayName(String playName) {
-        this.playName = playName;
-    }
-
     public String getSource() {
         return source;
     }
 
     public void setSource(String source) {
         this.source = source;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getPremiere() {
-        return premiere;
-    }
-
-    public void setPremiere(String premiere) {
-        this.premiere = premiere;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public String getJieDang() {
@@ -297,11 +235,11 @@ public class FilmDetailEntity {
         this.jieDang = jieDang;
     }
 
-    public String getScreenWriter() {
-        return screenWriter;
+    public ArrayList<String> getScreenWriters() {
+        return screenWriters;
     }
 
-    public void setScreenWriter(String screenWriter) {
-        this.screenWriter = screenWriter;
+    public void setScreenWriters(ArrayList<String> screenWriters) {
+        this.screenWriters = screenWriters;
     }
 }
