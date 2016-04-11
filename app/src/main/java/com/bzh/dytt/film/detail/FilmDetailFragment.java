@@ -5,6 +5,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,6 +155,12 @@ public class FilmDetailFragment extends PageFragment implements IFilmDetailView 
     @Bind(R.id.director)
     TextView director;
 
+    // 编辑
+    @Bind(R.id.layout_screenWriters)
+    LinearLayout layout_screenWriters;
+    @Bind(R.id.screenWriters)
+    TextView screenWriters;
+
     // 主演
     @Bind(R.id.layout_leadingPlayers)
     LinearLayout layout_leadingPlayers;
@@ -185,43 +192,77 @@ public class FilmDetailFragment extends PageFragment implements IFilmDetailView 
         fab.setOnClickListener(filmDetailPresenter);
     }
 
+    public void setText(TextView textView, LinearLayout layout, String str) {
+        textView.setText(TextUtils.isEmpty(str) ? "" : str);
+        layout.setVisibility(TextUtils.isEmpty(str) ? View.GONE : View.VISIBLE);
+    }
+
     @Override
     public void setFilmDetail(FilmDetailEntity filmDetailEntity) {
         collapsingToolbar.setTitle(filmDetailEntity.getTranslationName());
-        translationName.setText(filmDetailEntity.getTitle());
-        years.setText(filmDetailEntity.getYears());
-        country.setText(filmDetailEntity.getCountry());
-        category.setText(filmDetailEntity.getCategory());
-        language.setText(filmDetailEntity.getLanguage());
-        showTime.setText(filmDetailEntity.getShowTime());
-        if (filmDetailEntity.getDirectors() != null && filmDetailEntity.getDirectors().size() > 0) {
-            director.setText(filmDetailEntity.getDirectors().get(0));
+
+        setText(name, layout_name, filmDetailEntity.getName());                  // 1. 名字
+        setText(translationName, layout_translationName, filmDetailEntity.getTitle());     // 2. 译名
+        setText(years, layout_years, filmDetailEntity.getYears());                // 3. 年代
+        setText(country, layout_country, filmDetailEntity.getCountry());            // 4. 国家
+        setText(category, layout_category, filmDetailEntity.getCategory());          // 5．类型
+        setText(language, layout_language, filmDetailEntity.getLanguage());          // 6. 语言
+        setText(showTime, layout_showTime, filmDetailEntity.getShowTime());          // 7. 片长
+        setText(publishTime, layout_publishTime, filmDetailEntity.getPublishTime());    // 8. 发布时间
+        setText(playtime, layout_playtime, filmDetailEntity.getPlaytime());          // 9. 上映时间
+        setText(subtitle, layout_subtitle, filmDetailEntity.getSubtitle());          // 10. 字母
+        setText(fileFormat, layout_fileFormat, filmDetailEntity.getFileFormat());      // 11. 文件格式
+        setText(videoSize, layout_videoSize, filmDetailEntity.getVideoSize());        // 12.　视频尺寸
+        setText(fileSize, layout_fileSize, filmDetailEntity.getFileSize());        // 12.　文件大小
+        setText(imdb, layout_imdb, filmDetailEntity.getImdb());                  // 13. 评分
+        setText(episodeNumber, layout_episodeNumber, filmDetailEntity.getEpisodeNumber());// 14 集数
+        setText(source, layout_source, filmDetailEntity.getSource());               // 15. 来源
+        if (filmDetailEntity.getDirectors() != null &&filmDetailEntity.getDirectors().size() > 0) {
+            setText(director, layout_director, filmDetailEntity.getDirectors().get(0));// 16. 导演
+        }else {
+            layout_director.setVisibility(View.GONE);
         }
-        leadingPlayers.setText(filmDetailEntity.getLeadingPlayers().get(0));
-        description.setText(filmDetailEntity.getDescription());
+        if (filmDetailEntity.getScreenWriters() != null &&filmDetailEntity.getScreenWriters().size() > 0) {
+            setText(screenWriters, layout_screenWriters, filmDetailEntity.getScreenWriters().get(0));// 17. 编辑
+        }else {
+            layout_screenWriters.setVisibility(View.GONE);
+        }
+        if (filmDetailEntity.getLeadingPlayers() != null &&filmDetailEntity.getLeadingPlayers().size() > 0) {
+            setText(leadingPlayers, layout_leadingPlayers, filmDetailEntity.getLeadingPlayers().get(0));// 18. 主演
+        }else {
+            layout_leadingPlayers.setVisibility(View.GONE);
+        }
+
+        setText(description, layout_description, filmDetailEntity.getDescription());// 19. 描述
+
         Glide.with(this)
                 .load(filmDetailEntity.getCoverUrl())
                 .into(filmPoster);
-        Glide.with(this)
-                .load(filmDetailEntity.getPreviewImage())
-                .asBitmap()
-                .into(new BitmapImageViewTarget(previewImage) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        super.setResource(resource);
-                        int width = resource.getWidth();
-                        int height = resource.getHeight();
-                        float ratio = width * 1.0F / height;
-                        float targetHeight = UIUtils.getScreenWidth() * 1.0F / ratio;
 
-                        ViewGroup.LayoutParams params = previewImage.getLayoutParams();
-                        params.height = (int) targetHeight;
-                        previewImage.setLayoutParams(params);
+        if (TextUtils.isEmpty(filmDetailEntity.getPreviewImage())) {
+            layout_previewImage.setVisibility(View.GONE);
+        } else {
+            layout_previewImage.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(filmDetailEntity.getPreviewImage())
+                    .asBitmap()
+                    .into(new BitmapImageViewTarget(previewImage) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            super.setResource(resource);
+                            int width = resource.getWidth();
+                            int height = resource.getHeight();
+                            float ratio = width * 1.0F / height;
+                            float targetHeight = UIUtils.getScreenWidth() * 1.0F / ratio;
 
-                        previewImage.setImageBitmap(resource);
-                    }
-                });
+                            ViewGroup.LayoutParams params = previewImage.getLayoutParams();
+                            params.height = (int) targetHeight;
+                            previewImage.setLayoutParams(params);
 
+                            previewImage.setImageBitmap(resource);
+                        }
+                    });
+        }
     }
 
 
