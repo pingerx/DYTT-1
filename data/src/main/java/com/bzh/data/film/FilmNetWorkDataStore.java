@@ -52,7 +52,7 @@ public class FilmNetWorkDataStore implements IFilmDataStore {
     }
 
     @Override
-    public Observable<FilmDetailEntity> getFilmDetail(final String filmStr) {
+    public Observable<DetailEntity> getFilmDetail(final String filmStr) {
         return DataStoreController.getInstance().getNewWorkDetailObservable(iFilmService.getFilmDetail(filmStr));
     }
 }

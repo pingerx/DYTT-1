@@ -1,4 +1,4 @@
-package com.bzh.dytt.film.detail;
+package com.bzh.dytt.detail;
 
 import android.graphics.Bitmap;
 import android.support.design.widget.AppBarLayout;
@@ -16,26 +16,25 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bzh.common.utils.UIUtils;
-import com.bzh.data.film.FilmDetailEntity;
+import com.bzh.data.film.DetailEntity;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.FragmentArgs;
 import com.bzh.dytt.base.basic.FragmentContainerActivity;
 import com.bzh.dytt.base.basic_pageswitch.PageFragment;
 import com.bzh.dytt.base.basic_pageswitch.PagePresenter;
-import com.jakewharton.rxbinding.support.design.widget.RxAppBarLayout;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 
-public class FilmDetailFragment extends PageFragment implements IFilmDetailView {
+public class DetailFragment extends PageFragment implements IDetailView {
 
     public static final String FILM_URL = "FILM_URL";
 
     public static void launch(BaseActivity from, String url) {
         FragmentArgs fragmentArgs = new FragmentArgs();
         fragmentArgs.add(FILM_URL, url);
-        FragmentContainerActivity.launch(from, FilmDetailFragment.class, fragmentArgs);
+        FragmentContainerActivity.launch(from, DetailFragment.class, fragmentArgs);
     }
 
     @Bind(R.id.toolbar)
@@ -179,17 +178,17 @@ public class FilmDetailFragment extends PageFragment implements IFilmDetailView 
     @Bind(R.id.previewImage)
     ImageView previewImage;
 
-    private FilmDetailPresenter filmDetailPresenter;
+    private DetailPresenter detailPresenter;
 
     @Override
     protected PagePresenter initPresenter() {
-        filmDetailPresenter = new FilmDetailPresenter(getBaseActivity(), this, this);
-        return filmDetailPresenter;
+        detailPresenter = new DetailPresenter(getBaseActivity(), this, this);
+        return detailPresenter;
     }
 
     @Override
     public void initFab() {
-        fab.setOnClickListener(filmDetailPresenter);
+        fab.setOnClickListener(detailPresenter);
     }
 
     public void setText(TextView textView, LinearLayout layout, String str) {
@@ -198,53 +197,53 @@ public class FilmDetailFragment extends PageFragment implements IFilmDetailView 
     }
 
     @Override
-    public void setFilmDetail(FilmDetailEntity filmDetailEntity) {
-        collapsingToolbar.setTitle(filmDetailEntity.getTranslationName());
+    public void setFilmDetail(DetailEntity detailEntity) {
+        collapsingToolbar.setTitle(detailEntity.getTranslationName());
 
-        setText(name, layout_name, filmDetailEntity.getName());                  // 1. 名字
-        setText(translationName, layout_translationName, filmDetailEntity.getTitle());     // 2. 译名
-        setText(years, layout_years, filmDetailEntity.getYears());                // 3. 年代
-        setText(country, layout_country, filmDetailEntity.getCountry());            // 4. 国家
-        setText(category, layout_category, filmDetailEntity.getCategory());          // 5．类型
-        setText(language, layout_language, filmDetailEntity.getLanguage());          // 6. 语言
-        setText(showTime, layout_showTime, filmDetailEntity.getShowTime());          // 7. 片长
-        setText(publishTime, layout_publishTime, filmDetailEntity.getPublishTime());    // 8. 发布时间
-        setText(playtime, layout_playtime, filmDetailEntity.getPlaytime());          // 9. 上映时间
-        setText(subtitle, layout_subtitle, filmDetailEntity.getSubtitle());          // 10. 字母
-        setText(fileFormat, layout_fileFormat, filmDetailEntity.getFileFormat());      // 11. 文件格式
-        setText(videoSize, layout_videoSize, filmDetailEntity.getVideoSize());        // 12.　视频尺寸
-        setText(fileSize, layout_fileSize, filmDetailEntity.getFileSize());        // 12.　文件大小
-        setText(imdb, layout_imdb, filmDetailEntity.getImdb());                  // 13. 评分
-        setText(episodeNumber, layout_episodeNumber, filmDetailEntity.getEpisodeNumber());// 14 集数
-        setText(source, layout_source, filmDetailEntity.getSource());               // 15. 来源
-        if (filmDetailEntity.getDirectors() != null &&filmDetailEntity.getDirectors().size() > 0) {
-            setText(director, layout_director, filmDetailEntity.getDirectors().get(0));// 16. 导演
+        setText(name, layout_name, detailEntity.getName());                  // 1. 名字
+        setText(translationName, layout_translationName, detailEntity.getTitle());     // 2. 译名
+        setText(years, layout_years, detailEntity.getYears());                // 3. 年代
+        setText(country, layout_country, detailEntity.getCountry());            // 4. 国家
+        setText(category, layout_category, detailEntity.getCategory());          // 5．类型
+        setText(language, layout_language, detailEntity.getLanguage());          // 6. 语言
+        setText(showTime, layout_showTime, detailEntity.getShowTime());          // 7. 片长
+        setText(publishTime, layout_publishTime, detailEntity.getPublishTime());    // 8. 发布时间
+        setText(playtime, layout_playtime, detailEntity.getPlaytime());          // 9. 上映时间
+        setText(subtitle, layout_subtitle, detailEntity.getSubtitle());          // 10. 字母
+        setText(fileFormat, layout_fileFormat, detailEntity.getFileFormat());      // 11. 文件格式
+        setText(videoSize, layout_videoSize, detailEntity.getVideoSize());        // 12.　视频尺寸
+        setText(fileSize, layout_fileSize, detailEntity.getFileSize());        // 12.　文件大小
+        setText(imdb, layout_imdb, detailEntity.getImdb());                  // 13. 评分
+        setText(episodeNumber, layout_episodeNumber, detailEntity.getEpisodeNumber());// 14 集数
+        setText(source, layout_source, detailEntity.getSource());               // 15. 来源
+        if (detailEntity.getDirectors() != null && detailEntity.getDirectors().size() > 0) {
+            setText(director, layout_director, detailEntity.getDirectors().get(0));// 16. 导演
         }else {
             layout_director.setVisibility(View.GONE);
         }
-        if (filmDetailEntity.getScreenWriters() != null &&filmDetailEntity.getScreenWriters().size() > 0) {
-            setText(screenWriters, layout_screenWriters, filmDetailEntity.getScreenWriters().get(0));// 17. 编辑
+        if (detailEntity.getScreenWriters() != null && detailEntity.getScreenWriters().size() > 0) {
+            setText(screenWriters, layout_screenWriters, detailEntity.getScreenWriters().get(0));// 17. 编辑
         }else {
             layout_screenWriters.setVisibility(View.GONE);
         }
-        if (filmDetailEntity.getLeadingPlayers() != null &&filmDetailEntity.getLeadingPlayers().size() > 0) {
-            setText(leadingPlayers, layout_leadingPlayers, filmDetailEntity.getLeadingPlayers().get(0));// 18. 主演
+        if (detailEntity.getLeadingPlayers() != null && detailEntity.getLeadingPlayers().size() > 0) {
+            setText(leadingPlayers, layout_leadingPlayers, detailEntity.getLeadingPlayers().get(0));// 18. 主演
         }else {
             layout_leadingPlayers.setVisibility(View.GONE);
         }
 
-        setText(description, layout_description, filmDetailEntity.getDescription());// 19. 描述
+        setText(description, layout_description, detailEntity.getDescription());// 19. 描述
 
         Glide.with(this)
-                .load(filmDetailEntity.getCoverUrl())
+                .load(detailEntity.getCoverUrl())
                 .into(filmPoster);
 
-        if (TextUtils.isEmpty(filmDetailEntity.getPreviewImage())) {
+        if (TextUtils.isEmpty(detailEntity.getPreviewImage())) {
             layout_previewImage.setVisibility(View.GONE);
         } else {
             layout_previewImage.setVisibility(View.VISIBLE);
             Glide.with(this)
-                    .load(filmDetailEntity.getPreviewImage())
+                    .load(detailEntity.getPreviewImage())
                     .asBitmap()
                     .into(new BitmapImageViewTarget(previewImage) {
                         @Override
@@ -290,6 +289,6 @@ public class FilmDetailFragment extends PageFragment implements IFilmDetailView 
 
     @OnClick(R.id.fab)
     public void onClickFab(View v) {
-        filmDetailPresenter.onClick(v);
+        detailPresenter.onClick(v);
     }
 }

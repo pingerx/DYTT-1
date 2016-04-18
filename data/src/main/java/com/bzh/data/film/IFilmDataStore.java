@@ -28,5 +28,5 @@ public interface IFilmDataStore {
 
     Observable<ArrayList<BaseInfoEntity>> getJapanSouthKorea(@IntRange(from = 1, to = 25) final int index);
 
-    Observable<FilmDetailEntity> getFilmDetail(final String filmStr);
+    Observable<DetailEntity> getFilmDetail(final String filmStr);
 }

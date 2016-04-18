@@ -6,10 +6,10 @@ import com.bzh.data.basic.MeiZiEntity;
 import com.bzh.data.comic.ComicNetWorkData;
 import com.bzh.data.comic.IComicDataStore;
 import com.bzh.data.comic.IComicService;
+import com.bzh.data.film.DetailEntity;
 import com.bzh.data.film.FilmNetWorkDataStore;
 import com.bzh.data.film.IFilmDataStore;
 import com.bzh.data.basic.BaseInfoEntity;
-import com.bzh.data.film.FilmDetailEntity;
 import com.bzh.data.film.IFilmService;
 import com.bzh.data.game.GameNetWorkDataStore;
 import com.bzh.data.game.IGameDataStore;
@@ -26,7 +26,6 @@ import com.bzh.data.variety.VarietyNetWorkDataStore;
 
 import java.util.ArrayList;
 
-import okhttp3.ResponseBody;
 import rx.Observable;
 
 /**
@@ -143,7 +142,7 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
     }
 
     @Override
-    public Observable<FilmDetailEntity> getFilmDetail(String filmStr) {
+    public Observable<DetailEntity> getFilmDetail(String filmStr) {
         return getFilmDataStore().getFilmDetail(filmStr);
     }
 
@@ -173,7 +172,7 @@ public class Repository implements IFilmDataStore, ITvDataStore, IVarietyDataSto
     }
 
     @Override
-    public Observable<FilmDetailEntity> getTvDetail(String tvDetailUrl) {
+    public Observable<DetailEntity> getTvDetail(String tvDetailUrl) {
         return null;
     }
 

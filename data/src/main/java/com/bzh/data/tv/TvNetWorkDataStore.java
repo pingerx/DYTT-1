@@ -4,7 +4,7 @@ import android.support.annotation.IntRange;
 
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.data.basic.DataStoreController;
-import com.bzh.data.film.FilmDetailEntity;
+import com.bzh.data.film.DetailEntity;
 
 import java.util.ArrayList;
 
@@ -54,7 +54,7 @@ public class TvNetWorkDataStore implements ITvDataStore {
     }
 
     @Override
-    public Observable<FilmDetailEntity> getTvDetail(String tvDetailUrl) {
+    public Observable<DetailEntity> getTvDetail(String tvDetailUrl) {
         return DataStoreController.getInstance().getNewWorkDetailObservable(iTvService.getTvDetail(tvDetailUrl));
     }
 }

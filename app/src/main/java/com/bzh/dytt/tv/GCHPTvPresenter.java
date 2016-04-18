@@ -5,6 +5,7 @@ import com.bzh.data.repository.Repository;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
+import com.bzh.recycler.ExViewHolder;
 
 import java.util.ArrayList;
 

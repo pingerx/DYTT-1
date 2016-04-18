@@ -1,10 +1,7 @@
 package com.bzh.data.tv;
 
-import android.support.annotation.NonNull;
-
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.basic.BaseInfoEntity;
-import com.bzh.data.film.FilmDetailEntity;
 import com.bzh.data.repository.RetrofitManager;
 import com.google.gson.Gson;
 

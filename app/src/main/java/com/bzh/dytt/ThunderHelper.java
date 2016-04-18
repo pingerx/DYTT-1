@@ -53,7 +53,6 @@ public class ThunderHelper {
             baseActivity.startActivity(new Intent("android.intent.action.VIEW", Uri.parse(getThunderEncode(ftpUrl))));
         } else {
             Snackbar.make(view, baseActivity.getString(R.string.un_install_xunlei_label), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
         }
     }
 

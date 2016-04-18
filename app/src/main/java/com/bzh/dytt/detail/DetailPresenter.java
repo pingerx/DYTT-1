@@ -1,9 +1,9 @@
-package com.bzh.dytt.film.detail;
+package com.bzh.dytt.detail;
 
 import android.text.TextUtils;
 import android.view.View;
 
-import com.bzh.data.film.FilmDetailEntity;
+import com.bzh.data.film.DetailEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.ThunderHelper;
 import com.bzh.dytt.R;
@@ -24,14 +24,14 @@ import rx.schedulers.Schedulers;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmDetailPresenter extends PagePresenter implements View.OnClickListener {
+public class DetailPresenter extends PagePresenter implements View.OnClickListener {
 
 
-    private final IFilmDetailView filmDetailView;
+    private final IDetailView filmDetailView;
     private String url;
-    private FilmDetailEntity filmDetailEntity;
+    private DetailEntity detailEntity;
 
-    public FilmDetailPresenter(BaseActivity baseActivity, BaseFragment baseFragment, IFilmDetailView filmDetailView) {
+    public DetailPresenter(BaseActivity baseActivity, BaseFragment baseFragment, IDetailView filmDetailView) {
         super(baseActivity, baseFragment, filmDetailView);
         this.filmDetailView = filmDetailView;
     }
@@ -41,8 +41,8 @@ public class FilmDetailPresenter extends PagePresenter implements View.OnClickLi
         if (v.getId() == android.R.id.home) {
             getBaseActivity().finish();
         } else if (v.getId() == R.id.fab) {
-            if (filmDetailEntity != null && filmDetailEntity.getDownloadUrls().size() > 0) {
-                ThunderHelper.getInstance(getBaseActivity()).onClickDownload(v, filmDetailEntity.getDownloadUrls().get(0));
+            if (detailEntity != null && detailEntity.getDownloadUrls().size() > 0) {
+                ThunderHelper.getInstance(getBaseActivity()).onClickDownload(v, detailEntity.getDownloadUrls().get(0));
             }
         }
     }
@@ -50,7 +50,7 @@ public class FilmDetailPresenter extends PagePresenter implements View.OnClickLi
     @Override
     public void initFragmentConfig() {
         if (null != baseFragment.getArguments()) {
-            url = baseFragment.getArguments().getString(FilmDetailFragment.FILM_URL);
+            url = baseFragment.getArguments().getString(DetailFragment.FILM_URL);
             if (!TextUtils.isEmpty(url)) {
                 FilmDetailTaskSubscriber taskSubscriber = new FilmDetailTaskSubscriber();
                 Repository.getInstance().getFilmDetail(url)
@@ -65,18 +65,18 @@ public class FilmDetailPresenter extends PagePresenter implements View.OnClickLi
         filmDetailView.initFab();
     }
 
-    private class FilmDetailTaskSubscriber extends AbstractTaskSubscriber<FilmDetailEntity> {
+    private class FilmDetailTaskSubscriber extends AbstractTaskSubscriber<DetailEntity> {
 
         @Override
-        public void onSuccess(FilmDetailEntity filmDetailEntity) {
-            super.onSuccess(filmDetailEntity);
-            FilmDetailPresenter.this.filmDetailEntity = filmDetailEntity;
+        public void onSuccess(DetailEntity detailEntity) {
+            super.onSuccess(detailEntity);
+            DetailPresenter.this.detailEntity = detailEntity;
             updateFileDetailStatus();
         }
     }
 
     private void updateFileDetailStatus() {
-        filmDetailView.setFilmDetail(filmDetailEntity);
+        filmDetailView.setFilmDetail(detailEntity);
 
     }
 }

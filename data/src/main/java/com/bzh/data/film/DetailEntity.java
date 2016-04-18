@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class FilmDetailEntity {
+public class DetailEntity {
 
     private String title;                    // 标题
     private String translationName;         // 译名

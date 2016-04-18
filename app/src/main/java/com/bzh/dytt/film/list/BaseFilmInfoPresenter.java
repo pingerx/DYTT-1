@@ -8,7 +8,7 @@ import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
-import com.bzh.dytt.film.detail.FilmDetailFragment;
+import com.bzh.dytt.detail.DetailFragment;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
@@ -46,6 +46,6 @@ public abstract class BaseFilmInfoPresenter extends RefreshRecyclerPresenter<Bas
     public void onItemClick(ExViewHolder viewHolder) {
         super.onItemClick(viewHolder);
         BaseInfoEntity baseInfoEntity = getCommonAdapter().getData().get(viewHolder.getAdapterPosition());
-        FilmDetailFragment.launch(getBaseActivity(), baseInfoEntity.getUrl());
+        DetailFragment.launch(getBaseActivity(), baseInfoEntity.getUrl());
     }
 }

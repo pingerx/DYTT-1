@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.bzh.common.utils.SystemUtils;
 import com.bzh.data.exception.TaskException;
-import com.bzh.data.film.FilmDetailEntity;
+import com.bzh.data.film.DetailEntity;
 import com.bzh.data.meizi.MeiZiNetWorkDataStore;
 import com.bzh.log.MyLog;
 import com.google.gson.Gson;
@@ -114,11 +114,11 @@ public class DataStoreController {
     // variable
     private Func1<ResponseBody, String> transformCharset;
     private Func1<String, ArrayList<BaseInfoEntity>> listFun;
-    private Func1<String, FilmDetailEntity> filmDetailFun;
+    private Func1<String, DetailEntity> filmDetailFun;
     private Func1<String, ArrayList<MeiZiEntity>> meiziListFun;
     ///////////////////////////////////////////////////////////////////////////
 
-    private void fillFormat(String regular, String splitRegular, FilmDetailEntity entity, String html) {
+    private void fillFormat(String regular, String splitRegular, DetailEntity entity, String html) {
         Pattern pattern = Pattern.compile(regular);
         Matcher matcher = pattern.matcher(html);
         if (matcher.find()) {
@@ -296,8 +296,8 @@ public class DataStoreController {
     }
 
     @NonNull
-    public Observable<FilmDetailEntity> getNewWorkDetailObservable(final Observable<ResponseBody> observable) {
-        return getObservable(observable, getTransformCharset(), getFilmDetailFun());
+    public Observable<DetailEntity> getNewWorkDetailObservable(final Observable<ResponseBody> observable) {
+        return getObservable(observable, getTransformCharset(), getDetailFun());
     }
 
     @NonNull
@@ -384,12 +384,12 @@ public class DataStoreController {
     }
 
     @NonNull
-    private Func1<String, FilmDetailEntity> getFilmDetailFun() {
+    private Func1<String, DetailEntity> getDetailFun() {
         if (filmDetailFun == null) {
-            filmDetailFun = new Func1<String, FilmDetailEntity>() {
+            filmDetailFun = new Func1<String, DetailEntity>() {
                 @Override
-                public FilmDetailEntity call(String s) {
-                    FilmDetailEntity entity = new FilmDetailEntity();
+                public DetailEntity call(String s) {
+                    DetailEntity entity = new DetailEntity();
                     Document document = Jsoup.parse(s);
                     String html = document.select("div.co_content8").select("ul").toString();
                     html = html.substring(0, html.indexOf("</table>"));

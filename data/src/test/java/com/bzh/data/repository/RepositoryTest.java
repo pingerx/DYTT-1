@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import com.bzh.common.context.GlobalContext;
 import com.bzh.data.ApplicationTestCase;
 import com.bzh.data.basic.BaseInfoEntity;
-import com.bzh.data.film.FilmDetailEntity;
+import com.bzh.data.film.DetailEntity;
 import com.google.gson.Gson;
 
 import org.junit.After;
@@ -90,7 +90,7 @@ public class RepositoryTest extends ApplicationTestCase {
 
     @Test
     public void testGetFilmDetail() throws Exception {
-        instance.getFilmDetail("/html/gndy/dyzz/20160324/50538.html").subscribe(new Subscriber<FilmDetailEntity>() {
+        instance.getFilmDetail("/html/gndy/dyzz/20160324/50538.html").subscribe(new Subscriber<DetailEntity>() {
             @Override
             public void onCompleted() {
 
@@ -102,9 +102,9 @@ public class RepositoryTest extends ApplicationTestCase {
             }
 
             @Override
-            public void onNext(FilmDetailEntity filmDetailEntity) {
-                assertNotNull(filmDetailEntity);
-                System.out.println(gson.toJson(filmDetailEntity));
+            public void onNext(DetailEntity detailEntity) {
+                assertNotNull(detailEntity);
+                System.out.println(gson.toJson(detailEntity));
             }
         });
     }
