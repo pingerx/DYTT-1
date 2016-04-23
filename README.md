@@ -9,6 +9,27 @@
 * MVP
 * Okhttp
 * Jsoup
+* 测试框架
+
+#通过本App代码可以学习到的知识点
+
+* jsoup抓数据
+
+http://www.open-open.com/jsoup/
+
+* mockito espresso robolectric 等测试
+
+https://google.github.io/android-testing-support-library/docs/espresso/index.html
+https://www.youtube.com/watch?v=hfoAC9gdC74
+http://blog.chinaunix.net/uid-20771867-id-3216395.html
+https://gojko.net/2009/10/23/mockito-in-six-easy-examples/
+http://blog.csdn.net/sdyy321/article/details/38757135/
+http://mockito.org/
+http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
+
+* 封装的基础类 pagesswitch / tablayout / refreshrecyclerview 等
+
+* 封装的RecyclerView
 
 # 须知
 
