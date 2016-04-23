@@ -5,7 +5,7 @@
 
 # 须知
 
-本第三方完全开源，如有影响到电影天堂（网站版），并要求下架，请联系biezhihua@163.com.
+本APP第三方完全开源，如有影响到电影天堂（网站版），并要求下架，请联系biezhihua@163.com.
 
 #基本功能
 
@@ -30,6 +30,7 @@
 ![](https://github.com/biezhihua/DYTT/raw/master/resource/9.png)
 ![](https://github.com/biezhihua/DYTT/raw/master/resource/10.png)
 ![](https://github.com/biezhihua/DYTT/raw/master/resource/11.png)
+![](https://github.com/biezhihua/DYTT/raw/master/resource/12.png)
 
 #License
 
