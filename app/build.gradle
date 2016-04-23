@@ -25,8 +25,11 @@ android {
 
     // 渠道包
     productFlavors {
-        _10201_110020000 {
+        _wandoujia {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wandoujia"]
+        }
+        _pugongying {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "pugongying"]
         }
     }
 
