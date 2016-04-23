@@ -8,6 +8,7 @@ import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
 import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerView;
+import com.bzh.dytt.detail.DetailFragment;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
 import com.bzh.recycler.ExViewHolder;
@@ -40,9 +41,10 @@ public abstract class BaseGameInfoPresenter extends RefreshRecyclerPresenter<Bas
             }
         };
     }
-
     @Override
     public void onItemClick(ExViewHolder viewHolder) {
         super.onItemClick(viewHolder);
+        BaseInfoEntity baseInfoEntity = getCommonAdapter().getData().get(viewHolder.getAdapterPosition());
+        DetailFragment.launch(getBaseActivity(), baseInfoEntity.getUrl());
     }
 }

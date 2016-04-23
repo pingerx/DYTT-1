@@ -79,8 +79,4 @@ public class ITvServiceTest {
         tvService.getEuropeAmericaTV(1).subscribe(subscriber);
     }
 
-    @Test
-    public void testGetTvDetail() throws Exception {
-        tvService.getTvDetail("/html/tv/hytv/20160226/50311.html").subscribe(subscriber);
-    }
 }

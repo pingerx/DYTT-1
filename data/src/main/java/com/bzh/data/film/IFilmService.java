@@ -22,8 +22,6 @@ import rx.Observable;
  * ==========================================================<br>
  */
 public interface IFilmService {
-    //    @Headers("Cache-Control: no-cache") // 强制网络
-//    @Headers("Cache-Control: max-stale=2147483647, only-if-cached")  // 强制缓存
 
     @Headers("Cache-Control:public, max-age=30, max-stale=10")
     @GET("/html/gndy/dyzz/list_23_{index}.html")

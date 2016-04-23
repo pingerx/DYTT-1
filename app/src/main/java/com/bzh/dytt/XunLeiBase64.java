@@ -147,7 +147,7 @@ public class XunLeiBase64 {
     }
 
     public static String base64encode(byte[] paramArrayOfByte) {
-        StringBuffer localStringBuffer = new StringBuffer();
+        StringBuilder localStringBuffer = new StringBuilder();
         int len = paramArrayOfByte.length;
         int i = 0;
         int c1, c2, c3;

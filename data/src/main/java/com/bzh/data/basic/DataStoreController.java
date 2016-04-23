@@ -101,6 +101,12 @@ public class DataStoreController {
     private static final String PERFORMER = "演员";
     private static final String SOURCENAME = "原名";
 
+    // 游戏
+    private static final String GAME_NAME = "中文名称";
+    private static final String GAME_TYPE = "游戏类型";
+    private static final String GAME_LANGUAGE = "游戏语言";
+    private static final String GAME_DESCRIPTION = "游戏简介";
+
     ///////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
@@ -431,9 +437,11 @@ public class DataStoreController {
     private ArrayList<String> getDownloadUrls(Document document) {
         ArrayList<String> strings = new ArrayList<>();
         Elements elements = document.select("div.co_content8").select("ul").select("a");
+
         for (Element e : elements) {
             String href = e.attr("href");
-            if (href.startsWith("ftp")) {
+            MyLog.d("href = [" + href + "]");
+            if (href.startsWith("ftp") || (href.startsWith("http") && !href.contains("www.ygdy8.net"))) {
                 strings.add(href);
             }
         }

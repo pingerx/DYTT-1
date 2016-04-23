@@ -84,14 +84,14 @@ public abstract class RefreshRecyclerFragment extends PageFragment implements Re
 
     @Override
     public void footerVisibility(boolean isVisible) {
-        if (recyclerView.getFooterView() != null) {
+        if (recyclerView != null && recyclerView.getFooterView() != null) {
             RxView.visibility(recyclerView.getFooterView(), View.GONE).call(isVisible);
         }
     }
 
     @Override
     public void setTextLoadMoreHint(String content) {
-        if (recyclerView.getFooterView().findViewById(R.id.btnLoadMore) != null) {
+        if (recyclerView != null && recyclerView.getFooterView().findViewById(R.id.btnLoadMore) != null) {
             if (!TextUtils.isEmpty(content)) {
                 ((TextView) recyclerView.getFooterView().findViewById(R.id.btnLoadMore)).setText(content);
             }

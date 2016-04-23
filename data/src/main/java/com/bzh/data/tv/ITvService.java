@@ -49,7 +49,4 @@ public interface ITvService {
     @GET("/html/tv/oumeitv/list_9_{index}.html")
     Observable<ResponseBody> getEuropeAmericaTV(@Path("index") @IntRange(from = 1, to = 22) int index);
 
-    // 获取电影详情
-    @GET("{tvDetailUrl}")
-    Observable<ResponseBody> getTvDetail(@Path("tvDetailUrl") String tvDetailUrl);
 }
