@@ -20,11 +20,17 @@ http://www.open-open.com/jsoup/
 * mockito espresso robolectric 等测试
 
 https://google.github.io/android-testing-support-library/docs/espresso/index.html
+
 https://www.youtube.com/watch?v=hfoAC9gdC74
+
 http://blog.chinaunix.net/uid-20771867-id-3216395.html
+
 https://gojko.net/2009/10/23/mockito-in-six-easy-examples/
+
 http://blog.csdn.net/sdyy321/article/details/38757135/
+
 http://mockito.org/
+
 http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
 
 * 封装的基础类 pagesswitch / tablayout / refreshrecyclerview 等
@@ -65,3 +71,18 @@ http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
 Copyright (c) 2016 biezhihua
 
 Licensed under the [Apache License, Version 3.0](https://opensource.org/licenses/GPL-3.0)
+
+
+# 修复记录
+
+2016/4/23
+    优化空指针异常
+    优化下载展示
+    添加友盟统计
+
+
+# 准备要做的事情
+
+1. 友盟升级
+2. 第三方分享
+3. 优化
