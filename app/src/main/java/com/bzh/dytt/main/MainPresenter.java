@@ -12,6 +12,7 @@ import com.bzh.data.repository.Repository;
 import com.bzh.dytt.R;
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
+import com.bzh.dytt.base.basic.FragmentContainerActivity;
 import com.bzh.dytt.base.basic.IActivityPresenter;
 import com.bzh.dytt.comic.ComicMainFragment;
 import com.bzh.dytt.film.FilmMainFragment;
@@ -168,6 +169,7 @@ public class MainPresenter implements IActivityPresenter, NavigationView.OnNavig
             }
             break;
             case R.id.nav_setting: {
+
             }
             break;
         }
