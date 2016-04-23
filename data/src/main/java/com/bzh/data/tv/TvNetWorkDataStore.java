@@ -53,8 +53,4 @@ public class TvNetWorkDataStore implements ITvDataStore {
         return DataStoreController.getInstance().getNewWorkObservable(iTvService.getEuropeAmericaTV(index));
     }
 
-    @Override
-    public Observable<DetailEntity> getTvDetail(String tvDetailUrl) {
-        return DataStoreController.getInstance().getNewWorkDetailObservable(iTvService.getTvDetail(tvDetailUrl));
-    }
 }

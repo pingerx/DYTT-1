@@ -45,7 +45,7 @@
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="biezhihua@163.com"
+            android:text="github.com/biezhihua"
             android:textColor="@android:color/black" />
     </LinearLayout>
 </RelativeLayout>

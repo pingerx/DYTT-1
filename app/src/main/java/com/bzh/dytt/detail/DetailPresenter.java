@@ -3,6 +3,7 @@ package com.bzh.dytt.detail;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bzh.data.film.DetailEntity;
 import com.bzh.data.repository.Repository;
 import com.bzh.dytt.ThunderHelper;
@@ -37,12 +38,27 @@ public class DetailPresenter extends PagePresenter implements View.OnClickListen
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         if (v.getId() == android.R.id.home) {
             getBaseActivity().finish();
         } else if (v.getId() == R.id.fab) {
             if (detailEntity != null && detailEntity.getDownloadUrls().size() > 0) {
-                ThunderHelper.getInstance(getBaseActivity()).onClickDownload(v, detailEntity.getDownloadUrls().get(0));
+                if (detailEntity.getDownloadUrls().size() == 0) {
+                    ThunderHelper.getInstance(getBaseActivity()).onClickDownload(v, detailEntity.getDownloadUrls().get(0));
+                } else {
+                    new MaterialDialog.Builder(getBaseActivity())
+                            .title("选择下载连接")
+                            .items(detailEntity.getDownloadUrls())
+                            .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
+                                @Override
+                                public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                                    ThunderHelper.getInstance(getBaseActivity()).onClickDownload(v, text.toString());
+                                    return true;
+                                }
+                            })
+                            .positiveText("选择")
+                            .show();
+                }
             }
         }
     }
@@ -77,6 +93,5 @@ public class DetailPresenter extends PagePresenter implements View.OnClickListen
 
     private void updateFileDetailStatus() {
         filmDetailView.setFilmDetail(detailEntity);
-
     }
 }

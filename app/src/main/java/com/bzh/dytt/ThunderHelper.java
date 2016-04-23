@@ -70,30 +70,4 @@ public class ThunderHelper {
     private String getThunderEncode(String ftpUrl) {
         return "thunder://" + XunLeiBase64.base64encode(("AA" + ftpUrl + "ZZ").getBytes());
     }
-
-    private void startXunlei(Context context) {
-        String packageName = "com.xunlei.downloadprovider";
-        PackageManager packageManager = context.getPackageManager();
-        PackageInfo pi = null;
-        try {
-            pi = packageManager.getPackageInfo(packageName, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (pi != null) {
-            Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
-            resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-            resolveIntent.setPackage(pi.packageName);
-            List<ResolveInfo> apps = packageManager.queryIntentActivities(resolveIntent, 0);
-            ResolveInfo ri = apps.iterator().next();
-            if (ri != null) {
-                String className = ri.activityInfo.name;
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                ComponentName cn = new ComponentName(packageName, className);
-                intent.setComponent(cn);
-                context.startActivity(intent);
-            }
-        }
-    }
 }

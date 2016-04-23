@@ -1,4 +1,4 @@
-package com.bzh.dytt.film.list;
+package com.bzh.dytt.film;
 
 import android.os.Bundle;
 
@@ -15,17 +15,17 @@ import com.bzh.dytt.base.refresh_recyclerview.RefreshRecyclerPresenter;
  * <b>修订历史</b>：　<br>
  * ==========================================================<br>
  */
-public class DomesticFilmFragment extends RefreshRecyclerFragment implements BaseFilmInfoIView {
+public class NewestFilmFragment extends RefreshRecyclerFragment implements BaseFilmInfoIView {
 
-    public static DomesticFilmFragment newInstance() {
+    public static NewestFilmFragment newInstance() {
         Bundle args = new Bundle();
-        DomesticFilmFragment fragment = new DomesticFilmFragment();
+        NewestFilmFragment fragment = new NewestFilmFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected RefreshRecyclerPresenter initRefreshRecyclerPresenter() {
-        return new DomesticFilmPresenterFilm(getBaseActivity(), this, this);
+        return new NewestFilmPresenterFilm(getBaseActivity(), this, this);
     }
 }

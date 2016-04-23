@@ -1,4 +1,4 @@
-package com.bzh.dytt.film.list;
+package com.bzh.dytt.film;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 

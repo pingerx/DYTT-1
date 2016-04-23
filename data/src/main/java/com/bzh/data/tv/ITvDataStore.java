@@ -47,6 +47,4 @@ public interface ITvDataStore {
      */
     Observable<ArrayList<BaseInfoEntity>> getEuropeAmericaTV(@IntRange(from = 1, to = 22) final int index);
 
-    @GET("{tvDetailUrl}")
-    Observable<DetailEntity> getTvDetail(String tvDetailUrl);
 }
