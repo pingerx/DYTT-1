@@ -75,21 +75,22 @@ http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
 Copyright (c) 2016 biezhihua
 
 Licensed under the [Apache License, Version 3.0](https://opensource.org/licenses/GPL-3.0)
-<<<<<<< HEAD
-
 
 # 修复记录
 
 2016/4/23
+
     优化空指针异常
+
     优化下载展示
+
     添加友盟统计
 
 
 # 准备要做的事情
 
 1. 友盟升级
+
 2. 第三方分享
+
 3. 优化
-=======
->>>>>>> f50b8f2a197d83ade1249d78228539168ba40b92
