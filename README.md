@@ -57,8 +57,8 @@ http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
 
 #应用截图
 
-![](https://github.com/biezhihua/DYTT/raw/master/resource/1.png) ![](https://github.com/biezhihua/DYTT/raw/master/resource/2.png)
-
+![](https://github.com/biezhihua/DYTT/raw/master/resource/1.png)
+![](https://github.com/biezhihua/DYTT/raw/master/resource/2.png)
 ![](https://github.com/biezhihua/DYTT/raw/master/resource/3.png)
 ![](https://github.com/biezhihua/DYTT/raw/master/resource/4.png)
 ![](https://github.com/biezhihua/DYTT/raw/master/resource/5.png)
