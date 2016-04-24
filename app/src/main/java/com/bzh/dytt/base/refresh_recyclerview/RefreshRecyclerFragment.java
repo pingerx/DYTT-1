@@ -127,12 +127,13 @@ public abstract class RefreshRecyclerFragment extends PageFragment implements Re
 
     @Override
     public void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter) {
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new MyItemDecoration());
-        recyclerView.setAdapter(adapter);
+        if (recyclerView != null) {
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.addItemDecoration(new MyItemDecoration());
+            recyclerView.setAdapter(adapter);
+        }
     }
-
 
     public ExRecyclerView getRecyclerView() {
         return recyclerView;
