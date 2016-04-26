@@ -38,6 +38,7 @@ public class DetailEntity {
     private String episodeNumber;           // 集数
     private String source;                   // 来源 电视台 播放平台
     private String jieDang;                  // 接档
+    private ArrayList<String> downloadNames; // 下载名称
     private ArrayList<String> downloadUrls; // 下载地址
     private ArrayList<String> directors;    // 导演
     private ArrayList<String> leadingPlayers;// 主演 演员
@@ -241,5 +242,13 @@ public class DetailEntity {
 
     public void setScreenWriters(ArrayList<String> screenWriters) {
         this.screenWriters = screenWriters;
+    }
+
+    public ArrayList<String> getDownloadNames() {
+        return downloadNames;
+    }
+
+    public void setDownloadNames(ArrayList<String> downloadNames) {
+        this.downloadNames = downloadNames;
     }
 }

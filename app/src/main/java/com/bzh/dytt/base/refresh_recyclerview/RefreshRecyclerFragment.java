@@ -60,21 +60,21 @@ public abstract class RefreshRecyclerFragment extends PageFragment implements Re
 
     @Override
     public void btnLoadMoreVisibility(boolean isVisible) {
-        if (recyclerView.getFooterView().findViewById(R.id.btnLoadMore) != null) {
+        if (recyclerView != null && recyclerView.getFooterView() != null && recyclerView.getFooterView().findViewById(R.id.btnLoadMore) != null) {
             RxView.visibility(recyclerView.getFooterView().findViewById(R.id.btnLoadMore), View.GONE).call(isVisible);
         }
     }
 
     @Override
     public void layLoadingVisibility(boolean isVisible) {
-        if (recyclerView.getFooterView().findViewById(R.id.layLoading) != null) {
+        if (recyclerView != null && recyclerView.getFooterView() != null && recyclerView.getFooterView().findViewById(R.id.layLoading) != null) {
             RxView.visibility(recyclerView.getFooterView().findViewById(R.id.layLoading), View.GONE).call(isVisible);
         }
     }
 
     @Override
     public void setTextLoadingHint(String content) {
-        if (recyclerView.getFooterView().findViewById(R.id.txtLoadingHint) != null) {
+        if (recyclerView != null && recyclerView.getFooterView() != null && recyclerView.getFooterView().findViewById(R.id.txtLoadingHint) != null) {
             if (!TextUtils.isEmpty(content)) {
                 ((TextView) recyclerView.getFooterView().findViewById(R.id.txtLoadingHint)).setText(content);
             }
@@ -127,12 +127,13 @@ public abstract class RefreshRecyclerFragment extends PageFragment implements Re
 
     @Override
     public void initRecyclerView(LinearLayoutManager linearLayoutManager, RecyclerView.Adapter adapter) {
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new MyItemDecoration());
-        recyclerView.setAdapter(adapter);
+        if (recyclerView != null) {
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.addItemDecoration(new MyItemDecoration());
+            recyclerView.setAdapter(adapter);
+        }
     }
-
 
     public ExRecyclerView getRecyclerView() {
         return recyclerView;

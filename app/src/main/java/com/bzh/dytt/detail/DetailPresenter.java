@@ -43,20 +43,20 @@ public class DetailPresenter extends PagePresenter implements View.OnClickListen
             getBaseActivity().finish();
         } else if (v.getId() == R.id.fab) {
             if (detailEntity != null && detailEntity.getDownloadUrls().size() > 0) {
-                if (detailEntity.getDownloadUrls().size() == 0) {
+                if (detailEntity.getDownloadUrls().size() == 1) {
                     ThunderHelper.getInstance(getBaseActivity()).onClickDownload(v, detailEntity.getDownloadUrls().get(0));
                 } else {
                     new MaterialDialog.Builder(getBaseActivity())
                             .title("选择下载连接")
-                            .items(detailEntity.getDownloadUrls())
+                            .items(detailEntity.getDownloadNames())
                             .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                                 @Override
                                 public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                                    ThunderHelper.getInstance(getBaseActivity()).onClickDownload(v, text.toString());
+                                    ThunderHelper.getInstance(getBaseActivity()).onClickDownload(v, detailEntity.getDownloadUrls().get(which));
                                     return true;
                                 }
                             })
-                            .positiveText("选择")
+                            .positiveText("下载")
                             .show();
                 }
             }

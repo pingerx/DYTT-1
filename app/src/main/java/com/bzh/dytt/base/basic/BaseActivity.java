@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.bzh.dytt.base.eventbus.EventCenter;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -68,5 +69,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getContentViewResId();
 
     protected final static class ActivityConfig extends UIConfig {
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

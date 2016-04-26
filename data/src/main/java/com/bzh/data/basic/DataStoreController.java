@@ -405,6 +405,7 @@ public class DataStoreController {
                     String coverUrl = document.select("div.co_content8").select("ul").select("img").first().attr("src");
                     String previewImage = document.select("div.co_content8").select("ul").select("img").last().attr("src");
                     ArrayList<String> downloadUrls = getDownloadUrls(document);
+                    ArrayList<String> downloadNames = getDownloadNames(document);
 
                     // "◎译　　名.*<br>"
                     String patterRegular = "◎.*<br>";
@@ -426,11 +427,27 @@ public class DataStoreController {
                     entity.setCoverUrl(coverUrl);
                     entity.setPreviewImage(previewImage);
                     entity.setDownloadUrls(downloadUrls);
+                    entity.setDownloadNames(downloadNames);
                     return entity;
                 }
             };
         }
         return filmDetailFun;
+    }
+
+    private ArrayList<String> getDownloadNames(Document document) {
+        ArrayList<String> strings = new ArrayList<>();
+        Elements elements = document.select("div.co_content8").select("ul").select("a");
+
+        for (Element e : elements) {
+            String href = e.attr("href");
+            MyLog.d("href = [" + href + "]");
+            if (href.startsWith("ftp") || (href.startsWith("http") && !href.contains("www.ygdy8.net") && !href.contains("www.dytt8.net"))) {
+                href = href.substring(href.indexOf("]") + 1, href.length()).replaceAll(".rmvb", "").replaceAll(".mkv", "").replaceAll(".mp4", "");
+                strings.add(href);
+            }
+        }
+        return strings;
     }
 
 
