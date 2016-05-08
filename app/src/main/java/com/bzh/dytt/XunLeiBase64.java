@@ -165,6 +165,7 @@ public class XunLeiBase64 {
                 localStringBuffer.append(a[((c1 & 0x3) << 4 | (c2 & 0xF0) >>> 4)]);
                 localStringBuffer.append(a[((c2 & 0xF) << 2)]);
                 localStringBuffer.append("=");
+                continue;
             }
             c3 = 0xFF & paramArrayOfByte[i++];
             localStringBuffer.append(a[(c1 >>> 2)]);

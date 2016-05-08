@@ -442,7 +442,7 @@ public class DataStoreController {
         for (Element e : elements) {
             String href = e.attr("href");
             MyLog.d("href = [" + href + "]");
-            if (href.startsWith("ftp") || (href.startsWith("http") && !href.contains("www.ygdy8.net") && !href.contains("www.dytt8.net"))) {
+            if (href.startsWith("ftp") || (href.startsWith("http") && !href.contains("www.ygdy8.net") && !href.contains("www.dytt8.net") && !href.contains("www.dygod.cn"))) {
                 href = href.substring(href.indexOf("]") + 1, href.length()).replaceAll(".rmvb", "").replaceAll(".mkv", "").replaceAll(".mp4", "");
                 strings.add(href);
             }
