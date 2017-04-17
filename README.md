@@ -7,7 +7,7 @@
 
 https://www.pgyer.com/t7Qh
 
-#用到的技术
+# 用到的技术
 
 * Rxjava
 * MVP
@@ -15,7 +15,7 @@ https://www.pgyer.com/t7Qh
 * Jsoup
 * 测试框架
 
-#通过本App代码可以学习到的知识点
+# 通过本App代码可以学习到的知识点
 
 * jsoup抓数据
 
@@ -45,7 +45,7 @@ http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
 
 本APP第三方完全开源，如有影响到电影天堂（网站版），并要求下架，请联系biezhihua@163.com.
 
-#基本功能
+# 基本功能
 
 * 电影
 * 电视
@@ -55,7 +55,7 @@ http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
 * 妹子
 * 详情
 
-#应用截图
+# 应用截图
 
 ![](https://github.com/biezhihua/DYTT/raw/master/resource/1.png)
 ![](https://github.com/biezhihua/DYTT/raw/master/resource/2.png)
@@ -70,7 +70,7 @@ http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
 ![](https://github.com/biezhihua/DYTT/raw/master/resource/11.png)
 ![](https://github.com/biezhihua/DYTT/raw/master/resource/12.png)
 
-#License
+# License
 
 Copyright (c) 2016 biezhihua
 
