@@ -5,7 +5,7 @@
 
 # 下载地址
 
-https://www.pgyer.com/t7Qh
+http://www.coolapk.com/apk/com.bzh.dytt
 
 # 用到的技术
 
@@ -76,21 +76,15 @@ Copyright (c) 2016 biezhihua
 
 Licensed under the [Apache License, Version 3.0](https://opensource.org/licenses/GPL-3.0)
 
-# 修复记录
-
-2016/4/23
-
-    优化空指针异常
-
-    优化下载展示
-
-    添加友盟统计
-
-
 # 准备要做的事情
+
+1. 升级各个技术框架
 
 1. 友盟升级
 
 2. 第三方分享
 
 3. 优化
+
+4. 增加搜索功能
+
