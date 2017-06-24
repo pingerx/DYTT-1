@@ -5,24 +5,20 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.View;
 
 import com.bzh.dytt.base.basic.BaseActivity;
 import com.bzh.dytt.base.basic.BaseFragment;
 import com.bzh.dytt.base.basic.IPaging;
 import com.bzh.dytt.base.basic_pageswitch.PagePresenter;
-import com.bzh.dytt.base.rx.TaskSubscriber;
 import com.bzh.recycler.ExCommonAdapter;
 import com.bzh.recycler.ExRecyclerView;
-import com.bzh.recycler.ExViewHolder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 /**
@@ -166,7 +162,8 @@ public abstract class RefreshRecyclerPresenter<Entity, Entities>
     }
 
     @Override
-    public void onItemClick(ExViewHolder viewHolder) {
+    public void onItemClick(View view, int position) {
+
     }
 
     public RefreshRecyclerView getiView() {

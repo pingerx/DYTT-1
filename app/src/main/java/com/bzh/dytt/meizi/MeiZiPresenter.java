@@ -2,6 +2,7 @@ package com.bzh.dytt.meizi;
 
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -81,8 +82,8 @@ public class MeiZiPresenter extends RefreshRecyclerPresenter<MeiZiEntity, ArrayL
     }
 
     @Override
-    public void onItemClick(ExViewHolder viewHolder) {
-        super.onItemClick(viewHolder);
+    public void onItemClick(View view, int position) {
+        super.onItemClick(view, position);
     }
 
     @Override

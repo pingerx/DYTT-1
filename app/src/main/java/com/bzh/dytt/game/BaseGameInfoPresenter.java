@@ -1,6 +1,7 @@
 package com.bzh.dytt.game;
 
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 
 import com.bzh.data.basic.BaseInfoEntity;
 import com.bzh.dytt.R;
@@ -41,10 +42,11 @@ public abstract class BaseGameInfoPresenter extends RefreshRecyclerPresenter<Bas
             }
         };
     }
+
     @Override
-    public void onItemClick(ExViewHolder viewHolder) {
-        super.onItemClick(viewHolder);
-        BaseInfoEntity baseInfoEntity = getCommonAdapter().getData().get(viewHolder.getAdapterPosition());
+    public void onItemClick(View view, int position) {
+        super.onItemClick(view, position);
+        BaseInfoEntity baseInfoEntity = getCommonAdapter().getData().get(position);
         DetailFragment.launch(getBaseActivity(), baseInfoEntity.getUrl());
     }
 }

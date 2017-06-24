@@ -2,7 +2,6 @@ package com.bzh.recycler;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -11,18 +10,6 @@ import android.view.ViewGroup;
 
 import com.bzh.lib_recycler.R;
 
-/**
- * ========================================================== <br>
- * <b>版权</b>：　　　音悦台 版权所有(c) 2015 <br>
- * <b>作者</b>：　　　别志华 zhihua.bie@yinyuetai.com<br>
- * <b>创建日期</b>：　15-12-11 <br>
- * <b>描述</b>：　　　<br>
- * <b>版本</b>：　    V1.0 <br>
- * <b>修订历史</b>：
- * 1. 始终有默认的头和尾
- * 　<br>
- * ========================================================== <br>
- */
 public class ExRecyclerView extends RecyclerView {
 
     private ExCommonAdapter.OnItemLongClickListener onItemLongClickListener;
@@ -44,6 +31,10 @@ public class ExRecyclerView extends RecyclerView {
 
     public ExRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        initView(context);
+    }
+
+    protected void initView(Context context) {
         initDefaultFooterView(context);
         this.addOnScrollListener(new OnExScrollListener() {
             @Override
@@ -54,18 +45,6 @@ public class ExRecyclerView extends RecyclerView {
                 }
             }
         });
-    }
-
-    @Override
-    public void setLayoutManager(final LayoutManager layoutManager) {
-        super.setLayoutManager(layoutManager);
-        if (layoutManager instanceof GridLayoutManager) {
-            GridLayoutManager lm = (GridLayoutManager) layoutManager;
-            lm.setSpanSizeLookup(new GridSpanSizeLookup(lm.getSpanCount()));
-        } else if (layoutManager instanceof ExStaggeredGridLayoutManager) {
-            ExStaggeredGridLayoutManager lm = (ExStaggeredGridLayoutManager) layoutManager;
-            lm.setSpanSizeLookup(new GridSpanSizeLookup(lm.getSpanCount()));
-        }
     }
 
     private void initDefaultFooterView(Context context) {
@@ -90,32 +69,6 @@ public class ExRecyclerView extends RecyclerView {
             ((ExCommonAdapter) adapter).setOnItemLongClickListener(onItemLongClickListener);
             ((ExCommonAdapter) adapter).setHeaderView(headerView);
             ((ExCommonAdapter) adapter).setFooterView(footerView);
-        }
-    }
-
-    private class GridSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
-
-        private int mSpanSize = 1;
-
-        public GridSpanSizeLookup(int spanSize) {
-            mSpanSize = spanSize;
-        }
-
-        @Override
-        public int getSpanSize(int position) {
-            ExCommonAdapter adapter = null;
-            if (getAdapter() instanceof ExCommonAdapter) {
-                adapter = (ExCommonAdapter) getAdapter();
-            }
-
-            if (adapter != null &&
-                    adapter.getItemViewType(position) == ExCommonAdapter.VIEW_TYPES_HEADER ||
-                    adapter.getItemViewType(position) == ExCommonAdapter.VIEW_TYPES_FOOTER ||
-                    adapter.getItemViewType(position) == ExCommonAdapter.VIEW_TYPES_AD) {
-                return mSpanSize;
-            }
-
-            return 1;
         }
     }
 
