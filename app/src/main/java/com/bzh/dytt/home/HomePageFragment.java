@@ -1,4 +1,4 @@
-package com.bzh.dytt;
+package com.bzh.dytt.home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,17 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MainFragment extends Fragment {
+import com.bzh.dytt.R;
 
-    public static MainFragment newInstance() {
-        return new MainFragment();
+public class HomePageFragment extends Fragment {
+
+    public static HomePageFragment newInstance() {
+        return new HomePageFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.content_main, container, false);
+        View root = inflater.inflate(R.layout.home_page, container, false);
 
         return root;
     }

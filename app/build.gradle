@@ -58,6 +58,8 @@ android {
 
 dependencies {
     // App's dependencies, including test
+    compile "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeVersion"
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     compile "com.android.support.constraint:constraint-layout:$rootProject.constraintVersion"
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
