@@ -13,7 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.bzh.dytt.girl.GirlPageFragment;
+import com.bzh.dytt.girl.GirlFragment;
 import com.bzh.dytt.home.HomePageFragment;
 import com.bzh.dytt.view.NoninteractiveViewPage;
 
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity
                 case 0:
                     return HomePageFragment.newInstance();
                 case 1:
-                    return GirlPageFragment.newInstance();
+                    return GirlFragment.newInstance();
                 default:
                     throw new IndexOutOfBoundsException();
             }
