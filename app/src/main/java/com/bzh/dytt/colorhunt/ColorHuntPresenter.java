@@ -1,17 +1,18 @@
 package com.bzh.dytt.colorhunt;
 
-import android.util.Log;
+import android.text.TextUtils;
 
 import com.bzh.dytt.services.ColorHuntService;
+import com.bzh.dytt.services.Entity.ColorHunt;
+import com.bzh.dytt.services.ServiceManager;
+import com.google.gson.Gson;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ColorHuntPresenter implements ColorHuntContract.Presenter {
 
@@ -23,34 +24,74 @@ public class ColorHuntPresenter implements ColorHuntContract.Presenter {
         mView = view;
     }
 
+    private Disposable mCurrentSequence = null;
+
+    private Observer<String> mColorHuntList = new Observer<String>() {
+
+        private String mRequestResult;
+
+        @Override
+        public void onSubscribe(Disposable d) {
+            mCurrentSequence = d;
+        }
+
+        @Override
+        public void onNext(String s) {
+            if (TextUtils.isEmpty(s)) {
+                return;
+            }
+            int prefix = s.indexOf('[');
+            int suffix = s.lastIndexOf(']');
+            if (prefix != -1 && suffix != -1) {
+                mRequestResult = s.substring(prefix, suffix + 1);
+            }
+        }
+
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @Override
+        public void onComplete() {
+            if (mRequestResult == null) {
+                return;
+            }
+
+            Gson gson = new Gson();
+            ColorHunt[] colorHunts = gson.fromJson(mRequestResult, ColorHunt[].class);
+            for (ColorHunt colorHunt : colorHunts) {
+                if (colorHunt == null) {
+                    continue;
+                }
+                colorHunt.setColor1(colorHunt.getCode().substring(0, 6));
+                colorHunt.setColor2(colorHunt.getCode().substring(6, 12));
+                colorHunt.setColor3(colorHunt.getCode().substring(12, 18));
+                colorHunt.setColor4(colorHunt.getCode().substring(18, 24));
+            }
+        }
+    };
+
     @Override
     public void subscribe() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("http://colorhunt.co/")
-                .build();
-
-        ColorHuntService service = retrofit.create(ColorHuntService.class);
 
         ColorHuntService.ColorHuntBody body = new ColorHuntService.ColorHuntBody(0, ColorHuntService.ColorHuntSort.Random, "");
+        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), body.toString());
 
-        Call<String> call = service.listColor(RequestBody.create(MediaType.parse("text/plain"), body.toString()));
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                Log.d(TAG, "onResponse() called with: call = [" + call + "], response = [" + response + "]");
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.d(TAG, "onFailure() called with: call = [" + call + "], t = [" + t + "]");
-            }
-        });
+        ServiceManager
+                .getInstance()
+                .getColorHuntService()
+                .listColor(requestBody)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mColorHuntList);
     }
 
     @Override
-    public void unsubscribe() {
-
+    public void unSubscribe() {
+        if (mCurrentSequence != null && !mCurrentSequence.isDisposed()) {
+            mCurrentSequence.dispose();
+        }
     }
 }

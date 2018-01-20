@@ -1,7 +1,7 @@
 package com.bzh.dytt.services;
 
+import io.reactivex.Observable;
 import okhttp3.RequestBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -10,7 +10,7 @@ public interface ColorHuntService {
 
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("hunt.php")
-    Call<String> listColor(@Body RequestBody requestBod);
+    Observable<String> listColor(@Body RequestBody requestBod);
 
     enum ColorHuntSort {
         Random,

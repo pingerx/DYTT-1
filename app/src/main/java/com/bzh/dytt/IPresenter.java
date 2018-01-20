@@ -5,5 +5,5 @@ public interface IPresenter {
 
     void subscribe();
 
-    void unsubscribe();
+    void unSubscribe();
 }

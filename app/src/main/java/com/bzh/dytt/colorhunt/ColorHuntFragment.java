@@ -30,7 +30,7 @@ public class ColorHuntFragment extends BaseFragment<ColorHuntContract.Presenter>
     @Override
     protected void doPause() {
         super.doPause();
-        mPresenter.unsubscribe();
+        mPresenter.unSubscribe();
     }
 
     @Override

@@ -15,7 +15,7 @@ public class GirlPresenter implements GirlContract.Presenter {
     }
 
     @Override
-    public void unsubscribe() {
+    public void unSubscribe() {
 
     }
 
