@@ -8,4 +8,5 @@
     <string name="un_install_xunlei_label">该影片链接为迅雷P2P资源，须安装迅雷下载工具才能进行下载！</string>
     <string name="nav_home_page">首页</string>
     <string name="nav_girl_page">妹子图</string>
+    <string name="nav_color_hunt_page">Color Hunt</string>
 </resources>

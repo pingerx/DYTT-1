@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.bzh.dytt.view.NoninteractiveViewPage
+    <com.bzh.dytt.view.NonInteractiveViewPage
         android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

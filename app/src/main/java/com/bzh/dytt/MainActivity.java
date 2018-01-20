@@ -13,9 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bzh.dytt.colorhunt.ColorHuntFragment;
 import com.bzh.dytt.girl.GirlFragment;
 import com.bzh.dytt.home.HomePageFragment;
-import com.bzh.dytt.view.NoninteractiveViewPage;
+import com.bzh.dytt.view.NonInteractiveViewPage;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView mNavigationView;
 
     @BindView(R.id.content_container)
-    NoninteractiveViewPage mContainer;
+    NonInteractiveViewPage mContainer;
 
     private MainViewPagerAdapter mPagerAdapter;
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity
         mNavigationView.setNavigationItemSelectedListener(this);
 
         // You should keep this limit low, especially if your pages have complex layouts.
-        mContainer.setOffscreenPageLimit(2);
+        mContainer.setOffscreenPageLimit(3);
         mPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         mContainer.setAdapter(mPagerAdapter);
     }
@@ -106,6 +107,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_girl) {
             mToolbar.setTitle(R.string.nav_girl_page);
             mContainer.setCurrentItem(1);
+        } else if (id == R.id.nav_color_hunt) {
+            mToolbar.setTitle(R.string.nav_color_hunt_page);
+            mContainer.setCurrentItem(2);
         }
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
@@ -124,6 +128,8 @@ public class MainActivity extends AppCompatActivity
                     return HomePageFragment.newInstance();
                 case 1:
                     return GirlFragment.newInstance();
+                case 2:
+                    return ColorHuntFragment.newInstance();
                 default:
                     throw new IndexOutOfBoundsException();
             }
@@ -131,7 +137,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     }
 }

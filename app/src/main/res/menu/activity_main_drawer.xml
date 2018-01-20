@@ -11,18 +11,10 @@
             android:id="@+id/nav_girl"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/nav_girl_page"/>
-    </group>
 
-    <!--<item android:title="Communicate">-->
-    <!--<menu>-->
-    <!--<item-->
-    <!--android:id="@+id/nav_share"-->
-    <!--android:icon="@drawable/ic_menu_share"-->
-    <!--android:title="Share"/>-->
-    <!--<item-->
-    <!--android:id="@+id/nav_send"-->
-    <!--android:icon="@drawable/ic_menu_send"-->
-    <!--android:title="Send"/>-->
-    <!--</menu>-->
-    <!--</item>-->
+        <item
+            android:id="@+id/nav_color_hunt"
+            android:icon="@drawable/color_hunt_logo"
+            android:title="@string/nav_color_hunt_page"/>
+    </group>
 </menu>

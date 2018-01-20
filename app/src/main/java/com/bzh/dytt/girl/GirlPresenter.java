@@ -5,7 +5,7 @@ public class GirlPresenter implements GirlContract.Presenter {
 
     private GirlContract.View mGirlView;
 
-    public GirlPresenter(GirlContract.View girlView) {
+    GirlPresenter(GirlContract.View girlView) {
         mGirlView = girlView;
     }
 
