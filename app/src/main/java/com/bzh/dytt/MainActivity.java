@@ -111,9 +111,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private class MainViewPagerAdapter extends FragmentPagerAdapter {
+    private static class MainViewPagerAdapter extends FragmentPagerAdapter {
 
-        protected MainViewPagerAdapter(FragmentManager fm) {
+        MainViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
