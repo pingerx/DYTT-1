@@ -1,6 +1,7 @@
 package com.bzh.dytt.colorhunt;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.bzh.dytt.services.ColorHuntService;
 import com.bzh.dytt.services.Entity.ColorHunt;
@@ -64,10 +65,14 @@ public class ColorHuntPresenter implements ColorHuntContract.Presenter {
                 if (colorHunt == null) {
                     continue;
                 }
-                colorHunt.setColor1(colorHunt.getCode().substring(0, 6));
-                colorHunt.setColor2(colorHunt.getCode().substring(6, 12));
-                colorHunt.setColor3(colorHunt.getCode().substring(12, 18));
-                colorHunt.setColor4(colorHunt.getCode().substring(18, 24));
+                try {
+                    colorHunt.setColor1(colorHunt.getCode().substring(0, 6));
+                    colorHunt.setColor2(colorHunt.getCode().substring(6, 12));
+                    colorHunt.setColor3(colorHunt.getCode().substring(12, 18));
+                    colorHunt.setColor4(colorHunt.getCode().substring(18, 24));
+                } catch (Exception e) {
+                    Log.e(TAG, "onComplete: ", e);
+                }
             }
         }
     };

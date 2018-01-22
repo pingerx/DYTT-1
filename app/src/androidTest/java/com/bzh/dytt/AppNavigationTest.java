@@ -45,6 +45,19 @@ public class AppNavigationTest {
         onView(withText(R.string.nav_girl_page)).perform(click());
 
         onView(withId(R.id.girl_page)).check(matches(isDisplayed()));
+
+        clickHomeIconToOpenNavigation();
+
+        onView(withText(R.string.nav_color_hunt_page)).perform(click());
+
+        onView(withId(R.id.color_hunt_page)).check(matches(isDisplayed()));
+
+        clickHomeIconToOpenNavigation();
+
+        onView(withText(R.string.nav_home_page)).perform(click());
+
+        onView(withId(R.id.home_page)).check(matches(isDisplayed()));
+
     }
 
     /**
