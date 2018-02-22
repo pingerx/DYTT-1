@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6e0ce59e9efd91e0b5a0299db365bca7",
+    "identityHash": "656d813301d0565ae3153a6439df946f",
     "entities": [
       {
-        "tableName": "homearea",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `type` INTEGER NOT NULL, `link` TEXT, PRIMARY KEY(`id`))",
+        "tableName": "homeareas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `type` INTEGER NOT NULL, `link` TEXT, `last_update_time` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "mId",
@@ -31,6 +31,12 @@
             "columnName": "link",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "mLastUpdateTime",
+            "columnName": "last_update_time",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -44,7 +50,7 @@
       },
       {
         "tableName": "homeitems",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `time` TEXT, `link` TEXT NOT NULL, `type` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `time` TEXT, `link` TEXT NOT NULL, `type` INTEGER NOT NULL, `last_update_time` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "mId",
@@ -75,6 +81,12 @@
             "columnName": "type",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "mLastUpdateTime",
+            "columnName": "last_update_time",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -89,7 +101,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6e0ce59e9efd91e0b5a0299db365bca7\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"656d813301d0565ae3153a6439df946f\")"
     ]
   }
 }

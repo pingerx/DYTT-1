@@ -28,12 +28,12 @@ public interface HomeAreaDao {
     @Delete
     void deleteArea(HomeArea area);
 
-    @Query("DELETE FROM homearea")
+    @Query("DELETE FROM homeareas")
     void deleteAreas();
 
-    @Query("SELECT * FROM homearea")
+    @Query("SELECT * FROM homeareas")
     LiveData<List<HomeArea>> getAreas();
 
-    @Query("SELECT * FROM homearea WHERE id = :id")
+    @Query("SELECT * FROM homeareas WHERE id = :id")
     LiveData<HomeArea> getAreaById(int id);
 }

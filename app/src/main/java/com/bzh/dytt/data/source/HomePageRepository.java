@@ -9,7 +9,6 @@ import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -48,13 +47,19 @@ public class HomePageRepository {
 
             @Override
             protected void saveCallResult(@NonNull String item) {
+
                 List<HomeArea> homeAreas = HomeItemParseUtil.getInstance().parseAreas(item);
+
                 mHomeAreaDao.insertAreas(homeAreas);
             }
 
             @Override
             protected boolean shouldFetch(@Nullable List<HomeArea> data) {
-                return true;
+                if (data == null || data.size() == 0) {
+                    return true;
+                }
+                boolean isFresh = System.currentTimeMillis() - data.get(data.size() - 1).getLastUpdateTime() < 120 * 1000;
+                return !isFresh;
             }
 
             @NonNull
@@ -94,18 +99,20 @@ public class HomePageRepository {
 
             @Override
             protected void saveCallResult(@NonNull String item) {
-                try {
-                    item = new String(item.getBytes(), "GB2312");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+
                 List<HomeItem> homeItems = HomeItemParseUtil.getInstance().parseItems(item);
+
                 mHomeItemDao.insertItems(homeItems);
+
             }
 
             @Override
             protected boolean shouldFetch(@Nullable List<HomeItem> data) {
-                return true;
+                if (data == null || data.size() == 0) {
+                    return true;
+                }
+                boolean isFresh = System.currentTimeMillis() - data.get(data.size() - 1).getLastUpdateTime() < 60 * 1000;
+                return !isFresh;
             }
 
             @NonNull

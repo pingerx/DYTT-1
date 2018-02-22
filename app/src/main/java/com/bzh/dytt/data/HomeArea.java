@@ -6,7 +6,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "homearea")
+@Entity(tableName = "homeareas")
 public class HomeArea {
 
     @ColumnInfo(name = "id")
@@ -23,6 +23,9 @@ public class HomeArea {
 
     @ColumnInfo(name = "link")
     private String mDetailLink;
+
+    @ColumnInfo(name = "last_update_time")
+    private long mLastUpdateTime;
 
     public HomeArea() {
 
@@ -67,5 +70,13 @@ public class HomeArea {
 
     public void setDetailLink(String detailLink) {
         mDetailLink = detailLink;
+    }
+
+    public long getLastUpdateTime() {
+        return mLastUpdateTime;
+    }
+
+    public void setLastUpdateTime(long lastUpdateTime) {
+        mLastUpdateTime = lastUpdateTime;
     }
 }
