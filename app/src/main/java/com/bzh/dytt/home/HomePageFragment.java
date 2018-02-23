@@ -149,7 +149,7 @@ public class HomePageFragment extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
-            return HomeChildrenFragment.newInstance();
+            return HomeChildrenFragment.newInstance(mTabData.get(position));
         }
 
         void setTabData(List<HomeArea> tabData) {
