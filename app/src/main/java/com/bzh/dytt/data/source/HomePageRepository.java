@@ -58,7 +58,7 @@ public class HomePageRepository {
                 if (data == null || data.size() == 0) {
                     return true;
                 }
-                boolean isFresh = System.currentTimeMillis() - data.get(data.size() - 1).getLastUpdateTime() < 120 * 1000;
+                boolean isFresh = System.currentTimeMillis() - data.get(data.size() - 1).getLastUpdateTime() < 30 * 12 * 60 * 60 * 1000;
                 return !isFresh;
             }
 

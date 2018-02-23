@@ -14,18 +14,25 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public final void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         doCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = doCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, view);
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        doViewCreate(view, savedInstanceState);
+    }
+
 
     @Override
     public final void onResume() {
@@ -44,6 +51,10 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected abstract View doCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
+
+    protected void doViewCreate(View view, Bundle savedInstanceState) {
+
+    }
 
     protected void doResume() {
         // Override this method in derived fragment

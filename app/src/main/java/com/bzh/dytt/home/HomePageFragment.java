@@ -4,6 +4,12 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,45 +22,81 @@ import com.bzh.dytt.data.source.Resource;
 import com.bzh.dytt.data.source.Status;
 import com.bzh.dytt.util.ViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 public class HomePageFragment extends BaseFragment {
 
-    private static final String TAG = "HomePageFragment";
-
-    private HomePageViewModel mHomeViewModel;
 
     public static HomePageFragment newInstance() {
         return new HomePageFragment();
     }
 
-    @Override
-    protected void doCreate(@Nullable Bundle savedInstanceState) {
-        super.doCreate(savedInstanceState);
+    private static final String TAG = "HomePageFragment";
 
+    private HomePageViewModel mHomeViewModel;
 
-        mHomeViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(getActivity().getApplication())).get(HomePageViewModel.class);
+    private HomeTabAdapter mHomeTabAdapter;
 
-        mHomeViewModel.getHomeArea().observe(this, new Observer<Resource<List<HomeArea>>>() {
-            @Override
-            public void onChanged(@Nullable Resource<List<HomeArea>> result) {
-                if (Status.SUCCESS == result.status) {
+    private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            mHomeViewModel.getHomeArea().observe(HomePageFragment.this, mHomeResourceObserver);
+        }
+    };
 
+    private Observer<Resource<List<HomeArea>>> mHomeResourceObserver = new Observer<Resource<List<HomeArea>>>() {
 
-                    for (HomeArea area :
-                            result.data) {
-                        Log.d(TAG, "onChanged: SUCCESS " + area.getTitle());
-                    }
-                }
-                if (Status.LOADING == result.status) {
-                    Log.d(TAG, "onChanged: LOADING");
-                }
-                if (Status.ERROR == result.status) {
-                    Log.d(TAG, "onChanged: ERROR");
-                }
+        @SuppressWarnings("ConstantConditions")
+        @Override
+        public void onChanged(@Nullable Resource<List<HomeArea>> result) {
+
+            mLoadError.setVisibility(View.GONE);
+
+            if (Status.SUCCESS == result.status) {
+                mSwipeRefresh.setEnabled(false);
+                mSwipeRefresh.setRefreshing(false);
+
+                mHomeTabAdapter.setTabData(result.data);
+                mHomeTabAdapter.notifyDataSetChanged();
             }
-        });
-    }
+
+            if (Status.LOADING == result.status) {
+                mSwipeRefresh.setEnabled(true);
+                mSwipeRefresh.setRefreshing(true);
+            }
+
+            if (Status.ERROR == result.status) {
+                mSwipeRefresh.setRefreshing(false);
+
+                if (result.data != null && result.data.size() != 0) {
+                    mSwipeRefresh.setEnabled(false);
+                    mHomeTabAdapter.setTabData(result.data);
+                    mHomeTabAdapter.notifyDataSetChanged();
+
+                } else {
+                    mSwipeRefresh.setEnabled(true);
+                    mLoadError.setVisibility(View.VISIBLE);
+                }
+
+                Log.i(TAG, "Home Resource Error: " + result.message);
+            }
+        }
+    };
+
+    @BindView(R.id.home_swipe_refresh)
+    SwipeRefreshLayout mSwipeRefresh;
+
+    @BindView(R.id.home_tab_layout)
+    TabLayout mTabLayout;
+
+    @BindView(R.id.home_view_pager)
+    ViewPager mViewPager;
+
+    @BindView(R.id.home_error)
+    View mLoadError;
 
     @Override
     protected View doCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,8 +104,57 @@ public class HomePageFragment extends BaseFragment {
     }
 
     @Override
-    protected void doResume() {
-        super.doResume();
+    protected void doViewCreate(View view, Bundle savedInstanceState) {
+        super.doViewCreate(view, savedInstanceState);
+
+        mHomeViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(getActivity().getApplication())).get(HomePageViewModel.class);
+
+        mHomeViewModel.getHomeArea().observe(this, mHomeResourceObserver);
+
+        mHomeTabAdapter = new HomeTabAdapter(getFragmentManager());
+        mViewPager.setAdapter(mHomeTabAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
+    @Override
+    protected void doResume() {
+        super.doResume();
+        mSwipeRefresh.setOnRefreshListener(mRefreshListener);
+    }
+
+    @Override
+    protected void doPause() {
+        super.doPause();
+        mSwipeRefresh.setOnRefreshListener(null);
+    }
+
+    private static class HomeTabAdapter extends FragmentPagerAdapter {
+
+        private List<HomeArea> mTabData = new ArrayList<>();
+
+        HomeTabAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return mTabData.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTabData.get(position).getTitle();
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return HomeChildrenFragment.newInstance();
+        }
+
+        void setTabData(List<HomeArea> tabData) {
+            mTabData.clear();
+            mTabData.addAll(tabData);
+        }
+    }
 }
