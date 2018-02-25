@@ -12,10 +12,13 @@ import com.bzh.dytt.data.source.Resource;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class HomePageViewModel extends AndroidViewModel {
 
     private final DataRepository mRepository;
 
+    @Inject
     public HomePageViewModel(@NonNull Application application, DataRepository repository) {
         super(application);
         mRepository = repository;

@@ -41,25 +41,25 @@ public class HomePageFragmentTest {
 
     @Before
     public void waitForDbCreation() throws Throwable {
-        CountDownLatch latch = new CountDownLatch(1);
-        MutableLiveData<Boolean> databaseCreated = AppDatabase.getInstance(InstrumentationRegistry.getTargetContext()).getIsDatabaseCreated();
-        mActivityTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                databaseCreated.observeForever(new Observer<Boolean>() {
-                    @Override
-                    public void onChanged(@Nullable Boolean aBoolean) {
-                        if (Boolean.TRUE.equals(aBoolean)) {
-                            databaseCreated.removeObserver(this);
-                            latch.countDown();
-                        }
-                    }
-                });
-            }
-        });
-
-        MatcherAssert.assertThat("database should've initialized",
-                latch.await(1, TimeUnit.MINUTES), CoreMatchers.is(true));
+//        CountDownLatch latch = new CountDownLatch(1);
+//        MutableLiveData<Boolean> databaseCreated = AppDatabase.getInstance(InstrumentationRegistry.getTargetContext()).getIsDatabaseCreated();
+//        mActivityTestRule.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                databaseCreated.observeForever(new Observer<Boolean>() {
+//                    @Override
+//                    public void onChanged(@Nullable Boolean aBoolean) {
+//                        if (Boolean.TRUE.equals(aBoolean)) {
+//                            databaseCreated.removeObserver(this);
+//                            latch.countDown();
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
+//        MatcherAssert.assertThat("database should've initialized",
+//                latch.await(1, TimeUnit.MINUTES), CoreMatchers.is(true));
 
     }
 

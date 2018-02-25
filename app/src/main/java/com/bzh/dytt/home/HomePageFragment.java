@@ -1,6 +1,7 @@
 package com.bzh.dytt.home;
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,16 +26,20 @@ import com.bzh.dytt.util.ViewModelFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 
 public class HomePageFragment extends BaseFragment {
-
 
     public static HomePageFragment newInstance() {
         return new HomePageFragment();
     }
 
     private static final String TAG = "HomePageFragment";
+
+    @Inject
+    ViewModelProvider.Factory mViewModelFactory;
 
     private HomePageViewModel mHomeViewModel;
 
@@ -107,7 +112,7 @@ public class HomePageFragment extends BaseFragment {
     protected void doViewCreate(View view, Bundle savedInstanceState) {
         super.doViewCreate(view, savedInstanceState);
 
-        mHomeViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(getActivity().getApplication())).get(HomePageViewModel.class);
+        mHomeViewModel = ViewModelProviders.of(this, mViewModelFactory).get(HomePageViewModel.class);
 
         mHomeViewModel.getHomeArea().observe(this, mHomeResourceObserver);
 

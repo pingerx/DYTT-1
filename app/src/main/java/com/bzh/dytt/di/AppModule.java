@@ -25,7 +25,7 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-@Module
+@Module(includes = ViewModelModule.class)
 public class AppModule {
 
     private static Interceptor INTERCEPTOR = new Interceptor() {

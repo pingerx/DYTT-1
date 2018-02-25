@@ -16,32 +16,26 @@ import com.bzh.dytt.data.source.Resource;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@Singleton
 public class DataRepository {
 
-    private volatile static DataRepository sInstance = null;
-
+    private AppExecutors appExecutors;
     private DyttService mService;
     private AppDatabase mAppDatabase;
 
-    private DataRepository(DyttService service, AppDatabase appDatabase) {
+    @Inject
+    DataRepository(AppExecutors appExecutors, DyttService service, AppDatabase appDatabase) {
+        this.appExecutors = appExecutors;
         mService = service;
         mAppDatabase = appDatabase;
-    }
-
-    public static DataRepository getInstance(DyttService service, AppDatabase appDatabase) {
-        if (sInstance == null) {
-            synchronized (DataRepository.class) {
-                if (sInstance == null) {
-                    sInstance = new DataRepository(service, appDatabase);
-                }
-            }
-        }
-        return sInstance;
     }
 
     public LiveData<Resource<List<HomeArea>>> getHomeAreas() {

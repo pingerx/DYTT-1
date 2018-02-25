@@ -1,44 +1,24 @@
 package com.bzh.dytt.util;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.VisibleForTesting;
-import android.test.mock.MockApplication;
 
-import com.bzh.dytt.BasicApp;
 import com.bzh.dytt.DataRepository;
-import com.bzh.dytt.data.source.AppDatabase;
 import com.bzh.dytt.home.HomePageViewModel;
 
-public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-    @SuppressLint("StaticFieldLeak")
-    private static volatile ViewModelFactory sInstance;
+@Singleton
+public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final Application mApplication;
 
     private final DataRepository mRepository;
 
-    public static ViewModelFactory getInstance(Application application) {
-
-        if (sInstance == null) {
-            synchronized (ViewModelFactory.class) {
-                if (sInstance == null) {
-                    sInstance = new ViewModelFactory(application, ((BasicApp) application).getRepository());
-                }
-            }
-        }
-        return sInstance;
-    }
-
-    @VisibleForTesting
-    public static void destroyInstance() {
-        sInstance = null;
-    }
-
-    private ViewModelFactory(Application application, DataRepository repository) {
+    @Inject
+    public ViewModelFactory(Application application, DataRepository repository) {
         mApplication = application;
         mRepository = repository;
     }
