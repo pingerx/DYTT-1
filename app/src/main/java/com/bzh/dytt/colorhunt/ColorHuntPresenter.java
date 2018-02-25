@@ -62,7 +62,7 @@ public class ColorHuntPresenter {
 //        ColorHuntService.ColorHuntBody body = new ColorHuntService.ColorHuntBody(0, ColorHuntService.ColorHuntSort.Random, "");
 //        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), body.toString());
 //
-//        ServiceManager
+//        Services
 //                .getInstance()
 //                .getColorHuntService()
 //                .listColor(requestBody)

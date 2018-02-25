@@ -27,11 +27,11 @@ public class HomeItemDaoTest {
 
     private HomeItem mHomeItem = new HomeItem("三块广告牌 BD中英双字幕", "2018-02-14", "http://www.dytt8.net/html/gndy/dyzz/20180214/56321.html", HomeType.NEWEST);
 
-    private MyDatabase mDatabase;
+    private AppDatabase mDatabase;
 
     @Before
     public void setUp() throws Exception {
-        mDatabase = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), MyDatabase.class).build();
+        mDatabase = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), AppDatabase.class).build();
     }
 
     @After

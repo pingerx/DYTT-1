@@ -5,18 +5,18 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
+import com.bzh.dytt.DataRepository;
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
-import com.bzh.dytt.data.source.HomePageRepository;
 import com.bzh.dytt.data.source.Resource;
 
 import java.util.List;
 
 public class HomePageViewModel extends AndroidViewModel {
 
-    private final HomePageRepository mRepository;
+    private final DataRepository mRepository;
 
-    public HomePageViewModel(@NonNull Application application, HomePageRepository repository) {
+    public HomePageViewModel(@NonNull Application application, DataRepository repository) {
         super(application);
         mRepository = repository;
     }

@@ -5,10 +5,10 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.lifecycle.LiveData;
 import android.content.res.Resources;
 
+import com.bzh.dytt.DataRepository;
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
 import com.bzh.dytt.data.HomeType;
-import com.bzh.dytt.data.source.HomePageRepository;
 import com.bzh.dytt.data.source.Resource;
 
 import org.junit.After;
@@ -34,7 +34,7 @@ public class HomePageViewModelTest {
     Application mContext;
 
     @Mock
-    private HomePageRepository mRepository;
+    private DataRepository mRepository;
     private HomePageViewModel mHomePageViewModel;
 
     @Before

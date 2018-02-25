@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.bzh.dytt.LiveDataTestUtil;
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeType;
 
@@ -27,12 +28,12 @@ public class HomeAreaDaoTest {
 
     private HomeArea mArea = new HomeArea("2018新片精品", HomeType.NEWEST);
 
-    private MyDatabase mDatabase;
+    private AppDatabase mDatabase;
     private HomeAreaDao mHomeAreaDao;
 
     @Before
     public void setUp() throws Exception {
-        mDatabase = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), MyDatabase.class).build();
+        mDatabase = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), AppDatabase.class).build();
         mHomeAreaDao = mDatabase.homeAreaDAO();
     }
 
@@ -43,17 +44,26 @@ public class HomeAreaDaoTest {
     @Test
     public void insertArea() throws Exception {
 
-        LiveData<HomeArea> area = mHomeAreaDao.getAreaById(mArea.getId());
-        area.observeForever(new Observer<HomeArea>() {
-            @Override
-            public void onChanged(@Nullable HomeArea homeArea) {
-                assertThat(homeArea, notNullValue());
-                assertThat(homeArea.getId(), is(mArea.getId()));
-                assertThat(homeArea.getTitle(), is(mArea.getTitle()));
-            }
-        });
-
         mHomeAreaDao.insertArea(mArea);
+
+//        LiveData<HomeArea> area = mHomeAreaDao.getAreaById(mArea.getId());
+
+        HomeArea value = LiveDataTestUtil.getValue(mHomeAreaDao.getAreaById(mArea.getId()));
+//
+//        area.observeForever(new Observer<HomeArea>() {
+//            @Override
+//            public void onChanged(@Nullable HomeArea homeArea) {
+//                assertThat(homeArea, notNullValue());
+//                assertThat(homeArea.getId(), is(mArea.getId()));
+//                assertThat(homeArea.getTitle(), is(mArea.getTitle()));
+//            }
+//        });
+
+
+
+        assertThat(value, notNullValue());
+        assertThat(value.getId(), is(mArea.getId()));
+        assertThat(value.getTitle(), is(mArea.getTitle()));
     }
 
     @Test

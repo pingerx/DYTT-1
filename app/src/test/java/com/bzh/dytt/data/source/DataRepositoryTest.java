@@ -2,6 +2,7 @@ package com.bzh.dytt.data.source;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 
+import com.bzh.dytt.DataRepository;
 import com.bzh.dytt.data.HomeType;
 
 import org.junit.After;
@@ -15,14 +16,15 @@ import java.io.IOException;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-public class HomePageRepositoryTest {
+public class DataRepositoryTest {
 
 
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
-    private HomePageRepository mHomePageRepository;
+    private DataRepository mDataRepository;
 
     @Mock
     private HomeItemDao mHomeItemLocalDao;
@@ -33,27 +35,33 @@ public class HomePageRepositoryTest {
     @Mock
     private DyttService mDyttService;
 
+    @Mock
+    private AppDatabase mAppDataBase;
+
     @Before
     public void setupItemRepository() throws IOException {
         MockitoAnnotations.initMocks(this);
 
-        mHomePageRepository = HomePageRepository.getInstance(mDyttService, mHomeAreaDao, mHomeItemLocalDao);
+        mDataRepository = DataRepository.getInstance(mDyttService, mAppDataBase);
     }
 
     @After
     public void destroyItemRepository() {
-        mHomePageRepository = null;
+        mDataRepository = null;
     }
 
     @Test
     public void getHomeItems() {
-        mHomePageRepository.getHomeItems(HomeType.NEWEST);
+
+        when(mAppDataBase.homeItemDao()).thenReturn(mHomeItemLocalDao);
+
+        mDataRepository.getHomeItems(HomeType.NEWEST);
         verify(mHomeItemLocalDao, times(1)).getItemsByType(HomeType.NEWEST);
     }
 
     @Test
     public void getHomeAreas() throws Exception {
-        mHomePageRepository.getHomeAreas();
+        mDataRepository.getHomeAreas();
         verify(mHomeAreaDao, times(1)).getAreas();
     }
 
@@ -64,7 +72,7 @@ public class HomePageRepositoryTest {
 //
 //        when(mHomeItemLocalDao.getItemsByType(HomeType.NEWEST)).thenReturn(itemsByType);
 //
-//        LiveData<Resource<List<HomeItem>>> items = mHomePageRepository.getHomeItems(HomeType.NEWEST);
+//        LiveData<Resource<List<HomeItem>>> items = mDataRepository.getHomeItems(HomeType.NEWEST);
 //
 //        items.observeForever(new Observer<Resource<List<HomeItem>>>() {
 //            @Override

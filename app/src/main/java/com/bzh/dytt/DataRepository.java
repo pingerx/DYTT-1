@@ -1,4 +1,4 @@
-package com.bzh.dytt.data.source;
+package com.bzh.dytt;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -7,6 +7,11 @@ import android.support.annotation.Nullable;
 
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
+import com.bzh.dytt.data.source.AppDatabase;
+import com.bzh.dytt.data.source.DyttService;
+import com.bzh.dytt.data.source.HomeItemParseUtil;
+import com.bzh.dytt.data.source.NetworkBoundResource;
+import com.bzh.dytt.data.source.Resource;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,30 +21,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomePageRepository {
+public class DataRepository {
 
-    private volatile static HomePageRepository INSTANCE = null;
+    private volatile static DataRepository sInstance = null;
 
     private DyttService mService;
-    private HomeItemDao mHomeItemDao;
-    private HomeAreaDao mHomeAreaDao;
+    private AppDatabase mAppDatabase;
 
-    public HomePageRepository(DyttService service, HomeAreaDao dao, HomeItemDao homeItemDao) {
+    private DataRepository(DyttService service, AppDatabase appDatabase) {
         mService = service;
-        mHomeItemDao = homeItemDao;
-        mHomeAreaDao = dao;
+        mAppDatabase = appDatabase;
     }
 
-    public static HomePageRepository getInstance(DyttService service, HomeAreaDao homeAreaDao, HomeItemDao homeItemDao) {
-        if (INSTANCE == null) {
-            synchronized (HomePageRepository.class) {
-                if (INSTANCE == null) {
-
-                    INSTANCE = new HomePageRepository(service, homeAreaDao, homeItemDao);
+    public static DataRepository getInstance(DyttService service, AppDatabase appDatabase) {
+        if (sInstance == null) {
+            synchronized (DataRepository.class) {
+                if (sInstance == null) {
+                    sInstance = new DataRepository(service, appDatabase);
                 }
             }
         }
-        return INSTANCE;
+        return sInstance;
     }
 
     public LiveData<Resource<List<HomeArea>>> getHomeAreas() {
@@ -50,7 +52,7 @@ public class HomePageRepository {
 
                 List<HomeArea> homeAreas = HomeItemParseUtil.getInstance().parseAreas(item);
 
-                mHomeAreaDao.insertAreas(homeAreas);
+                mAppDatabase.homeAreaDAO().insertAreas(homeAreas);
             }
 
             @Override
@@ -65,7 +67,7 @@ public class HomePageRepository {
             @NonNull
             @Override
             protected LiveData<List<HomeArea>> loadFromDb() {
-                return mHomeAreaDao.getAreas();
+                return mAppDatabase.homeAreaDAO().getAreas();
             }
 
             @NonNull
@@ -102,7 +104,7 @@ public class HomePageRepository {
 
                 List<HomeItem> homeItems = HomeItemParseUtil.getInstance().parseItems(item);
 
-                mHomeItemDao.insertItems(homeItems);
+                mAppDatabase.homeItemDao().insertItems(homeItems);
 
             }
 
@@ -118,7 +120,7 @@ public class HomePageRepository {
             @NonNull
             @Override
             protected LiveData<List<HomeItem>> loadFromDb() {
-                return mHomeItemDao.getItemsByType(type);
+                return mAppDatabase.homeItemDao().getItemsByType(type);
             }
 
             @NonNull

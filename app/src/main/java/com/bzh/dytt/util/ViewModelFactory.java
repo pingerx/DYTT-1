@@ -5,37 +5,40 @@ import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.VisibleForTesting;
+import android.test.mock.MockApplication;
 
-import com.bzh.dytt.data.source.HomePageRepository;
+import com.bzh.dytt.BasicApp;
+import com.bzh.dytt.DataRepository;
+import com.bzh.dytt.data.source.AppDatabase;
 import com.bzh.dytt.home.HomePageViewModel;
 
 public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     @SuppressLint("StaticFieldLeak")
-    private static volatile ViewModelFactory INSTANCE;
+    private static volatile ViewModelFactory sInstance;
 
     private final Application mApplication;
 
-    private final HomePageRepository mRepository;
+    private final DataRepository mRepository;
 
     public static ViewModelFactory getInstance(Application application) {
 
-        if (INSTANCE == null) {
+        if (sInstance == null) {
             synchronized (ViewModelFactory.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new ViewModelFactory(application, Injection.provideHomePageRepository(application.getApplicationContext()));
+                if (sInstance == null) {
+                    sInstance = new ViewModelFactory(application, ((BasicApp) application).getRepository());
                 }
             }
         }
-        return INSTANCE;
+        return sInstance;
     }
 
     @VisibleForTesting
     public static void destroyInstance() {
-        INSTANCE = null;
+        sInstance = null;
     }
 
-    private ViewModelFactory(Application application, HomePageRepository repository) {
+    private ViewModelFactory(Application application, DataRepository repository) {
         mApplication = application;
         mRepository = repository;
     }
