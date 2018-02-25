@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bzh.dytt.di.Injectable;
+
 import butterknife.ButterKnife;
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment  implements Injectable {
 
     @Override
     public final void onCreate(@Nullable Bundle savedInstanceState) {

@@ -18,11 +18,19 @@ import com.bzh.dytt.girl.GirlFragment;
 import com.bzh.dytt.home.HomePageFragment;
 import com.bzh.dytt.view.NonInteractiveViewPage;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HasSupportFragmentInjector {
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentInjector;
 
     private static final String TAG = "MainActivity";
 
@@ -117,6 +125,11 @@ public class MainActivity extends AppCompatActivity
         }
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentInjector;
     }
 
     private static class MainViewPagerAdapter extends FragmentPagerAdapter {
