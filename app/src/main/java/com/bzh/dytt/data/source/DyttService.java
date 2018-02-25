@@ -6,7 +6,6 @@ import retrofit2.http.GET;
 
 public interface DyttService {
 
-
     @GET("/")
     Call<ResponseBody> getHomePage();
 }

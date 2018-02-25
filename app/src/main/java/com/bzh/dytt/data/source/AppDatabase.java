@@ -45,7 +45,7 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
-    private void setDatabaseCreated(){
+    public void setDatabaseCreated(){
         mIsDatabaseCreated.postValue(true);
     }
 

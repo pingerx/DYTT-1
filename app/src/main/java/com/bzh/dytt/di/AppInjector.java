@@ -19,7 +19,7 @@ public class AppInjector {
 
 
     public static void init(BasicApp basicApp) {
-         DaggerAppComponent.builder().build().inject(basicApp);
+         DaggerAppComponent.builder().application(basicApp).build().inject(basicApp);
 
          basicApp
                  .registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
