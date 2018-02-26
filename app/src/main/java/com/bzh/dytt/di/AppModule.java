@@ -9,7 +9,6 @@ import com.bzh.dytt.data.source.DyttService;
 import com.bzh.dytt.data.source.HomeAreaDao;
 import com.bzh.dytt.data.source.HomeItemDao;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -25,43 +24,66 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
+/**
+ * https://github.com/codepath/android_guides/wiki/Dependency-Injection-with-Dagger-2
+ */
 @Module(includes = ViewModelModule.class)
 public class AppModule {
 
-    private static Interceptor INTERCEPTOR = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            Response response = chain.proceed(request);
-            return response.newBuilder()
-                    .header("Cache-Control", "public, max-age=60")
-                    .removeHeader("Pragma")
-                    .build();
-        }
-    };
+    // "http://www.dytt8.net")
+    private String mBaseUrl;
+
+    public AppModule(String baseUrl) {
+        this.mBaseUrl = baseUrl;
+    }
 
     @Singleton
     @Provides
-    DyttService provideDyttService(Application app){
+    Interceptor provideCacheInterceptor() {
+        return new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                Response response = chain.proceed(request);
+                return response.newBuilder()
+                        .header("Cache-Control", "public, max-age=60")
+                        .removeHeader("Pragma")
+                        .build();
+            }
+        };
+    }
+
+    @Singleton
+    @Provides
+    Cache provideOkHttpCache(Application application) {
         int cacheSize = 10 * 1024 * 1024;
+        return new Cache(application.getCacheDir(), cacheSize);
+    }
 
-        String cachePath = app.getCacheDir().getAbsolutePath() + File.separator + "cache.dytt";
-
-        Cache cache = new Cache(new File(cachePath), cacheSize);
-
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .cache(cache)
+    @Singleton
+    @Provides
+    OkHttpClient provideOkHttpClient(Cache okhttpCache, Interceptor okHttpCacheInterceptor) {
+        return new OkHttpClient.Builder()
+                .cache(okhttpCache)
                 .connectTimeout(30, TimeUnit.SECONDS)
-                .addNetworkInterceptor(INTERCEPTOR)
+                .addNetworkInterceptor(okHttpCacheInterceptor)
                 .build();
+    }
 
-        Retrofit retrofit = new Retrofit
+    @Singleton
+    @Provides
+    Retrofit provideRetrofit(OkHttpClient okHttpClient) {
+        return    new Retrofit
                 .Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .baseUrl("http://www.dytt8.net")
+                .baseUrl(mBaseUrl)
                 .client(okHttpClient)
                 .build();
+    }
 
+    @Singleton
+    @Provides
+    DyttService provideDyttService(Retrofit retrofit) {
         return retrofit.create(DyttService.class);
     }
 
