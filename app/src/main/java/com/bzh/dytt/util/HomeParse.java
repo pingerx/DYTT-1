@@ -1,8 +1,9 @@
-package com.bzh.dytt.data.source;
+package com.bzh.dytt.util;
 
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
 import com.bzh.dytt.data.HomeType;
+import com.bzh.dytt.data.source.IParse;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,14 +13,11 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeItemParseUtil implements IParse<List<HomeArea>, List<HomeItem>> {
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-    private static IParse<List<HomeArea>, List<HomeItem>> mInstance = new HomeItemParseUtil();
-
-
-    public static IParse<List<HomeArea>, List<HomeItem>> getInstance() {
-        return mInstance;
-    }
+@Singleton
+public class HomeParse implements IParse<List<HomeArea>, List<HomeItem>> {
 
     private IParse<List<HomeArea>, List<HomeItem>> mNewestParse;
     private IParse<List<HomeArea>, List<HomeItem>> mThunderParse;
@@ -28,13 +26,14 @@ public class HomeItemParseUtil implements IParse<List<HomeArea>, List<HomeItem>>
     private IParse<List<HomeArea>, List<HomeItem>> mEAParse;
     private IParse<List<HomeArea>, List<HomeItem>> mNewest168Parse;
 
-    private HomeItemParseUtil() {
-        mNewest168Parse = new HomeItemParseUtil.Newest168Parse();
-        mNewestParse = new HomeItemParseUtil.NewestParse();
-        mThunderParse = new HomeItemParseUtil.ThunderParse();
-        mChinaTvParse = new HomeItemParseUtil.ChinaTVParse();
-        mJSKParse = new HomeItemParseUtil.JSKTVParse();
-        mEAParse = new HomeItemParseUtil.EATVParse();
+    @Inject
+    public HomeParse() {
+        mNewest168Parse = new HomeParse.Newest168Parse();
+        mNewestParse = new HomeParse.NewestParse();
+        mThunderParse = new HomeParse.ThunderParse();
+        mChinaTvParse = new HomeParse.ChinaTVParse();
+        mJSKParse = new HomeParse.JSKTVParse();
+        mEAParse = new HomeParse.EATVParse();
     }
 
     @Override

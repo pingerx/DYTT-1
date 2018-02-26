@@ -1,34 +1,43 @@
 package com.bzh.dytt.util;
 
-import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
-import com.bzh.dytt.DataRepository;
-import com.bzh.dytt.home.HomePageViewModel;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 @Singleton
 public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private final Application mApplication;
-
-    private final DataRepository mRepository;
+    private final Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
 
     @Inject
-    public ViewModelFactory(Application application, DataRepository repository) {
-        mApplication = application;
-        mRepository = repository;
+    public ViewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
+        this.creators = creators;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(HomePageViewModel.class)) {
-            //noinspection unchecked
-            return (T) new HomePageViewModel(mApplication, mRepository);
+        Provider<? extends ViewModel> creator = creators.get(modelClass);
+        if (creator == null) {
+            for (Map.Entry<Class<? extends ViewModel>, Provider<ViewModel>> entry : creators.entrySet()) {
+                if (modelClass.isAssignableFrom(entry.getKey())) {
+                    creator = entry.getValue();
+                    break;
+                }
+            }
         }
-        throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+        if (creator == null) {
+            throw new IllegalArgumentException("unknown model class " + modelClass);
+        }
+        try {
+            return (T) creator.get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

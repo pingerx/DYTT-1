@@ -9,7 +9,7 @@ import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
 import com.bzh.dytt.data.source.AppDatabase;
 import com.bzh.dytt.data.source.DyttService;
-import com.bzh.dytt.data.source.HomeItemParseUtil;
+import com.bzh.dytt.util.HomeParse;
 import com.bzh.dytt.data.source.NetworkBoundResource;
 import com.bzh.dytt.data.source.Resource;
 
@@ -30,12 +30,14 @@ public class DataRepository {
     private AppExecutors appExecutors;
     private DyttService mService;
     private AppDatabase mAppDatabase;
+    private HomeParse mHomeParse;
 
     @Inject
-    DataRepository(AppExecutors appExecutors, DyttService service, AppDatabase appDatabase) {
+    DataRepository(AppExecutors appExecutors, DyttService service, AppDatabase appDatabase, HomeParse homeParse) {
         this.appExecutors = appExecutors;
         mService = service;
         mAppDatabase = appDatabase;
+        mHomeParse = homeParse;
     }
 
     public LiveData<Resource<List<HomeArea>>> getHomeAreas() {
@@ -44,7 +46,7 @@ public class DataRepository {
             @Override
             protected void saveCallResult(@NonNull String item) {
 
-                List<HomeArea> homeAreas = HomeItemParseUtil.getInstance().parseAreas(item);
+                List<HomeArea> homeAreas = mHomeParse.parseAreas(item);
 
                 mAppDatabase.homeAreaDAO().insertAreas(homeAreas);
             }
@@ -96,7 +98,7 @@ public class DataRepository {
             @Override
             protected void saveCallResult(@NonNull String item) {
 
-                List<HomeItem> homeItems = HomeItemParseUtil.getInstance().parseItems(item);
+                List<HomeItem> homeItems = mHomeParse.parseItems(item);
 
                 mAppDatabase.homeItemDao().insertItems(homeItems);
 

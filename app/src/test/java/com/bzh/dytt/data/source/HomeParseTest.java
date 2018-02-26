@@ -3,6 +3,7 @@ package com.bzh.dytt.data.source;
 import com.bzh.dytt.TestUtils;
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
+import com.bzh.dytt.util.HomeParse;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,7 +16,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
 
-public class HomeItemParseUtilTest {
+public class HomeParseTest {
 
     private String mHomePage;
     private IParse<List<HomeArea>, List<HomeItem>> mNewest168Parse;
@@ -31,13 +32,13 @@ public class HomeItemParseUtilTest {
     @Before
     public void setUp() throws Exception {
         mHomePage = TestUtils.getResource(getClass(), "index.html");
-        mHomePageParse = HomeItemParseUtil.getInstance();
-        mNewest168Parse = new HomeItemParseUtil.Newest168Parse();
-        mNewestParse = new HomeItemParseUtil.NewestParse();
-        mThunderParse = new HomeItemParseUtil.ThunderParse();
-        mChinaTvParse = new HomeItemParseUtil.ChinaTVParse();
-        mJSKParse = new HomeItemParseUtil.JSKTVParse();
-        mEAParse = new HomeItemParseUtil.EATVParse();
+        mHomePageParse = new HomeParse();
+        mNewest168Parse = new HomeParse.Newest168Parse();
+        mNewestParse = new HomeParse.NewestParse();
+        mThunderParse = new HomeParse.ThunderParse();
+        mChinaTvParse = new HomeParse.ChinaTVParse();
+        mJSKParse = new HomeParse.JSKTVParse();
+        mEAParse = new HomeParse.EATVParse();
     }
 
 
