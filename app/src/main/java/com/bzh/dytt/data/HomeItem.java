@@ -29,10 +29,6 @@ public final class HomeItem {
     @NonNull
     private int mType;
 
-    @ColumnInfo(name = "last_update_time")
-    private long mLastUpdateTime;
-
-
     public HomeItem() {
     }
 
@@ -86,13 +82,5 @@ public final class HomeItem {
 
     public void setTime(String time) {
         this.mTime = time;
-    }
-
-    public long getLastUpdateTime() {
-        return mLastUpdateTime;
-    }
-
-    public void setLastUpdateTime(long lastUpdateTime) {
-        mLastUpdateTime = lastUpdateTime;
     }
 }

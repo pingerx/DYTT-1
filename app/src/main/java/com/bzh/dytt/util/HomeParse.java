@@ -242,7 +242,6 @@ public class HomeParse implements IParse<List<HomeArea>, List<HomeItem>> {
                 homeArea.setTitle(title);
                 homeArea.setDetailLink(detailLink);
                 homeArea.setType(getType());
-                homeArea.setLastUpdateTime(System.currentTimeMillis());
 
                 result.add(homeArea);
 
@@ -277,7 +276,6 @@ public class HomeParse implements IParse<List<HomeArea>, List<HomeItem>> {
                     homeItem.setTitle(title);
                     homeItem.setDetailLink(link);
                     homeItem.setTime(time);
-                    homeItem.setLastUpdateTime(System.currentTimeMillis());
 
                     result.add(homeItem);
                 }

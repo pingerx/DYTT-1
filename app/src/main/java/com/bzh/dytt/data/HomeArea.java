@@ -28,9 +28,6 @@ public class HomeArea implements Parcelable {
     @ColumnInfo(name = "link")
     private String mDetailLink;
 
-    @ColumnInfo(name = "last_update_time")
-    private long mLastUpdateTime;
-
     public HomeArea() {
 
     }
@@ -76,15 +73,6 @@ public class HomeArea implements Parcelable {
         mDetailLink = detailLink;
     }
 
-    public long getLastUpdateTime() {
-        return mLastUpdateTime;
-    }
-
-    public void setLastUpdateTime(long lastUpdateTime) {
-        mLastUpdateTime = lastUpdateTime;
-    }
-
-
     @Override
     public int describeContents() {
         return 0;
@@ -96,7 +84,6 @@ public class HomeArea implements Parcelable {
         dest.writeString(this.mTitle);
         dest.writeInt(this.mType);
         dest.writeString(this.mDetailLink);
-        dest.writeLong(this.mLastUpdateTime);
     }
 
     protected HomeArea(Parcel in) {
@@ -104,7 +91,6 @@ public class HomeArea implements Parcelable {
         this.mTitle = in.readString();
         this.mType = in.readInt();
         this.mDetailLink = in.readString();
-        this.mLastUpdateTime = in.readLong();
     }
 
     public static final Creator<HomeArea> CREATOR = new Creator<HomeArea>() {

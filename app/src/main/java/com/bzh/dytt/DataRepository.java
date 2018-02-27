@@ -12,9 +12,11 @@ import com.bzh.dytt.data.source.DyttService;
 import com.bzh.dytt.data.source.NetworkBoundResource;
 import com.bzh.dytt.data.source.Resource;
 import com.bzh.dytt.util.HomeParse;
+import com.bzh.dytt.util.RateLimiter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -37,6 +39,8 @@ public class DataRepository {
         mHomeParse = homeParse;
     }
 
+    private RateLimiter<String> mRepoListRateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
+
     public LiveData<Resource<List<HomeArea>>> getHomeAreas() {
         return new NetworkBoundResource<List<HomeArea>, ResponseBody>(mAppExecutors) {
 
@@ -53,11 +57,7 @@ public class DataRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<HomeArea> data) {
-                if (data == null || data.size() == 0) {
-                    return true;
-                }
-                boolean isFresh = System.currentTimeMillis() - data.get(data.size() - 1).getLastUpdateTime() < 30 * 12 * 60 * 60 * 1000;
-                return !isFresh;
+                return data == null || data.isEmpty() || mRepoListRateLimit.shouldFetch("HOME_AREA");
             }
 
             @NonNull
@@ -91,11 +91,7 @@ public class DataRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<HomeItem> data) {
-                if (data == null || data.size() == 0) {
-                    return true;
-                }
-                boolean isFresh = System.currentTimeMillis() - data.get(data.size() - 1).getLastUpdateTime() < 60 * 1000;
-                return !isFresh;
+                return data == null || data.isEmpty() || mRepoListRateLimit.shouldFetch("HOME_ITEMS");
             }
 
             @NonNull
