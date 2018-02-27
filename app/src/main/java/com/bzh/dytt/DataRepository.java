@@ -8,12 +8,12 @@ import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
 import com.bzh.dytt.data.HomeType;
 import com.bzh.dytt.data.VideoDetail;
-import com.bzh.dytt.data.source.ApiResponse;
-import com.bzh.dytt.data.source.AppDatabase;
-import com.bzh.dytt.data.source.DyttService;
+import com.bzh.dytt.data.network.ApiResponse;
+import com.bzh.dytt.data.db.AppDatabase;
+import com.bzh.dytt.data.network.DyttService;
 import com.bzh.dytt.util.HomePageParser;
-import com.bzh.dytt.data.source.NetworkBoundResource;
-import com.bzh.dytt.data.source.Resource;
+import com.bzh.dytt.data.network.NetworkBoundResource;
+import com.bzh.dytt.data.network.Resource;
 import com.bzh.dytt.util.VideoDetailPageParser;
 import com.bzh.dytt.util.RateLimiter;
 

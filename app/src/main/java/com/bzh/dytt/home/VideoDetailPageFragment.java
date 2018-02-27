@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.bzh.dytt.BaseFragment;
 import com.bzh.dytt.R;
 import com.bzh.dytt.data.VideoDetail;
-import com.bzh.dytt.data.source.Resource;
-import com.bzh.dytt.data.source.Status;
+import com.bzh.dytt.data.network.Resource;
+import com.bzh.dytt.data.network.Status;
 
 import javax.inject.Inject;
 

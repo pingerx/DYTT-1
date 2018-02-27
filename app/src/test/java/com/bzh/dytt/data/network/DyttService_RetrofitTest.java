@@ -1,4 +1,4 @@
-package com.bzh.dytt.data.source;
+package com.bzh.dytt.data.network;
 
 import com.bzh.dytt.TestUtils;
 
@@ -9,8 +9,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.mock.BehaviorDelegate;

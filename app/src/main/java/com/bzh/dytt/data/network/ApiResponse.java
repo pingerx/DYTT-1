@@ -1,13 +1,8 @@
-package com.bzh.dytt.data.source;
+package com.bzh.dytt.data.network;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.regex.Matcher;
 
 import retrofit2.Response;
 

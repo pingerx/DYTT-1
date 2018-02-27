@@ -1,4 +1,4 @@
-package com.bzh.dytt.data.source;
+package com.bzh.dytt.data.network;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;

@@ -2,7 +2,7 @@ package com.bzh.dytt.util;
 
 import android.arch.lifecycle.LiveData;
 
-import com.bzh.dytt.data.source.ApiResponse;
+import com.bzh.dytt.data.network.ApiResponse;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;

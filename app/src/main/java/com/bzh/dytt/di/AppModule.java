@@ -4,10 +4,10 @@ package com.bzh.dytt.di;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
-import com.bzh.dytt.data.source.AppDatabase;
-import com.bzh.dytt.data.source.DyttService;
-import com.bzh.dytt.data.source.HomeAreaDao;
-import com.bzh.dytt.data.source.HomeItemDao;
+import com.bzh.dytt.data.db.AppDatabase;
+import com.bzh.dytt.data.network.DyttService;
+import com.bzh.dytt.data.db.HomeAreaDao;
+import com.bzh.dytt.data.db.HomeItemDao;
 import com.bzh.dytt.util.LiveDataCallAdapterFactory;
 
 import java.io.IOException;

@@ -19,9 +19,8 @@ import android.view.ViewGroup;
 import com.bzh.dytt.BaseFragment;
 import com.bzh.dytt.R;
 import com.bzh.dytt.data.HomeArea;
-import com.bzh.dytt.data.source.Resource;
-import com.bzh.dytt.data.source.Status;
-import com.bzh.dytt.util.ViewModelFactory;
+import com.bzh.dytt.data.network.Resource;
+import com.bzh.dytt.data.network.Status;
 
 import java.util.ArrayList;
 import java.util.List;

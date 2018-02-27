@@ -1,4 +1,4 @@
-package com.bzh.dytt.data.source;
+package com.bzh.dytt.data.network;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
@@ -9,6 +9,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.bzh.dytt.data.HomeItem;
 import com.bzh.dytt.data.HomeType;
+import com.bzh.dytt.data.db.AppDatabase;
 
 import org.junit.After;
 import org.junit.Before;

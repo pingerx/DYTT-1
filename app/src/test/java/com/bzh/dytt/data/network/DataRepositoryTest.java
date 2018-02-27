@@ -1,9 +1,12 @@
-package com.bzh.dytt.data.source;
+package com.bzh.dytt.data.network;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import com.bzh.dytt.DataRepository;
 import com.bzh.dytt.data.HomeType;
+import com.bzh.dytt.data.db.AppDatabase;
+import com.bzh.dytt.data.db.HomeAreaDao;
+import com.bzh.dytt.data.db.HomeItemDao;
 
 import org.junit.After;
 import org.junit.Before;

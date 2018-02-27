@@ -9,7 +9,7 @@ import com.bzh.dytt.DataRepository;
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
 import com.bzh.dytt.data.HomeType;
-import com.bzh.dytt.data.source.Resource;
+import com.bzh.dytt.data.network.Resource;
 
 import org.junit.After;
 import org.junit.Before;

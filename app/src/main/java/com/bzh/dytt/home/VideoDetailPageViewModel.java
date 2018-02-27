@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.bzh.dytt.DataRepository;
 import com.bzh.dytt.data.VideoDetail;
-import com.bzh.dytt.data.source.Resource;
+import com.bzh.dytt.data.network.Resource;
 
 import javax.inject.Inject;
 
