@@ -1,17 +1,17 @@
 package com.bzh.dytt;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
+import com.bzh.dytt.data.source.ApiResponse;
 import com.bzh.dytt.data.source.AppDatabase;
 import com.bzh.dytt.data.source.DyttService;
-import com.bzh.dytt.util.HomeParse;
 import com.bzh.dytt.data.source.NetworkBoundResource;
 import com.bzh.dytt.data.source.Resource;
+import com.bzh.dytt.util.HomeParse;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,35 +20,35 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @Singleton
 public class DataRepository {
 
-    private AppExecutors appExecutors;
+    private AppExecutors mAppExecutors;
     private DyttService mService;
     private AppDatabase mAppDatabase;
     private HomeParse mHomeParse;
 
     @Inject
     DataRepository(AppExecutors appExecutors, DyttService service, AppDatabase appDatabase, HomeParse homeParse) {
-        this.appExecutors = appExecutors;
+        mAppExecutors = appExecutors;
         mService = service;
         mAppDatabase = appDatabase;
         mHomeParse = homeParse;
     }
 
     public LiveData<Resource<List<HomeArea>>> getHomeAreas() {
-        return new NetworkBoundResource<List<HomeArea>, String>() {
+        return new NetworkBoundResource<List<HomeArea>, ResponseBody>(mAppExecutors) {
 
             @Override
-            protected void saveCallResult(@NonNull String item) {
-
-                List<HomeArea> homeAreas = mHomeParse.parseAreas(item);
-
-                mAppDatabase.homeAreaDAO().insertAreas(homeAreas);
+            protected void saveCallResult(@NonNull ResponseBody responseBody) {
+                try {
+                    String item = new String(responseBody.bytes(), "GB2312");
+                    List<HomeArea> homeAreas = mHomeParse.parseAreas(item);
+                    mAppDatabase.homeAreaDAO().insertAreas(homeAreas);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -68,40 +68,25 @@ public class DataRepository {
 
             @NonNull
             @Override
-            protected LiveData<Resource<String>> createCall() {
-
-                final MutableLiveData<Resource<String>> liveData = new MutableLiveData<>();
-                mService.getHomePage().enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            liveData.setValue(Resource.success(new String(response.body().bytes(), "GB2312")));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        liveData.setValue(Resource.<String>error(t.getMessage(), null));
-                    }
-                });
-                return liveData;
+            protected LiveData<ApiResponse<ResponseBody>> createCall() {
+                return mService.getHomePage();
             }
         }.getAsLiveData();
     }
 
 
     public LiveData<Resource<List<HomeItem>>> getHomeItems(final int type) {
-        return new NetworkBoundResource<List<HomeItem>, String>() {
+        return new NetworkBoundResource<List<HomeItem>, ResponseBody>(mAppExecutors) {
 
             @Override
-            protected void saveCallResult(@NonNull String item) {
-
-                List<HomeItem> homeItems = mHomeParse.parseItems(item);
-
-                mAppDatabase.homeItemDao().insertItems(homeItems);
-
+            protected void saveCallResult(@NonNull ResponseBody responseBody) {
+                try {
+                    String item = new String(responseBody.bytes(), "GB2312");
+                    List<HomeItem> homeItems = mHomeParse.parseItems(item);
+                    mAppDatabase.homeItemDao().insertItems(homeItems);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -121,26 +106,8 @@ public class DataRepository {
 
             @NonNull
             @Override
-            protected LiveData<Resource<String>> createCall() {
-
-                final MutableLiveData<Resource<String>> liveData = new MutableLiveData<>();
-
-                mService.getHomePage().enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            liveData.setValue(Resource.success(new String(response.body().bytes(), "GB2312")));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        liveData.setValue(Resource.<String>error(t.getMessage(), null));
-                    }
-                });
-                return liveData;
+            protected LiveData<ApiResponse<ResponseBody>> createCall() {
+                return mService.getHomePage();
 
             }
         }.getAsLiveData();

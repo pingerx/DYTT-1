@@ -1,21 +1,24 @@
 package com.bzh.dytt.data.source;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.Observer;
-import android.os.AsyncTask;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
+import com.bzh.dytt.AppExecutors;
+
 public abstract class NetworkBoundResource<ResultType, RequestType> {
+
+    private final AppExecutors mAppExecutors;
 
     private MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
 
     @MainThread
-    public NetworkBoundResource() {
+    public NetworkBoundResource(AppExecutors appExecutors) {
+        mAppExecutors = appExecutors;
 
         result.setValue(Resource.<ResultType>loading(null));
 
@@ -38,11 +41,12 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
                 }
             }
         });
+
     }
 
     private void fetchFromNetwork(final LiveData<ResultType> dbSource) {
 
-        final LiveData<Resource<RequestType>> apiResponse = createCall();
+        final LiveData<ApiResponse<RequestType>> apiResponse = createCall();
 
         // we re-attach dbSource as a new source,
         // it will dispatch its latest value quickly
@@ -53,54 +57,47 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             }
         });
 
-        result.addSource(apiResponse, new Observer<Resource<RequestType>>() {
+        result.addSource(apiResponse, new Observer<ApiResponse<RequestType>>() {
             @Override
-            public void onChanged(@Nullable final Resource<RequestType> response) {
+            public void onChanged(@Nullable final ApiResponse<RequestType> response) {
 
                 result.removeSource(apiResponse);
                 result.removeSource(dbSource);
 
                 //noinspection ConstantConditions
-                if (response.status == Status.SUCCESS) {
-                    saveResultAndReInit(response);
+                if (response.isSuccessful()) {
+                    mAppExecutors.diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            saveCallResult(processResponse(response));
+                            mAppExecutors.mainThread().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // we specially request a new live data,
+                                    // otherwise we will get immediately last cached value,
+                                    // which may not be updated with latest results received from network.
+                                    result.addSource(loadFromDb(), new Observer<ResultType>() {
+                                        @Override
+                                        public void onChanged(@Nullable ResultType newData) {
+                                            result.setValue(Resource.success(newData));
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 } else {
                     onFetchFailed();
 
                     result.addSource(dbSource, new Observer<ResultType>() {
                         @Override
                         public void onChanged(@Nullable ResultType newData) {
-                            result.setValue(Resource.error(response.message, newData));
+                            result.setValue(Resource.error(response.errorMessage, newData));
                         }
                     });
                 }
             }
         });
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    @MainThread
-    private void saveResultAndReInit(final Resource<RequestType> response) {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                saveCallResult(response.data);
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                // we specially request a new live data,
-                // otherwise we will get immediately last cached value,
-                // which may not be updated with latest results received from network.
-                result.addSource(loadFromDb(), new Observer<ResultType>() {
-                    @Override
-                    public void onChanged(@Nullable ResultType newData) {
-                        result.setValue(Resource.success(newData));
-                    }
-                });
-            }
-        }.execute();
     }
 
     // returns a LiveData that represents the resource, implemented
@@ -126,7 +123,12 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     // Called to create the API call.
     @NonNull
     @MainThread
-    protected abstract LiveData<Resource<RequestType>> createCall();
+    protected abstract LiveData<ApiResponse<RequestType>> createCall();
+
+    @WorkerThread
+    protected RequestType processResponse(ApiResponse<RequestType> response) {
+        return response.body;
+    }
 
     // Called when the fetch fails. The child class may want to reset components
     // like rate limiter.

@@ -8,6 +8,7 @@ import com.bzh.dytt.data.source.AppDatabase;
 import com.bzh.dytt.data.source.DyttService;
 import com.bzh.dytt.data.source.HomeAreaDao;
 import com.bzh.dytt.data.source.HomeItemDao;
+import com.bzh.dytt.util.LiveDataCallAdapterFactory;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -73,9 +74,10 @@ public class AppModule {
     @Singleton
     @Provides
     Retrofit provideRetrofit(OkHttpClient okHttpClient) {
-        return    new Retrofit
+        return new Retrofit
                 .Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                 .baseUrl(mBaseUrl)
                 .client(okHttpClient)
                 .build();
