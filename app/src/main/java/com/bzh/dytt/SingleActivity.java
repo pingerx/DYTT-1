@@ -20,8 +20,11 @@ public class SingleActivity extends AppCompatActivity implements HasSupportFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single);
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, VideoDetailPageFragment.newInstance
-                ("/html/gndy/dyzz/20180220/56345.html")).commit();
+                ("html/gndy/jddy/20180301/56392.html")).commit();
     }
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {

@@ -46,7 +46,7 @@ public class HomePageViewModelTest {
         when(mContext.getResources()).thenReturn(mock(Resources.class));
 
 
-        mHomePageViewModel = new HomePageViewModel(mContext, mRepository);
+//        mHomePageViewModel = new HomePageViewModel(mContext, mRepository);
     }
 
     @After
