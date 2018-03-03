@@ -99,6 +99,7 @@ public class HomeChildFragment extends BaseFragment {
                         mEmpty.setVisibility(View.VISIBLE);
                     } else {
                         if (mHomeArea.getType() == HomeType.NEWEST_168) {
+                            listResource.data.remove(listResource.data.size() - 1);
                             Collections.reverse(listResource.data);
                         } else if (mHomeArea.getType() == HomeType.NEWEST) {
                             listResource.data.remove(0);
