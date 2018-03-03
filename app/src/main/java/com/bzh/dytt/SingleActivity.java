@@ -1,8 +1,9 @@
 package com.bzh.dytt;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.bzh.dytt.home.VideoDetailPageFragment;
 
@@ -20,12 +21,15 @@ public class SingleActivity extends AppCompatActivity implements HasSupportFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single);
+        Intent intent = getIntent();
+        String detailLink = intent.getStringExtra("DETAIL_LINK");
+        assert detailLink != null;
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, VideoDetailPageFragment.newInstance
-                ("html/gndy/jddy/20180301/56392.html")).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, VideoDetailPageFragment.newInstance(detailLink)).commit();
     }
+
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentInjector;

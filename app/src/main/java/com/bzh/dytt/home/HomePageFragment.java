@@ -5,13 +5,13 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,9 +40,9 @@ public class HomePageFragment extends BaseFragment {
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
 
-    private HomePageViewModel mHomeViewModel;
+    HomePageViewModel mHomeViewModel;
 
-    private HomeTabAdapter mHomeTabAdapter;
+    HomeTabAdapter mHomeTabAdapter;
 
     private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
@@ -84,8 +84,6 @@ public class HomePageFragment extends BaseFragment {
                     mSwipeRefresh.setEnabled(true);
                     mLoadError.setVisibility(View.VISIBLE);
                 }
-
-                Log.i(TAG, "Home Resource Error: " + result.message);
             }
         }
     };
@@ -132,7 +130,8 @@ public class HomePageFragment extends BaseFragment {
         mSwipeRefresh.setOnRefreshListener(null);
     }
 
-    private static class HomeTabAdapter extends FragmentPagerAdapter {
+    @VisibleForTesting
+    public static class HomeTabAdapter extends FragmentPagerAdapter {
 
         private List<HomeArea> mTabData = new ArrayList<>();
 
@@ -153,7 +152,7 @@ public class HomePageFragment extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
-            return HomeChildrenFragment.newInstance(mTabData.get(position));
+            return HomeChildFragment.newInstance(mTabData.get(position));
         }
 
         void setTabData(List<HomeArea> tabData) {
