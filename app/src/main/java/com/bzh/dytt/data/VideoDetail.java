@@ -2,12 +2,18 @@ package com.bzh.dytt.data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import java.util.List;
 
-@Entity(tableName = "video_detail")
+@Entity(
+        tableName = "video_detail",
+        indices = {@Index(value = {"link"}, unique = true)}
+)
 public class VideoDetail {
 
     @PrimaryKey
@@ -65,6 +71,15 @@ public class VideoDetail {
 
     @ColumnInfo(name = "publish_time")
     private String mPublishTime;
+
+    @ColumnInfo(name = "translation_name")
+    private String mTranslationName;
+
+    @ColumnInfo(name = "is_valid_video_item")
+    private boolean mValidVideoItem = true;
+
+    @ColumnInfo(name = "category")
+    private int mCategory;
 
     public String getName() {
         return mName;
@@ -209,5 +224,29 @@ public class VideoDetail {
 
     public void setIMDBGradeUsers(String IMDBGradeUsers) {
         mIMDBGradeUsers = IMDBGradeUsers;
+    }
+
+    public String getTranslationName() {
+        return mTranslationName;
+    }
+
+    public void setTranslationName(String translationName) {
+        mTranslationName = translationName;
+    }
+
+    public boolean isValidVideoItem() {
+        return mValidVideoItem;
+    }
+
+    public void setValidVideoItem(boolean validVideoItem) {
+        mValidVideoItem = validVideoItem;
+    }
+
+    public int getCategory() {
+        return mCategory;
+    }
+
+    public void setCategory(int category) {
+        mCategory = category;
     }
 }

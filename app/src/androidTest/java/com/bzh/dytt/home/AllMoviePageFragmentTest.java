@@ -6,7 +6,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.bzh.dytt.R;
 import com.bzh.dytt.data.HomeArea;
-import com.bzh.dytt.data.HomeItem;
 import com.bzh.dytt.data.HomeType;
 import com.bzh.dytt.data.network.Resource;
 import com.bzh.dytt.testing.SingleFragmentActivity;
@@ -33,12 +32,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
-public class HomePageFragmentTest {
+public class AllMoviePageFragmentTest {
 
     @Rule
     public ActivityTestRule<SingleFragmentActivity> mActivityTestRule = new ActivityTestRule<SingleFragmentActivity>(SingleFragmentActivity.class, true, true);
-    private HomePageFragment mHomePageFragment;
-    private HomePageViewModel mHomePageViewModel;
+    private AllMoviePageFragment mAllMoviePageFragment;
 
 
     private MutableLiveData<Resource<List<HomeArea>>> mHomeAreas = new MutableLiveData<>();
@@ -47,14 +45,12 @@ public class HomePageFragmentTest {
     public void init() {
         EspressoTestUtil.disableProgressBarAnimations(mActivityTestRule);
 
-        mHomePageFragment = HomePageFragment.newInstance();
-        mHomePageViewModel = mock(HomePageViewModel.class);
+        mAllMoviePageFragment = AllMoviePageFragment.newInstance();
 
-        when(mHomePageViewModel.getHomeArea()).thenReturn(mHomeAreas);
 
-        mHomePageFragment.mViewModelFactory = ViewModelUtil.createFor(mHomePageViewModel);
+//        mAllMoviePageFragment.mViewModelFactory = ViewModelUtil.createFor(mAllMoviePageViewModel);
 
-        mActivityTestRule.getActivity().setFragment(mHomePageFragment);
+        mActivityTestRule.getActivity().setFragment(mAllMoviePageFragment);
     }
 
     @Test
@@ -65,30 +61,27 @@ public class HomePageFragmentTest {
         list.add(homeArea);
         list.add(homeArea2);
         mHomeAreas.postValue(Resource.success(list));
-        onView(withId(R.id.home_swipe_refresh)).check(matches(not(isEnabled())));
-        onView(withId(R.id.home_error)).check(matches(not(isDisplayed())));
+//        onView(withId(R.id.home_error)).check(matches(not(isDisplayed())));
         onView(withText(homeArea.getTitle())).check(matches(isDisplayed()));
         onView(withText(homeArea2.getTitle())).check(matches(isDisplayed()));
 
         onView(withText(homeArea.getTitle())).perform(click());
-        onView(withText(homeArea.getTitle())).check(matches(withText(mHomePageFragment.mHomeTabAdapter.getPageTitle(0).toString())));
+        onView(withText(homeArea.getTitle())).check(matches(withText(mAllMoviePageFragment.mMovieTabAdapter.getPageTitle(0).toString())));
 
         onView(withText(homeArea2.getTitle())).perform(click());
-        onView(withText(homeArea2.getTitle())).check(matches(withText(mHomePageFragment.mHomeTabAdapter.getPageTitle(1).toString())));
+        onView(withText(homeArea2.getTitle())).check(matches(withText(mAllMoviePageFragment.mMovieTabAdapter.getPageTitle(1).toString())));
 
     }
 
     @Test
     public void loading() {
         mHomeAreas.postValue(Resource.loading(null));
-        onView(withId(R.id.home_swipe_refresh)).check(matches(isDisplayed()));
     }
 
     @Test
     public void errorNullData() {
         mHomeAreas.postValue(Resource.error("wtf", null));
-        onView(withId(R.id.home_swipe_refresh)).check(matches(isEnabled()));
-        onView(withId(R.id.home_error)).check(matches(isDisplayed()));
+//        onView(withId(R.id.home_error)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -97,8 +90,7 @@ public class HomePageFragmentTest {
         HomeArea homeArea = new HomeArea("别志华", HomeType.NEWEST_168);
         list.add(homeArea);
         mHomeAreas.postValue(Resource.error("wtf", list));
-        onView(withId(R.id.home_swipe_refresh)).check(matches(not(isEnabled())));
-        onView(withId(R.id.home_error)).check(matches(not(isDisplayed())));
+//        onView(withId(R.id.home_error)).check(matches(not(isDisplayed())));
         onView(withText(homeArea.getTitle())).check(matches(isDisplayed()));
     }
 }

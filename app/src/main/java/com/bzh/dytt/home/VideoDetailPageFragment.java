@@ -9,14 +9,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
-import android.support.v7.graphics.Palette.PaletteAsyncListener;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -27,9 +24,9 @@ import com.bzh.dytt.data.VideoDetail;
 import com.bzh.dytt.data.network.Resource;
 import com.bzh.dytt.data.network.Status;
 import com.bzh.dytt.util.GlideApp;
-import com.github.florent37.glidepalette.BitmapPalette;
 import com.github.florent37.glidepalette.GlidePalette;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -69,13 +66,21 @@ public class VideoDetailPageFragment extends BaseFragment {
         return inflater.inflate(R.layout.video_detail_layout, container, false);
     }
 
-    private Observer<Resource<VideoDetail>> mVideoDetailObserver = new Observer<Resource<VideoDetail>>() {
+    @Override
+    protected void doViewCreated(View view, Bundle savedInstanceState) {
+        super.doViewCreated(view, savedInstanceState);
+        mVideoDetailPageViewModel = ViewModelProviders.of(this, mViewModelFactory).get(VideoDetailPageViewModel.class);
+        mVideoDetailPageViewModel.getVideoDetail(mDetailLink).observe(this, mVideoDetailObserver);
+
+    }
+
+    private Observer<Resource<List<VideoDetail>>> mVideoDetailObserver = new Observer<Resource<List<VideoDetail>>>() {
 
         @Override
-        public void onChanged(@Nullable Resource<VideoDetail> videoDetailResource) {
+        public void onChanged(@Nullable Resource<List<VideoDetail>> videoDetailResource) {
             VideoDetail videoDetail;
             if (videoDetailResource.status == Status.SUCCESS) {
-                videoDetail = videoDetailResource.data;
+                videoDetail = videoDetailResource.data.get(0);
                 if (videoDetail == null) {
                     return;
                 }
@@ -142,14 +147,6 @@ public class VideoDetailPageFragment extends BaseFragment {
             }
         }
     };
-
-    @Override
-    protected void doViewCreate(View view, Bundle savedInstanceState) {
-        super.doViewCreate(view, savedInstanceState);
-        mVideoDetailPageViewModel = ViewModelProviders.of(this, mViewModelFactory).get(VideoDetailPageViewModel.class);
-        mVideoDetailPageViewModel.getVideoDetail(mDetailLink).observe(this, mVideoDetailObserver);
-
-    }
 
     @BindView(R.id.video_cover)
     ImageView mVideoCoverIv;

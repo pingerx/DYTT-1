@@ -1,6 +1,7 @@
 package com.bzh.dytt.data;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
@@ -36,7 +37,6 @@ public final class HomeItem {
     @ColumnInfo(name = "time_millis")
     @NonNull
     private long mTimeMillis;
-
 
     public HomeItem() {
     }
@@ -113,4 +113,5 @@ public final class HomeItem {
     public void setTimeMillis(@NonNull long timeMillis) {
         mTimeMillis = timeMillis;
     }
+
 }

@@ -15,7 +15,8 @@ import android.view.MenuItem;
 
 import com.bzh.dytt.colorhunt.ColorHuntFragment;
 import com.bzh.dytt.girl.GirlFragment;
-import com.bzh.dytt.home.HomePageFragment;
+import com.bzh.dytt.home.AllMoviePageFragment;
+import com.bzh.dytt.home.NewMovieFragment;
 import com.bzh.dytt.view.NonInteractiveViewPage;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -135,13 +136,13 @@ public class MainActivity extends AppCompatActivity
             mToolbar.setTitle(R.string.nav_home_page);
             mContainer.setCurrentItem(0);
         }
-//        else if (id == R.id.nav_girl) {
-//            mToolbar.setTitle(R.string.nav_girl_page);
-//            mContainer.setCurrentItem(1);
-//        } else if (id == R.id.nav_color_hunt) {
-//            mToolbar.setTitle(R.string.nav_color_hunt_page);
-//            mContainer.setCurrentItem(2);
-//        }
+        else if (id == R.id.nav_movie) {
+            mToolbar.setTitle(R.string.nav_movie_page);
+            mContainer.setCurrentItem(1);
+        } else if (id == R.id.nav_imdb) {
+            mToolbar.setTitle(R.string.nav_imdb_page);
+            mContainer.setCurrentItem(2);
+        }
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -161,9 +162,9 @@ public class MainActivity extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return HomePageFragment.newInstance();
+                    return NewMovieFragment.newInstance();
                 case 1:
-                    return GirlFragment.newInstance();
+                    return AllMoviePageFragment.newInstance();
                 case 2:
                     return ColorHuntFragment.newInstance();
                 default:

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3281ab070b3f1e84c6bf5a972a21f8f2",
+    "identityHash": "0976168e1ac66b0c337e986bec16d04f",
     "entities": [
       {
         "tableName": "homeareas",
@@ -104,7 +104,7 @@
       },
       {
         "tableName": "video_detail",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`link` TEXT NOT NULL, `name` TEXT, `years` TEXT, `country` TEXT, `type` TEXT, `imdb_grade` TEXT, `imdb_grade_userds` TEXT, `douban_grade` TEXT, `douban_grade_users` TEXT, `file_size` TEXT, `duration` TEXT, `director` TEXT, `leading_role` TEXT, `description` TEXT, `cover_url` TEXT, `download_link` TEXT, `show_time` TEXT, `publish_time` TEXT, PRIMARY KEY(`link`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`link` TEXT NOT NULL, `name` TEXT, `years` TEXT, `country` TEXT, `type` TEXT, `imdb_grade` TEXT, `imdb_grade_userds` TEXT, `douban_grade` TEXT, `douban_grade_users` TEXT, `file_size` TEXT, `duration` TEXT, `director` TEXT, `leading_role` TEXT, `description` TEXT, `cover_url` TEXT, `download_link` TEXT, `show_time` TEXT, `publish_time` TEXT, `translation_name` TEXT, `is_valid_video_item` INTEGER NOT NULL, `category` INTEGER NOT NULL, PRIMARY KEY(`link`))",
         "fields": [
           {
             "fieldPath": "mDetailLink",
@@ -213,10 +213,64 @@
             "columnName": "publish_time",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "mTranslationName",
+            "columnName": "translation_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mValidVideoItem",
+            "columnName": "is_valid_video_item",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mCategory",
+            "columnName": "category",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
+            "link"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_video_detail_link",
+            "unique": true,
+            "columnNames": [
+              "link"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_video_detail_link` ON `${TABLE_NAME}` (`link`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "category_map",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category` INTEGER NOT NULL, `link` TEXT NOT NULL, PRIMARY KEY(`category`, `link`))",
+        "fields": [
+          {
+            "fieldPath": "mCategory",
+            "columnName": "category",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mLink",
+            "columnName": "link",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "category",
             "link"
           ],
           "autoGenerate": false
@@ -227,7 +281,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3281ab070b3f1e84c6bf5a972a21f8f2\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0976168e1ac66b0c337e986bec16d04f\")"
     ]
   }
 }

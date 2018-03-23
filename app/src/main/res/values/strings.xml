@@ -1,13 +1,15 @@
 <resources>
     <string name="app_name">电影天堂</string>
+    <string name="app_intro_one_line">随时随地, 想看就看</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
     <string name="label_publish_time">发布时间：%1$s</string>
     <string name="un_ftpurl_label">尚未提供下载地址~稍后再试哦</string>
     <string name="un_install_xunlei_label">该影片链接为迅雷P2P资源，须安装迅雷下载工具才能进行下载！</string>
-    <string name="nav_home_page">首页</string>
-    <string name="nav_girl_page">妹子图</string>
+    <string name="nav_home_page">新影推荐</string>
+    <string name="nav_movie_page">电影大全</string>
+    <string name="nav_imdb_page">IMDB精华影片</string>
     <string name="nav_color_hunt_page">Color Hunt</string>
     <string name="home_load_error">数据加载失败\n下拉刷新试试吧!</string>
     <string name="home_child_load_empty">还没有发现数据\n下拉刷新试试吧!</string>

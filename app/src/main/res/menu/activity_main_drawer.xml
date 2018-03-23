@@ -2,19 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_home"
             android:checked="true"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/nav_home_page"/>
-        <!--<item-->
-            <!--android:id="@+id/nav_girl"-->
-            <!--android:icon="@drawable/ic_menu_gallery"-->
-            <!--android:title="@string/nav_girl_page"/>-->
 
-        <!--<item-->
-            <!--android:id="@+id/nav_color_hunt"-->
-            <!--android:icon="@drawable/color_hunt_logo"-->
-            <!--android:title="@string/nav_color_hunt_page"/>-->
+        <item
+            android:id="@+id/nav_movie"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/nav_movie_page"/>
+
+        <item
+            android:id="@+id/nav_imdb"
+            android:icon="@drawable/color_hunt_logo"
+            android:title="@string/nav_imdb_page"/>
+
     </group>
 </menu>

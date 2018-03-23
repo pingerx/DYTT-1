@@ -41,11 +41,8 @@ public class HomeChildFragmentTest {
     @Rule
     public ActivityTestRule<SingleFragmentActivity> mTestRule = new ActivityTestRule<SingleFragmentActivity>(SingleFragmentActivity.class);
 
-    private HomeChildFragment mHomeChildFragment;
 
     private HomeArea mHomeArea;
-
-    private HomeChildViewModel mHomeChildViewModel;
 
     private MutableLiveData<Resource<List<HomeItem>>> mHomeItems = new MutableLiveData<>();
 
@@ -58,14 +55,6 @@ public class HomeChildFragmentTest {
 
         EspressoTestUtil.disableProgressBarAnimations(mTestRule);
 
-        mHomeChildViewModel = mock(HomeChildViewModel.class);
-        when(mHomeChildViewModel.getItemsByType(HomeType.NEWEST)).thenReturn(mHomeItems);
-
-        mHomeChildFragment = HomeChildFragment.newInstance(mHomeArea);
-
-        mHomeChildFragment.mFactory = ViewModelUtil.createFor(mHomeChildViewModel);
-
-        mTestRule.getActivity().setFragment(mHomeChildFragment);
     }
 
     @Test

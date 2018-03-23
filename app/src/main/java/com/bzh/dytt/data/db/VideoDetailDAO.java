@@ -11,13 +11,18 @@ import com.bzh.dytt.data.VideoDetail;
 
 import java.util.List;
 
+import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface VideoDetailDAO {
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     void insertVideoDetail(VideoDetail videoDetail);
+
+    @Insert(onConflict = REPLACE)
+    void insertVideoDetailList(List<VideoDetail> videoDetailList);
+
 
     @Update
     void updateVideoDetail(VideoDetail videoDetail);
@@ -28,9 +33,14 @@ public interface VideoDetailDAO {
     @Query("DELETE FROM video_detail")
     void deleteVideoDetails();
 
-    @Query("SELECT * FROM video_detail")
-    LiveData<List<VideoDetail>> getVideoDetails();
+    @Query("SELECT * FROM video_detail WHERE link IN(:links) ORDER BY rowid DESC")
+    LiveData<List<VideoDetail>> getVideoDetails(String[] links);
+
+
+//    @Query("SELECT * FROM video_detail")
+//    LiveData<List<VideoDetail>> getVideoDetails();
 
     @Query("SELECT * FROM video_detail WHERE link = :detailLink")
     LiveData<VideoDetail> getVideoDetailByLink(String detailLink);
+
 }

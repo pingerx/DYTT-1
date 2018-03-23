@@ -3,6 +3,11 @@ package com.bzh.dytt.data.network;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+/**
+ * A generic class that holds a value with its loading status.
+ * @param <T>
+ */
+
 public class Resource<T> {
 
     @NonNull

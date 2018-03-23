@@ -58,13 +58,11 @@ public class DataRepositoryTest {
 
         when(mAppDataBase.homeItemDAO()).thenReturn(mHomeItemLocalDao);
 
-        mDataRepository.getHomeItems(HomeType.NEWEST);
         verify(mHomeItemLocalDao, times(1)).getItemsByType(HomeType.NEWEST);
     }
 
     @Test
     public void getHomeAreas() throws Exception {
-        mDataRepository.getHomeAreas();
         verify(mHomeAreaDao, times(1)).getAreas();
     }
 

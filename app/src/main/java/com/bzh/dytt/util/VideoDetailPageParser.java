@@ -2,6 +2,7 @@ package com.bzh.dytt.util;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.bzh.dytt.data.VideoDetail;
 
@@ -30,13 +31,19 @@ public class VideoDetailPageParser {
     }
 
     public VideoDetail parseVideoDetail(String html) {
-        return mVideoDetailParser.parse(html);
+        VideoDetail videoDetail;
+        try {
+            videoDetail = mVideoDetailParser.parse(html);
+        } catch (Exception e) {
+            return new VideoDetail();
+        }
+        return videoDetail;
     }
 
 
     private static class InternalVideoDetailParser {
 
-        public VideoDetail parse(String s) {
+        public VideoDetail parse(String s) throws Exception{
             VideoDetail videoDetail = new VideoDetail();
             Document document = Jsoup.parse(s);
             String html = document.select("div.co_content8").select("ul").toString();
@@ -139,7 +146,11 @@ public class VideoDetailPageParser {
                     } else if (info.startsWith(Const.TRANSLATIONNAME)) {
                         // 译名
                         info = info.substring(info.indexOf(Const.TRANSLATIONNAME) + Const.TRANSLATIONNAME.length());
-//                        entity.setTranslationName(info);
+
+                        if(!TextUtils.isEmpty(info)) {
+                            entity.setTranslationName(info.split("/")[0]);
+                        }
+
                     } else if (info.startsWith(Const.YEARS)) {
                         // 年代
                         info = info.substring(info.indexOf(Const.YEARS) + Const.YEARS.length());

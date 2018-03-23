@@ -47,7 +47,7 @@ public class AppModule {
                 Request request = chain.request();
                 Response response = chain.proceed(request);
                 return response.newBuilder()
-                        .header("Cache-Control", "public, max-age=60")
+//                        .header("Cache-Control", "public, max-age=1")
                         .removeHeader("Pragma")
                         .build();
             }

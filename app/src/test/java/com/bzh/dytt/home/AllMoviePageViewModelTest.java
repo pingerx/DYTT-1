@@ -24,7 +24,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class HomePageViewModelTest {
+public class AllMoviePageViewModelTest {
 
     // Executes each task synchronously using Architecture Components.
     @Rule
@@ -36,7 +36,6 @@ public class HomePageViewModelTest {
     @Mock
     private DataRepository mRepository;
 
-    private HomePageViewModel mHomePageViewModel;
 
     @Before
     public void setUp() throws Exception {
@@ -45,7 +44,6 @@ public class HomePageViewModelTest {
         when(mContext.getApplicationContext()).thenReturn(mContext);
         when(mContext.getResources()).thenReturn(mock(Resources.class));
 
-        mHomePageViewModel = new HomePageViewModel(mRepository);
     }
 
     @After
@@ -54,18 +52,12 @@ public class HomePageViewModelTest {
 
     @Test
     public void getHomeArea() throws Exception {
-        LiveData<Resource<List<HomeArea>>> homeArea = mHomePageViewModel.getHomeArea();
-
-        verify(mRepository).getHomeAreas();
 
     }
 
     @Test
     public void getHomeItems() throws Exception {
 
-        LiveData<Resource<List<HomeItem>>> homeItems = mHomePageViewModel.getHomeItems(HomeType.NEWEST_168);
-
-        verify(mRepository).getHomeItems(HomeType.NEWEST_168);
     }
 
 }

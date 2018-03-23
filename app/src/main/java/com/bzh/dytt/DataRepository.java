@@ -3,21 +3,29 @@ package com.bzh.dytt;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 
+import com.bzh.dytt.data.CategoryMap;
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
 import com.bzh.dytt.data.HomeType;
+import com.bzh.dytt.data.TypeConsts;
 import com.bzh.dytt.data.VideoDetail;
+import com.bzh.dytt.data.db.DatabaseResource;
 import com.bzh.dytt.data.network.ApiResponse;
 import com.bzh.dytt.data.db.AppDatabase;
 import com.bzh.dytt.data.network.DyttService;
+import com.bzh.dytt.task.FetchVideoDetailTask;
 import com.bzh.dytt.util.HomePageParser;
 import com.bzh.dytt.data.network.NetworkBoundResource;
 import com.bzh.dytt.data.network.Resource;
+import com.bzh.dytt.util.LoadableMovieParser;
 import com.bzh.dytt.util.VideoDetailPageParser;
 import com.bzh.dytt.util.RateLimiter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -33,131 +41,135 @@ public class DataRepository {
     private DyttService mService;
     private AppDatabase mAppDatabase;
     private HomePageParser mHomePageParser;
+    private LoadableMovieParser mLoadableMovieParser;
     private VideoDetailPageParser mVideoDetailPageParser;
 
     @Inject
     DataRepository(AppExecutors appExecutors, DyttService service, AppDatabase appDatabase, HomePageParser
-            homePageParser, VideoDetailPageParser videoDetailPageParser) {
+            homePageParser, VideoDetailPageParser videoDetailPageParser, LoadableMovieParser loadableMovieParser) {
         mAppExecutors = appExecutors;
         mService = service;
         mAppDatabase = appDatabase;
         mHomePageParser = homePageParser;
+        mLoadableMovieParser = loadableMovieParser;
         mVideoDetailPageParser = videoDetailPageParser;
     }
 
     private RateLimiter<String> mRepoListRateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
 
-    /**
-     * 获取电影天堂首页的各个区域的信息
-     */
-    public LiveData<Resource<List<HomeArea>>> getHomeAreas() {
-        return new NetworkBoundResource<List<HomeArea>, ResponseBody>(mAppExecutors) {
+
+    public LiveData<Resource<List<CategoryMap>>> getLatestMovie() {
+        return new NetworkBoundResource<List<CategoryMap>, ResponseBody>(mAppExecutors) {
 
             @Override
             protected void saveCallResult(@NonNull ResponseBody responseBody) {
                 try {
                     String item = new String(responseBody.bytes(), "GB2312");
-                    List<HomeArea> homeAreas = mHomePageParser.parseAreas(item);
-                    mAppDatabase.homeAreaDAO().insertAreas(homeAreas);
+                    List<CategoryMap> categoryMaps = mHomePageParser.parseLatestMovieCategoryMap(item);
+                    for (int i = categoryMaps.size() - 1; i>=0;i--) {
+                        VideoDetail videoDetail = new VideoDetail();
+                        videoDetail.setDetailLink(categoryMaps.get(i).getLink());
+                        mAppDatabase.videoDetailDAO().insertVideoDetail(videoDetail);
+                        getVideoDetailNew(categoryMaps.get(i).getLink());
+                    }
+                    mAppDatabase.categoryMapDAO().insertCategoryMapList(categoryMaps);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
-            protected boolean shouldFetch(@Nullable List<HomeArea> data) {
-                return data == null || data.isEmpty() || mRepoListRateLimit.shouldFetch("HOME_AREA");
+            protected boolean shouldFetch(@Nullable List<CategoryMap> data) {
+                return true;
             }
 
             @NonNull
             @Override
-            protected LiveData<List<HomeArea>> loadFromDb() {
-                return mAppDatabase.homeAreaDAO().getAreas();
+            protected LiveData<List<CategoryMap>> loadFromDb() {
+                return mAppDatabase.categoryMapDAO().getMovieLinksByCategory(TypeConsts.MovieCategory
+                        .HOME_LATEST_MOVIE.ordinal());
+
             }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> createCall() {
-                return mService.getHomePage();
+                return mService.getHomePage2("http://192.168.31.52:3000/dytt1.htm");
             }
         }.getAsLiveData();
     }
 
-
-    /**
-     * 获取各个区域里的具体条目信息
-     * @param type 区域 ID {@link HomeType}
-     */
-    public LiveData<Resource<List<HomeItem>>> getHomeItems(final int type) {
-        return new NetworkBoundResource<List<HomeItem>, ResponseBody>(mAppExecutors) {
+    public LiveData<Resource<List<CategoryMap>>> getMovieListByCategory(TypeConsts.MovieCategory category) {
+        return new NetworkBoundResource<List<CategoryMap>, ResponseBody>(mAppExecutors) {
 
             @Override
             protected void saveCallResult(@NonNull ResponseBody responseBody) {
                 try {
                     String item = new String(responseBody.bytes(), "GB2312");
-                    List<HomeItem> homeItems = mHomePageParser.parseItems(item);
-                    mAppDatabase.homeItemDAO().insertItems(homeItems);
+                    List<CategoryMap> categoryMaps = mLoadableMovieParser.getMovieList(item, category);
+                    for (int i = categoryMaps.size() - 1; i>=0;i--) {
+                        VideoDetail videoDetail = new VideoDetail();
+                        videoDetail.setDetailLink(categoryMaps.get(i).getLink());
+                        mAppDatabase.videoDetailDAO().insertVideoDetail(videoDetail);
+                        getVideoDetailNew(categoryMaps.get(i).getLink());
+                    }
+                    mAppDatabase.categoryMapDAO().insertCategoryMapList(categoryMaps);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
-            protected boolean shouldFetch(@Nullable List<HomeItem> data) {
-                return data == null || data.isEmpty() || mRepoListRateLimit.shouldFetch("HOME_ITEMS");
+            protected boolean shouldFetch(@Nullable List<CategoryMap> data) {
+                return true;
             }
 
             @NonNull
             @Override
-            protected LiveData<List<HomeItem>> loadFromDb() {
-                return mAppDatabase.homeItemDAO().getItemsByType(type);
+            protected LiveData<List<CategoryMap>> loadFromDb() {
+                return mAppDatabase.categoryMapDAO().getMovieLinksByCategory(category.ordinal());
             }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> createCall() {
-                return mService.getHomePage();
-            }
-
-        }.getAsLiveData();
-    }
-
-    public LiveData<Resource<VideoDetail>> getVideoDetail(final String detailLink) {
-        return new NetworkBoundResource<VideoDetail, ResponseBody>(mAppExecutors) {
-
-            @Override
-            protected void saveCallResult(@NonNull ResponseBody responseBody) {
-                String item = null;
-                try {
-                    item = new String(responseBody.bytes(), "GB2312");
-                    VideoDetail videoDetail = mVideoDetailPageParser.parseVideoDetail(item);
-                    videoDetail.setDetailLink(detailLink);
-                    mAppDatabase.videoDetailDAO().insertVideoDetail(videoDetail);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                String categoryString = "dyzz/list_23_1.html";
+                switch (category) {
+                    case CHINA_MOVIE:
+                        categoryString = "china/list_4_1.html";
+                        break;
+                    case RIHAN_MOVIE:
+                        categoryString = "rihan/list_6_1.html";
+                        break;
+                    case OUMEI_MOVIE:
+                        categoryString = "oumei/list_7_1.html";
+                        break;
+                    case NEW_MOVIE:
+                        categoryString = "dyzz/list_23_1.html";
+                        break;
+                    default:
+                        categoryString = "dyzz/list_23_1.html";
                 }
 
-            }
-
-            @Override
-            protected boolean shouldFetch(@Nullable VideoDetail data) {
-                return data == null || mRepoListRateLimit.shouldFetch("VIDEO_DETAIL");
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<VideoDetail> loadFromDb() {
-                LiveData<VideoDetail> tmp = mAppDatabase.videoDetailDAO().getVideoDetailByLink(detailLink);
-                return tmp;
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<ApiResponse<ResponseBody>> createCall() {
-                return mService.getVideoDetail(detailLink);
+                return mService.getMovieListByCategory(categoryString);
             }
         }.getAsLiveData();
     }
+
+    public LiveData<Resource<List<VideoDetail>>> getVideoDetails(List<String> detailLinks) {
+        return new DatabaseResource<List<VideoDetail>>(mAppExecutors) {
+            @NonNull
+            @Override
+            protected LiveData<List<VideoDetail>> loadFromDb() {
+                return mAppDatabase.videoDetailDAO().getVideoDetails(detailLinks.toArray(new String[]{}));
+
+            }
+        }.getAsLiveData();
+    }
+
+    public void getVideoDetailNew(String link) {
+        FetchVideoDetailTask task = new FetchVideoDetailTask(link, mAppDatabase, mService, mVideoDetailPageParser);
+        mAppExecutors.networkIO().execute(task);
+    }
+
 }

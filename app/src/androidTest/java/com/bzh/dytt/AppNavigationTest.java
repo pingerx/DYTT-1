@@ -42,7 +42,7 @@ public class AppNavigationTest {
 
         clickHomeIconToOpenNavigation();
 
-        onView(withText(R.string.nav_girl_page)).perform(click());
+        onView(withText(R.string.nav_movie_page)).perform(click());
 
         onView(withId(R.id.girl_page)).check(matches(isDisplayed()));
 

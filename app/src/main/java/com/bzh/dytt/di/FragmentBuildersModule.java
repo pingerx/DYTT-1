@@ -2,8 +2,9 @@ package com.bzh.dytt.di;
 
 import com.bzh.dytt.colorhunt.ColorHuntFragment;
 import com.bzh.dytt.girl.GirlFragment;
-import com.bzh.dytt.home.HomeChildFragment;
-import com.bzh.dytt.home.HomePageFragment;
+import com.bzh.dytt.home.AllMoviePageFragment;
+import com.bzh.dytt.home.LoadableMoviePageFragment;
+import com.bzh.dytt.home.NewMovieFragment;
 import com.bzh.dytt.home.VideoDetailPageFragment;
 
 import dagger.Module;
@@ -12,7 +13,7 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
-    abstract HomePageFragment contributeHomePageFragment();
+    abstract AllMoviePageFragment contributeHomePageFragment();
 
     @ContributesAndroidInjector
     abstract ColorHuntFragment contributeColorHuntFragment();
@@ -21,8 +22,11 @@ public abstract class FragmentBuildersModule {
     abstract GirlFragment contributeGirlFragment();
 
     @ContributesAndroidInjector
-    abstract HomeChildFragment contributeHomeChildFragment();
+    abstract VideoDetailPageFragment contributeVideoDetailFragment();
 
     @ContributesAndroidInjector
-    abstract VideoDetailPageFragment contributeVideoDetailFragment();
+    abstract NewMovieFragment contributeNewMovieFragment();
+
+    @ContributesAndroidInjector
+    abstract LoadableMoviePageFragment contributeLoadbleMoviePageFragment();
 }

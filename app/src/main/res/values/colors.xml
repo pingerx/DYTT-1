@@ -2,10 +2,10 @@
 <resources>
     <color name="item_home_child_title">#242c43</color>
     <color name="item_home_chile_time">#b7b7bb</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#222730</color>
+    <color name="colorPrimary">#292f3a</color>
     <color name="colorPrimaryLight">#C5CAE9</color>
-    <color name="colorAccent">#FF9800</color>
+    <color name="colorAccent">#eac63b</color>
     <color name="colorDivider">#BDBDBD</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>

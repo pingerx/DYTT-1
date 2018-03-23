@@ -7,6 +7,7 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
+import android.util.Log;
 
 import com.bzh.dytt.AppExecutors;
 
@@ -20,7 +21,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     public NetworkBoundResource(AppExecutors appExecutors) {
         mAppExecutors = appExecutors;
 
-        result.setValue(Resource.<ResultType>loading(null));
+        result.setValue(Resource.loading(null));
 
         final LiveData<ResultType> dbSource = loadFromDb();
 
@@ -29,9 +30,11 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             @Override
             public void onChanged(@Nullable ResultType data) {
                 result.removeSource(dbSource);
+
                 if (shouldFetch(data)) {
                     fetchFromNetwork(dbSource);
                 } else {
+
                     result.addSource(dbSource, new Observer<ResultType>() {
                         @Override
                         public void onChanged(@Nullable ResultType newData) {

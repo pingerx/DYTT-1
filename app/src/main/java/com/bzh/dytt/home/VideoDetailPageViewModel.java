@@ -10,6 +10,9 @@ import com.bzh.dytt.DataRepository;
 import com.bzh.dytt.data.VideoDetail;
 import com.bzh.dytt.data.network.Resource;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Inject;
 
 public class VideoDetailPageViewModel extends AndroidViewModel {
@@ -22,8 +25,8 @@ public class VideoDetailPageViewModel extends AndroidViewModel {
         mRepository = repository;
     }
 
-    public LiveData<Resource<VideoDetail>> getVideoDetail(String detailLink) {
-        return mRepository.getVideoDetail(detailLink);
+    public LiveData<Resource<List<VideoDetail>>> getVideoDetail(String detailLink) {
+        return mRepository.getVideoDetails(Collections.singletonList(detailLink));
     }
 
 }

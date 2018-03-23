@@ -1,8 +1,11 @@
 package com.bzh.dytt.util;
 
+import com.bzh.dytt.data.CategoryMap;
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
 import com.bzh.dytt.data.HomeType;
+import com.bzh.dytt.data.TypeConsts;
+import com.bzh.dytt.data.VideoDetail;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,11 +38,11 @@ public class HomePageParser {
 
         if (html != null && html.length() != 0) {
             result.addAll(mNewestParse.parseAreas(html));
-            result.addAll(mNewest168Parse.parseAreas(html));
-            result.addAll(mThunderParse.parseAreas(html));
-            result.addAll(mChinaTvParse.parseAreas(html));
-            result.addAll(mJSKParse.parseAreas(html));
-            result.addAll(mEAParse.parseAreas(html));
+//            result.addAll(mNewest168Parse.parseAreas(html));
+//            result.addAll(mThunderParse.parseAreas(html));
+//            result.addAll(mChinaTvParse.parseAreas(html));
+//            result.addAll(mJSKParse.parseAreas(html));
+//            result.addAll(mEAParse.parseAreas(html));
         }
 
         return result;
@@ -50,18 +53,39 @@ public class HomePageParser {
         List<HomeItem> result = new ArrayList<>();
 
         if (html != null && html.length() != 0) {
-            List<HomeItem> l1 = mNewest168Parse.parseItems(html);
-            result.addAll(l1);
+//            List<HomeItem> l1 = mNewest168Parse.parseItems(html);
+//            result.addAll(l1);
             List<HomeItem> l2 = mNewestParse.parseItems(html);
             result.addAll(l2);
-            List<HomeItem> l3 = mThunderParse.parseItems(html);
-            result.addAll(l3);
-            List<HomeItem> l4 = mChinaTvParse.parseItems(html);
-            result.addAll(l4);
-            List<HomeItem> l5 = mJSKParse.parseItems(html);
-            result.addAll(l5);
-            List<HomeItem> l6 = mEAParse.parseItems(html);
-            result.addAll(l6);
+//            List<HomeItem> l3 = mThunderParse.parseItems(html);
+//            result.addAll(l3);
+//            List<HomeItem> l4 = mChinaTvParse.parseItems(html);
+//            result.addAll(l4);
+//            List<HomeItem> l5 = mJSKParse.parseItems(html);
+//            result.addAll(l5);
+//            List<HomeItem> l6 = mEAParse.parseItems(html);
+//            result.addAll(l6);
+        }
+
+        return result;
+    }
+
+
+    public List<CategoryMap> parseLatestMovieCategoryMap(String html) {
+
+        List<CategoryMap> result = new ArrayList<>();
+
+        if (html != null && html.length() != 0) {
+
+            List<HomeItem> homeItems = mNewestParse.parseItems(html);
+            for (HomeItem homeItem : homeItems) {
+                if (homeItem.getDetailLink().contains("gndy")) {
+                    CategoryMap categoryMap = new CategoryMap();
+                    categoryMap.setLink(homeItem.getDetailLink());
+                    categoryMap.setCategory(TypeConsts.MovieCategory.HOME_LATEST_MOVIE.ordinal());
+                    result.add(categoryMap);
+                }
+            }
         }
 
         return result;
