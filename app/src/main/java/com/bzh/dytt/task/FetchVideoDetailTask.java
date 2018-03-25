@@ -1,7 +1,6 @@
 package com.bzh.dytt.task;
 
 
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -36,9 +35,9 @@ public class FetchVideoDetailTask implements Runnable {
             Response<ResponseBody> response = mService.getVideoDetailNew(mVideoDetailLink).execute();
             ApiResponse<ResponseBody> apiResponse = new ApiResponse<>(response);
 
-            if(apiResponse.isSuccessful()) {
+            if (apiResponse.isSuccessful()) {
                 VideoDetail videoDetail = mParser.parseVideoDetail(new String(apiResponse.body.bytes(), "GB2312"));
-                if(TextUtils.isEmpty(videoDetail.getName())){
+                if (TextUtils.isEmpty(videoDetail.getName())) {
                     videoDetail.setValidVideoItem(false);
                 } else {
                     videoDetail.setValidVideoItem(true);

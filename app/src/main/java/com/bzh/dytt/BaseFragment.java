@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import com.bzh.dytt.di.Injectable;
 
 import butterknife.ButterKnife;
 
-public abstract class BaseFragment extends Fragment  implements Injectable {
+public abstract class BaseFragment extends Fragment implements Injectable {
 
     @Override
     public final void onCreate(@Nullable Bundle savedInstanceState) {

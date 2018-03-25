@@ -21,7 +21,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     public NetworkBoundResource(AppExecutors appExecutors) {
         mAppExecutors = appExecutors;
 
-        result.setValue(Resource.loading(null));
+        result.setValue(Resource.<ResultType>loading(null));
 
         final LiveData<ResultType> dbSource = loadFromDb();
 

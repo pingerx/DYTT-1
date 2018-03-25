@@ -9,7 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-
+import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +24,7 @@ import com.bzh.dytt.data.VideoDetail;
 import com.bzh.dytt.data.network.Resource;
 import com.bzh.dytt.data.network.Status;
 import com.bzh.dytt.util.GlideApp;
+import com.github.florent37.glidepalette.BitmapPalette;
 import com.github.florent37.glidepalette.GlidePalette;
 
 import java.util.List;
@@ -37,6 +38,137 @@ public class VideoDetailPageFragment extends BaseFragment {
 
     private static final String TAG = "VideoDetailPageFragment";
     private static final String KEY_DETAIL_LINK = "DETAIL_LINK";
+    @Inject
+    ViewModelProvider.Factory mViewModelFactory;
+    @BindView(R.id.video_cover)
+    ImageView mVideoCoverIv;
+    @BindView(R.id.video_name)
+    TextView mVideoNameTv;
+    @BindView(R.id.video_type)
+    TextView mVideoTypeTv;
+    @BindView(R.id.video_country)
+    TextView mVideoCountryTv;
+    @BindView(R.id.video_duration)
+    TextView mVideoDuration;
+    @BindView(R.id.video_show_time)
+    TextView mVideoShowTime;
+    @BindView(R.id.video_director)
+    TextView mVideoDirector;
+    @BindView(R.id.video_leading_role)
+    TextView mVideoLeadingRole;
+    @BindView(R.id.video_description)
+    TextView mVideoDescription;
+    @BindView(R.id.video_cover_bg)
+    View mVideoCoverBgView;
+    @BindView(R.id.download_button)
+    View mDownloadBtn;
+
+    //    @BindView(R.id.video_grade_douban)
+//    TextView mRateDouban;
+//
+//    @BindView(R.id.video_grade_imdb)
+//    TextView mRateIMDB;
+    @BindView(R.id.douban_grade)
+    TextView mDoubanGradeTv;
+    @BindView(R.id.douban_rating_bar)
+    RatingBar mDoubanGradeRatingBar;
+    @BindView(R.id.imdb_grade)
+    TextView mIMDBGradeTv;
+    @BindView(R.id.imdb_rating_bar)
+    RatingBar mIMDBRatingBar;
+    @BindView(R.id.douban_rating_layout)
+    View mDoubanRatingLayout;
+    //
+//    @BindView(R.id.video_download_address)
+//    TextView mVideoDownloadAddress;
+    @BindView(R.id.imdb_rating_layout)
+    View mIMDBRatingLayout;
+    @BindView(R.id.show_time_layout)
+    View mShowTimeLayout;
+    private String mDetailLink;
+    private VideoDetailPageViewModel mVideoDetailPageViewModel;
+    private Observer<Resource<List<VideoDetail>>> mVideoDetailObserver = new Observer<Resource<List<VideoDetail>>>() {
+
+        @Override
+        public void onChanged(@Nullable Resource<List<VideoDetail>> videoDetailResource) {
+            VideoDetail videoDetail;
+            if (videoDetailResource.status == Status.SUCCESS) {
+                videoDetail = videoDetailResource.data.get(0);
+                if (videoDetail == null) {
+                    return;
+                }
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(videoDetail.getName());
+                mVideoNameTv.setText(videoDetail.getName());
+                mVideoTypeTv.setText(videoDetail.getType());
+                mVideoCountryTv.setText(videoDetail.getCountry());
+                mVideoDuration.setText(videoDetail.getDuration());
+                mVideoShowTime.setText(videoDetail.getShowTime());
+                mVideoTypeTv.setText(videoDetail.getType());
+
+                if (TextUtils.isEmpty(videoDetail.getDoubanGrade()) || Objects.equals(videoDetail.getDoubanGrade(), "0")) {
+                    mDoubanRatingLayout.setVisibility(View.GONE);
+                } else {
+                    mDoubanGradeTv.setText("豆瓣/" + videoDetail.getDoubanGrade());
+                    mDoubanGradeRatingBar.setRating(Float.parseFloat(videoDetail.getDoubanGrade()) / 2);
+                }
+
+                if (TextUtils.isEmpty(videoDetail.getIMDBGrade()) || Objects.equals(videoDetail.getIMDBGrade(), "0")) {
+                    mIMDBRatingLayout.setVisibility(View.GONE);
+                } else {
+                    mIMDBGradeTv.setText("IMDB/" + videoDetail.getIMDBGrade());
+                    mIMDBRatingBar.setRating(Float.parseFloat(videoDetail.getIMDBGrade()) / 2);
+                }
+
+                StringBuilder directorStrBuilder = new StringBuilder();
+                for (String director : videoDetail.getDirector()) {
+                    directorStrBuilder.append(director);
+                    directorStrBuilder.append(" ");
+                }
+                mVideoDirector.setText(directorStrBuilder.toString());
+
+                StringBuilder leadingRoleStrBuilder = new StringBuilder();
+                for (String director : videoDetail.getLeadingRole()) {
+                    leadingRoleStrBuilder.append(director);
+                    leadingRoleStrBuilder.append(" ");
+                }
+                mVideoLeadingRole.setText(leadingRoleStrBuilder.toString());
+                mVideoDescription.setText(videoDetail.getDescription());
+                mVideoDescription.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (((TextView) view).getMaxLines() > 4) {
+                            ((TextView) view).setMaxLines(4);
+                        } else {
+                            ((TextView) view).setMaxLines(100);
+                        }
+                    }
+                });
+
+                mDownloadBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
+                if (TextUtils.isEmpty(videoDetail.getShowTime())) {
+                    mShowTimeLayout.setVisibility(View.GONE);
+                }
+
+                GlideApp.with(VideoDetailPageFragment.this)
+                        .load(videoDetail.getCoverUrl())
+                        .listener(GlidePalette.with(videoDetail.getCoverUrl()).use(GlidePalette.Profile.MUTED_DARK)
+                                .intoBackground(mVideoCoverBgView).crossfade(true).intoCallBack(new BitmapPalette.CallBack() {
+                                    @Override
+                                    public void onPaletteLoaded(@Nullable Palette palette) {
+                                        ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(palette.getDarkMutedColor(Color.WHITE)));
+                                    }
+                                }))
+                        .placeholder(R.drawable.default_video)
+                        .into(mVideoCoverIv);
+            }
+        }
+    };
 
     public static VideoDetailPageFragment newInstance(String detailLink) {
         Bundle args = new Bundle();
@@ -45,14 +177,6 @@ public class VideoDetailPageFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    private String mDetailLink;
-
-    @Inject
-    ViewModelProvider.Factory mViewModelFactory;
-
-    private VideoDetailPageViewModel mVideoDetailPageViewModel;
-
 
     @Override
     protected void doCreate(@Nullable Bundle savedInstanceState) {
@@ -73,141 +197,4 @@ public class VideoDetailPageFragment extends BaseFragment {
         mVideoDetailPageViewModel.getVideoDetail(mDetailLink).observe(this, mVideoDetailObserver);
 
     }
-
-    private Observer<Resource<List<VideoDetail>>> mVideoDetailObserver = new Observer<Resource<List<VideoDetail>>>() {
-
-        @Override
-        public void onChanged(@Nullable Resource<List<VideoDetail>> videoDetailResource) {
-            VideoDetail videoDetail;
-            if (videoDetailResource.status == Status.SUCCESS) {
-                videoDetail = videoDetailResource.data.get(0);
-                if (videoDetail == null) {
-                    return;
-                }
-                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(videoDetail.getName());
-                mVideoNameTv.setText(videoDetail.getName());
-                mVideoTypeTv.setText(videoDetail.getType());
-                mVideoCountryTv.setText(videoDetail.getCountry());
-                mVideoDuration.setText(videoDetail.getDuration());
-                mVideoShowTime.setText(videoDetail.getShowTime());
-                mVideoTypeTv.setText(videoDetail.getType());
-
-                if (TextUtils.isEmpty(videoDetail.getDoubanGrade()) || Objects.equals(videoDetail.getDoubanGrade(), "0")) {
-                    mDoubanRatingLayout.setVisibility(View.GONE);
-                } else {
-                    mDoubanGradeTv.setText("豆瓣/" + videoDetail.getDoubanGrade());
-                    mDoubanGradeRatingBar.setRating(Float.parseFloat(videoDetail.getDoubanGrade())/2);
-                }
-
-                if (TextUtils.isEmpty(videoDetail.getIMDBGrade()) || Objects.equals(videoDetail.getIMDBGrade(), "0")) {
-                    mIMDBRatingLayout.setVisibility(View.GONE);
-                } else {
-                    mIMDBGradeTv.setText("IMDB/" + videoDetail.getIMDBGrade());
-                    mIMDBRatingBar.setRating(Float.parseFloat(videoDetail.getIMDBGrade())/2);
-                }
-
-                StringBuilder directorStrBuilder = new StringBuilder();
-                for (String director : videoDetail.getDirector()) {
-                    directorStrBuilder.append(director);
-                    directorStrBuilder.append(" ");
-                }
-                mVideoDirector.setText(directorStrBuilder.toString());
-
-                StringBuilder leadingRoleStrBuilder = new StringBuilder();
-                for (String director : videoDetail.getLeadingRole()) {
-                    leadingRoleStrBuilder.append(director);
-                    leadingRoleStrBuilder.append(" ");
-                }
-                mVideoLeadingRole.setText(leadingRoleStrBuilder.toString());
-                mVideoDescription.setText(videoDetail.getDescription());
-                mVideoDescription.setOnClickListener(view -> {
-                    if (((TextView) view).getMaxLines() > 4) {
-                        ((TextView) view).setMaxLines(4);
-                    } else {
-                        ((TextView) view).setMaxLines(100);
-                    }
-                });
-
-                mDownloadBtn.setOnClickListener(view -> {
-
-                });
-
-                if(TextUtils.isEmpty(videoDetail.getShowTime())) {
-                    mShowTimeLayout.setVisibility(View.GONE);
-                }
-
-                GlideApp.with(VideoDetailPageFragment.this)
-                        .load(videoDetail.getCoverUrl())
-                        .listener(GlidePalette.with(videoDetail.getCoverUrl()).use(GlidePalette.Profile.MUTED_DARK)
-                                .intoBackground(mVideoCoverBgView).crossfade(true).intoCallBack(palette -> {
-                                    ((AppCompatActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(palette.getDarkMutedColor(Color.WHITE)));
-                                }))
-                        .placeholder(R.drawable.default_video)
-                        .into(mVideoCoverIv);
-            }
-        }
-    };
-
-    @BindView(R.id.video_cover)
-    ImageView mVideoCoverIv;
-
-    @BindView(R.id.video_name)
-    TextView mVideoNameTv;
-
-    @BindView(R.id.video_type)
-    TextView mVideoTypeTv;
-
-    @BindView(R.id.video_country)
-    TextView mVideoCountryTv;
-
-//    @BindView(R.id.video_grade_douban)
-//    TextView mRateDouban;
-//
-//    @BindView(R.id.video_grade_imdb)
-//    TextView mRateIMDB;
-
-    @BindView(R.id.video_duration)
-    TextView mVideoDuration;
-
-    @BindView(R.id.video_show_time)
-    TextView mVideoShowTime;
-
-    @BindView(R.id.video_director)
-    TextView mVideoDirector;
-
-    @BindView(R.id.video_leading_role)
-    TextView mVideoLeadingRole;
-
-    @BindView(R.id.video_description)
-    TextView mVideoDescription;
-//
-//    @BindView(R.id.video_download_address)
-//    TextView mVideoDownloadAddress;
-
-    @BindView(R.id.video_cover_bg)
-    View mVideoCoverBgView;
-
-    @BindView(R.id.download_button)
-    View mDownloadBtn;
-
-    @BindView(R.id.douban_grade)
-    TextView mDoubanGradeTv;
-
-    @BindView(R.id.douban_rating_bar)
-    RatingBar mDoubanGradeRatingBar;
-
-    @BindView(R.id.imdb_grade)
-    TextView mIMDBGradeTv;
-
-    @BindView(R.id.imdb_rating_bar)
-    RatingBar mIMDBRatingBar;
-
-    @BindView(R.id.douban_rating_layout)
-    View mDoubanRatingLayout;
-
-    @BindView(R.id.imdb_rating_layout)
-    View mIMDBRatingLayout;
-
-    @BindView(R.id.show_time_layout)
-    View mShowTimeLayout;
 }

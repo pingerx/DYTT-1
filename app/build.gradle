@@ -41,11 +41,6 @@ android {
         }
     }
 
-    compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
-    }
-
     // Always show the result of every unit test, even if it passes.
     testOptions.unitTests.all {
         testLogging {
@@ -74,7 +69,7 @@ android {
 
 dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:8.8.1"
-    annotationProcessor "android.arch.lifecycle:compiler:1.1.0"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.14.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
@@ -92,11 +87,11 @@ dependencies {
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.android.support:recyclerview-v7:27.1.0'
     implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.1'
-    implementation 'android.arch.lifecycle:extensions:1.1.0'
-    implementation 'android.arch.lifecycle:viewmodel:1.1.0'
-    implementation 'android.arch.lifecycle:livedata:1.1.0'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'android.arch.lifecycle:viewmodel:1.1.1'
+    implementation 'android.arch.lifecycle:livedata:1.1.1'
     implementation 'android.arch.persistence.room:runtime:1.0.0'
-    implementation 'android.arch.paging:runtime:1.0.0-alpha6'
+    implementation 'android.arch.paging:runtime:1.0.0-alpha7'
     implementation 'org.jsoup:jsoup:1.8.3'
     implementation 'com.google.dagger:dagger:2.14.1'
     implementation 'com.google.dagger:dagger-android:2.14.1'
@@ -104,7 +99,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.6.1'
     implementation 'com.android.support:palette-v7:27.1.0'
     implementation 'com.github.florent37:glidepalette:2.1.2'
-    implementation 'com.google.android.gms:play-services-ads:11.8.0'
+    implementation 'com.google.android.gms:play-services-ads:12.0.0'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.7.19'
@@ -124,7 +119,7 @@ dependencies {
     androidTestImplementation 'com.android.support:design:27.1.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.1'
-    androidTestImplementation 'android.arch.core:core-testing:1.1.0'
+    androidTestImplementation 'android.arch.core:core-testing:1.1.1'
     androidTestImplementation 'org.mockito:mockito-core:2.7.19'
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
 }

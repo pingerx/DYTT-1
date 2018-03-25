@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +45,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieListAdapter.MovieItemHolder holder, int position) {
-        VideoDetail videoDetail = mItems.get(position);
+    public void onBindViewHolder(@NonNull final MovieListAdapter.MovieItemHolder holder, int position) {
+        final VideoDetail videoDetail = mItems.get(position);
 
         if (videoDetail != null) {
             holder.VideoTitleTv.setText(Objects.equals(videoDetail.getCountry(), "中国") ? videoDetail.getName() : videoDetail.getTranslationName());
@@ -61,12 +60,15 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                     .placeholder(new ColorDrawable(Color.GRAY))
                     .into(holder.VideoCover);
 
-            holder.itemView.setOnClickListener(view -> {
-                Activity activity = getActivityByHolder(holder);
-                if (activity != null) {
-                    Intent intent = new Intent(activity, SingleActivity.class);
-                    intent.putExtra("DETAIL_LINK", videoDetail.getDetailLink());
-                    activity.startActivity(intent);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Activity activity = getActivityByHolder(holder);
+                    if (activity != null) {
+                        Intent intent = new Intent(activity, SingleActivity.class);
+                        intent.putExtra("DETAIL_LINK", videoDetail.getDetailLink());
+                        activity.startActivity(intent);
+                    }
                 }
             });
         }
@@ -117,7 +119,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
     }
 
-    public class VideoDetailDiffCallback extends DiffUtil.Callback{
+    public class VideoDetailDiffCallback extends DiffUtil.Callback {
 
         List<VideoDetail> oldVideoDetails;
         List<VideoDetail> newVideoDetails;
