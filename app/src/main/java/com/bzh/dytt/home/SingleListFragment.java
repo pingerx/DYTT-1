@@ -22,6 +22,8 @@ import butterknife.BindView;
 
 public abstract class SingleListFragment<T> extends BaseFragment {
 
+    private static final String TAG = "SingleListFragment";
+
     protected RecyclerView.Adapter mAdapter;
 
     protected ViewModel mViewModel;
@@ -40,13 +42,13 @@ public abstract class SingleListFragment<T> extends BaseFragment {
 
     protected Observer<Resource<List<T>>> mObserver = new Observer<Resource<List<T>>>() {
         @Override
-        public void onChanged(@Nullable Resource<List<T>> listResource) {
+        public void onChanged(@Nullable Resource<List<T>> result) {
 
             mEmpty.setVisibility(View.GONE);
             mError.setVisibility(View.GONE);
 
-            assert listResource != null;
-            switch (listResource.status) {
+            assert result != null;
+            switch (result.status) {
                 case ERROR: {
                     mSwipeRefresh.setRefreshing(false);
                     mError.setVisibility(View.VISIBLE);
@@ -57,11 +59,11 @@ public abstract class SingleListFragment<T> extends BaseFragment {
                 }
                 break;
                 case SUCCESS: {
-                    if (listResource.data == null || listResource.data.isEmpty()) {
+                    mSwipeRefresh.setRefreshing(false);
+                    if (result.data == null || result.data.isEmpty()) {
                         mEmpty.setVisibility(View.VISIBLE);
                     } else {
-                        mSwipeRefresh.setRefreshing(false);
-                        setListData(listResource.data);
+                        setListData(result.data);
                     }
                 }
                 break;

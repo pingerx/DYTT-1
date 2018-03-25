@@ -3,10 +3,12 @@ package com.bzh.dytt.home;
 
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.bzh.dytt.BaseViewModel;
 import com.bzh.dytt.DataRepository;
@@ -22,29 +24,30 @@ import javax.inject.Inject;
 
 public class NewMovieViewModel extends BaseViewModel {
 
+    private static final String TAG = "NewMovieViewModel";
+
     private final CategoryHandler mCategoryHandler;
 
-    private LiveData<Resource<List<VideoDetail>>> mVideoList;
+    private MediatorLiveData<Resource<List<VideoDetail>>> mVideoList;
 
     @Inject
     NewMovieViewModel(DataRepository repository) {
         super(repository);
         mCategoryHandler = new CategoryHandler(mDataRepository);
-        mVideoList = Transformations.switchMap(mCategoryHandler.getCategoryMap(), new Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>>() {
+        mVideoList = (MediatorLiveData<Resource<List<VideoDetail>>>) Transformations.switchMap(mCategoryHandler.getCategoryMap(), new Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>>() {
             @Override
-            public LiveData<Resource<List<VideoDetail>>> apply(Resource<List<CategoryMap>> input) {
+            public LiveData<Resource<List<VideoDetail>>> apply(Resource<List<CategoryMap>> result) {
                 List<String> linkList = new ArrayList<>();
-                if (input.data != null) {
-                    for (CategoryMap categoryMap : input.data) {
+                if (result.data != null) {
+                    for (CategoryMap categoryMap : result.data) {
                         linkList.add(categoryMap.getLink());
-                        mDataRepository.getVideoDetailNew(categoryMap.getLink());
                     }
                 }
                 return mDataRepository.getVideoDetails(linkList);
             }
         });
 
-        mCategoryHandler.refresh();
+        refresh();
     }
 
     void refresh() {
@@ -72,8 +75,8 @@ public class NewMovieViewModel extends BaseViewModel {
             if (result == null) {
                 unregister();
             } else {
-                mCategoryMap.setValue(result);
                 if (result.status == Status.SUCCESS || result.status == Status.ERROR) {
+                    mCategoryMap.setValue(result);
                     unregister();
                 }
             }

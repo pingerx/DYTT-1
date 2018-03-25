@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0976168e1ac66b0c337e986bec16d04f",
+    "identityHash": "686395d0e3dda8f85da82c65c2a31e60",
     "entities": [
       {
         "tableName": "homeareas",
@@ -253,7 +253,7 @@
       },
       {
         "tableName": "category_map",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category` INTEGER NOT NULL, `link` TEXT NOT NULL, PRIMARY KEY(`category`, `link`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category` INTEGER NOT NULL, `link` TEXT NOT NULL, `is_parsed` INTEGER NOT NULL, PRIMARY KEY(`category`, `link`))",
         "fields": [
           {
             "fieldPath": "mCategory",
@@ -265,6 +265,12 @@
             "fieldPath": "mLink",
             "columnName": "link",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mIsParsed",
+            "columnName": "is_parsed",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -281,7 +287,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0976168e1ac66b0c337e986bec16d04f\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"686395d0e3dda8f85da82c65c2a31e60\")"
     ]
   }
 }

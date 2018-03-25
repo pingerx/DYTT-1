@@ -18,6 +18,8 @@ import java.util.List;
 
 public abstract class DatabaseResource<ResultType> {
 
+    private static final String TAG = "DatabaseResource";
+
     private final AppExecutors mAppExecutors;
 
     private MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
