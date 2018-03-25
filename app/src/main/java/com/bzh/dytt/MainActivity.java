@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.bzh.dytt.colorhunt.ColorHuntFragment;
-import com.bzh.dytt.girl.GirlFragment;
 import com.bzh.dytt.home.AllMoviePageFragment;
 import com.bzh.dytt.home.NewMovieFragment;
 import com.bzh.dytt.view.NonInteractiveViewPage;
@@ -34,11 +33,9 @@ import dagger.android.support.HasSupportFragmentInjector;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HasSupportFragmentInjector {
 
+    private static final String TAG = "MainActivity";
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentInjector;
-
-    private static final String TAG = "MainActivity";
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -135,8 +132,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             mToolbar.setTitle(R.string.nav_home_page);
             mContainer.setCurrentItem(0);
-        }
-        else if (id == R.id.nav_movie) {
+        } else if (id == R.id.nav_movie) {
             mToolbar.setTitle(R.string.nav_movie_page);
             mContainer.setCurrentItem(1);
         } else if (id == R.id.nav_imdb) {

@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
         tableName = "category_map",
         primaryKeys = {"category", "link"}
 )
-
 public class CategoryMap {
 
     @ColumnInfo(name = "category")
@@ -19,7 +18,6 @@ public class CategoryMap {
     @ColumnInfo(name = "link")
     @NonNull
     private String mLink;
-
 
     public String getLink() {
         return mLink;
