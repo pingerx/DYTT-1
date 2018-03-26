@@ -20,9 +20,8 @@ public interface VideoDetailDAO {
     @Insert(onConflict = IGNORE)
     void insertVideoDetail(VideoDetail videoDetail);
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     void insertVideoDetailList(List<VideoDetail> videoDetailList);
-
 
     @Update
     void updateVideoDetail(VideoDetail videoDetail);

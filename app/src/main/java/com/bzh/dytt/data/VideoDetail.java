@@ -249,4 +249,12 @@ public class VideoDetail {
     public void setCategory(int category) {
         mCategory = category;
     }
+
+    @Override
+    public String toString() {
+        return "VideoDetail{" +
+                "mDetailLink='" + mDetailLink + '\'' +
+                ", mName='" + mName + '\'' +
+                '}';
+    }
 }

@@ -14,7 +14,12 @@ import com.bzh.dytt.AppExecutors;
 import com.bzh.dytt.data.network.ApiResponse;
 import com.bzh.dytt.data.network.Resource;
 
+import java.util.List;
+
 public abstract class DatabaseResource<ResultType> {
+
+    private static final String TAG = "DatabaseResource";
+
     private final AppExecutors mAppExecutors;
 
     private MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
@@ -23,26 +28,16 @@ public abstract class DatabaseResource<ResultType> {
     public DatabaseResource(AppExecutors appExecutors) {
         mAppExecutors = appExecutors;
 
-        result.setValue(Resource.loading(null));
+        result.setValue(Resource.<ResultType>loading(null));
 
         final LiveData<ResultType> dbSource = loadFromDb();
 
         result.addSource(dbSource, new Observer<ResultType>() {
             @Override
             public void onChanged(@Nullable ResultType newData) {
-//                result.removeSource(dbSource);
-//                result.addSource(loadFromDb(), new Observer<ResultType>() {
-//                    @Override
-//                    public void onChanged(@Nullable ResultType newData) {
-//                        Log.d("Yifan", "newData : " + newData);
-//                        result.setValue(Resource.success(newData));
-//                    }
-//                });
                 result.setValue(Resource.success(newData));
-
             }
         });
-
     }
 
     @NonNull

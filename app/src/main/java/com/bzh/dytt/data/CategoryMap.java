@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
         tableName = "category_map",
         primaryKeys = {"category", "link"}
 )
-
 public class CategoryMap {
 
     @ColumnInfo(name = "category")
@@ -20,6 +19,8 @@ public class CategoryMap {
     @NonNull
     private String mLink;
 
+    @ColumnInfo(name = "is_parsed")
+    private boolean mIsParsed;
 
     public String getLink() {
         return mLink;
@@ -35,5 +36,31 @@ public class CategoryMap {
 
     public void setCategory(int category) {
         mCategory = category;
+    }
+
+    public void setIsParsed(boolean mIsParsed) {
+        this.mIsParsed = mIsParsed;
+    }
+
+    public boolean getIsParsed() {
+        return mIsParsed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CategoryMap that = (CategoryMap) o;
+
+        if (mCategory != that.mCategory) return false;
+        return mLink.equals(that.mLink);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mCategory;
+        result = 31 * result + mLink.hashCode();
+        return result;
     }
 }

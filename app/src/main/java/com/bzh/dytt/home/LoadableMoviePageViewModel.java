@@ -1,6 +1,7 @@
 package com.bzh.dytt.home;
 
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 
@@ -43,14 +44,17 @@ public class LoadableMoviePageViewModel extends BaseViewModel {
     }
 
     private void createMovieList() {
-        videoList = Transformations.switchMap(mDataRepository.getMovieListByCategory(mCategory), categoryMaps -> {
-            List<String> linkList = new ArrayList<>();
-            if (categoryMaps != null && categoryMaps.data != null) {
-                for (CategoryMap categoryMap : categoryMaps.data) {
-                    linkList.add(categoryMap.getLink());
+        videoList = Transformations.switchMap(mDataRepository.getMovieListByCategory(mCategory), new Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>>() {
+            @Override
+            public LiveData<Resource<List<VideoDetail>>> apply(Resource<List<CategoryMap>> categoryMaps) {
+                List<String> linkList = new ArrayList<>();
+                if (categoryMaps != null && categoryMaps.data != null) {
+                    for (CategoryMap categoryMap : categoryMaps.data) {
+                        linkList.add(categoryMap.getLink());
+                    }
                 }
+                return mDataRepository.getVideoDetails(linkList);
             }
-            return mDataRepository.getVideoDetails(linkList);
         });
     }
 

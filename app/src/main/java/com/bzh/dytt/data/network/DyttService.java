@@ -2,8 +2,6 @@ package com.bzh.dytt.data.network;
 
 import android.arch.lifecycle.LiveData;
 
-import com.bzh.dytt.data.VideoDetail;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -14,7 +12,6 @@ public interface DyttService {
 
     @GET("/")
     LiveData<ApiResponse<ResponseBody>> getHomePage();
-
 
     @GET
     LiveData<ApiResponse<ResponseBody>> getHomePage2(@Url String url);
