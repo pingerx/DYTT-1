@@ -70,17 +70,22 @@ public class DataRepository {
                     List<CategoryMap> categoryMaps = mHomePageParser.parseLatestMovieCategoryMap(item);
                     mAppDatabase.categoryMapDAO().insertCategoryMapList(categoryMaps);
 
-                    List<VideoDetail> details = new ArrayList<>();
+                                      List<VideoDetail> details = new ArrayList<>();
                     for (int i = categoryMaps.size() - 1; i >= 0; i--) {
                         VideoDetail videoDetail = new VideoDetail();
+                        CategoryMap category = categoryMaps.get(i);
+                        videoDetail.setDetailLink(category.getLink());
+                        details.add(videoDetail);
+                    }
+                    mAppDatabase.videoDetailDAO().insertVideoDetailList(details);
+
+                    for (int i = categoryMaps.size() - 1; i >= 0; i--) {
                         CategoryMap category = categoryMaps.get(i);
                         boolean isParsed = mAppDatabase.categoryMapDAO().IsParsed(category.getLink());
                         if (!isParsed) {
                             getVideoDetailNew(category);
-                            details.add(videoDetail);
                         }
                     }
-                    mAppDatabase.videoDetailDAO().insertVideoDetailList(details);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -121,13 +126,18 @@ public class DataRepository {
                     for (int i = categoryMaps.size() - 1; i >= 0; i--) {
                         VideoDetail videoDetail = new VideoDetail();
                         CategoryMap category = categoryMaps.get(i);
+                        videoDetail.setDetailLink(category.getLink());
+                        details.add(videoDetail);
+                    }
+                    mAppDatabase.videoDetailDAO().insertVideoDetailList(details);
+
+                    for (int i = categoryMaps.size() - 1; i >= 0; i--) {
+                        CategoryMap category = categoryMaps.get(i);
                         boolean isParsed = mAppDatabase.categoryMapDAO().IsParsed(category.getLink());
                         if (!isParsed) {
                             getVideoDetailNew(category);
-                            details.add(videoDetail);
                         }
                     }
-                    mAppDatabase.videoDetailDAO().insertVideoDetailList(details);
 
                 } catch (IOException e) {
                     e.printStackTrace();
