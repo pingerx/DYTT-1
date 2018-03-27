@@ -93,7 +93,7 @@ public abstract class SingleListFragment<T> extends BaseFragment {
                 }
                 break;
                 case SUCCESS: {
-                    Log.d(TAG, "onChanged() called with: result = [" + result + "]");
+                    Log.d(TAG, "onChanged() called with: result = [" + result + "] " + result.data.size());
                     mSwipeRefresh.setRefreshing(false);
                     if (result.data == null || result.data.isEmpty()) {
                         mEmpty.setVisibility(View.VISIBLE);

@@ -1,11 +1,14 @@
 package com.bzh.dytt.home;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +34,7 @@ import butterknife.ButterKnife;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieItemHolder> {
 
-    private List<VideoDetail> mItems = new ArrayList<>();
+    private List<VideoDetail> mItems;
     private Context mContext;
 
     public MovieListAdapter(Context context) {
@@ -79,24 +82,78 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                 }
             });
         }
-
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return mItems == null ? 0 : mItems.size();
     }
 
-    void setItems(List<VideoDetail> items) {
-        mItems.clear();
-        mItems.addAll(items);
-        notifyDataSetChanged();
+    // each time data is set, we update this variable so that if DiffUtil calculation returns
+    // after repetitive updates, we can ignore the old calculation
+    private int mDataVersion = 0;
+
+    @SuppressLint("StaticFieldLeak")
+    @MainThread
+    public void replace(final List<VideoDetail> update) {
+        mDataVersion ++;
+        if (mItems == null) {
+            if (update == null) {
+                return;
+            }
+            mItems = update;
+            notifyDataSetChanged();
+        } else if (update == null) {
+            int oldSize = mItems.size();
+            mItems = null;
+            notifyItemRangeRemoved(0, oldSize);
+        } else {
+            final int startVersion = mDataVersion;
+            final List<VideoDetail> oldItems = mItems;
+            new AsyncTask<Void, Void, DiffUtil.DiffResult>() {
+                @Override
+                protected DiffUtil.DiffResult  doInBackground(Void... voids) {
+                    return DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                        @Override
+                        public int getOldListSize() {
+                            return oldItems.size();
+                        }
+
+                        @Override
+                        public int getNewListSize() {
+                            return update.size();
+                        }
+
+                        @Override
+                        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                            VideoDetail oldItem = oldItems.get(oldItemPosition);
+                            VideoDetail newItem = update.get(newItemPosition);
+                            return Objects.equals(oldItem.getDetailLink(), newItem.getDetailLink());
+                        }
+
+                        @Override
+                        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                            VideoDetail oldItem = oldItems.get(oldItemPosition);
+                            VideoDetail newItem = update.get(newItemPosition);
+                            return Objects.equals(oldItem.getDetailLink(), newItem.getDetailLink());
+                        }
+                    });
+                }
+
+                @Override
+                protected void onPostExecute(DiffUtil.DiffResult diffResult) {
+                    if (startVersion != mDataVersion) {
+                        // ignore update
+                        return;
+                    }
+                    mItems = update;
+                    diffResult.dispatchUpdatesTo(MovieListAdapter.this);
+
+                }
+            }.execute();
+        }
     }
 
-    void addItems(List<VideoDetail> items) {
-        mItems.addAll(items);
-        notifyDataSetChanged();
-    }
 
     private Activity getActivityByHolder(MovieListAdapter.MovieItemHolder holder) {
         if (holder.itemView.getContext() instanceof Activity) {

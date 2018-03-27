@@ -16,6 +16,7 @@ import com.bzh.dytt.data.network.DyttService;
 import com.bzh.dytt.data.network.NetworkBoundResource;
 import com.bzh.dytt.data.network.Resource;
 import com.bzh.dytt.task.FetchVideoDetailTask;
+import com.bzh.dytt.task.FetchVideoDetailTask2;
 import com.bzh.dytt.util.HomePageParser;
 import com.bzh.dytt.util.LoadableMovieParser;
 import com.bzh.dytt.util.RateLimiter;
@@ -135,7 +136,7 @@ public class DataRepository {
                     for (CategoryMap category : categoryMaps) {
                         boolean isParsed = mAppDatabase.categoryMapDAO().IsParsed(category.getLink());
                         if (!isParsed) {
-//                            getVideoDetailNew(category);
+                            getVideoDetailNew(category);
                         }
                     }
 
@@ -188,14 +189,17 @@ public class DataRepository {
                         }
                         mAppDatabase.videoDetailDAO().insertVideoDetailList(details);
 
-                        for (CategoryMap category : categoryMaps) {
-                            boolean isParsed = mAppDatabase.categoryMapDAO().IsParsed(category.getLink());
-                            if (!isParsed) {
-//                                getVideoDetailNew(category);
-                            }
-                        }
 
                         mAppDatabase.categoryPageDAO().updatePage(nextPage);
+
+                        getVideoDetailNew2(categoryMaps);
+//                        for (CategoryMap category : categoryMaps) {
+//                            boolean isParsed = mAppDatabase.categoryMapDAO().IsParsed(category.getLink());
+//                            if (!isParsed) {
+//                                getVideoDetailNew(category);
+//                            }
+//                        }
+
 
                         liveData.postValue(Resource.success(categoryMaps));
                     } else {
@@ -207,6 +211,11 @@ public class DataRepository {
             }
         });
         return liveData;
+    }
+
+    public void getVideoDetailNew2(List<CategoryMap> categoryMap) {
+        FetchVideoDetailTask2 task = new FetchVideoDetailTask2(categoryMap, mAppDatabase, mService, mVideoDetailPageParser);
+        mAppExecutors.networkIO().execute(task);
     }
 
     public LiveData<Resource<List<VideoDetail>>> getVideoDetails(final List<String> detailLinks) {
