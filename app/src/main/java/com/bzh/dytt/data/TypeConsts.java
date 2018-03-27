@@ -1,35 +1,9 @@
 package com.bzh.dytt.data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TypeConsts {
-
-    public enum MovieCategory {
-        NEW_MOVIE(1),
-        CHINA_MOVIE(2),
-        OUMEI_MOVIE(3),
-        RIHAN_MOVIE(4),
-        HOME_LATEST_MOVIE(5);
-
-        private int id;
-
-        MovieCategory(int id) {
-            this.id = id;
-        }
-
-        public String getTitle() {
-            switch (id) {
-                case 1:
-                    return "最新电影";
-                case 2:
-                    return "国内电影";
-                case 3:
-                    return "欧美电影";
-                case 4:
-                    return "日韩电影";
-                default:
-                    return "未知";
-            }
-        }
-    }
 
     public static String getMoviePageByCategory(MovieCategory movieCategory) {
         switch (movieCategory) {
@@ -59,4 +33,67 @@ public class TypeConsts {
         return null;
     }
 
+    public enum MovieCategory {
+        NEW_MOVIE(1),
+        CHINA_MOVIE(2),
+        OUMEI_MOVIE(3),
+        RIHAN_MOVIE(4),
+        HOME_LATEST_MOVIE(5);
+
+        private static Map<MovieCategory, Integer> mNextPageUrl = new HashMap<>();
+
+        private int id;
+
+        MovieCategory(int id) {
+            this.id = id;
+        }
+
+        public String getTitle() {
+            switch (id) {
+                case 1:
+                    return "最新电影";
+                case 2:
+                    return "国内电影";
+                case 3:
+                    return "欧美电影";
+                case 4:
+                    return "日韩电影";
+                default:
+                    return "未知";
+            }
+        }
+
+        public String getDefaultUrl() {
+            int index = 1;
+            mNextPageUrl.put(this, index);
+            return String.format(getUnformatUrl(), index);
+        }
+
+        public String getNextPageUrl() {
+            int index = mNextPageUrl.get(this) + 1;
+            mNextPageUrl.put(this, index);
+            return String.format(getUnformatUrl(), index);
+        }
+
+        public String getUnformatUrl() {
+            String result;
+            switch (id) {
+                case 1:
+                    result = "dyzz/list_23_%d.html";
+                    break;
+                case 2:
+                    result = "china/list_4_%d.html";
+                    break;
+                case 3:
+                    result = "oumei/list_7_%d.html";
+                    break;
+                case 4:
+                    result = "rihan/list_6_%d.html";
+                    break;
+                default:
+                    result = "dyzz/list_23_%d.html";
+            }
+            return result;
+        }
+    }
 }

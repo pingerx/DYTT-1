@@ -23,7 +23,7 @@ public interface CategoryMapDAO {
     @Insert(onConflict = IGNORE)
     void insertCategoryMapList(List<CategoryMap> categoryMapList);
 
-    @Query("SELECT * FROM category_map WHERE category = :category ORDER BY rowid ASC")
+    @Query("SELECT * FROM category_map WHERE category = :category ORDER BY serial_number DESC")
     LiveData<List<CategoryMap>> getMovieLinksByCategory(int category);
 
     @Update

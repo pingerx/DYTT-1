@@ -93,6 +93,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         notifyDataSetChanged();
     }
 
+    void addItems(List<VideoDetail> items) {
+        mItems.addAll(items);
+        notifyDataSetChanged();
+    }
+
     private Activity getActivityByHolder(MovieListAdapter.MovieItemHolder holder) {
         if (holder.itemView.getContext() instanceof Activity) {
             return ((Activity) holder.itemView.getContext());

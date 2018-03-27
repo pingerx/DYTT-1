@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "686395d0e3dda8f85da82c65c2a31e60",
+    "identityHash": "51f3c187931277e2770dc60892091832",
     "entities": [
       {
         "tableName": "homeareas",
@@ -104,7 +104,7 @@
       },
       {
         "tableName": "video_detail",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`link` TEXT NOT NULL, `name` TEXT, `years` TEXT, `country` TEXT, `type` TEXT, `imdb_grade` TEXT, `imdb_grade_userds` TEXT, `douban_grade` TEXT, `douban_grade_users` TEXT, `file_size` TEXT, `duration` TEXT, `director` TEXT, `leading_role` TEXT, `description` TEXT, `cover_url` TEXT, `download_link` TEXT, `show_time` TEXT, `publish_time` TEXT, `translation_name` TEXT, `is_valid_video_item` INTEGER NOT NULL, `category` INTEGER NOT NULL, PRIMARY KEY(`link`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`link` TEXT NOT NULL, `name` TEXT, `years` TEXT, `country` TEXT, `type` TEXT, `imdb_grade` TEXT, `imdb_grade_userds` TEXT, `douban_grade` TEXT, `douban_grade_users` TEXT, `file_size` TEXT, `duration` TEXT, `director` TEXT, `leading_role` TEXT, `description` TEXT, `cover_url` TEXT, `download_link` TEXT, `show_time` TEXT, `publish_time` TEXT, `translation_name` TEXT, `is_valid_video_item` INTEGER NOT NULL, `category` INTEGER NOT NULL, `serial_number` INTEGER NOT NULL, PRIMARY KEY(`link`))",
         "fields": [
           {
             "fieldPath": "mDetailLink",
@@ -231,6 +231,12 @@
             "columnName": "category",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "mSN",
+            "columnName": "serial_number",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -253,7 +259,7 @@
       },
       {
         "tableName": "category_map",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category` INTEGER NOT NULL, `link` TEXT NOT NULL, `is_parsed` INTEGER NOT NULL, PRIMARY KEY(`category`, `link`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category` INTEGER NOT NULL, `link` TEXT NOT NULL, `is_parsed` INTEGER NOT NULL, `serial_number` INTEGER NOT NULL, PRIMARY KEY(`category`, `link`))",
         "fields": [
           {
             "fieldPath": "mCategory",
@@ -272,6 +278,12 @@
             "columnName": "is_parsed",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "mSN",
+            "columnName": "serial_number",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -287,7 +299,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"686395d0e3dda8f85da82c65c2a31e60\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"51f3c187931277e2770dc60892091832\")"
     ]
   }
 }

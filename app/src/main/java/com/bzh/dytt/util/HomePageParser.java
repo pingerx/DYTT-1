@@ -78,9 +78,11 @@ public class HomePageParser {
 
             List<HomeItem> homeItems = mNewestParse.parseItems(html);
             for (HomeItem homeItem : homeItems) {
-                if (homeItem.getDetailLink().contains("gndy")) {
+                String link = homeItem.getDetailLink();
+                if (link.contains("gndy")) {
                     CategoryMap categoryMap = new CategoryMap();
-                    categoryMap.setLink(homeItem.getDetailLink());
+                    categoryMap.setLink(link);
+                    categoryMap.setSN(Integer.parseInt(link.substring(link.lastIndexOf('/') + 1, link.lastIndexOf('.'))));
                     categoryMap.setCategory(TypeConsts.MovieCategory.HOME_LATEST_MOVIE.ordinal());
                     result.add(categoryMap);
                 }

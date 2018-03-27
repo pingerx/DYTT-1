@@ -40,7 +40,7 @@ public abstract class SingleListFragment<T> extends BaseFragment {
     @BindView(R.id.error_layout)
     View mError;
 
-    protected Observer<Resource<List<T>>> mObserver = new Observer<Resource<List<T>>>() {
+    protected Observer<Resource<List<T>>> mFirstPageObserver = new Observer<Resource<List<T>>>() {
         @Override
         public void onChanged(@Nullable Resource<List<T>> result) {
 
@@ -70,6 +70,38 @@ public abstract class SingleListFragment<T> extends BaseFragment {
             }
         }
     };
+
+    protected Observer<Resource<List<T>>> mMorePageObserver = new Observer<Resource<List<T>>>() {
+        @Override
+        public void onChanged(@Nullable Resource<List<T>> result) {
+
+            mEmpty.setVisibility(View.GONE);
+            mError.setVisibility(View.GONE);
+
+            assert result != null;
+            switch (result.status) {
+                case ERROR: {
+                    mSwipeRefresh.setRefreshing(false);
+                    mError.setVisibility(View.VISIBLE);
+                }
+                break;
+                case LOADING: {
+                    mSwipeRefresh.setRefreshing(true);
+                }
+                break;
+                case SUCCESS: {
+                    mSwipeRefresh.setRefreshing(false);
+                    if (result.data == null || result.data.isEmpty()) {
+                        mEmpty.setVisibility(View.VISIBLE);
+                    } else {
+                        addListData(result.data);
+                    }
+                }
+                break;
+            }
+        }
+    };
+
     private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -86,7 +118,11 @@ public abstract class SingleListFragment<T> extends BaseFragment {
 
     protected abstract void setListData(List<T> listData);
 
+    protected abstract void addListData(List<T> data);
+
     protected abstract LiveData<Resource<List<T>>> getLiveData();
+
+    protected abstract LiveData<Resource<List<T>>> getMoreLiveData();
 
     protected abstract ViewModel createViewModel();
 
@@ -100,7 +136,12 @@ public abstract class SingleListFragment<T> extends BaseFragment {
         super.doViewCreated(view, savedInstanceState);
         mViewModel = createViewModel();
         mSwipeRefresh.setOnRefreshListener(mRefreshListener);
-        getLiveData().observe(this, mObserver);
+        if (getLiveData() != null) {
+            getLiveData().observe(this, mFirstPageObserver);
+        }
+        if (getMoreLiveData() != null) {
+            getMoreLiveData().observe(this, mMorePageObserver);
+        }
         mAdapter = createAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);

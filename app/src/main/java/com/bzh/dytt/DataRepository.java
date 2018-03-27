@@ -1,6 +1,7 @@
 package com.bzh.dytt;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -28,6 +29,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 @Singleton
 public class DataRepository {
@@ -93,7 +95,7 @@ public class DataRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<CategoryMap> data) {
-                return true;
+                return data == null || data.isEmpty() || mRepoListRateLimit.shouldFetch("LATEST_MOVIE");
             }
 
             @NonNull
@@ -146,7 +148,7 @@ public class DataRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<CategoryMap> data) {
-                return true;
+                return data == null || data.isEmpty() || mRepoListRateLimit.shouldFetch("MOVIE_LIST_" + category.getTitle());
             }
 
             @NonNull
@@ -158,27 +160,54 @@ public class DataRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> createCall() {
-                String categoryString = "dyzz/list_23_1.html";
-                switch (category) {
-                    case CHINA_MOVIE:
-                        categoryString = "china/list_4_1.html";
-                        break;
-                    case RIHAN_MOVIE:
-                        categoryString = "rihan/list_6_1.html";
-                        break;
-                    case OUMEI_MOVIE:
-                        categoryString = "oumei/list_7_1.html";
-                        break;
-                    case NEW_MOVIE:
-                        categoryString = "dyzz/list_23_1.html";
-                        break;
-                    default:
-                        categoryString = "dyzz/list_23_1.html";
-                }
-
-                return mService.getMovieListByCategory(categoryString);
+                return mService.getMovieListByCategory(category.getDefaultUrl());
             }
         }.getAsLiveData();
+    }
+
+
+    public LiveData<Resource<List<CategoryMap>>> getNextMovieListByCategory(final TypeConsts.MovieCategory category) {
+        final MutableLiveData<Resource<List<CategoryMap>>> liveData = new MutableLiveData<>();
+        mAppExecutors.networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String nextPageUrl = category.getNextPageUrl();
+                    Response<ResponseBody> response = mService.getMovieListByCategory2(nextPageUrl).execute();
+                    ApiResponse<ResponseBody> apiResponse = new ApiResponse<>(response);
+                    if (apiResponse.isSuccessful()) {
+
+                        String item = new String(apiResponse.body.bytes(), "GB2312");
+                        List<CategoryMap> categoryMaps = mLoadableMovieParser.getMovieList(item, category);
+                        mAppDatabase.categoryMapDAO().insertCategoryMapList(categoryMaps);
+
+                        List<VideoDetail> details = new ArrayList<>();
+                        for (int i = categoryMaps.size() - 1; i >= 0; i--) {
+                            VideoDetail videoDetail = new VideoDetail();
+                            CategoryMap category = categoryMaps.get(i);
+                            videoDetail.setDetailLink(category.getLink());
+                            details.add(videoDetail);
+                        }
+                        mAppDatabase.videoDetailDAO().insertVideoDetailList(details);
+
+                        for (int i = categoryMaps.size() - 1; i >= 0; i--) {
+                            CategoryMap category = categoryMaps.get(i);
+                            boolean isParsed = mAppDatabase.categoryMapDAO().IsParsed(category.getLink());
+                            if (!isParsed) {
+                                getVideoDetailNew(category);
+                            }
+                        }
+
+                        liveData.postValue(Resource.success(categoryMaps));
+                    } else {
+                        liveData.postValue(Resource.<List<CategoryMap>>error(apiResponse.errorMessage, null));
+                    }
+                } catch (Exception e) {
+                    liveData.postValue(Resource.<List<CategoryMap>>error(e.getMessage(), null));
+                }
+            }
+        });
+        return liveData;
     }
 
     public LiveData<Resource<List<VideoDetail>>> getVideoDetails(final List<String> detailLinks) {
@@ -196,5 +225,4 @@ public class DataRepository {
         FetchVideoDetailTask task = new FetchVideoDetailTask(categoryMap, mAppDatabase, mService, mVideoDetailPageParser);
         mAppExecutors.networkIO().execute(task);
     }
-
 }

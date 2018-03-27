@@ -4,6 +4,8 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LifecycleRegistry;
 
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -57,5 +59,11 @@ public class TestUtils {
             sb.append(Integer.toString((aByteData & 0xff) + 0x100, 16).substring(1));
         }
         return sb.toString();
+    }
+
+    @Test
+    public void test() {
+        String link = "http://www.dytt8.net/html/gndy/dyzz/20180322/56549.html";
+        System.out.println(Integer.parseInt(link.substring(link.lastIndexOf('/') + 1, link.lastIndexOf('.'))));
     }
 }

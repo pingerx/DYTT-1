@@ -46,6 +46,7 @@ public class FetchVideoDetailTask implements Runnable {
                     videoDetail.setValidVideoItem(true);
                 }
                 videoDetail.setDetailLink(mCategoryMap.getLink());
+                videoDetail.setSN(mCategoryMap.getSN());
                 mDatabase.videoDetailDAO().updateVideoDetail(videoDetail);
                 mCategoryMap.setIsParsed(true);
                 mDatabase.categoryMapDAO().updateCategory(mCategoryMap);
