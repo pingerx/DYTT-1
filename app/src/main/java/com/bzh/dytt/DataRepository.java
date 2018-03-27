@@ -70,20 +70,19 @@ public class DataRepository {
                 try {
 
                     String item = new String(responseBody.bytes(), "GB2312");
+
                     List<CategoryMap> categoryMaps = mHomePageParser.parseLatestMovieCategoryMap(item);
                     mAppDatabase.categoryMapDAO().insertCategoryMapList(categoryMaps);
 
                     List<VideoDetail> details = new ArrayList<>();
-                    for (int i = categoryMaps.size() - 1; i >= 0; i--) {
+                    for (CategoryMap category : categoryMaps) {
                         VideoDetail videoDetail = new VideoDetail();
-                        CategoryMap category = categoryMaps.get(i);
                         videoDetail.setDetailLink(category.getLink());
                         details.add(videoDetail);
                     }
                     mAppDatabase.videoDetailDAO().insertVideoDetailList(details);
 
-                    for (int i = categoryMaps.size() - 1; i >= 0; i--) {
-                        CategoryMap category = categoryMaps.get(i);
+                    for (CategoryMap category : categoryMaps) {
                         boolean isParsed = mAppDatabase.categoryMapDAO().IsParsed(category.getLink());
                         if (!isParsed) {
                             getVideoDetailNew(category);
@@ -126,19 +125,17 @@ public class DataRepository {
                     mAppDatabase.categoryMapDAO().insertCategoryMapList(categoryMaps);
 
                     List<VideoDetail> details = new ArrayList<>();
-                    for (int i = categoryMaps.size() - 1; i >= 0; i--) {
+                    for (CategoryMap category : categoryMaps) {
                         VideoDetail videoDetail = new VideoDetail();
-                        CategoryMap category = categoryMaps.get(i);
                         videoDetail.setDetailLink(category.getLink());
                         details.add(videoDetail);
                     }
                     mAppDatabase.videoDetailDAO().insertVideoDetailList(details);
 
-                    for (int i = categoryMaps.size() - 1; i >= 0; i--) {
-                        CategoryMap category = categoryMaps.get(i);
+                    for (CategoryMap category : categoryMaps) {
                         boolean isParsed = mAppDatabase.categoryMapDAO().IsParsed(category.getLink());
                         if (!isParsed) {
-                            getVideoDetailNew(category);
+//                            getVideoDetailNew(category);
                         }
                     }
 
@@ -184,19 +181,17 @@ public class DataRepository {
                         mAppDatabase.categoryMapDAO().insertCategoryMapList(categoryMaps);
 
                         List<VideoDetail> details = new ArrayList<>();
-                        for (int i = categoryMaps.size() - 1; i >= 0; i--) {
+                        for (CategoryMap category : categoryMaps) {
                             VideoDetail videoDetail = new VideoDetail();
-                            CategoryMap category = categoryMaps.get(i);
                             videoDetail.setDetailLink(category.getLink());
                             details.add(videoDetail);
                         }
                         mAppDatabase.videoDetailDAO().insertVideoDetailList(details);
 
-                        for (int i = categoryMaps.size() - 1; i >= 0; i--) {
-                            CategoryMap category = categoryMaps.get(i);
+                        for (CategoryMap category : categoryMaps) {
                             boolean isParsed = mAppDatabase.categoryMapDAO().IsParsed(category.getLink());
                             if (!isParsed) {
-                                getVideoDetailNew(category);
+//                                getVideoDetailNew(category);
                             }
                         }
 
