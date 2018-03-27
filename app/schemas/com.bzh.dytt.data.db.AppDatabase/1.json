@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "51f3c187931277e2770dc60892091832",
+    "identityHash": "6d302f4b7e1bcc5a3a6689fcc9b5b915",
     "entities": [
       {
         "tableName": "homeareas",
@@ -295,11 +295,37 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "category_page",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category` INTEGER NOT NULL, `next_page` INTEGER NOT NULL, PRIMARY KEY(`category`))",
+        "fields": [
+          {
+            "fieldPath": "mCategory",
+            "columnName": "category",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mNextPage",
+            "columnName": "next_page",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "category"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"51f3c187931277e2770dc60892091832\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6d302f4b7e1bcc5a3a6689fcc9b5b915\")"
     ]
   }
 }

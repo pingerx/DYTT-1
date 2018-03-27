@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.bzh.dytt.data.CategoryMap;
+import com.bzh.dytt.data.CategoryPage;
 import com.bzh.dytt.data.TypeConsts;
 import com.bzh.dytt.data.VideoDetail;
 import com.bzh.dytt.data.db.AppDatabase;
@@ -141,6 +142,7 @@ public class DataRepository {
                         }
                     }
 
+                    mAppDatabase.categoryPageDAO().insertPage(category.getDefaultPage());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -172,8 +174,8 @@ public class DataRepository {
             @Override
             public void run() {
                 try {
-                    String nextPageUrl = category.getNextPageUrl();
-                    Response<ResponseBody> response = mService.getMovieListByCategory2(nextPageUrl).execute();
+                    CategoryPage nextPage = mAppDatabase.categoryPageDAO().nextPage(category.ordinal());
+                    Response<ResponseBody> response = mService.getMovieListByCategory2(category.getNextPageUrl(nextPage)).execute();
                     ApiResponse<ResponseBody> apiResponse = new ApiResponse<>(response);
                     if (apiResponse.isSuccessful()) {
 
@@ -197,6 +199,8 @@ public class DataRepository {
                                 getVideoDetailNew(category);
                             }
                         }
+
+                        mAppDatabase.categoryPageDAO().updatePage(nextPage);
 
                         liveData.postValue(Resource.success(categoryMaps));
                     } else {

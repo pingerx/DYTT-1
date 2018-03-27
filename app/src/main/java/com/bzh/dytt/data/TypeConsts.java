@@ -1,8 +1,5 @@
 package com.bzh.dytt.data;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class TypeConsts {
 
     public static String getMoviePageByCategory(MovieCategory movieCategory) {
@@ -40,8 +37,6 @@ public class TypeConsts {
         RIHAN_MOVIE(4),
         HOME_LATEST_MOVIE(5);
 
-        private static Map<MovieCategory, Integer> mNextPageUrl = new HashMap<>();
-
         private int id;
 
         MovieCategory(int id) {
@@ -63,16 +58,17 @@ public class TypeConsts {
             }
         }
 
-        public String getDefaultUrl() {
-            int index = 1;
-            mNextPageUrl.put(this, index);
-            return String.format(getUnformatUrl(), index);
+        public CategoryPage getDefaultPage() {
+            return new CategoryPage(this.ordinal(), 1);
         }
 
-        public String getNextPageUrl() {
-            int index = mNextPageUrl.get(this) + 1;
-            mNextPageUrl.put(this, index);
-            return String.format(getUnformatUrl(), index);
+        public String getDefaultUrl() {
+            return String.format(getUnformatUrl(), 1);
+        }
+
+        public String getNextPageUrl(CategoryPage categoryPage) {
+            categoryPage.setNextPage(categoryPage.getNextPage() + 1);
+            return String.format(getUnformatUrl(), categoryPage.getNextPage());
         }
 
         public String getUnformatUrl() {
