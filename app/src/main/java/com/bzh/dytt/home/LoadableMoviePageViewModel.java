@@ -16,7 +16,6 @@ import com.bzh.dytt.data.VideoDetail;
 import com.bzh.dytt.data.network.Resource;
 import com.bzh.dytt.data.network.Status;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,20 +23,13 @@ import javax.inject.Inject;
 public class LoadableMoviePageViewModel extends BaseViewModel {
 
     private LiveData<Resource<List<VideoDetail>>> mVideoList;
-    private LiveData<Resource<List<VideoDetail>>> mLoadMoreList;
     private TypeConsts.MovieCategory mCategory;
-    private CategoryHandler mFirstPageHandler;
-    private CategoryHandler mNextPageHandler;
+    private CategoryHandler mCategoryHandler;
+
     private Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>> mVideoDetailFunction = new Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>>() {
         @Override
         public LiveData<Resource<List<VideoDetail>>> apply(Resource<List<CategoryMap>> categoryMaps) {
-            List<String> linkList = new ArrayList<>();
-            if (categoryMaps != null && categoryMaps.data != null) {
-                for (CategoryMap categoryMap : categoryMaps.data) {
-                    linkList.add(categoryMap.getLink());
-                }
-            }
-            return mDataRepository.getVideoDetails(linkList);
+            return mDataRepository.getVideoDetailsByCategory(mCategory.ordinal());
         }
     };
 
@@ -48,30 +40,21 @@ public class LoadableMoviePageViewModel extends BaseViewModel {
 
     public void setCategory(TypeConsts.MovieCategory category) {
         mCategory = category;
-
-        mFirstPageHandler = new CategoryHandler(mDataRepository, mCategory);
-        mVideoList = Transformations.switchMap(mFirstPageHandler.getCategoryMap(), mVideoDetailFunction);
-
-        mNextPageHandler = new CategoryHandler(mDataRepository, mCategory);
-        mLoadMoreList = Transformations.switchMap(mNextPageHandler.getCategoryMap(), mVideoDetailFunction);
-
-        mFirstPageHandler.refreshPage();
+        mCategoryHandler = new CategoryHandler(mDataRepository, mCategory);
+        mVideoList = Transformations.switchMap(mCategoryHandler.getCategoryMap(), mVideoDetailFunction);
+        mCategoryHandler.refreshPage();
     }
 
     void refresh() {
-        mFirstPageHandler.refreshPage();
+        mCategoryHandler.refreshPage();
     }
 
     void loadNextPage() {
-        mNextPageHandler.nextPage();
+        mCategoryHandler.nextPage();
     }
 
     LiveData<Resource<List<VideoDetail>>> getMovieList() {
         return mVideoList;
-    }
-
-    LiveData<Resource<List<VideoDetail>>> getLoadMoreList() {
-        return mLoadMoreList;
     }
 
     static class CategoryHandler implements Observer<Resource<List<CategoryMap>>> {

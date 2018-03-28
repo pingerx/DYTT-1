@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +40,7 @@ public abstract class SingleListFragment<T> extends BaseFragment {
     @BindView(R.id.error_layout)
     View mError;
 
-    protected Observer<Resource<List<T>>> mFirstPageObserver = new Observer<Resource<List<T>>>() {
+    protected Observer<Resource<List<T>>> mObserver = new Observer<Resource<List<T>>>() {
         @Override
         public void onChanged(@Nullable Resource<List<T>> result) {
 
@@ -64,41 +63,7 @@ public abstract class SingleListFragment<T> extends BaseFragment {
                     if (result.data == null || result.data.isEmpty()) {
                         mEmpty.setVisibility(View.VISIBLE);
                     } else {
-                        setListData(result.data);
-                    }
-                }
-                break;
-            }
-        }
-    };
-
-    protected Observer<Resource<List<T>>> mMorePageObserver = new Observer<Resource<List<T>>>() {
-        @Override
-        public void onChanged(@Nullable Resource<List<T>> result) {
-
-            mEmpty.setVisibility(View.GONE);
-            mError.setVisibility(View.GONE);
-
-            assert result != null;
-            switch (result.status) {
-                case ERROR: {
-                    Log.d(TAG, "onChanged() called with: result = [" + result + "]");
-                    mSwipeRefresh.setRefreshing(false);
-                    mError.setVisibility(View.VISIBLE);
-                }
-                break;
-                case LOADING: {
-                    Log.d(TAG, "onChanged() called with: result = [" + result + "]");
-                    mSwipeRefresh.setRefreshing(true);
-                }
-                break;
-                case SUCCESS: {
-                    Log.d(TAG, "onChanged() called with: result = [" + result + "] " + result.data.size());
-                    mSwipeRefresh.setRefreshing(false);
-                    if (result.data == null || result.data.isEmpty()) {
-                        mEmpty.setVisibility(View.VISIBLE);
-                    } else {
-                        addListData(result.data);
+                        replace(result.data);
                     }
                 }
                 break;
@@ -120,13 +85,9 @@ public abstract class SingleListFragment<T> extends BaseFragment {
 
     protected abstract RecyclerView.Adapter createAdapter();
 
-    protected abstract void setListData(List<T> listData);
-
-    protected abstract void addListData(List<T> data);
+    protected abstract void replace(List<T> listData);
 
     protected abstract LiveData<Resource<List<T>>> getLiveData();
-
-    protected abstract LiveData<Resource<List<T>>> getMoreLiveData();
 
     protected abstract ViewModel createViewModel();
 
@@ -141,10 +102,7 @@ public abstract class SingleListFragment<T> extends BaseFragment {
         mViewModel = createViewModel();
         mSwipeRefresh.setOnRefreshListener(mRefreshListener);
         if (getLiveData() != null) {
-            getLiveData().observe(this, mFirstPageObserver);
-        }
-        if (getMoreLiveData() != null) {
-            getMoreLiveData().observe(this, mMorePageObserver);
+            getLiveData().observe(this, mObserver);
         }
         mAdapter = createAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

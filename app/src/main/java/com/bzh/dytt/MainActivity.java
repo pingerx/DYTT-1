@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return AllMoviePageFragment.newInstance();
+                    return NewMovieFragment.newInstance();
                 case 1:
                     return AllMoviePageFragment.newInstance();
                 case 2:
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            return 1;
+            return 3;
         }
     }
 }

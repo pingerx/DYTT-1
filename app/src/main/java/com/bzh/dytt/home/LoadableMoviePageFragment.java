@@ -37,23 +37,13 @@ public class LoadableMoviePageFragment extends SingleListFragment<VideoDetail> {
     }
 
     @Override
-    protected void setListData(List<VideoDetail> listData) {
-        ((MovieListAdapter) mAdapter).replace(listData);
-    }
-
-    @Override
-    protected void addListData(List<VideoDetail> listData) {
+    protected void replace(List<VideoDetail> listData) {
         ((MovieListAdapter) mAdapter).replace(listData);
     }
 
     @Override
     protected LiveData<Resource<List<VideoDetail>>> getLiveData() {
         return ((LoadableMoviePageViewModel) mViewModel).getMovieList();
-    }
-
-    @Override
-    protected LiveData<Resource<List<VideoDetail>>> getMoreLiveData() {
-        return ((LoadableMoviePageViewModel) mViewModel).getLoadMoreList();
     }
 
     @Override

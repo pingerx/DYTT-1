@@ -6,10 +6,8 @@ import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,19 +23,16 @@ import butterknife.BindView;
 
 public class AllMoviePageFragment extends BaseFragment {
 
+    private static final String TAG = "AllMoviePageFragment";
+    MovieTabAdapter mMovieTabAdapter;
+    @BindView(R.id.home_tab_layout)
+    TabLayout mTabLayout;
+    @BindView(R.id.home_view_pager)
+    ViewPager mViewPager;
+
     public static AllMoviePageFragment newInstance() {
         return new AllMoviePageFragment();
     }
-
-    private static final String TAG = "AllMoviePageFragment";
-
-    MovieTabAdapter mMovieTabAdapter;
-
-    @BindView(R.id.home_tab_layout)
-    TabLayout mTabLayout;
-
-    @BindView(R.id.home_view_pager)
-    ViewPager mViewPager;
 
     @Override
     protected View doCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,9 +49,9 @@ public class AllMoviePageFragment extends BaseFragment {
 
         List<TypeConsts.MovieCategory> typeList = new ArrayList<>();
         typeList.add(TypeConsts.MovieCategory.NEW_MOVIE);
-//        typeList.add(TypeConsts.MovieCategory.CHINA_MOVIE);
-//        typeList.add(TypeConsts.MovieCategory.OUMEI_MOVIE);
-//        typeList.add(TypeConsts.MovieCategory.RIHAN_MOVIE);
+        typeList.add(TypeConsts.MovieCategory.CHINA_MOVIE);
+        typeList.add(TypeConsts.MovieCategory.OUMEI_MOVIE);
+        typeList.add(TypeConsts.MovieCategory.RIHAN_MOVIE);
 
         mMovieTabAdapter.setTabData(typeList);
     }

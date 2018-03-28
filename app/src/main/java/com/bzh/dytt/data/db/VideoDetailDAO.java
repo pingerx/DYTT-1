@@ -24,6 +24,9 @@ public interface VideoDetailDAO {
     @Query("SELECT * FROM video_detail WHERE link IN(:links) ORDER BY serial_number DESC")
     LiveData<List<VideoDetail>> getVideoDetails(String[] links);
 
+    @Query("SELECT * FROM video_detail WHERE category =:category ORDER BY serial_number DESC")
+    LiveData<List<VideoDetail>> getVideoDetailsByCategory(int category);
+
 
     @Query("SELECT * FROM video_detail WHERE link = :detailLink")
     LiveData<VideoDetail> getVideoDetailByLink(String detailLink);
