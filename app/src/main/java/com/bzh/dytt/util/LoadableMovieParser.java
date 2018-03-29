@@ -44,7 +44,9 @@ public class LoadableMovieParser {
                 }
                 CategoryMap categoryMap = new CategoryMap();
 
-                categoryMap.setLink(element.attr("href"));
+                String link = element.attr("href");
+                categoryMap.setLink(link);
+                categoryMap.setSN(Integer.parseInt(link.substring(link.lastIndexOf('/') + 1, link.lastIndexOf('.'))));
                 categoryMap.setCategory(category.ordinal());
                 categoryMaps.add(categoryMap);
             }

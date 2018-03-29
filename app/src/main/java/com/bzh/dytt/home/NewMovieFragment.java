@@ -29,8 +29,8 @@ public class NewMovieFragment extends SingleListFragment<VideoDetail> {
     }
 
     @Override
-    protected void setListData(List<VideoDetail> listData) {
-        ((MovieListAdapter) mAdapter).setItems(listData);
+    protected void replace(List<VideoDetail> listData) {
+        ((MovieListAdapter) mAdapter).replace(listData);
     }
 
     @Override

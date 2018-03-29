@@ -6,7 +6,9 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.bzh.dytt.data.TypeConsts;
 import com.bzh.dytt.data.VideoDetail;
@@ -35,8 +37,8 @@ public class LoadableMoviePageFragment extends SingleListFragment<VideoDetail> {
     }
 
     @Override
-    protected void setListData(List<VideoDetail> listData) {
-        ((MovieListAdapter) mAdapter).setItems(listData);
+    protected void replace(List<VideoDetail> listData) {
+        ((MovieListAdapter) mAdapter).replace(listData);
     }
 
     @Override
@@ -55,8 +57,23 @@ public class LoadableMoviePageFragment extends SingleListFragment<VideoDetail> {
     }
 
     @Override
+    protected void doViewCreated(View view, Bundle savedInstanceState) {
+        super.doViewCreated(view, savedInstanceState);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int lastPosition = layoutManager.findLastVisibleItemPosition();
+                if (lastPosition == mAdapter.getItemCount() - 1) {
+                    ((LoadableMoviePageViewModel) mViewModel).loadNextPage();
+                }
+            }
+        });
+    }
+
+    @Override
     protected void doRefresh() {
         ((LoadableMoviePageViewModel) mViewModel).refresh();
-
     }
 }

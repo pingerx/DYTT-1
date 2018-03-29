@@ -1,16 +1,16 @@
 package com.bzh.dytt.home;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +22,16 @@ import com.bzh.dytt.SingleActivity;
 import com.bzh.dytt.data.VideoDetail;
 import com.bzh.dytt.util.GlideApp;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieItemHolder> {
 
-    private List<VideoDetail> mItems = new ArrayList<>();
+    private List<VideoDetail> mItems;
     private Context mContext;
+    private int mDataVersion = 0;
 
     public MovieListAdapter(Context context) {
         mContext = context;
@@ -79,19 +78,74 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                 }
             });
         }
-
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return mItems == null ? 0 : mItems.size();
     }
 
-    void setItems(List<VideoDetail> items) {
-        mItems.clear();
-        mItems.addAll(items);
-        notifyDataSetChanged();
+    @SuppressLint("StaticFieldLeak")
+    @MainThread
+    public void replace(final List<VideoDetail> update) {
+        mDataVersion++;
+        if (mItems == null) {
+            if (update == null) {
+                return;
+            }
+            mItems = update;
+            notifyDataSetChanged();
+        } else if (update == null) {
+            int oldSize = mItems.size();
+            mItems = null;
+            notifyItemRangeRemoved(0, oldSize);
+        } else {
+            final int startVersion = mDataVersion;
+            final List<VideoDetail> oldItems = mItems;
+            new AsyncTask<Void, Void, DiffUtil.DiffResult>() {
+                @Override
+                protected DiffUtil.DiffResult doInBackground(Void... voids) {
+                    return DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                        @Override
+                        public int getOldListSize() {
+                            return oldItems.size();
+                        }
+
+                        @Override
+                        public int getNewListSize() {
+                            return update.size();
+                        }
+
+                        @Override
+                        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                            VideoDetail oldItem = oldItems.get(oldItemPosition);
+                            VideoDetail newItem = update.get(newItemPosition);
+                            return TextUtils.equals(oldItem.getDetailLink(), newItem.getDetailLink());
+                        }
+
+                        @Override
+                        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                            VideoDetail oldItem = oldItems.get(oldItemPosition);
+                            VideoDetail newItem = update.get(newItemPosition);
+                            return TextUtils.equals(oldItem.getName(), newItem.getName());
+                        }
+                    });
+                }
+
+                @Override
+                protected void onPostExecute(DiffUtil.DiffResult diffResult) {
+                    if (startVersion != mDataVersion) {
+                        // ignore update
+                        return;
+                    }
+                    mItems = update;
+                    diffResult.dispatchUpdatesTo(MovieListAdapter.this);
+
+                }
+            }.execute();
+        }
     }
+
 
     private Activity getActivityByHolder(MovieListAdapter.MovieItemHolder holder) {
         if (holder.itemView.getContext() instanceof Activity) {
@@ -100,7 +154,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         return null;
     }
 
-    public class MovieItemHolder extends RecyclerView.ViewHolder {
+    class MovieItemHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.video_title)
         TextView VideoTitleTv;
@@ -124,39 +178,5 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-    }
-
-    public class VideoDetailDiffCallback extends DiffUtil.Callback {
-
-        List<VideoDetail> oldVideoDetails;
-        List<VideoDetail> newVideoDetails;
-
-        public VideoDetailDiffCallback(List<VideoDetail> newVideoDetails, List<VideoDetail> oldVideoDetails) {
-            this.newVideoDetails = newVideoDetails;
-            this.oldVideoDetails = oldVideoDetails;
-        }
-
-        @Override
-        public int getOldListSize() {
-            return oldVideoDetails.size();
-        }
-
-        @Override
-        public int getNewListSize() {
-            return newVideoDetails.size();
-        }
-
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return TextUtils.equals(oldVideoDetails.get(oldItemPosition).getDetailLink(), newVideoDetails.get
-                    (newItemPosition).getDetailLink());
-        }
-
-        @Override
-        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            return TextUtils.equals(oldVideoDetails.get(oldItemPosition).getName(), newVideoDetails.get
-                    (newItemPosition).getName());
-        }
-
     }
 }

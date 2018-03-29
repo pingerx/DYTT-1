@@ -16,7 +16,6 @@ import com.bzh.dytt.data.VideoDetail;
 import com.bzh.dytt.data.network.Resource;
 import com.bzh.dytt.data.network.Status;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,6 +26,13 @@ public class LoadableMoviePageViewModel extends BaseViewModel {
     private TypeConsts.MovieCategory mCategory;
     private CategoryHandler mCategoryHandler;
 
+    private Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>> mVideoDetailFunction = new Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>>() {
+        @Override
+        public LiveData<Resource<List<VideoDetail>>> apply(Resource<List<CategoryMap>> categoryMaps) {
+            return mDataRepository.getVideoDetailsByCategory(mCategory.ordinal());
+        }
+    };
+
     @Inject
     LoadableMoviePageViewModel(DataRepository repository) {
         super(repository);
@@ -35,24 +41,16 @@ public class LoadableMoviePageViewModel extends BaseViewModel {
     public void setCategory(TypeConsts.MovieCategory category) {
         mCategory = category;
         mCategoryHandler = new CategoryHandler(mDataRepository, mCategory);
-        mVideoList = Transformations.switchMap(mCategoryHandler.getCategoryMap(), new Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>>() {
-            @Override
-            public LiveData<Resource<List<VideoDetail>>> apply(Resource<List<CategoryMap>> categoryMaps) {
-                List<String> linkList = new ArrayList<>();
-                if (categoryMaps != null && categoryMaps.data != null) {
-                    for (CategoryMap categoryMap : categoryMaps.data) {
-                        linkList.add(categoryMap.getLink());
-                    }
-                }
-                return mDataRepository.getVideoDetails(linkList);
-            }
-        });
-
-        mCategoryHandler.refresh();
+        mVideoList = Transformations.switchMap(mCategoryHandler.getCategoryMap(), mVideoDetailFunction);
+        mCategoryHandler.refreshPage();
     }
 
     void refresh() {
-        mCategoryHandler.refresh();
+        mCategoryHandler.refreshPage();
+    }
+
+    void loadNextPage() {
+        mCategoryHandler.nextPage();
     }
 
     LiveData<Resource<List<VideoDetail>>> getMovieList() {
@@ -68,6 +66,8 @@ public class LoadableMoviePageViewModel extends BaseViewModel {
         private DataRepository mRepository;
 
         private TypeConsts.MovieCategory mMovieCategory;
+
+        private boolean mIsRunning;
 
         CategoryHandler(DataRepository repository, TypeConsts.MovieCategory movieCategory) {
             mRepository = repository;
@@ -89,20 +89,33 @@ public class LoadableMoviePageViewModel extends BaseViewModel {
         private void unregister() {
             if (mLiveData != null) {
                 mLiveData.removeObserver(this);
+                mIsRunning = false;
                 mLiveData = null;
             }
         }
 
-        void refresh() {
+        void refreshPage() {
+            if (mIsRunning) {
+                return;
+            }
             unregister();
             mLiveData = mRepository.getMovieListByCategory(mMovieCategory);
             mLiveData.observeForever(this);
         }
 
+        void nextPage() {
+            if (mIsRunning) {
+                return;
+            }
+            mIsRunning = true;
+            unregister();
+            mLiveData = mRepository.getNextMovieListByCategory(mMovieCategory);
+            mLiveData.observeForever(this);
+        }
 
         MutableLiveData<Resource<List<CategoryMap>>> getCategoryMap() {
             return mCategoryMap;
         }
-    }
 
+    }
 }

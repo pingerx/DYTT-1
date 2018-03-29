@@ -81,6 +81,17 @@ public class VideoDetail {
     @ColumnInfo(name = "category")
     private int mCategory;
 
+    @ColumnInfo(name = "serial_number")
+    private int mSN;
+
+    public int getSN() {
+        return mSN;
+    }
+
+    public void setSN(int SN) {
+        mSN = SN;
+    }
+
     public String getName() {
         return mName;
     }

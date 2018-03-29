@@ -22,6 +22,9 @@ public class CategoryMap {
     @ColumnInfo(name = "is_parsed")
     private boolean mIsParsed;
 
+    @ColumnInfo(name = "serial_number")
+    private int mSN;
+
     public String getLink() {
         return mLink;
     }
@@ -44,6 +47,14 @@ public class CategoryMap {
 
     public boolean getIsParsed() {
         return mIsParsed;
+    }
+
+    public int getSN() {
+        return mSN;
+    }
+
+    public void setSN(int SN) {
+        mSN = SN;
     }
 
     @Override

@@ -7,11 +7,12 @@ import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.VisibleForTesting;
 
 import com.bzh.dytt.data.CategoryMap;
+import com.bzh.dytt.data.CategoryPage;
 import com.bzh.dytt.data.HomeArea;
 import com.bzh.dytt.data.HomeItem;
 import com.bzh.dytt.data.VideoDetail;
 
-@Database(entities = {HomeArea.class, HomeItem.class, VideoDetail.class, CategoryMap.class}, version = 1)
+@Database(entities = {HomeArea.class, HomeItem.class, VideoDetail.class, CategoryMap.class, CategoryPage.class}, version = 1)
 @TypeConverters({DataTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -25,6 +26,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract VideoDetailDAO videoDetailDAO();
 
     public abstract CategoryMapDAO categoryMapDAO();
+
+    public abstract CategoryPageDAO categoryPageDAO();
 
 
 }

@@ -63,13 +63,14 @@ public abstract class SingleListFragment<T> extends BaseFragment {
                     if (result.data == null || result.data.isEmpty()) {
                         mEmpty.setVisibility(View.VISIBLE);
                     } else {
-                        setListData(result.data);
+                        replace(result.data);
                     }
                 }
                 break;
             }
         }
     };
+
     private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -84,7 +85,7 @@ public abstract class SingleListFragment<T> extends BaseFragment {
 
     protected abstract RecyclerView.Adapter createAdapter();
 
-    protected abstract void setListData(List<T> listData);
+    protected abstract void replace(List<T> listData);
 
     protected abstract LiveData<Resource<List<T>>> getLiveData();
 
@@ -100,7 +101,9 @@ public abstract class SingleListFragment<T> extends BaseFragment {
         super.doViewCreated(view, savedInstanceState);
         mViewModel = createViewModel();
         mSwipeRefresh.setOnRefreshListener(mRefreshListener);
-        getLiveData().observe(this, mObserver);
+        if (getLiveData() != null) {
+            getLiveData().observe(this, mObserver);
+        }
         mAdapter = createAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
