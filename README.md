@@ -4,13 +4,13 @@
 
 # Preview Image
 
-<img src="https://github.com/BullfrogTeam/DYTT/blob/update_readme/resource/device-2018-03-30-160004.png" width="200" height="400">
+<img src="https://github.com/BullfrogTeam/DYTT/master/resource/device-2018-03-30-163746.png" width="100" height="200">
 
-<img src="https://github.com/BullfrogTeam/DYTT/blob/update_readme/resource/device-2018-03-30-160048.png" width="200" height="400">
+<img src="https://github.com/BullfrogTeam/DYTT/master/resource/device-2018-03-30-163758.png" width="100" height="200">
 
-<img src="https://github.com/BullfrogTeam/DYTT/blob/update_readme/resource/device-2018-03-30-160142.png" width="200" height="400">
+<img src="https://github.com/BullfrogTeam/DYTT/master/resource/device-2018-03-30-163812.png" width="100" height="200">
 
-<img src="https://github.com/BullfrogTeam/DYTT/blob/update_readme/resource/device-2018-03-30-161559.png" width="200" height="400">
+<img src="https://github.com/BullfrogTeam/DYTT/master/resource/device-2018-03-30-163839.png" width="100" height="200">
 
 # Code Guide
 
