@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity
     NonInteractiveViewPage mContainer;
 
     private MainViewPagerAdapter mPagerAdapter;
+
     private InterstitialAd mInterstitialAd;
 
     @Override
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity
         mNavigationView.setNavigationItemSelectedListener(this);
 
         // You should keep this limit low, especially if your pages have complex layouts.
-        mContainer.setOffscreenPageLimit(1);
+        mContainer.setOffscreenPageLimit(3);
         mPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         mContainer.setAdapter(mPagerAdapter);
 
@@ -116,7 +117,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
+            SingleActivity.startSearchPage(this);
             return true;
         }
 

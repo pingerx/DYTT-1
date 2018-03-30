@@ -16,7 +16,7 @@ import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
-public class FetchVideoDetailTask implements Runnable {
+public class FetchSearchVideoDetailTask implements Runnable {
 
     private static final String TAG = "FetchVideoDetailTask";
 
@@ -24,18 +24,20 @@ public class FetchVideoDetailTask implements Runnable {
     private final DyttService mService;
     private VideoDetailPageParser mParser;
     private AppDatabase mDatabase;
+    private String mQuery;
 
-    public FetchVideoDetailTask(CategoryMap categoryMap, AppDatabase database, DyttService service, VideoDetailPageParser parser) {
+    public FetchSearchVideoDetailTask(CategoryMap categoryMap, AppDatabase database, DyttService service, VideoDetailPageParser parser, String query) {
         mCategoryMap = categoryMap;
         mService = service;
         mParser = parser;
         mDatabase = database;
+        mQuery = query;
     }
 
     @Override
     public void run() {
         try {
-            Response<ResponseBody> response = mService.getVideoDetail(mCategoryMap.getLink()).execute();
+            Response<ResponseBody> response = mService.getSearchVideoDetail("http://www.ygdy8.com" + mCategoryMap.getLink()).execute();
             ApiResponse<ResponseBody> apiResponse = new ApiResponse<>(response);
 
             if (apiResponse.isSuccessful()) {
@@ -45,10 +47,10 @@ public class FetchVideoDetailTask implements Runnable {
                 } else {
                     videoDetail.setValidVideoItem(true);
                 }
-                videoDetail.setQuery(mCategoryMap.getQuery());
                 videoDetail.setSN(mCategoryMap.getSN());
                 videoDetail.setDetailLink(mCategoryMap.getLink());
                 videoDetail.setCategory(mCategoryMap.getCategory());
+                videoDetail.setQuery(mQuery);
                 mDatabase.videoDetailDAO().updateVideoDetail(videoDetail);
                 mCategoryMap.setIsParsed(true);
                 mDatabase.categoryMapDAO().updateCategory(mCategoryMap);

@@ -40,66 +40,77 @@ public class VideoDetailPageFragment extends BaseFragment {
 
     private static final String TAG = "VideoDetailPageFragment";
     private static final String KEY_DETAIL_LINK = "DETAIL_LINK";
+
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
+
     @BindView(R.id.video_cover)
     ImageView mVideoCoverIv;
+
     @BindView(R.id.video_name)
     TextView mVideoNameTv;
+
     @BindView(R.id.video_type)
     TextView mVideoTypeTv;
+
     @BindView(R.id.video_country)
     TextView mVideoCountryTv;
+
     @BindView(R.id.video_duration)
     TextView mVideoDuration;
+
     @BindView(R.id.video_show_time)
     TextView mVideoShowTime;
+
     @BindView(R.id.video_director)
     TextView mVideoDirector;
+
     @BindView(R.id.video_leading_role)
     TextView mVideoLeadingRole;
+
     @BindView(R.id.video_description)
     TextView mVideoDescription;
+
     @BindView(R.id.video_cover_bg)
     View mVideoCoverBgView;
+
     @BindView(R.id.download_button)
     View mDownloadBtn;
 
-    //    @BindView(R.id.video_grade_douban)
-//    TextView mRateDouban;
-//
-//    @BindView(R.id.video_grade_imdb)
-//    TextView mRateIMDB;
     @BindView(R.id.douban_grade)
     TextView mDoubanGradeTv;
+
     @BindView(R.id.douban_rating_bar)
     RatingBar mDoubanGradeRatingBar;
+
     @BindView(R.id.imdb_grade)
     TextView mIMDBGradeTv;
+
     @BindView(R.id.imdb_rating_bar)
     RatingBar mIMDBRatingBar;
+
     @BindView(R.id.douban_rating_layout)
     View mDoubanRatingLayout;
-    //
-//    @BindView(R.id.video_download_address)
-//    TextView mVideoDownloadAddress;
+
     @BindView(R.id.imdb_rating_layout)
     View mIMDBRatingLayout;
+
     @BindView(R.id.show_time_layout)
     View mShowTimeLayout;
-    private String mDetailLink;
-    private VideoDetailPageViewModel mVideoDetailPageViewModel;
-    private Observer<Resource<List<VideoDetail>>> mVideoDetailObserver = new Observer<Resource<List<VideoDetail>>>() {
 
+    private String mDetailLink;
+
+    private VideoDetailPageViewModel mVideoDetailPageViewModel;
+
+    private Observer<Resource<List<VideoDetail>>> mVideoDetailObserver = new Observer<Resource<List<VideoDetail>>>() {
         @Override
-        public void onChanged(@Nullable Resource<List<VideoDetail>> videoDetailResource) {
+        public void onChanged(@Nullable Resource<List<VideoDetail>> result) {
             final VideoDetail videoDetail;
-            if (videoDetailResource.status == Status.SUCCESS) {
-                videoDetail = videoDetailResource.data.get(0);
+            if (result.status == Status.SUCCESS && !result.data.isEmpty()) {
+                videoDetail = result.data.get(0);
                 if (videoDetail == null) {
                     return;
                 }
-
                 String videoName = (!TextUtils.isEmpty(videoDetail.getCountry()) && videoDetail.getCountry()
                         .contains("中国")) ? videoDetail.getName() :
                         videoDetail.getTranslationName();
@@ -202,7 +213,12 @@ public class VideoDetailPageFragment extends BaseFragment {
     protected void doViewCreated(View view, Bundle savedInstanceState) {
         super.doViewCreated(view, savedInstanceState);
         mVideoDetailPageViewModel = ViewModelProviders.of(this, mViewModelFactory).get(VideoDetailPageViewModel.class);
-        mVideoDetailPageViewModel.getVideoDetail(mDetailLink).observe(this, mVideoDetailObserver);
+        if (!TextUtils.isEmpty(mDetailLink)) {
+
+            mVideoDetailPageViewModel.getVideoDetail(mDetailLink).observe(this, mVideoDetailObserver);
+        } else {
+            Log.e(TAG, "doViewCreated: Detail Link Is Empty");
+        }
 
     }
 }
