@@ -8,36 +8,42 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
 
 import com.bzh.dytt.AppExecutors;
-import com.bzh.dytt.data.network.ApiResponse;
 import com.bzh.dytt.data.network.Resource;
-
-import java.util.List;
 
 public abstract class DatabaseResource<ResultType> {
 
-    private static final String TAG = "DatabaseResource";
-
     private final AppExecutors mAppExecutors;
 
-    private MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
+    private MediatorLiveData<Resource<ResultType>> mResult = new MediatorLiveData<>();
 
     @MainThread
     public DatabaseResource(AppExecutors appExecutors) {
         mAppExecutors = appExecutors;
 
-        result.setValue(Resource.<ResultType>loading(null));
+        mResult.setValue(Resource.<ResultType>loading(null));
 
         final LiveData<ResultType> dbSource = loadFromDb();
 
-        result.addSource(dbSource, new Observer<ResultType>() {
+        mResult.addSource(dbSource, new Observer<ResultType>() {
             @Override
-            public void onChanged(@Nullable ResultType newData) {
-                result.setValue(Resource.success(newData));
+            public void onChanged(@Nullable final ResultType newData) {
+                mAppExecutors.networkIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        processDBData(newData);
+                    }
+                });
+                mResult.setValue(Resource.success(newData));
             }
         });
+    }
+
+    @NonNull
+    @WorkerThread
+    protected void processDBData(ResultType newData) {
+
     }
 
     @NonNull
@@ -47,6 +53,6 @@ public abstract class DatabaseResource<ResultType> {
     // returns a LiveData that represents the resource, implemented
     // in the base class.
     public final LiveData<Resource<ResultType>> getAsLiveData() {
-        return result;
+        return mResult;
     }
 }

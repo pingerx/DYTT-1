@@ -25,7 +25,7 @@ public class LoadableMovieParser {
         mInternalMovieListParser = new InternalMovieListParser();
     }
 
-    public List<CategoryMap> getMovieList(String html, MovieCategory category) {
+    public List<CategoryMap> parse(String html, MovieCategory category) {
         return mInternalMovieListParser.parse(html, category);
     }
 
@@ -53,10 +53,5 @@ public class LoadableMovieParser {
 
             return categoryMaps;
         }
-
-        private boolean isFilmType(String fullName) {
-            return fullName.contains("》");
-        }
     }
-
 }

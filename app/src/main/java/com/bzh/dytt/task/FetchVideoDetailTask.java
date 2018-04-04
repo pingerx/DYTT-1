@@ -1,12 +1,10 @@
 package com.bzh.dytt.task;
 
 
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.bzh.dytt.data.CategoryMap;
 import com.bzh.dytt.data.VideoDetail;
-import com.bzh.dytt.data.db.AppDatabase;
+import com.bzh.dytt.data.db.VideoDetailDAO;
 import com.bzh.dytt.data.network.ApiResponse;
 import com.bzh.dytt.data.network.DyttService;
 import com.bzh.dytt.util.VideoDetailPageParser;
@@ -18,40 +16,27 @@ import retrofit2.Response;
 
 public class FetchVideoDetailTask implements Runnable {
 
-    private static final String TAG = "FetchVideoDetailTask";
-
-    private final CategoryMap mCategoryMap;
+    private final VideoDetail mVideoDetail;
+    private final VideoDetailDAO mVideoDetailDAO;
     private final DyttService mService;
-    private VideoDetailPageParser mParser;
-    private AppDatabase mDatabase;
+    private final VideoDetailPageParser mParser;
 
-    public FetchVideoDetailTask(CategoryMap categoryMap, AppDatabase database, DyttService service, VideoDetailPageParser parser) {
-        mCategoryMap = categoryMap;
+    public FetchVideoDetailTask(VideoDetail videoDetail, VideoDetailDAO videoDetailDAO, DyttService service, VideoDetailPageParser parser) {
+        mVideoDetail = videoDetail;
+        mVideoDetailDAO = videoDetailDAO;
         mService = service;
         mParser = parser;
-        mDatabase = database;
     }
 
     @Override
     public void run() {
         try {
-            Response<ResponseBody> response = mService.getVideoDetail(mCategoryMap.getLink()).execute();
+            Response<ResponseBody> response = mService.getVideoDetail(mVideoDetail.getDetailLink()).execute();
             ApiResponse<ResponseBody> apiResponse = new ApiResponse<>(response);
-
             if (apiResponse.isSuccessful()) {
                 VideoDetail videoDetail = mParser.parseVideoDetail(new String(apiResponse.body.bytes(), "GB2312"));
-                if (TextUtils.isEmpty(videoDetail.getName())) {
-                    videoDetail.setValidVideoItem(false);
-                } else {
-                    videoDetail.setValidVideoItem(true);
-                }
-                videoDetail.setQuery(mCategoryMap.getQuery());
-                videoDetail.setSN(mCategoryMap.getSN());
-                videoDetail.setDetailLink(mCategoryMap.getLink());
-                videoDetail.setCategory(mCategoryMap.getCategory());
-                mDatabase.videoDetailDAO().updateVideoDetail(videoDetail);
-                mCategoryMap.setIsParsed(true);
-                mDatabase.categoryMapDAO().updateCategory(mCategoryMap);
+                videoDetail.updateValue(mVideoDetail);
+                mVideoDetailDAO.updateVideoDetail(videoDetail);
             }
         } catch (IOException e) {
             Log.e("FetchVideoDetailTask", "Something wrong when fetch video detail " + e.getMessage());

@@ -4,13 +4,14 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LifecycleRegistry;
 
-import org.junit.Test;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import okio.BufferedSource;
+import okio.Okio;
 
 public class TestUtils {
 
@@ -33,22 +34,6 @@ public class TestUtils {
         }
     };
 
-    public static String getResource(Class clazz, String file) throws IOException {
-        return getResource(clazz, file, null);
-    }
-
-    public static String getResource(Class clazz, String file, String encoding) throws IOException {
-        ClassLoader classLoader = clazz.getClassLoader();
-        File indexFile = new File(classLoader.getResource(file).getFile());
-        byte[] bytes = new byte[(int) indexFile.length()];
-        FileInputStream fileInputStream = new FileInputStream(indexFile);
-        fileInputStream.read(bytes);
-        if (encoding != null) {
-            return new String(bytes, encoding);
-        }
-        return new String(bytes);
-    }
-
     public static String getMD5(String content) throws NoSuchAlgorithmException {
         return convertByteToHex(MessageDigest.getInstance("MD5").digest(content.getBytes()));
     }
@@ -61,9 +46,9 @@ public class TestUtils {
         return sb.toString();
     }
 
-    @Test
-    public void test() {
-        String link = "http://www.dytt8.net/html/gndy/dyzz/20180322/56549.html";
-        System.out.println(Integer.parseInt(link.substring(link.lastIndexOf('/') + 1, link.lastIndexOf('.'))));
+    public static String getResource(Class clazz, String fileName) throws IOException {
+        InputStream inputStream = clazz.getClassLoader().getResourceAsStream("api-response/" + fileName);
+        BufferedSource source = Okio.buffer(Okio.source(inputStream));
+        return source.readString(StandardCharsets.UTF_8);
     }
 }
