@@ -46,15 +46,18 @@
 
 
             <TextView
-                style="@style/video_detail_info_text"
+
+                android:layout_marginStart="3dp"
+                style="@style/video_detail_info_text_grade"
                 android:id="@+id/douban_grade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
 
             <TextView
-                style="@style/video_detail_info_text"
+                style="@style/video_detail_info_text_grade"
                 android:id="@+id/imdb_grade"
+                android:layout_marginStart="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
