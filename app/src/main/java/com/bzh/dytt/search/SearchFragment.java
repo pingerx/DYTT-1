@@ -2,6 +2,7 @@ package com.bzh.dytt.search;
 
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -34,6 +35,8 @@ import javax.inject.Inject;
 
 public class SearchFragment extends SingleListFragment<VideoDetail> {
 
+    private static final String TAG = "SearchFragment";
+
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
     @Inject
@@ -46,7 +49,8 @@ public class SearchFragment extends SingleListFragment<VideoDetail> {
                 if (getActivity() != null && !TextUtils.isEmpty(v.getText())) {
                     String searchTarget = v.getText().toString().trim();
                     ((SearchViewModel) mViewModel).setQuery(searchTarget);
-
+                    mSwipeRefresh.setEnabled(true);
+                    mSwipeRefresh.setRefreshing(true);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm != null) {
                         imm.hideSoftInputFromWindow(mSearchInput.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
@@ -110,8 +114,31 @@ public class SearchFragment extends SingleListFragment<VideoDetail> {
     }
 
     @Override
-    protected LiveData<Resource<List<VideoDetail>>> getLiveData() {
+    protected LiveData<Resource<List<VideoDetail>>> getListLiveData() {
         return ((SearchViewModel) mViewModel).getVideoList();
+    }
+
+    @Override
+    protected LiveData<Throwable> getThrowableLiveData() {
+        return ((SearchViewModel) mViewModel).getFetchVideoDetailState();
+    }
+
+    @Override
+    public Observer<Resource<List<VideoDetail>>> getListObserver() {
+        return new Observer<Resource<List<VideoDetail>>>() {
+            @Override
+            public void onChanged(@Nullable Resource<List<VideoDetail>> result) {
+                mListObserver.onChanged(result);
+                assert result != null;
+                switch (result.status) {
+                    case ERROR:
+                    case SUCCESS:
+                        mSwipeRefresh.setEnabled(false);
+                        mSwipeRefresh.setRefreshing(false);
+                        break;
+                }
+            }
+        };
     }
 
     @Override
