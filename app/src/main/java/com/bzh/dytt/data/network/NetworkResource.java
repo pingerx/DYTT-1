@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 import com.bzh.dytt.AppExecutors;
+import com.bzh.dytt.data.Resource;
 
 public abstract class NetworkResource<ResultType, RequestType> {
 

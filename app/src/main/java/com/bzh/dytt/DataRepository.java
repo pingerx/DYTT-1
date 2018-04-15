@@ -5,10 +5,11 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.bzh.dytt.data.CategoryMap;
-import com.bzh.dytt.data.CategoryPage;
-import com.bzh.dytt.data.MovieCategory;
-import com.bzh.dytt.data.VideoDetail;
+import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.entity.CategoryMap;
+import com.bzh.dytt.data.entity.CategoryPage;
+import com.bzh.dytt.data.entity.MovieCategory;
+import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.db.CategoryMapDAO;
 import com.bzh.dytt.data.db.CategoryPageDAO;
 import com.bzh.dytt.data.db.DatabaseResource;
@@ -17,7 +18,7 @@ import com.bzh.dytt.data.network.ApiResponse;
 import com.bzh.dytt.data.network.DyttService;
 import com.bzh.dytt.data.network.NetworkBoundResource;
 import com.bzh.dytt.data.network.NetworkResource;
-import com.bzh.dytt.data.network.Resource;
+import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.task.FetchSearchVideoDetailTask;
 import com.bzh.dytt.task.FetchVideoDetailTask;
 import com.bzh.dytt.util.CategoryPageParser;
@@ -48,7 +49,7 @@ public class DataRepository {
 
     private RateLimiter<String> mRepoListRateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
 
-    private MutableLiveData<Throwable> mFetchDetailState = new MutableLiveData<>();
+    private MutableLiveData<Resource<ExceptionType>> mFetchDetailState = new MutableLiveData<>();
 
     @Inject
     DataRepository(AppExecutors appExecutors, DyttService service, CategoryMapDAO categoryMapDAO, CategoryPageDAO categoryPageDAO, VideoDetailDAO videoDetailDAO, CategoryPageParser categoryPageParser, VideoDetailPageParser videoDetailPageParser) {
@@ -253,7 +254,7 @@ public class DataRepository {
         }.getAsLiveData();
     }
 
-    public LiveData<Throwable> getFetchVideoDetailState() {
+    public LiveData<Resource<ExceptionType>> getFetchVideoDetailState() {
         return mFetchDetailState;
     }
 }

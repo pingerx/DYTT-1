@@ -1,7 +1,7 @@
 package com.bzh.dytt.util;
 
 import com.bzh.dytt.TestUtils;
-import com.bzh.dytt.data.VideoDetail;
+import com.bzh.dytt.data.entity.VideoDetail;
 
 import org.junit.Before;
 import org.junit.Test;

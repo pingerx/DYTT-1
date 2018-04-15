@@ -1,8 +1,8 @@
 package com.bzh.dytt.util;
 
 
-import com.bzh.dytt.data.CategoryMap;
-import com.bzh.dytt.data.MovieCategory;
+import com.bzh.dytt.data.entity.CategoryMap;
+import com.bzh.dytt.data.entity.MovieCategory;
 
 import java.util.Collections;
 import java.util.List;

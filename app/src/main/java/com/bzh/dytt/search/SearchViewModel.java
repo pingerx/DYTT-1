@@ -5,18 +5,18 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.bzh.dytt.BaseViewModel;
 import com.bzh.dytt.DataRepository;
-import com.bzh.dytt.data.CategoryMap;
-import com.bzh.dytt.data.MovieCategory;
-import com.bzh.dytt.data.VideoDetail;
-import com.bzh.dytt.data.network.Resource;
-import com.bzh.dytt.data.network.Status;
+import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.entity.CategoryMap;
+import com.bzh.dytt.data.entity.MovieCategory;
+import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.data.Resource;
+import com.bzh.dytt.data.Status;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -48,7 +48,7 @@ public class SearchViewModel extends BaseViewModel {
         return mVideoList;
     }
 
-    LiveData<Throwable> getFetchVideoDetailState() {
+    LiveData<Resource<ExceptionType>> getFetchVideoDetailState() {
         return mDataRepository.getFetchVideoDetailState();
     }
 

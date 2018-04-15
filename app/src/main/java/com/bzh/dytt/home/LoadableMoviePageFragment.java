@@ -12,10 +12,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.bzh.dytt.data.MovieCategory;
-import com.bzh.dytt.data.VideoDetail;
+import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.entity.MovieCategory;
+import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.db.DataTypeConverter;
-import com.bzh.dytt.data.network.Resource;
+import com.bzh.dytt.data.Resource;
 
 import java.util.List;
 
@@ -89,5 +90,10 @@ public class LoadableMoviePageFragment extends SingleListFragment<VideoDetail> {
     protected void doDestroyView() {
         getLifecycle().removeObserver(((LoadableMoviePageViewModel) mViewModel));
         super.doDestroyView();
+    }
+
+    @Override
+    protected LiveData<Resource<ExceptionType>> getThrowableLiveData() {
+        return ((LoadableMoviePageViewModel) mViewModel).getFetchVideoDetailState();
     }
 }

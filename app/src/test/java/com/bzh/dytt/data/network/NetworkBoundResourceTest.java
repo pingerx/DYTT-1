@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bzh.dytt.AppExecutors;
+import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.util.ApiUtil;
 import com.bzh.dytt.util.CountingAppExecutors;
 import com.bzh.dytt.util.InstantAppExecutors;

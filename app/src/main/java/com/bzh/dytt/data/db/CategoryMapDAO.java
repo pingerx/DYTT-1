@@ -7,8 +7,8 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.bzh.dytt.data.CategoryMap;
-import com.bzh.dytt.data.MovieCategory;
+import com.bzh.dytt.data.entity.CategoryMap;
+import com.bzh.dytt.data.entity.MovieCategory;
 
 import java.util.List;
 

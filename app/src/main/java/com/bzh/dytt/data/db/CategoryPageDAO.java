@@ -6,8 +6,8 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.bzh.dytt.data.CategoryPage;
-import com.bzh.dytt.data.MovieCategory;
+import com.bzh.dytt.data.entity.CategoryPage;
+import com.bzh.dytt.data.entity.MovieCategory;
 
 import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 

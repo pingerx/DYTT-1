@@ -7,6 +7,7 @@ import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
 
 import com.bzh.dytt.AppExecutors;
+import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.util.InstantAppExecutors;
 
 import org.junit.Before;

@@ -4,7 +4,7 @@ package com.bzh.dytt.data.db;
 import android.arch.persistence.room.TypeConverter;
 import android.text.TextUtils;
 
-import com.bzh.dytt.data.MovieCategory;
+import com.bzh.dytt.data.entity.MovieCategory;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,9 +6,9 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.VisibleForTesting;
 
-import com.bzh.dytt.data.CategoryMap;
-import com.bzh.dytt.data.CategoryPage;
-import com.bzh.dytt.data.VideoDetail;
+import com.bzh.dytt.data.entity.CategoryMap;
+import com.bzh.dytt.data.entity.CategoryPage;
+import com.bzh.dytt.data.entity.VideoDetail;
 
 @Database(entities = {VideoDetail.class, CategoryMap.class, CategoryPage.class}, version = 2)
 @TypeConverters({DataTypeConverter.class})

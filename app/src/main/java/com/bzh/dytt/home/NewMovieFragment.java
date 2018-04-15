@@ -11,8 +11,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.bzh.dytt.data.VideoDetail;
-import com.bzh.dytt.data.network.Resource;
+import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.data.Resource;
 
 import java.util.List;
 
@@ -62,5 +63,10 @@ public class NewMovieFragment extends SingleListFragment<VideoDetail> {
     @Override
     protected void doRefresh() {
         ((NewMovieViewModel) mViewModel).refresh();
+    }
+
+    @Override
+    protected LiveData<Resource<ExceptionType>> getThrowableLiveData() {
+        return ((NewMovieViewModel) mViewModel).getFetchVideoDetailState();
     }
 }

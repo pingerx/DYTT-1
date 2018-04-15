@@ -1,11 +1,11 @@
-package com.bzh.dytt.data.network;
+package com.bzh.dytt.data;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import static com.bzh.dytt.data.network.Status.ERROR;
-import static com.bzh.dytt.data.network.Status.LOADING;
-import static com.bzh.dytt.data.network.Status.SUCCESS;
+import static com.bzh.dytt.data.Status.ERROR;
+import static com.bzh.dytt.data.Status.LOADING;
+import static com.bzh.dytt.data.Status.SUCCESS;
 
 /**
  * A generic class that holds a value with its loading status.

@@ -1,4 +1,4 @@
-package com.bzh.dytt.data.network;
+package com.bzh.dytt.data;
 
 public enum Status {
     SUCCESS,

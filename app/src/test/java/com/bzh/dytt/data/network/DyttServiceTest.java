@@ -2,7 +2,7 @@ package com.bzh.dytt.data.network;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 
-import com.bzh.dytt.data.MovieCategory;
+import com.bzh.dytt.data.entity.MovieCategory;
 import com.bzh.dytt.util.LiveDataCallAdapterFactory;
 import com.bzh.dytt.utils.LiveDataTestUtil;
 

@@ -24,8 +24,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.data.VideoDetail;
-import com.bzh.dytt.data.network.Resource;
+import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.home.MovieListAdapter;
 import com.bzh.dytt.home.SingleListFragment;
 
@@ -119,7 +120,7 @@ public class SearchFragment extends SingleListFragment<VideoDetail> {
     }
 
     @Override
-    protected LiveData<Throwable> getThrowableLiveData() {
+    protected LiveData<Resource<ExceptionType>> getThrowableLiveData() {
         return ((SearchViewModel) mViewModel).getFetchVideoDetailState();
     }
 

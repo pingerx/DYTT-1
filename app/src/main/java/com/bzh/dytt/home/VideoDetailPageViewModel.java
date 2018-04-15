@@ -7,8 +7,8 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.bzh.dytt.DataRepository;
-import com.bzh.dytt.data.VideoDetail;
-import com.bzh.dytt.data.network.Resource;
+import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.data.Resource;
 
 import java.util.Collections;
 import java.util.List;

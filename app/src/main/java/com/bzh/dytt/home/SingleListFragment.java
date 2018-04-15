@@ -16,7 +16,8 @@ import android.widget.Toast;
 
 import com.bzh.dytt.BaseFragment;
 import com.bzh.dytt.R;
-import com.bzh.dytt.data.network.Resource;
+import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.Resource;
 
 import java.util.List;
 
@@ -35,16 +36,14 @@ public abstract class SingleListFragment<T> extends BaseFragment {
 
     @BindView(R.id.listview)
     protected RecyclerView mRecyclerView;
-    protected Observer<Throwable> mThrowableObserver = new Observer<Throwable>() {
+
+    protected Observer<Resource<ExceptionType>> mOtherExceptionObserver = new Observer<Resource<ExceptionType>>() {
         @Override
-        public void onChanged(@Nullable Throwable throwable) {
-            if (getActivity() != null) {
-                Toast.makeText(getActivity(), getResources().getString(R.string.fetch_video_detail_exception, throwable.getMessage()), Toast.LENGTH_SHORT).show();
-            } else {
-                Log.e(TAG, "onChanged: activity is null");
-            }
+        public void onChanged(@Nullable Resource<ExceptionType> result) {
+            onOtherException(result);
         }
     };
+
     @BindView(R.id.empty_layout)
     View mEmpty;
     @BindView(R.id.error_layout)
@@ -55,6 +54,8 @@ public abstract class SingleListFragment<T> extends BaseFragment {
 
             mEmpty.setVisibility(View.GONE);
             mError.setVisibility(View.GONE);
+
+            Log.d(TAG, "onChanged() called with: result = [" + result.status + "]");
 
             assert result != null;
             switch (result.status) {
@@ -97,7 +98,7 @@ public abstract class SingleListFragment<T> extends BaseFragment {
 
     protected abstract LiveData<Resource<List<T>>> getListLiveData();
 
-    protected LiveData<Throwable> getThrowableLiveData() {
+    protected LiveData<Resource<ExceptionType>> getThrowableLiveData() {
         return null;
     }
 
@@ -135,7 +136,21 @@ public abstract class SingleListFragment<T> extends BaseFragment {
         return mAdapter;
     }
 
-    public Observer<Throwable> getThrowableObserver() {
-        return mThrowableObserver;
+    public Observer<Resource<ExceptionType>> getThrowableObserver() {
+        return mOtherExceptionObserver;
+    }
+
+    protected void onOtherException(Resource<ExceptionType> result) {
+        if (result.data != null) {
+            switch (result.data) {
+                case TaskFailure:
+                    if (getActivity() != null) {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.fetch_video_detail_exception, result.message), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e(TAG, "onChanged: activity is null");
+                    }
+                    break;
+            }
+        }
     }
 }

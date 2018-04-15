@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 import com.bzh.dytt.AppExecutors;
+import com.bzh.dytt.data.Resource;
 
 /**
  * A generic class that can provide a resource backed by both the sqlite database and the network.

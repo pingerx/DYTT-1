@@ -4,7 +4,9 @@ package com.bzh.dytt.task;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
-import com.bzh.dytt.data.VideoDetail;
+import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.Resource;
+import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.db.VideoDetailDAO;
 import com.bzh.dytt.data.network.ApiResponse;
 import com.bzh.dytt.data.network.DyttService;
@@ -22,13 +24,13 @@ public class FetchSearchVideoDetailTask implements Runnable {
     private final DyttService mService;
     private final VideoDetailDAO mVideoDetailDAO;
     private final VideoDetailPageParser mParser;
-    private final MutableLiveData<Throwable> mFetchDetailState;
+    private final MutableLiveData<Resource<ExceptionType>> mFetchDetailState;
 
     public FetchSearchVideoDetailTask(VideoDetail videoDetail,
                                       VideoDetailDAO videoDetailDAO,
                                       DyttService service,
                                       VideoDetailPageParser parser,
-                                      MutableLiveData<Throwable> fetchDetailState) {
+                                      MutableLiveData<Resource<ExceptionType>> fetchDetailState) {
         mVideoDetail = videoDetail;
         mService = service;
         mParser = parser;
@@ -48,7 +50,7 @@ public class FetchSearchVideoDetailTask implements Runnable {
                 mVideoDetailDAO.updateVideoDetail(videoDetail);
             }
         } catch (IOException e) {
-            mFetchDetailState.postValue(e);
+            mFetchDetailState.postValue(Resource.error(e.getMessage(), ExceptionType.TaskFailure));
             Log.e("FetchVideoDetailTask", "Something wrong when fetch video detail " + e.getMessage());
         }
     }

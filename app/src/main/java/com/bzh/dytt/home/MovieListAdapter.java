@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.bzh.dytt.R;
 import com.bzh.dytt.SingleActivity;
-import com.bzh.dytt.data.VideoDetail;
+import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.util.GlideApp;
 
 import java.util.List;

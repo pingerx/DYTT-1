@@ -1,9 +1,8 @@
-package com.bzh.dytt.data;
+package com.bzh.dytt.data.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.List;
 import java.util.Objects;
