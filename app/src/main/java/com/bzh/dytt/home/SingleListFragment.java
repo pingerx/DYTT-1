@@ -55,8 +55,6 @@ public abstract class SingleListFragment<T> extends BaseFragment {
             mEmpty.setVisibility(View.GONE);
             mError.setVisibility(View.GONE);
 
-            Log.d(TAG, "onChanged() called with: result = [" + result.status + "]");
-
             assert result != null;
             switch (result.status) {
                 case ERROR: {

@@ -26,5 +26,4 @@
         android:text="@string/app_intro_one_line"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
-
 </LinearLayout>

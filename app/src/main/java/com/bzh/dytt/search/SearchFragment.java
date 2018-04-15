@@ -92,6 +92,7 @@ public class SearchFragment extends SingleListFragment<VideoDetail> {
                 View customNav = LayoutInflater.from(getActivity()).inflate(R.layout.search_action_bar, null); // layout which contains your button.
                 actionBar.setCustomView(customNav, lp1);
                 mSearchInput = customNav.findViewById(R.id.search_edit_input);
+                mSearchInput.requestFocus();
             }
         }
     }
