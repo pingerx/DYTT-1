@@ -26,7 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class AppNavigationTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
     public void clickHomeIconToOpenNavigation() {
@@ -64,7 +64,7 @@ public class AppNavigationTest {
      * Returns the content description for the navigation button view in the toolbar.
      */
     public static String getToolbarNavigationContentDescription(@NonNull Activity activity, @IdRes int toolbar1) {
-        Toolbar toolbar = (Toolbar) activity.findViewById(toolbar1);
+        Toolbar toolbar = activity.findViewById(toolbar1);
         if (toolbar != null) {
             return (String) toolbar.getNavigationContentDescription();
         } else {

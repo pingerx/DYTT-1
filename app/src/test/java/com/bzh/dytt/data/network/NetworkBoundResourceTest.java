@@ -76,7 +76,7 @@ public class NetworkBoundResourceTest {
     }
 
     @Before
-    public void init() throws Exception {
+    public void init() {
         AppExecutors appExecutors = useRealExecutors ? countingAppExecutors.getAppExecutors() : new InstantAppExecutors();
         networkBoundResource = new NetworkBoundResource<Foo, Foo>(appExecutors) {
             @Override
@@ -127,7 +127,7 @@ public class NetworkBoundResourceTest {
         createCall = new Function<Void, LiveData<ApiResponse<Foo>>>() {
             @Override
             public LiveData<ApiResponse<Foo>> apply(Void aVoid) {
-                return ApiUtil.createCall(Response.<Foo>success(networkValue));
+                return ApiUtil.createCall(Response.success(networkValue));
             }
         };
 
@@ -305,14 +305,14 @@ public class NetworkBoundResourceTest {
         // 验证数据库观察结果
         dbData.setValue(dbValue);
         drain();
-        verify(observer).onChanged(Resource.<Foo>loading(dbValue));
+        verify(observer).onChanged(Resource.loading(dbValue));
 
         // 验证网络请求成功
         final Foo networkResult = new Foo(1);
-        apiResponseLiveData.setValue(new ApiResponse<Foo>(Response.success(networkResult)));
+        apiResponseLiveData.setValue(new ApiResponse<>(Response.success(networkResult)));
         drain();
         assertThat(saved.get(), is(networkResult));
-        verify(observer).onChanged(Resource.<Foo>success(dbValue2));
+        verify(observer).onChanged(Resource.success(dbValue2));
 
         // 验证是否还有未验证的行为
         verifyNoMoreInteractions(observer);

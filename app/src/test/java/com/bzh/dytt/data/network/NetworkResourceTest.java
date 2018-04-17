@@ -41,7 +41,7 @@ public class NetworkResourceTest {
     private AppExecutors appExecutors;
 
     @Before
-    public void init() throws Exception {
+    public void init() {
         appExecutors = new InstantAppExecutors();
 
     }

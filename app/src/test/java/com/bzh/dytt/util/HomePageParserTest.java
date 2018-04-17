@@ -18,7 +18,7 @@ public class HomePageParserTest {
     private HomePageParser mHomePageParser;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mHomePageParser = new HomePageParser();
     }
 

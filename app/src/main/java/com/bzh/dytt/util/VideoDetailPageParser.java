@@ -45,7 +45,7 @@ public class VideoDetailPageParser {
         private static final String regEx_space = "(\\s|　|&nbsp;)*|\t|\r|\n";//定义空格回车换行符
         private static final String regEx_regular = "(\\]|:|】|：)*";
 
-        public VideoDetail parse(String s) throws Exception {
+        public VideoDetail parse(String s) {
             VideoDetail videoDetail = new VideoDetail();
             Document document = Jsoup.parse(s);
             String html = document.select("div.co_content8").select("ul").toString();

@@ -219,7 +219,7 @@ public class DataRepositoryTest {
         // Support Call
         MutableLiveData<ApiResponse<ResponseBody>> apiResponseMutableLiveData = new MutableLiveData<>();
         String resource = TestUtils.getResource(getClass(), "next_new_movie.html");
-        ApiResponse<ResponseBody> apiResponse = new ApiResponse<ResponseBody>(Response.success(ResponseBody.create(MediaType.parse("text/html"), resource)));
+        ApiResponse<ResponseBody> apiResponse = new ApiResponse<>(Response.success(ResponseBody.create(MediaType.parse("text/html"), resource)));
         when(dyttService.getMovieListByCategory("/html/gndy/dyzz/list_23_2.html")).thenReturn(apiResponseMutableLiveData);
 
         // MAPS

@@ -70,7 +70,7 @@ public class DyttServiceTest {
         assertThat(URLDecoder.decode(request.getPath(), "UTF-8"), is("//"));
         assertThat(apiResponse.isSuccessful(), is(true));
         assertThat(apiResponse.errorMessage, nullValue());
-        assertThat(apiResponse.body.contentLength(), is(not(0l)));
+        assertThat(apiResponse.body.contentLength(), is(not(0L)));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class DyttServiceTest {
         assertThat(URLDecoder.decode(request.getPath(), "UTF-8"), is("//html/gndy/dyzz/list_23_1.html"));
         assertThat(apiResponse.isSuccessful(), is(true));
         assertThat(apiResponse.errorMessage, nullValue());
-        assertThat(apiResponse.body.contentLength(), is(not(0l)));
+        assertThat(apiResponse.body.contentLength(), is(not(0L)));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class DyttServiceTest {
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(URLDecoder.decode(request.getPath(), "UTF-8"), is("//html/gndy/dyzz/20180330/56601.html"));
         assertThat(apiResponse.isSuccessful(), is(true));
-        assertThat(apiResponse.body.contentLength(), is(not(0l)));
+        assertThat(apiResponse.body.contentLength(), is(not(0L)));
     }
 
 

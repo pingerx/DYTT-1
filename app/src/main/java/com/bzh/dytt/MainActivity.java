@@ -112,15 +112,19 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            mToolbar.setTitle(R.string.nav_home_page);
-            mContainer.setCurrentItem(0);
-        } else if (id == R.id.nav_movie) {
-            mToolbar.setTitle(R.string.nav_movie_page);
-            mContainer.setCurrentItem(1);
-        } else if (id == R.id.nav_imdb) {
-            mToolbar.setTitle(R.string.nav_imdb_page);
-            mContainer.setCurrentItem(2);
+        switch (id) {
+            case R.id.nav_home:
+                mToolbar.setTitle(R.string.nav_home_page);
+                mContainer.setCurrentItem(0);
+                break;
+            case R.id.nav_movie:
+                mToolbar.setTitle(R.string.nav_movie_page);
+                mContainer.setCurrentItem(1);
+                break;
+            case R.id.nav_imdb:
+                mToolbar.setTitle(R.string.nav_imdb_page);
+                mContainer.setCurrentItem(2);
+                break;
         }
         mDrawer.closeDrawer(GravityCompat.START);
         return true;

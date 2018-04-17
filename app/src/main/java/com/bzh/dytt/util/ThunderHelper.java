@@ -17,18 +17,16 @@ public class ThunderHelper {
         if (TextUtils.isEmpty(ftpUrl)) {
             return false;
         }
-        if (checkIsInstall(context, XUNLEI_PACKAGENAME)) {
+        if (checkIsInstall(context)) {
             context.startActivity(new Intent("android.intent.action.VIEW", Uri.parse(getThunderEncode(ftpUrl))));
             return true;
         }
         return false;
     }
 
-    private boolean checkIsInstall(Context paramContext, String paramString) {
-        if ((paramString == null) || ("".equals(paramString)))
-            return false;
+    private boolean checkIsInstall(Context paramContext) {
         try {
-            paramContext.getPackageManager().getApplicationInfo(paramString, 0);
+            paramContext.getPackageManager().getApplicationInfo(XUNLEI_PACKAGENAME, 0);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "checkIsInstall: ", e);

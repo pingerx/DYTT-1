@@ -19,7 +19,7 @@ public class LoadableMovieParserTest {
     private LoadableMovieParser loadableMovieParser;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         loadableMovieParser = new LoadableMovieParser();
     }
 
@@ -30,6 +30,6 @@ public class LoadableMovieParserTest {
 
         assertNotNull(result);
         assertTrue(result.size() > 0);
-        assertEquals("/html/gndy/dyzz/20180328/56582.html", result.get(0).getLink());
+        assertEquals("/html/gndy/jddy/20180328/56586.html", result.get(0).getLink());
     }
 }

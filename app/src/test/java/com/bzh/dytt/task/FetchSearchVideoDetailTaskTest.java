@@ -4,6 +4,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 
 import com.bzh.dytt.TestUtils;
+import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.db.VideoDetailDAO;
 import com.bzh.dytt.data.network.DyttService;
@@ -42,7 +44,7 @@ public class FetchSearchVideoDetailTaskTest {
     private VideoDetailPageParser parser;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         parser = new VideoDetailPageParser();
     }
@@ -73,15 +75,15 @@ public class FetchSearchVideoDetailTaskTest {
         when(dyttService.getSearchVideoDetail("http://www.ygdy8.com" + videoDetail.getDetailLink())).thenReturn(call);
         when(dyttService.getSearchVideoDetail("http://www.ygdy8.com" + videoDetail.getDetailLink()).execute()).thenReturn(Response.<ResponseBody>error(500, ResponseBody.create(MediaType.parse("application/txt"), "Error Message")));
 
-        MutableLiveData<Throwable> throwableMLD = new MutableLiveData<>();
+        MutableLiveData<Resource<ExceptionType>> throwableMLD = new MutableLiveData<>();
 
         FetchSearchVideoDetailTask task = new FetchSearchVideoDetailTask(videoDetail, videoDetailDAO, dyttService, parser, throwableMLD);
         task.run();
 
-        Observer<Throwable> observer = mock(Observer.class);
+        Observer<Resource<ExceptionType>> observer = mock(Observer.class);
         throwableMLD.observeForever(observer);
 
         Exception errorMessage = new Exception("Error Message");
-        throwableMLD.postValue(errorMessage);
+        throwableMLD.postValue(Resource.error(errorMessage.getMessage(), ExceptionType.TaskFailure));
     }
 }

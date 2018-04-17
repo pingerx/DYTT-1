@@ -20,7 +20,7 @@ public class SearchFragmentTest {
     private SearchFragment mFragment;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         EspressoTestUtil.disableProgressBarAnimations(mActivityTestRule);
         mFragment = SearchFragment.newInstance();
         mActivityTestRule.getActivity().setFragment(mFragment);

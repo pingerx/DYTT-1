@@ -12,10 +12,10 @@ import org.junit.runners.JUnit4;
 public class LoadableMoviePageViewModelTest {
 
     @Rule
-    InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
     }
 
     @Test

@@ -28,7 +28,7 @@ public class ApiResponseTest {
 
     @Test
     public void success() {
-        ApiResponse<String> apiResponse = new ApiResponse<String>(Response.success("Body"));
+        ApiResponse<String> apiResponse = new ApiResponse<>(Response.success("Body"));
         assertThat(apiResponse.code, is(200));
         assertThat(apiResponse.isSuccessful(), is(true));
         assertThat(apiResponse.errorMessage, nullValue());

@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class AssetsUtil {
-    public static String getAssest(String name) throws IOException {
+    public static String getAssets(String name) throws IOException {
         StringBuilder buf = new StringBuilder();
         InputStream is = InstrumentationRegistry.getContext().getAssets().open(name);
         BufferedReader in = new BufferedReader(new InputStreamReader(is, "UTF-8"));

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,7 +24,8 @@
                 android:background="@android:color/background_dark"
                 android:elevation="10dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/default_video"/>
+                android:src="@drawable/default_video"
+                tools:ignore="ContentDescription" />
 
         </FrameLayout>
 
@@ -32,15 +33,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:baselineAligned="false"
             android:orientation="horizontal">
-
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="10dp"
+                android:paddingEnd="0dp"
                 android:paddingStart="16dp">
 
                 <TextView
@@ -49,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:textSize="@dimen/video_detail_video_name"/>
+                    android:textSize="@dimen/video_detail_video_name" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -62,15 +64,13 @@
                         android:id="@+id/video_country"
                         style="@style/video_detail_info_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/video_duration"
                         style="@style/video_detail_info_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
 
@@ -84,15 +84,15 @@
                     <TextView
                         style="@style/video_detail_info_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/video_show_time"
                         style="@style/video_detail_info_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:ellipsize="end"/>
+                        android:ellipsize="end"
+                        android:maxLines="1" />
                 </LinearLayout>
 
                 <TextView
@@ -103,7 +103,7 @@
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:maxLength="20"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
 
 
             </LinearLayout>
@@ -111,9 +111,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:layout_gravity="center_vertical">
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -124,10 +124,11 @@
                         android:id="@+id/download_button"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:padding="10dp"
                         android:background="?selectableItemBackground"
+                        android:padding="10dp"
                         android:src="@drawable/ic_cloud_download_black"
-                        android:tint="@color/colorSecondaryText"/>
+                        android:tint="@color/colorSecondaryText"
+                        tools:ignore="ContentDescription" />
 
                 </LinearLayout>
 
@@ -148,7 +149,7 @@
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/colorAccent"
                             android:isIndicator="true"
-                            android:numStars="5"/>
+                            android:numStars="5" />
                     </FrameLayout>
 
 
@@ -156,8 +157,8 @@
                         android:id="@+id/douban_grade"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="5dp"/>
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1" />
 
                 </LinearLayout>
 
@@ -180,25 +181,22 @@
                             android:backgroundTint="@color/colorAccent"
                             android:isIndicator="true"
                             android:numStars="5"
-                            android:rating="1"/>
+                            android:rating="1" />
                     </FrameLayout>
 
                     <TextView
                         android:id="@+id/imdb_grade"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="5dp"/>
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1" />
 
                 </LinearLayout>
-
 
 
             </LinearLayout>
 
         </LinearLayout>
-
-
 
 
         <LinearLayout
@@ -214,14 +212,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginBottom="5dp"
-                android:layout_marginStart="0dp"/>
+                android:layout_marginStart="0dp" />
 
             <TextView
                 android:id="@+id/video_director"
                 style="@style/video_detail_secondary_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp" />
 
             <TextView
                 style="@style/video_detail_info_text"
@@ -229,7 +227,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginBottom="5dp"
-                android:layout_marginStart="0dp"/>
+                android:layout_marginStart="0dp" />
 
             <TextView
                 android:id="@+id/video_leading_role"
@@ -237,7 +235,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:maxLines="1"/>
+                android:maxLines="1" />
 
 
             <TextView
@@ -245,7 +243,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:layout_marginStart="0dp"/>
+                android:layout_marginStart="0dp" />
 
             <TextView
                 android:id="@+id/video_description"
@@ -255,20 +253,16 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:ellipsize="end"
                 android:lineSpacingMultiplier="1.2"
-                android:maxLines="4"/>
+                android:maxLines="4" />
 
         </LinearLayout>
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-8112052667906046/1948101912">
-        </com.google.android.gms.ads.AdView>
+            ads:adUnitId="ca-app-pub-8112052667906046/1948101912" />
 
     </LinearLayout>
 

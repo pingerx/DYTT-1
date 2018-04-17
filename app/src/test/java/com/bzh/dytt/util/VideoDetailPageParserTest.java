@@ -16,7 +16,7 @@ public class VideoDetailPageParserTest {
     private VideoDetailPageParser videoDetailPageParser;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         videoDetailPageParser = new VideoDetailPageParser();
     }
 

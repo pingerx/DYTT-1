@@ -13,6 +13,6 @@
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:textColor="@android:color/white"
-        android:textColorHint="@color/transluent_white"
+        android:textColorHint="@color/translucent_white"
         android:textCursorDrawable="@drawable/search_edit_cursor"/>
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.bzh.dytt;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LifecycleRegistry;
+import android.support.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,7 @@ public class TestUtils {
             return registry;
         }
 
+        @NonNull
         @Override
         public Lifecycle getLifecycle() {
             return mRegistry;

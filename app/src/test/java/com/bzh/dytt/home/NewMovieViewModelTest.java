@@ -79,6 +79,6 @@ public class NewMovieViewModelTest {
         verify(dataRepository).getVideoDetailsByCategory(MovieCategory.HOME_LATEST_MOVIE);
         List<VideoDetail> videoDetails = new ArrayList<>();
         dbVideoDetailLiveData.setValue(Resource.success(videoDetails));
-        verify(observer).onChanged(Resource.<List<VideoDetail>>success(videoDetails));
+        verify(observer).onChanged(Resource.success(videoDetails));
     }
 }

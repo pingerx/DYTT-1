@@ -1,12 +1,14 @@
 package com.bzh.dytt;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.umeng.analytics.MobclickAgent;
 
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
     @Override
@@ -29,9 +31,12 @@ public class BaseActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    protected void doCreate(){}
+    protected void doCreate() {
+    }
 
-    protected void doResume(){}
+    protected void doResume() {
+    }
 
-    protected void doPause(){}
+    protected void doPause() {
+    }
 }

@@ -3,7 +3,6 @@ package com.bzh.dytt;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 
 import com.bzh.dytt.di.AppInjector;
 import com.umeng.commonsdk.UMConfigure;
@@ -23,7 +22,7 @@ public class BasicApp extends Application implements HasActivityInjector {
         super.onCreate();
         AppInjector.init(this);
 
-        UMConfigure.init(this, "5acda2b4f29d98253600000c", "Kuan",UMConfigure.DEVICE_TYPE_PHONE , null);
+        UMConfigure.init(this, "5acda2b4f29d98253600000c", "Kuan", UMConfigure.DEVICE_TYPE_PHONE, null);
     }
 
     @Override

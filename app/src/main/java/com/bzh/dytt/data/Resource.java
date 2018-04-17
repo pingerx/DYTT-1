@@ -55,10 +55,7 @@ public class Resource<T> {
         if (status != resource.status) {
             return false;
         }
-        if (message != null ? !message.equals(resource.message) : resource.message != null) {
-            return false;
-        }
-        return data != null ? data.equals(resource.data) : resource.data == null;
+        return (message != null ? message.equals(resource.message) : resource.message == null) && (data != null ? data.equals(resource.data) : resource.data == null);
     }
 
     @Override
