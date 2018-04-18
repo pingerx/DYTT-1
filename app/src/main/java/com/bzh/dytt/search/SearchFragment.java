@@ -1,7 +1,6 @@
 package com.bzh.dytt.search;
 
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
@@ -90,7 +89,6 @@ public class SearchFragment extends SingleListFragment<VideoDetail> {
                 actionBar.setDisplayShowTitleEnabled(false);
                 actionBar.setDisplayShowCustomEnabled(true);
                 ActionBar.LayoutParams lp1 = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
-                @SuppressLint("InflateParams")
                 View customNav = LayoutInflater.from(getActivity()).inflate(R.layout.search_action_bar, null); // layout which contains your button.
                 actionBar.setCustomView(customNav, lp1);
                 mSearchInput = customNav.findViewById(R.id.search_edit_input);

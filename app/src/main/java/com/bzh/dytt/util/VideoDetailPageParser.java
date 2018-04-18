@@ -12,6 +12,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -171,15 +172,15 @@ public class VideoDetailPageParser {
                     } else if (info.startsWith(Const.FILEFORMAT)) {
                         // 文件格式
                         info = info.substring(info.indexOf(Const.FILEFORMAT) + Const.FILEFORMAT.length());
-                    } else if (info.toLowerCase().startsWith(Const.IMDB_GRADE.toLowerCase())) {
+                    } else if (info.toLowerCase(Locale.getDefault()).startsWith(Const.IMDB_GRADE.toLowerCase(Locale.getDefault()))) {
                         // IMDB评分
-                        info = info.substring(info.toLowerCase().indexOf(Const.IMDB_GRADE.toLowerCase()) + Const
+                        info = info.substring(info.toLowerCase(Locale.getDefault()).indexOf(Const.IMDB_GRADE.toLowerCase(Locale.getDefault())) + Const
                                 .IMDB_GRADE.length());
                         entity.setIMDBGrade(getGrade(info));
                         entity.setIMDBGradeUsers(getGradeUsers(info));
-                    } else if (info.toLowerCase().startsWith(Const.DOUBAN_GRADE.toLowerCase())) {
+                    } else if (info.toLowerCase(Locale.getDefault()).startsWith(Const.DOUBAN_GRADE.toLowerCase(Locale.getDefault()))) {
                         // 豆瓣评分
-                        info = info.substring(info.toLowerCase().indexOf(Const.DOUBAN_GRADE.toLowerCase()) + Const
+                        info = info.substring(info.toLowerCase(Locale.getDefault()).indexOf(Const.DOUBAN_GRADE.toLowerCase(Locale.getDefault())) + Const
                                 .DOUBAN_GRADE.length());
                         entity.setDoubanGrade(getGrade(info));
                         entity.setDoubanGradeUsers(getGradeUsers(info));
