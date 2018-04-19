@@ -3,6 +3,7 @@ package com.bzh.dytt.di;
 import com.bzh.dytt.colorhunt.ColorHuntFragment;
 import com.bzh.dytt.girl.GirlFragment;
 import com.bzh.dytt.home.AllMoviePageFragment;
+import com.bzh.dytt.home.ImdbMovieFragment;
 import com.bzh.dytt.home.LoadableMoviePageFragment;
 import com.bzh.dytt.home.NewMovieFragment;
 import com.bzh.dytt.home.VideoDetailPageFragment;
@@ -34,4 +35,7 @@ public abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract SearchFragment contributeSearchFragment();
+
+    @ContributesAndroidInjector
+    abstract ImdbMovieFragment contributeImdbMovieFragment();
 }

@@ -9,6 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,17 +18,45 @@ import javax.inject.Singleton;
 @Singleton
 public class HomePageParser {
 
-    private static final String TAG = "HomePageParser";
-    private InternalHomeParser mNewestParse;
+    private final Newest168Parse mNewest168Parse;
+    private final InternalHomeParser mNewestParse;
 
     @Inject
     public HomePageParser() {
-//        mNewest168Parse = new HomePageParser.Newest168Parse();
+        mNewest168Parse = new HomePageParser.Newest168Parse();
         mNewestParse = new HomePageParser.NewestParse();
 //        mThunderParse = new HomePageParser.ThunderParse();
 //        mChinaTvParse = new HomePageParser.ChinaTVParse();
 //        mJSKParse = new HomePageParser.JSKTVParse();
 //        mEAParse = new HomePageParser.EATVParse();
+    }
+
+    public List<CategoryMap> parse(String html, MovieCategory movieCategory) {
+        List<CategoryMap> result = new ArrayList<>();
+
+        if (html != null && html.length() != 0) {
+
+            List<CategoryMap> categoryMaps;
+            switch (movieCategory) {
+                case NEW_MOVIE_168:
+                    categoryMaps = mNewest168Parse.parseCategoryMapItems(html);
+                    break;
+                case HOME_LATEST_MOVIE:
+                    categoryMaps = mNewestParse.parseCategoryMapItems(html);
+                    break;
+                default:
+                    categoryMaps = Collections.emptyList();
+                    break;
+            }
+
+            for (CategoryMap category : categoryMaps) {
+                String link = category.getLink();
+                if (link.contains("gndy")) {
+                    result.add(category);
+                }
+            }
+        }
+        return result;
     }
 
 //    public static class EATVParse extends PageCenterContentParse {
@@ -82,21 +111,6 @@ public class HomePageParser {
 //        }
 //    }
 
-    public List<CategoryMap> parse(String html) {
-        List<CategoryMap> result = new ArrayList<>();
-
-        if (html != null && html.length() != 0) {
-
-            List<CategoryMap> categoryMaps = mNewestParse.parseCategoryMapItems(html);
-            for (CategoryMap category : categoryMaps) {
-                String link = category.getLink();
-                if (link.contains("gndy")) {
-                    result.add(category);
-                }
-            }
-        }
-        return result;
-    }
 
     public static class NewestParse extends PageCenterContentParse {
 
@@ -111,53 +125,38 @@ public class HomePageParser {
         }
     }
 
-//    public static class Newest168Parse extends InternalHomeParser {
-//
-//        @Override
-//        protected Element getRootAreaElement(Document document) {
-//            return document.select("div.bd3l").select("div.co_area2").last();
-//        }
-//
-//        @Override
-//        protected Element getAreaElement(Element area) {
-//            return area.select("div.title_all").first();
-//        }
-//
-//        @Override
-//        protected String getItemTime(Element element) {
-//            return "";
-//        }
-//
-//        @Override
-//        protected String getItemLink(Element element) {
-//            return element.attr("href");
-//        }
-//
-//        @Override
-//        protected String getItemTitle(Element element) {
-//            return element.text();
-//        }
-//
-//        @Override
-//        protected Elements getItemElements(Element element) {
-//            return element.select("div.co_content2").select("ul").select("a");
-//        }
-//
-//        @Override
-//        protected String getAreaDetailLink(Element element) {
-//            return "";
-//        }
-//
-//        @Override
-//        protected String getAreaTitle(Element element) {
-//            return element.text();
-//        }
-//
-//        @Override
-//        protected int getType() {
-//            return HomeType.NEWEST_168;
-//        }
-//    }
+    public static class Newest168Parse extends InternalHomeParser {
+
+        @Override
+        protected Element getRootAreaElement(Document document) {
+            return document.select("div.bd3l").select("div.co_area2").last();
+        }
+
+        @Override
+        protected String getItemTime(Element element) {
+            return "";
+        }
+
+        @Override
+        protected String getItemLink(Element element) {
+            return element.attr("href");
+        }
+
+        @Override
+        protected String getItemTitle(Element element) {
+            return element.text();
+        }
+
+        @Override
+        protected Elements getItemElements(Element element) {
+            return element.select("div.co_content2").select("ul").select("a");
+        }
+
+        @Override
+        protected MovieCategory getType() {
+            return MovieCategory.NEW_MOVIE_168;
+        }
+    }
 
     private static abstract class PageCenterContentParse extends InternalHomeParser {
 
@@ -180,26 +179,11 @@ public class HomePageParser {
         protected String getItemTime(Element element) {
             return element.select("td").select("font").text();
         }
-
-        @Override
-        protected Element getAreaElement(Element area) {
-            return area.select("div.title_all").first();
-        }
-
-        @Override
-        protected String getAreaTitle(Element element) {
-            return element.select("strong").text();
-        }
-
-        @Override
-        protected String getAreaDetailLink(Element element) {
-            return element.select("a").attr("href");
-        }
     }
 
     private static abstract class InternalHomeParser {
 
-        public List<CategoryMap> parseCategoryMapItems(String html) {
+        List<CategoryMap> parseCategoryMapItems(String html) {
             List<CategoryMap> result = new ArrayList<>();
 
             try {
@@ -231,8 +215,6 @@ public class HomePageParser {
             return result;
         }
 
-        protected abstract Element getAreaElement(Element area);
-
         protected abstract Element getRootAreaElement(Document document);
 
         protected abstract String getItemTime(Element element);
@@ -243,12 +225,6 @@ public class HomePageParser {
 
         protected abstract Elements getItemElements(Element element);
 
-        protected abstract String getAreaDetailLink(Element element);
-
-        protected abstract String getAreaTitle(Element element);
-
         protected abstract MovieCategory getType();
-
     }
-
 }

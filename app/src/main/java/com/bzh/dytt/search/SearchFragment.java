@@ -28,7 +28,7 @@ import com.bzh.dytt.data.ExceptionType;
 import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.home.MovieListAdapter;
-import com.bzh.dytt.home.SingleListFragment;
+import com.bzh.dytt.SingleListFragment;
 
 import java.util.List;
 

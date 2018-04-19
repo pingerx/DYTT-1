@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.bzh.dytt.SingleListFragment;
 import com.bzh.dytt.data.ExceptionType;
 import com.bzh.dytt.data.entity.MovieCategory;
 import com.bzh.dytt.data.entity.VideoDetail;

@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import com.bzh.dytt.BaseViewModel;
+import com.bzh.dytt.home.ImdbViewModel;
 import com.bzh.dytt.home.LoadableMoviePageViewModel;
 import com.bzh.dytt.home.NewMovieViewModel;
 import com.bzh.dytt.home.VideoDetailPageViewModel;
@@ -42,6 +43,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SearchViewModel.class)
     abstract ViewModel bindSearchViewModel(SearchViewModel searchViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ImdbViewModel.class)
+    abstract ViewModel bindImdbViewModel(ImdbViewModel imdbViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);

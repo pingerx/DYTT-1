@@ -24,14 +24,16 @@ public class CategoryPageParser {
 
     public List<CategoryMap> parse(String html, MovieCategory category) {
         switch (category) {
+            case NEW_MOVIE_168:
             case HOME_LATEST_MOVIE:
-                return mHomePageParser.parse(html);
+                return mHomePageParser.parse(html, category);
             case NEW_MOVIE:
             case CHINA_MOVIE:
             case OUMEI_MOVIE:
             case RIHAN_MOVIE:
             case SEARCH_MOVIE:
                 return mLoadableMovieParser.parse(html, category);
+
         }
         return Collections.emptyList();
     }

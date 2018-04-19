@@ -1,4 +1,4 @@
-package com.bzh.dytt.home;
+package com.bzh.dytt;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;

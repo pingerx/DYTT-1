@@ -15,7 +15,7 @@
     <string name="china">中国</string>
     <string name="douban_grade">豆瓣/%1$s</string>
     <string name="imdb_grade">IMDB/%1$s</string>
-    <string name="fetch_video_detail_exception">获取图片详情时发生了错误，快去给开发着反馈吧!(%1$s)</string>
+    <string name="fetch_video_detail_exception">获取视频详情时发生了错误，快去给开发者反馈吧!(%1$s)</string>
     <string name="ok">确认</string>
     <string name="coming_now">即将开放！敬请期待!</string>
 

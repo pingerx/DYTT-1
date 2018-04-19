@@ -7,7 +7,8 @@ public enum MovieCategory {
     OUMEI_MOVIE(3),
     RIHAN_MOVIE(4),
     HOME_LATEST_MOVIE(5),
-    SEARCH_MOVIE(6);
+    SEARCH_MOVIE(6),
+    NEW_MOVIE_168(7);
 
     private int id;
 
@@ -28,6 +29,8 @@ public enum MovieCategory {
             case 5:
                 return "主页最新电影";
             case 6:
+                return "搜索结果";
+            case 7:
                 return "搜索结果";
             default:
                 return "未知";
@@ -67,6 +70,7 @@ public enum MovieCategory {
                 result = "/html/gndy/rihan/list_6_%d.html";
                 break;
             case 5:
+            case 7:
                 result = "/";
                 break;
             default:

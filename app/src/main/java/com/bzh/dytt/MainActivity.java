@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.bzh.dytt.colorhunt.ColorHuntFragment;
 import com.bzh.dytt.home.AllMoviePageFragment;
+import com.bzh.dytt.home.ImdbMovieFragment;
 import com.bzh.dytt.home.NewMovieFragment;
 import com.bzh.dytt.view.NonInteractiveViewPage;
 import com.google.android.gms.ads.MobileAds;
@@ -149,7 +150,7 @@ public class MainActivity extends BaseActivity
                 case 1:
                     return AllMoviePageFragment.newInstance();
                 case 2:
-                    return ColorHuntFragment.newInstance();
+                    return ImdbMovieFragment.newInstance();
                 default:
                     throw new IndexOutOfBoundsException();
             }

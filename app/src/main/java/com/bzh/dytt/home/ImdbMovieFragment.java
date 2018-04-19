@@ -1,6 +1,5 @@
 package com.bzh.dytt.home;
 
-
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
@@ -13,20 +12,20 @@ import android.view.View;
 
 import com.bzh.dytt.SingleListFragment;
 import com.bzh.dytt.data.ExceptionType;
-import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.Resource;
+import com.bzh.dytt.data.entity.VideoDetail;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class NewMovieFragment extends SingleListFragment<VideoDetail> {
+public class ImdbMovieFragment extends SingleListFragment<VideoDetail> {
 
     @Inject
     ViewModelProvider.Factory mFactory;
 
-    public static NewMovieFragment newInstance() {
-        return new NewMovieFragment();
+    public static ImdbMovieFragment newInstance() {
+        return new ImdbMovieFragment();
     }
 
     @Override
@@ -40,34 +39,35 @@ public class NewMovieFragment extends SingleListFragment<VideoDetail> {
     }
 
     @Override
-    protected LiveData<Resource<List<VideoDetail>>> getListLiveData() {
-        return ((NewMovieViewModel) mViewModel).getNewMovieList();
-    }
-
-    @Override
     protected ViewModel createViewModel() {
-        return ViewModelProviders.of(this, mFactory).get(NewMovieViewModel.class);
+        return ViewModelProviders.of(this, mFactory).get(ImdbViewModel.class);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getLifecycle().addObserver(((NewMovieViewModel) mViewModel));
+        getLifecycle().addObserver(((ImdbViewModel) mViewModel));
     }
 
     @Override
     protected void doDestroyView() {
-        getLifecycle().removeObserver(((NewMovieViewModel) mViewModel));
+        getLifecycle().removeObserver(((ImdbViewModel) mViewModel));
         super.doDestroyView();
     }
 
     @Override
+    protected LiveData<Resource<List<VideoDetail>>> getListLiveData() {
+        return ((ImdbViewModel) mViewModel).getMovieList();
+    }
+
+    @Override
     protected void doRefresh() {
-        ((NewMovieViewModel) mViewModel).refresh();
+        ((ImdbViewModel) mViewModel).refresh();
     }
 
     @Override
     protected LiveData<Resource<ExceptionType>> getThrowableLiveData() {
-        return ((NewMovieViewModel) mViewModel).getFetchVideoDetailState();
+        return ((ImdbViewModel) mViewModel).getFetchVideoDetailState();
     }
+
 }
