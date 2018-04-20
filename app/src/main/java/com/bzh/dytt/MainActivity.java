@@ -11,10 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.bzh.dytt.colorhunt.ColorHuntFragment;
-import com.bzh.dytt.home.AllMoviePageFragment;
-import com.bzh.dytt.home.ImdbMovieFragment;
-import com.bzh.dytt.home.NewMovieFragment;
+import com.bzh.dytt.ui.AllMoviePageFragment;
+import com.bzh.dytt.ui.ImdbMovieFragment;
+import com.bzh.dytt.ui.NewMovieFragment;
 import com.bzh.dytt.view.NonInteractiveViewPage;
 import com.google.android.gms.ads.MobileAds;
 
@@ -45,7 +44,6 @@ public class MainActivity extends BaseActivity
     NonInteractiveViewPage mContainer;
 
     private MainViewPagerAdapter mPagerAdapter;
-
 
     private final static String ADMOB_APP_ID = "ca-app-pub-8112052667906046~4830848371";
 

@@ -1,4 +1,4 @@
-package com.bzh.dytt.home;
+package com.bzh.dytt.ui;
 
 
 import android.arch.lifecycle.LiveData;
@@ -18,6 +18,9 @@ import com.bzh.dytt.data.entity.MovieCategory;
 import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.db.DataTypeConverter;
 import com.bzh.dytt.data.Resource;
+import com.bzh.dytt.viewmodel.ImdbViewModel;
+import com.bzh.dytt.viewmodel.LoadableMoviePageViewModel;
+import com.bzh.dytt.viewmodel.NewMovieViewModel;
 
 import java.util.List;
 
@@ -38,7 +41,7 @@ public class LoadableMoviePageFragment extends SingleListFragment<VideoDetail> {
 
     @Override
     protected RecyclerView.Adapter createAdapter() {
-        return new MovieListAdapter(this.getContext());
+        return new MovieListAdapter(this.getContext(), ((LoadableMoviePageViewModel) mViewModel).getVideoDetailLiveData());
     }
 
     @Override

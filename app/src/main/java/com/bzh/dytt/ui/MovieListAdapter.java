@@ -1,7 +1,9 @@
-package com.bzh.dytt.home;
+package com.bzh.dytt.ui;
 
 
 import android.app.Activity;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.MainThread;
@@ -30,10 +32,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     protected List<VideoDetail> mItems;
     private Context mContext;
+    private MutableLiveData<VideoDetail> mLiveData;
     protected int mDataVersion = 0;
 
-    public MovieListAdapter(Context context) {
+    public MovieListAdapter(Context context, MutableLiveData<VideoDetail> liveData) {
         mContext = context;
+        mLiveData = liveData;
     }
 
     @NonNull
@@ -45,15 +49,21 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     @Override
     public void onBindViewHolder(@NonNull final MovieListAdapter.MovieItemHolder holder, int position) {
+
         final VideoDetail videoDetail = mItems.get(position);
 
-        if (videoDetail != null) {
+        if (videoDetail == null) {
+            return;
+        }
+        if (mLiveData != null && !videoDetail.isValidVideoItem()) {
+            mLiveData.setValue(videoDetail);
+        }
 
-            boolean isChinaCountry = !TextUtils.isEmpty(videoDetail.getCountry()) &&
-                    videoDetail.getCountry().contains(mContext.getString(R.string.china));
-            holder.VideoTitleTv.setText(isChinaCountry ? videoDetail.getName() : videoDetail.getTranslationName());
+        boolean isChinaCountry = !TextUtils.isEmpty(videoDetail.getCountry()) && videoDetail.getCountry().contains(mContext.getString(R.string.china));
+        holder.VideoTitleTv.setText(isChinaCountry ? videoDetail.getName() : videoDetail.getTranslationName());
+        holder.VideoPublishTv.setText(videoDetail.getPublishTime());
 
-            holder.VideoPublishTv.setText(videoDetail.getPublishTime());
+        if (videoDetail.isValidVideoItem()) {
 
             if (!TextUtils.isEmpty(videoDetail.getDoubanGrade())) {
                 holder.DoubanGradeTv.setText(mContext.getString(R.string.douban_grade, videoDetail.getDoubanGrade()));

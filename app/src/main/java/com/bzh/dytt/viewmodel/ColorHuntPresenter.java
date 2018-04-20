@@ -1,4 +1,4 @@
-package com.bzh.dytt.colorhunt;
+package com.bzh.dytt.viewmodel;
 
 public class ColorHuntPresenter {
 

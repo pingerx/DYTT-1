@@ -27,8 +27,9 @@ import com.bzh.dytt.R;
 import com.bzh.dytt.data.ExceptionType;
 import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.home.MovieListAdapter;
+import com.bzh.dytt.ui.MovieListAdapter;
 import com.bzh.dytt.SingleListFragment;
+import com.bzh.dytt.viewmodel.NewMovieViewModel;
 
 import java.util.List;
 
@@ -107,7 +108,7 @@ public class SearchFragment extends SingleListFragment<VideoDetail> {
 
     @Override
     protected RecyclerView.Adapter createAdapter() {
-        return new MovieListAdapter(this.getContext());
+        return new MovieListAdapter(this.getContext(), ((NewMovieViewModel) mViewModel).getVideoDetailLiveData());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.bzh.dytt.home;
+package com.bzh.dytt.viewmodel;
 
 
 import android.app.Application;

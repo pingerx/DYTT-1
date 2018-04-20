@@ -46,9 +46,7 @@ public class DataRepository {
     private VideoDetailDAO mVideoDetailDAO;
     private CategoryPageParser mCategoryPageParser;
     private VideoDetailPageParser mVideoDetailPageParser;
-
     private RateLimiter<String> mRepoListRateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
-
     private MutableLiveData<Resource<ExceptionType>> mFetchDetailState = new MutableLiveData<>();
 
     @Inject
@@ -198,20 +196,6 @@ public class DataRepository {
 
             @NonNull
             @Override
-            protected void processDBData(List<VideoDetail> newData) {
-                super.processDBData(newData);
-
-                for (VideoDetail videoDetail : newData) {
-                    boolean isValid = mVideoDetailDAO.isValid(videoDetail.getDetailLink(), category);
-                    if (!isValid) {
-                        FetchVideoDetailTask task = new FetchVideoDetailTask(videoDetail, mVideoDetailDAO, mService, mVideoDetailPageParser, mFetchDetailState);
-                        mAppExecutors.networkIO().execute(task);
-                    }
-                }
-            }
-
-            @NonNull
-            @Override
             protected LiveData<List<VideoDetail>> loadFromDb() {
                 return mVideoDetailDAO.getVideoDetailsByCategory(category);
 
@@ -232,18 +216,6 @@ public class DataRepository {
 
     public LiveData<Resource<List<VideoDetail>>> getVideoDetailsByCategoryAndQuery(final MovieCategory category, final String query) {
         return new DatabaseResource<List<VideoDetail>>(mAppExecutors) {
-            @NonNull
-            @Override
-            protected void processDBData(List<VideoDetail> newData) {
-                super.processDBData(newData);
-                for (VideoDetail videoDetail : newData) {
-                    boolean isValid = mVideoDetailDAO.isValid(videoDetail.getDetailLink(), category);
-                    if (!isValid) {
-                        FetchSearchVideoDetailTask task = new FetchSearchVideoDetailTask(videoDetail, mVideoDetailDAO, mService, mVideoDetailPageParser, mFetchDetailState);
-                        mAppExecutors.networkIO().execute(task);
-                    }
-                }
-            }
 
             @NonNull
             @Override
@@ -256,5 +228,19 @@ public class DataRepository {
 
     public LiveData<Resource<ExceptionType>> getFetchVideoDetailState() {
         return mFetchDetailState;
+    }
+
+    public void parseVideoDetail(VideoDetail videoDetail) {
+        if (!videoDetail.isValidVideoItem()) {
+            FetchVideoDetailTask task = new FetchVideoDetailTask(videoDetail, mVideoDetailDAO, mService, mVideoDetailPageParser, mFetchDetailState);
+            mAppExecutors.networkIO().execute(task);
+        }
+    }
+
+    public void parseSearchVideoDetail(VideoDetail videoDetail, MovieCategory category) {
+        if (!videoDetail.isValidVideoItem()) {
+            FetchSearchVideoDetailTask task = new FetchSearchVideoDetailTask(videoDetail, mVideoDetailDAO, mService, mVideoDetailPageParser, mFetchDetailState);
+            mAppExecutors.networkIO().execute(task);
+        }
     }
 }

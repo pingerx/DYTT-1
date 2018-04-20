@@ -1,4 +1,4 @@
-package com.bzh.dytt.home;
+package com.bzh.dytt.ui;
 
 
 import android.app.Dialog;
@@ -30,6 +30,7 @@ import com.bzh.dytt.R;
 import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.data.Status;
+import com.bzh.dytt.viewmodel.VideoDetailPageViewModel;
 import com.bzh.dytt.util.GlideApp;
 import com.bzh.dytt.util.ThunderHelper;
 import com.github.florent37.glidepalette.BitmapPalette;

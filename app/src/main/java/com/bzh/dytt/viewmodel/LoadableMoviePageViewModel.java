@@ -1,4 +1,4 @@
-package com.bzh.dytt.home;
+package com.bzh.dytt.viewmodel;
 
 
 import android.arch.core.util.Function;
@@ -29,6 +29,7 @@ public class LoadableMoviePageViewModel extends BaseViewModel implements Lifecyc
     private LiveData<Resource<List<VideoDetail>>> mVideoList;
     private MovieCategory mCategory;
     private CategoryHandler mCategoryHandler;
+    private VideoDetailHandle mVideoDetailHandle;
 
     @Inject
     LoadableMoviePageViewModel(DataRepository repository) {
@@ -37,13 +38,19 @@ public class LoadableMoviePageViewModel extends BaseViewModel implements Lifecyc
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     void active() {
+        if (mVideoDetailHandle != null) {
+            mVideoDetailHandle.register();
+        }
         if (mCategoryHandler != null) {
-            mCategoryHandler.refreshPage();
+            mCategoryHandler.refresh();
         }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     void inactive() {
+        if (mVideoDetailHandle != null) {
+            mVideoDetailHandle.unregister();
+        }
         if (mCategoryHandler != null) {
             mCategoryHandler.unregister();
         }
@@ -51,6 +58,7 @@ public class LoadableMoviePageViewModel extends BaseViewModel implements Lifecyc
 
     public void setCategory(MovieCategory category) {
         mCategory = category;
+        mVideoDetailHandle = new VideoDetailHandle(mDataRepository);
         mCategoryHandler = new CategoryHandler(mDataRepository, mCategory);
         mVideoList = Transformations.switchMap(mCategoryHandler.getCategoryMap(), new Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>>() {
             @Override
@@ -60,80 +68,25 @@ public class LoadableMoviePageViewModel extends BaseViewModel implements Lifecyc
         });
     }
 
-    LiveData<Resource<ExceptionType>> getFetchVideoDetailState() {
+    public MutableLiveData<VideoDetail> getVideoDetailLiveData() {
+        return mVideoDetailHandle.getVideoDetail();
+    }
+
+    public LiveData<Resource<ExceptionType>> getFetchVideoDetailState() {
         return mDataRepository.getFetchVideoDetailState();
     }
 
-    void refresh() {
-        mCategoryHandler.refreshPage();
+    public void refresh() {
+        mCategoryHandler.refresh();
     }
 
-    void loadNextPage() {
+    public void loadNextPage() {
         mCategoryHandler.nextPage();
     }
 
-    LiveData<Resource<List<VideoDetail>>> getMovieList() {
+    public LiveData<Resource<List<VideoDetail>>> getMovieList() {
         return mVideoList;
     }
 
-    static class CategoryHandler implements Observer<Resource<List<CategoryMap>>> {
 
-        private MutableLiveData<Resource<List<CategoryMap>>> mCategoryMap = new MutableLiveData<>();
-
-        private LiveData<Resource<List<CategoryMap>>> mLiveData;
-
-        private DataRepository mRepository;
-
-        private MovieCategory mMovieCategory;
-
-        private boolean mIsRunning;
-
-        CategoryHandler(DataRepository repository, MovieCategory movieCategory) {
-            mRepository = repository;
-            mMovieCategory = movieCategory;
-        }
-
-        @Override
-        public void onChanged(@Nullable Resource<List<CategoryMap>> result) {
-            if (result == null) {
-                unregister();
-            } else {
-                if (result.status == Status.SUCCESS || result.status == Status.ERROR) {
-                    mCategoryMap.setValue(result);
-                    unregister();
-                }
-            }
-        }
-
-        private void unregister() {
-            if (mLiveData != null) {
-                mLiveData.removeObserver(this);
-                mIsRunning = false;
-                mLiveData = null;
-            }
-        }
-
-        void refreshPage() {
-            if (mIsRunning) {
-                return;
-            }
-            unregister();
-            mLiveData = mRepository.getMovieListByCategory(mMovieCategory);
-            mLiveData.observeForever(this);
-        }
-
-        void nextPage() {
-            if (mIsRunning) {
-                return;
-            }
-            mIsRunning = true;
-            unregister();
-            mLiveData = mRepository.getNextMovieListByCategory(mMovieCategory);
-            mLiveData.observeForever(this);
-        }
-
-        MutableLiveData<Resource<List<CategoryMap>>> getCategoryMap() {
-            return mCategoryMap;
-        }
-    }
 }

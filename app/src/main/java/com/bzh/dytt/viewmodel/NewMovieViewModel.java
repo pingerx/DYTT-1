@@ -1,4 +1,4 @@
-package com.bzh.dytt.home;
+package com.bzh.dytt.viewmodel;
 
 
 import android.arch.core.util.Function;
@@ -29,11 +29,13 @@ public class NewMovieViewModel extends BaseViewModel implements LifecycleObserve
 
     private final CategoryHandler mCategoryHandler;
     private LiveData<Resource<List<VideoDetail>>> mVideoList;
+    private final VideoDetailHandle mVideoDetailHandle;
 
     @Inject
     NewMovieViewModel(DataRepository repository) {
         super(repository);
-        mCategoryHandler = new CategoryHandler(mDataRepository);
+        mVideoDetailHandle = new VideoDetailHandle(mDataRepository);
+        mCategoryHandler = new CategoryHandler(mDataRepository, MovieCategory.HOME_LATEST_MOVIE);
         mVideoList = Transformations.switchMap(mCategoryHandler.getCategoryMap(), new Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>>() {
             @Override
             public LiveData<Resource<List<VideoDetail>>> apply(Resource<List<CategoryMap>> result) {
@@ -44,6 +46,9 @@ public class NewMovieViewModel extends BaseViewModel implements LifecycleObserve
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     void active() {
+        if (mVideoDetailHandle != null) {
+            mVideoDetailHandle.register();
+        }
         if (mCategoryHandler != null) {
             mCategoryHandler.refresh();
         }
@@ -51,63 +56,27 @@ public class NewMovieViewModel extends BaseViewModel implements LifecycleObserve
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     void inactive() {
+        if (mVideoDetailHandle != null) {
+            mVideoDetailHandle.unregister();
+        }
         if (mCategoryHandler != null) {
             mCategoryHandler.unregister();
         }
     }
 
-    void refresh() {
+    public void refresh() {
         mCategoryHandler.refresh();
     }
 
-    LiveData<Resource<List<VideoDetail>>> getNewMovieList() {
+    public LiveData<Resource<List<VideoDetail>>> getNewMovieList() {
         return mVideoList;
     }
 
-    LiveData<Resource<ExceptionType>> getFetchVideoDetailState() {
+    public LiveData<Resource<ExceptionType>> getFetchVideoDetailState() {
         return mDataRepository.getFetchVideoDetailState();
     }
 
-    static class CategoryHandler implements Observer<Resource<List<CategoryMap>>> {
-
-        private MutableLiveData<Resource<List<CategoryMap>>> mCategoryMap = new MutableLiveData<>();
-
-        private LiveData<Resource<List<CategoryMap>>> mLiveData;
-
-        private DataRepository mRepository;
-
-        CategoryHandler(DataRepository repository) {
-            mRepository = repository;
-        }
-
-        @MainThread
-        @Override
-        public void onChanged(@Nullable Resource<List<CategoryMap>> result) {
-            if (result == null) {
-                unregister();
-            } else {
-                if (result.status == Status.SUCCESS || result.status == Status.ERROR) {
-                    mCategoryMap.setValue(result);
-                    unregister();
-                }
-            }
-        }
-
-        private void unregister() {
-            if (mLiveData != null) {
-                mLiveData.removeObserver(this);
-                mLiveData = null;
-            }
-        }
-
-        void refresh() {
-            unregister();
-            mLiveData = mRepository.getMovieListByCategory(MovieCategory.HOME_LATEST_MOVIE);
-            mLiveData.observeForever(this);
-        }
-
-        MutableLiveData<Resource<List<CategoryMap>>> getCategoryMap() {
-            return mCategoryMap;
-        }
+    public MutableLiveData<VideoDetail> getVideoDetailLiveData() {
+        return mVideoDetailHandle.getVideoDetail();
     }
 }

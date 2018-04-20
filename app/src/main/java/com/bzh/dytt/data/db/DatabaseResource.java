@@ -29,21 +29,9 @@ public abstract class DatabaseResource<ResultType> {
         mResult.addSource(dbSource, new Observer<ResultType>() {
             @Override
             public void onChanged(@Nullable final ResultType newData) {
-                mAppExecutors.networkIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        processDBData(newData);
-                    }
-                });
                 mResult.setValue(Resource.success(newData));
             }
         });
-    }
-
-    @NonNull
-    @WorkerThread
-    protected void processDBData(ResultType newData) {
-
     }
 
     @NonNull

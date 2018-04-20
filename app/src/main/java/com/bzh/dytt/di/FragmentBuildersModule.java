@@ -1,12 +1,12 @@
 package com.bzh.dytt.di;
 
-import com.bzh.dytt.colorhunt.ColorHuntFragment;
-import com.bzh.dytt.girl.GirlFragment;
-import com.bzh.dytt.home.AllMoviePageFragment;
-import com.bzh.dytt.home.ImdbMovieFragment;
-import com.bzh.dytt.home.LoadableMoviePageFragment;
-import com.bzh.dytt.home.NewMovieFragment;
-import com.bzh.dytt.home.VideoDetailPageFragment;
+import com.bzh.dytt.ui.ColorHuntFragment;
+import com.bzh.dytt.ui.GirlFragment;
+import com.bzh.dytt.ui.AllMoviePageFragment;
+import com.bzh.dytt.ui.ImdbMovieFragment;
+import com.bzh.dytt.ui.LoadableMoviePageFragment;
+import com.bzh.dytt.ui.NewMovieFragment;
+import com.bzh.dytt.ui.VideoDetailPageFragment;
 import com.bzh.dytt.search.SearchFragment;
 
 import dagger.Module;

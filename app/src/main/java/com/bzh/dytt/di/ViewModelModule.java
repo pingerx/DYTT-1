@@ -5,10 +5,10 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import com.bzh.dytt.BaseViewModel;
-import com.bzh.dytt.home.ImdbViewModel;
-import com.bzh.dytt.home.LoadableMoviePageViewModel;
-import com.bzh.dytt.home.NewMovieViewModel;
-import com.bzh.dytt.home.VideoDetailPageViewModel;
+import com.bzh.dytt.viewmodel.ImdbViewModel;
+import com.bzh.dytt.viewmodel.LoadableMoviePageViewModel;
+import com.bzh.dytt.viewmodel.NewMovieViewModel;
+import com.bzh.dytt.viewmodel.VideoDetailPageViewModel;
 import com.bzh.dytt.search.SearchViewModel;
 import com.bzh.dytt.util.ViewModelFactory;
 

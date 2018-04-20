@@ -1,4 +1,4 @@
-package com.bzh.dytt.home;
+package com.bzh.dytt.viewmodel;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.lifecycle.MutableLiveData;

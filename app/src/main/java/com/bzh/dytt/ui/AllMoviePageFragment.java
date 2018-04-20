@@ -1,4 +1,4 @@
-package com.bzh.dytt.home;
+package com.bzh.dytt.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

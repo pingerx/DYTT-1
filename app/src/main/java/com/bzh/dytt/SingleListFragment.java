@@ -23,6 +23,8 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+
 public abstract class SingleListFragment<T> extends BaseFragment {
 
     private static final String TAG = "SingleListFragment";
@@ -37,6 +39,12 @@ public abstract class SingleListFragment<T> extends BaseFragment {
     @BindView(R.id.listview)
     protected RecyclerView mRecyclerView;
 
+    @BindView(R.id.empty_layout)
+    View mEmpty;
+
+    @BindView(R.id.error_layout)
+    View mError;
+
     protected Observer<Resource<ExceptionType>> mOtherExceptionObserver = new Observer<Resource<ExceptionType>>() {
         @Override
         public void onChanged(@Nullable Resource<ExceptionType> result) {
@@ -44,10 +52,6 @@ public abstract class SingleListFragment<T> extends BaseFragment {
         }
     };
 
-    @BindView(R.id.empty_layout)
-    View mEmpty;
-    @BindView(R.id.error_layout)
-    View mError;
     protected Observer<Resource<List<T>>> mListObserver = new Observer<Resource<List<T>>>() {
         @Override
         public void onChanged(@Nullable Resource<List<T>> result) {
@@ -71,18 +75,38 @@ public abstract class SingleListFragment<T> extends BaseFragment {
                     if (result.data == null || result.data.isEmpty()) {
                         mEmpty.setVisibility(View.VISIBLE);
                     } else {
-                        replace(result.data);
+                        if (IsScrollIdle()) {
+                            replace(result.data);
+                        }
                     }
                 }
                 break;
             }
         }
     };
+
     private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
             doRefresh();
         }
+    };
+
+    private boolean mIsScrollIdle = true;
+
+    private RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            mIsScrollIdle = (newState == SCROLL_STATE_IDLE);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+        }
+
     };
 
     @Override
@@ -121,6 +145,8 @@ public abstract class SingleListFragment<T> extends BaseFragment {
         mAdapter = createAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(getAdapter());
+
+        mRecyclerView.addOnScrollListener(mScrollListener);
     }
 
     protected void doRefresh() {
@@ -136,6 +162,10 @@ public abstract class SingleListFragment<T> extends BaseFragment {
 
     public Observer<Resource<ExceptionType>> getThrowableObserver() {
         return mOtherExceptionObserver;
+    }
+
+    public boolean IsScrollIdle() {
+        return mIsScrollIdle;
     }
 
     protected void onOtherException(Resource<ExceptionType> result) {
