@@ -108,7 +108,7 @@ public class SearchFragment extends SingleListFragment<VideoDetail> {
 
     @Override
     protected RecyclerView.Adapter createAdapter() {
-        return new MovieListAdapter(this.getContext(), ((NewMovieViewModel) mViewModel).getVideoDetailLiveData());
+        return new MovieListAdapter(this.getContext(), ((SearchViewModel) mViewModel).getVideoDetailLiveData());
     }
 
     @Override

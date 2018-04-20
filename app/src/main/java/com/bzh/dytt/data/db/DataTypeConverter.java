@@ -29,6 +29,8 @@ public class DataTypeConverter {
                 return MovieCategory.HOME_LATEST_MOVIE;
             case 6:
                 return MovieCategory.SEARCH_MOVIE;
+            case 7:
+                return MovieCategory.NEW_MOVIE_168;
         }
         return MovieCategory.NONE;
     }

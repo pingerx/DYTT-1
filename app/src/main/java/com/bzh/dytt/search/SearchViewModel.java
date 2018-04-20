@@ -17,6 +17,7 @@ import com.bzh.dytt.data.entity.MovieCategory;
 import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.data.Status;
+import com.bzh.dytt.viewmodel.VideoDetailHandle;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -29,11 +30,12 @@ public class SearchViewModel extends BaseViewModel {
 
     private final CategoryHandler mCategoryHandler;
     private LiveData<Resource<List<VideoDetail>>> mVideoList;
+    private final SearchVideoDetailHandle mVideoDetailHandle;
 
     @Inject
     SearchViewModel(DataRepository repository) {
         super(repository);
-
+        mVideoDetailHandle = new SearchVideoDetailHandle(mDataRepository);
         mCategoryHandler = new CategoryHandler(mDataRepository);
 
         mVideoList = Transformations.switchMap(mCategoryHandler.getCategoryMap(), new Function<Resource<List<CategoryMap>>, LiveData<Resource<List<VideoDetail>>>>() {
@@ -52,12 +54,33 @@ public class SearchViewModel extends BaseViewModel {
         return mDataRepository.getFetchVideoDetailState();
     }
 
+    MutableLiveData<VideoDetail> getVideoDetailLiveData() {
+        return mVideoDetailHandle.getVideoDetail();
+    }
+
     void setQuery(@NonNull String originalInput) {
         try {
             String input = originalInput.toLowerCase(Locale.getDefault()).trim();
             mCategoryHandler.setQuery(URLEncoder.encode(input, "GBK"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+        }
+    }
+
+    static class SearchVideoDetailHandle extends VideoDetailHandle {
+
+        private DataRepository mDataRepository;
+
+        public SearchVideoDetailHandle(DataRepository dataRepository) {
+            super(dataRepository);
+            mDataRepository = dataRepository;
+        }
+
+        @Override
+        public void onChanged(@Nullable VideoDetail videoDetail) {
+            if (videoDetail != null && !videoDetail.isValidVideoItem()) {
+                mDataRepository.parseSearchVideoDetail(videoDetail, MovieCategory.SEARCH_MOVIE);
+            }
         }
     }
 

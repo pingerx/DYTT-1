@@ -50,6 +50,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     @Override
     public void onBindViewHolder(@NonNull final MovieListAdapter.MovieItemHolder holder, int position) {
 
+        holder.VideoTitleTv.setText("");
+        holder.VideoPublishTv.setText("");
+        holder.DoubanGradeTv.setText("");
+        holder.IMDBGradeTv.setText("");
+        holder.VideoDescriptionTv.setText("");
+        holder.itemView.setOnClickListener(null);
+        GlideApp.with(mContext).load("").placeholder(R.drawable.default_video).into(holder.VideoCover);
+
         final VideoDetail videoDetail = mItems.get(position);
 
         if (videoDetail == null) {
