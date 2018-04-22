@@ -37,6 +37,7 @@ import com.github.florent37.glidepalette.BitmapPalette;
 import com.github.florent37.glidepalette.GlidePalette;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.orhanobut.logger.Logger;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
@@ -267,7 +268,7 @@ public class VideoDetailPageFragment extends BaseFragment {
         if (!TextUtils.isEmpty(mDetailLink)) {
             mVideoDetailPageViewModel.getVideoDetail(mDetailLink).observe(this, mVideoDetailObserver);
         } else {
-            Log.e(TAG, "doViewCreated: Detail Link Is Empty");
+            Logger.e(TAG, "doViewCreated: Detail Link Is Empty");
         }
     }
 

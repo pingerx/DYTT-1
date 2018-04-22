@@ -1,0 +1,25 @@
+apply plugin: 'java-library'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.android.tools.lint:lint-api:26.1.1'
+    implementation 'com.android.tools.lint:lint-checks:26.1.1'
+}
+
+jar {
+    manifest {
+        attributes("Lint-Registry": "com.bzh.dytt.lint.MyIssueRegistry")
+    }
+}
+
+configurations {
+    lintChecks
+}
+
+dependencies {
+    lintChecks files(jar)
+}

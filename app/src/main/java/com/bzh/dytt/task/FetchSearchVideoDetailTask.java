@@ -11,6 +11,7 @@ import com.bzh.dytt.data.db.VideoDetailDAO;
 import com.bzh.dytt.data.network.ApiResponse;
 import com.bzh.dytt.data.network.DyttService;
 import com.bzh.dytt.util.VideoDetailPageParser;
+import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 
@@ -51,7 +52,7 @@ public class FetchSearchVideoDetailTask implements Runnable {
             }
         } catch (IOException e) {
             mFetchDetailState.postValue(Resource.error(e.getMessage(), ExceptionType.TaskFailure));
-            Log.e("FetchVideoDetailTask", "Something wrong when fetch video detail " + e.getMessage());
+            Logger.e("FetchVideoDetailTask", "Something wrong when fetch video detail " + e.getMessage());
         }
     }
 }

@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+configurations {
+    lintRules
+}
+
+dependencies {
+    lintRules project(path: ':lintrules', configuration: 'lintChecks')
+}
+
+task copyLintJar(type: Copy) {
+    from( configurations.getByName('lintRules')) {
+        rename { String fileName ->
+            'lint.jar'
+        }
+    }
+    into 'build/intermediates/lint'
+}
+
+project.afterEvaluate {
+    def compileLintTask = project.tasks.find { it.name == 'preBuild' }
+    compileLintTask.dependsOn(copyLintJar)
+}
+

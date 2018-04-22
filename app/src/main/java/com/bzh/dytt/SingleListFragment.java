@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import com.bzh.dytt.BaseFragment;
 import com.bzh.dytt.R;
 import com.bzh.dytt.data.ExceptionType;
 import com.bzh.dytt.data.Resource;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -175,7 +175,7 @@ public abstract class SingleListFragment<T> extends BaseFragment {
                     if (getActivity() != null) {
                         Toast.makeText(getActivity(), getResources().getString(R.string.fetch_video_detail_exception, result.message), Toast.LENGTH_SHORT).show();
                     } else {
-                        Log.e(TAG, "onChanged: activity is null");
+                        Logger.e(TAG, "onChanged: activity is null");
                     }
                     break;
             }

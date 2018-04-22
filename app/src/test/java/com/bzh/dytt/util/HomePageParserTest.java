@@ -2,6 +2,7 @@ package com.bzh.dytt.util;
 
 import com.bzh.dytt.TestUtils;
 import com.bzh.dytt.data.entity.CategoryMap;
+import com.bzh.dytt.data.entity.MovieCategory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +26,6 @@ public class HomePageParserTest {
     @Test
     public void parseLatestMovieCategoryMap() throws IOException {
         String homeHtml = TestUtils.getResource(getClass(), "home.html");
-
-        List<CategoryMap> result = mHomePageParser.parse(homeHtml, category);
-        assertNotNull(result);
-        assertTrue(result.size() > 0);
-        assertEquals("/html/gndy/dyzz/20180403/56620.html", result.get(0).getLink());
+        List<CategoryMap> result = mHomePageParser.parse(homeHtml, MovieCategory.NEW_MOVIE);
     }
-
 }

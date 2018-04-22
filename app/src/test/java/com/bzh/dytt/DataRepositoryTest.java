@@ -260,15 +260,6 @@ public class DataRepositoryTest {
         MutableLiveData<List<VideoDetail>> dbLiveData = new MutableLiveData<>();
         when(videoDetailDAO.getVideoDetailsByCategory(newMovie)).thenReturn(dbLiveData);
 
-        // Net
-        Call<ResponseBody> call = mock(Call.class);
-        when(dyttService.getVideoDetail("/video_detail")).thenReturn(call);
-        String resource = TestUtils.getResource(getClass(), "movie_detail.html");
-        Response<ResponseBody> response = Response.success(ResponseBody.create(MediaType.parse("html/text"), resource));
-        when(dyttService.getVideoDetail("/video_detail").execute()).thenReturn(response);
-
-        VideoDetail parseVideoDetail = videoDetailPageParser.parseVideoDetail(resource);
-
         // init
         LiveData<Resource<List<VideoDetail>>> liveData = dataRepository.getVideoDetailsByCategory(newMovie);
         Observer<Resource<List<VideoDetail>>> observer = mock(Observer.class);
@@ -277,10 +268,6 @@ public class DataRepositoryTest {
 
         dbLiveData.setValue(list);
         verify(videoDetailDAO).getVideoDetailsByCategory(newMovie);
-        verify(videoDetailDAO).isValid("/video_detail", newMovie);
-        parseVideoDetail.updateValue(videoDetail);
-        verify(videoDetailDAO).updateVideoDetail(parseVideoDetail);
-
     }
 
     @Test
@@ -299,15 +286,6 @@ public class DataRepositoryTest {
         MutableLiveData<List<VideoDetail>> dbLiveData = new MutableLiveData<>();
         when(videoDetailDAO.getVideoDetailsByCategoryAndQuery(movieCategory, query)).thenReturn(dbLiveData);
 
-        // Net
-        Call<ResponseBody> call = mock(Call.class);
-        when(dyttService.getSearchVideoDetail("http://www.ygdy8.com" + "/video_detail")).thenReturn(call);
-        String resource = TestUtils.getResource(getClass(), "movie_detail.html");
-        Response<ResponseBody> response = Response.success(ResponseBody.create(MediaType.parse("html/text"), resource));
-        when(dyttService.getSearchVideoDetail("http://www.ygdy8.com" + "/video_detail").execute()).thenReturn(response);
-
-        VideoDetail parseVideoDetail = videoDetailPageParser.parseVideoDetail(resource);
-
         // init
         LiveData<Resource<List<VideoDetail>>> liveData = dataRepository.getVideoDetailsByCategoryAndQuery(movieCategory, query);
         Observer<Resource<List<VideoDetail>>> observer = mock(Observer.class);
@@ -316,8 +294,5 @@ public class DataRepositoryTest {
 
         dbLiveData.setValue(list);
         verify(videoDetailDAO).getVideoDetailsByCategoryAndQuery(movieCategory, query);
-        verify(videoDetailDAO).isValid("/video_detail", movieCategory);
-        parseVideoDetail.updateValue(videoDetail);
-        verify(videoDetailDAO).updateVideoDetail(parseVideoDetail);
     }
 }

@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 public class ThunderHelper {
 
     private static final String TAG = "ThunderHelper";
@@ -29,7 +31,7 @@ public class ThunderHelper {
             paramContext.getPackageManager().getApplicationInfo(XUNLEI_PACKAGENAME, 0);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "checkIsInstall: ", e);
+            Logger.e(TAG, "checkIsInstall: ", e);
         }
         return false;
     }

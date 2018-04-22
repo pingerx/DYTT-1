@@ -3,6 +3,8 @@ package com.bzh.dytt.data.network;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.IOException;
 
 import retrofit2.Response;
@@ -41,7 +43,6 @@ public class ApiResponse<T> {
                 try {
                     message = response.errorBody().string();
                 } catch (IOException ignored) {
-                    Log.e(TAG, "ApiResponse: error while parsing response", ignored);
                 }
             }
             if (message == null || message.trim().length() == 0) {
