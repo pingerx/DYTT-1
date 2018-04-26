@@ -18,6 +18,8 @@ import com.bzh.dytt.ui.NewMovieFragment;
 import com.bzh.dytt.view.NonInteractiveViewPage;
 import com.google.android.gms.ads.MobileAds;
 
+import org.json.JSONObject;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -103,7 +105,7 @@ public class MainActivity extends BaseActivity
             SingleActivity.startSearchPage(this);
             return true;
         }
-
+        Log.d(TAG, "onOptionsItemSelected: ");
         return super.onOptionsItemSelected(item);
     }
 
