@@ -9,11 +9,8 @@ import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
 import com.android.tools.lint.detector.api.SourceCodeScanner;
 import com.android.tools.lint.detector.api.TextFormat;
-import com.intellij.psi.JavaElementVisitor;
 import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiMethodCallExpression;
 
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.UCallExpression;
 
 import java.util.Arrays;

@@ -163,4 +163,8 @@ public class MainActivity extends BaseActivity
             return 3;
         }
     }
+
+    private void test() {
+
+    }
 }

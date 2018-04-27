@@ -6,8 +6,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.android.tools.lint:lint-api:26.1.1'
-    implementation 'com.android.tools.lint:lint-checks:26.1.1'
+    implementation 'com.android.tools.lint:lint-api:26.1.2'
+    implementation 'com.android.tools.lint:lint-checks:26.1.2'
 }
 
 jar {
