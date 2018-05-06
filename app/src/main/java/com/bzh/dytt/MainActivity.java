@@ -8,7 +8,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,8 +16,6 @@ import com.bzh.dytt.ui.ImdbMovieFragment;
 import com.bzh.dytt.ui.NewMovieFragment;
 import com.bzh.dytt.view.NonInteractiveViewPage;
 import com.google.android.gms.ads.MobileAds;
-
-import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -69,7 +66,6 @@ public class MainActivity extends BaseActivity
         mContainer.setOffscreenPageLimit(1);
         mPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         mContainer.setAdapter(mPagerAdapter);
-
     }
 
     @Override
@@ -105,7 +101,6 @@ public class MainActivity extends BaseActivity
             SingleActivity.startSearchPage(this);
             return true;
         }
-        Log.d(TAG, "onOptionsItemSelected: ");
         return super.onOptionsItemSelected(item);
     }
 
@@ -162,9 +157,5 @@ public class MainActivity extends BaseActivity
         public int getCount() {
             return 3;
         }
-    }
-
-    private void test() {
-
     }
 }

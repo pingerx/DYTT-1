@@ -6,21 +6,18 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.android.tools.lint:lint-api:26.1.2'
-    implementation 'com.android.tools.lint:lint-checks:26.1.2'
+    compileOnly 'com.android.tools.lint:lint-api:26.1.2'
+    compileOnly 'com.android.tools.lint:lint-checks:26.1.2'
+    testCompile "junit:junit:4.12"
+    testCompile "com.android.tools.lint:lint:26.1.2"
+    testCompile "com.android.tools.lint:lint-tests:26.1.2"
+    testCompile "com.android.tools:testutils:26.1.2"
 }
 
 jar {
     manifest {
-        attributes("Lint-Registry": "com.bzh.dytt.lint.MyIssueRegistry")
+        // Only use the "-v2" key here if your checks have been updated to the
+        // new 3.0 APIs (including UAST)
+        attributes("Lint-Registry-v2": "com.bzh.dytt.lint.MyIssueRegistry")
     }
-}
-
-configurations {
-    lintChecks
-}
-
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    lintChecks files(jar)
 }
