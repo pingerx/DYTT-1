@@ -10,10 +10,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-
 public class HomePageParserTest {
 
     private HomePageParser mHomePageParser;

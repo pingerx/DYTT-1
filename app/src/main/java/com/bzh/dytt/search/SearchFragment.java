@@ -24,12 +24,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bzh.dytt.R;
-import com.bzh.dytt.data.ExceptionType;
-import com.bzh.dytt.data.entity.VideoDetail;
-import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.ui.MovieListAdapter;
 import com.bzh.dytt.SingleListFragment;
-import com.bzh.dytt.viewmodel.NewMovieViewModel;
+import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.Resource;
+import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.ui.MovieListAdapter;
 
 import java.util.List;
 

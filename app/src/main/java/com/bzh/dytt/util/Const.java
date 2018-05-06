@@ -51,5 +51,5 @@ public class Const {
     public static final String GAME_TYPE = "游戏类型";
     public static final String GAME_LANGUAGE = "游戏语言";
     public static final String GAME_DESCRIPTION = "游戏简介";
-    
+
 }

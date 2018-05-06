@@ -1,13 +1,13 @@
 package com.bzh.dytt.di;
 
+import com.bzh.dytt.search.SearchFragment;
+import com.bzh.dytt.ui.AllMoviePageFragment;
 import com.bzh.dytt.ui.ColorHuntFragment;
 import com.bzh.dytt.ui.GirlFragment;
-import com.bzh.dytt.ui.AllMoviePageFragment;
 import com.bzh.dytt.ui.ImdbMovieFragment;
 import com.bzh.dytt.ui.LoadableMoviePageFragment;
 import com.bzh.dytt.ui.NewMovieFragment;
 import com.bzh.dytt.ui.VideoDetailPageFragment;
-import com.bzh.dytt.search.SearchFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

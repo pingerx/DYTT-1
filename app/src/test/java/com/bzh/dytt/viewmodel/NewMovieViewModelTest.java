@@ -5,10 +5,10 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 
 import com.bzh.dytt.DataRepository;
+import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.data.entity.CategoryMap;
 import com.bzh.dytt.data.entity.MovieCategory;
 import com.bzh.dytt.data.entity.VideoDetail;
-import com.bzh.dytt.data.Resource;
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -1,9 +1,6 @@
 package com.bzh.dytt.data.network;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
-
-import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 

@@ -126,7 +126,7 @@
                         android:layout_height="50dp"
                         android:background="?selectableItemBackground"
                         android:padding="10dp"
-                        android:src="@drawable/ic_cloud_download_black"
+                        android:src="@drawable/ic_download"
                         android:tint="@color/colorSecondaryText"
                         tools:ignore="ContentDescription" />
 

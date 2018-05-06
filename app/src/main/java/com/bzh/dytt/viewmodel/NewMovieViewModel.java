@@ -6,20 +6,16 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.arch.lifecycle.Transformations;
-import android.support.annotation.MainThread;
-import android.support.annotation.Nullable;
 
 import com.bzh.dytt.BaseViewModel;
 import com.bzh.dytt.DataRepository;
 import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.data.entity.CategoryMap;
 import com.bzh.dytt.data.entity.MovieCategory;
 import com.bzh.dytt.data.entity.VideoDetail;
-import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.data.Status;
 
 import java.util.List;
 
@@ -28,8 +24,8 @@ import javax.inject.Inject;
 public class NewMovieViewModel extends BaseViewModel implements LifecycleObserver {
 
     private final CategoryHandler mCategoryHandler;
-    private LiveData<Resource<List<VideoDetail>>> mVideoList;
     private final VideoDetailHandle mVideoDetailHandle;
+    private LiveData<Resource<List<VideoDetail>>> mVideoList;
 
     @Inject
     NewMovieViewModel(DataRepository repository) {

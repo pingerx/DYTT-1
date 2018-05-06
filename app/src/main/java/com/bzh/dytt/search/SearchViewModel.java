@@ -12,11 +12,11 @@ import android.text.TextUtils;
 import com.bzh.dytt.BaseViewModel;
 import com.bzh.dytt.DataRepository;
 import com.bzh.dytt.data.ExceptionType;
+import com.bzh.dytt.data.Resource;
+import com.bzh.dytt.data.Status;
 import com.bzh.dytt.data.entity.CategoryMap;
 import com.bzh.dytt.data.entity.MovieCategory;
 import com.bzh.dytt.data.entity.VideoDetail;
-import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.data.Status;
 import com.bzh.dytt.viewmodel.VideoDetailHandle;
 
 import java.io.UnsupportedEncodingException;
@@ -29,8 +29,8 @@ import javax.inject.Inject;
 public class SearchViewModel extends BaseViewModel {
 
     private final CategoryHandler mCategoryHandler;
-    private LiveData<Resource<List<VideoDetail>>> mVideoList;
     private final SearchVideoDetailHandle mVideoDetailHandle;
+    private LiveData<Resource<List<VideoDetail>>> mVideoList;
 
     @Inject
     SearchViewModel(DataRepository repository) {

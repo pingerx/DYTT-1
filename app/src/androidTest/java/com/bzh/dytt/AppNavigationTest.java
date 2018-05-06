@@ -28,6 +28,18 @@ public class AppNavigationTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
+    /**
+     * Returns the content description for the navigation button view in the toolbar.
+     */
+    public static String getToolbarNavigationContentDescription(@NonNull Activity activity, @IdRes int toolbar1) {
+        Toolbar toolbar = activity.findViewById(toolbar1);
+        if (toolbar != null) {
+            return (String) toolbar.getNavigationContentDescription();
+        } else {
+            throw new RuntimeException("No toolbar found.");
+        }
+    }
+
     @Test
     public void clickHomeIconToOpenNavigation() {
         onView(withId(R.id.drawer_layout)).check(matches(isClosed(Gravity.LEFT)));
@@ -58,18 +70,6 @@ public class AppNavigationTest {
 
         onView(withId(R.id.home_page)).check(matches(isDisplayed()));
 
-    }
-
-    /**
-     * Returns the content description for the navigation button view in the toolbar.
-     */
-    public static String getToolbarNavigationContentDescription(@NonNull Activity activity, @IdRes int toolbar1) {
-        Toolbar toolbar = activity.findViewById(toolbar1);
-        if (toolbar != null) {
-            return (String) toolbar.getNavigationContentDescription();
-        } else {
-            throw new RuntimeException("No toolbar found.");
-        }
     }
 
 }

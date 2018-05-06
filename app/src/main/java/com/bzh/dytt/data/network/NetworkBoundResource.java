@@ -18,7 +18,7 @@ import com.bzh.dytt.data.Resource;
  * Guide</a>.
  * <p>
  * 有关NetworkBoundResource的设计意图可以参考： https://developer.android.com/topic/libraries/architecture/guide.html#addendum
- *
+ * <p>
  * Test Case :
  * 1. db success without network
  * 2. db success with network success

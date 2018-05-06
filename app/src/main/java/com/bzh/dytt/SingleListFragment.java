@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.bzh.dytt.BaseFragment;
-import com.bzh.dytt.R;
 import com.bzh.dytt.data.ExceptionType;
 import com.bzh.dytt.data.Resource;
 import com.orhanobut.logger.Logger;
@@ -38,20 +36,23 @@ public abstract class SingleListFragment<T> extends BaseFragment {
 
     @BindView(R.id.listview)
     protected RecyclerView mRecyclerView;
-
-    @BindView(R.id.empty_layout)
-    View mEmpty;
-
-    @BindView(R.id.error_layout)
-    View mError;
-
     protected Observer<Resource<ExceptionType>> mOtherExceptionObserver = new Observer<Resource<ExceptionType>>() {
         @Override
         public void onChanged(@Nullable Resource<ExceptionType> result) {
             onOtherException(result);
         }
     };
-
+    @BindView(R.id.empty_layout)
+    View mEmpty;
+    @BindView(R.id.error_layout)
+    View mError;
+    private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            doRefresh();
+        }
+    };
+    private boolean mIsScrollIdle = true;
     protected Observer<Resource<List<T>>> mListObserver = new Observer<Resource<List<T>>>() {
         @Override
         public void onChanged(@Nullable Resource<List<T>> result) {
@@ -84,16 +85,6 @@ public abstract class SingleListFragment<T> extends BaseFragment {
             }
         }
     };
-
-    private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            doRefresh();
-        }
-    };
-
-    private boolean mIsScrollIdle = true;
-
     private RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
 
         @Override

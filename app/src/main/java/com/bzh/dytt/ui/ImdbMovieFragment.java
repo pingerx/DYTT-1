@@ -15,7 +15,6 @@ import com.bzh.dytt.data.ExceptionType;
 import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.viewmodel.ImdbViewModel;
-import com.bzh.dytt.viewmodel.NewMovieViewModel;
 
 import java.util.List;
 

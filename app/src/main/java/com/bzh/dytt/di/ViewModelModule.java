@@ -5,12 +5,12 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import com.bzh.dytt.BaseViewModel;
+import com.bzh.dytt.search.SearchViewModel;
+import com.bzh.dytt.util.ViewModelFactory;
 import com.bzh.dytt.viewmodel.ImdbViewModel;
 import com.bzh.dytt.viewmodel.LoadableMoviePageViewModel;
 import com.bzh.dytt.viewmodel.NewMovieViewModel;
 import com.bzh.dytt.viewmodel.VideoDetailPageViewModel;
-import com.bzh.dytt.search.SearchViewModel;
-import com.bzh.dytt.util.ViewModelFactory;
 
 import dagger.Binds;
 import dagger.Module;

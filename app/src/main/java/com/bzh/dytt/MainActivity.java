@@ -29,24 +29,18 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, HasSupportFragmentInjector {
 
     private static final String TAG = "MainActivity";
-
+    private final static String ADMOB_APP_ID = "ca-app-pub-8112052667906046~4830848371";
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentInjector;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
-
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
-
     @BindView(R.id.content_container)
     NonInteractiveViewPage mContainer;
-
     private MainViewPagerAdapter mPagerAdapter;
-
-    private final static String ADMOB_APP_ID = "ca-app-pub-8112052667906046~4830848371";
 
     @Override
     protected void doCreate() {

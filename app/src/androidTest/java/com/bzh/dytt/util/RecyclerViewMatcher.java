@@ -70,8 +70,7 @@ public class RecyclerViewMatcher {
                         if (viewHolder != null) {
                             childView = viewHolder.itemView;
                         }
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }

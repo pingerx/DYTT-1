@@ -6,8 +6,8 @@ import android.arch.lifecycle.Observer;
 import com.bzh.dytt.TestUtils;
 import com.bzh.dytt.data.ExceptionType;
 import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.db.VideoDetailDAO;
+import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.network.DyttService;
 import com.bzh.dytt.util.VideoDetailPageParser;
 

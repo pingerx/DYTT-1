@@ -2,7 +2,6 @@ package com.bzh.dytt.ui;
 
 
 import android.app.Activity;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -31,9 +30,9 @@ import butterknife.ButterKnife;
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieItemHolder> {
 
     protected List<VideoDetail> mItems;
+    protected int mDataVersion = 0;
     private Context mContext;
     private MutableLiveData<VideoDetail> mLiveData;
-    protected int mDataVersion = 0;
 
     public MovieListAdapter(Context context, MutableLiveData<VideoDetail> liveData) {
         mContext = context;
@@ -135,9 +134,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     static class UpdateTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
 
-        SoftReference<MovieListAdapter> mReference;
         private final int mStartVersion;
         private final List<VideoDetail> mOldItems;
+        SoftReference<MovieListAdapter> mReference;
         private List<VideoDetail> mUpdate;
 
         UpdateTask(MovieListAdapter adapter, List<VideoDetail> update) {

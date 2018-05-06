@@ -17,7 +17,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +26,12 @@ import android.widget.TextView;
 
 import com.bzh.dytt.BaseFragment;
 import com.bzh.dytt.R;
-import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.data.Resource;
 import com.bzh.dytt.data.Status;
-import com.bzh.dytt.viewmodel.VideoDetailPageViewModel;
+import com.bzh.dytt.data.entity.VideoDetail;
 import com.bzh.dytt.util.GlideApp;
 import com.bzh.dytt.util.ThunderHelper;
+import com.bzh.dytt.viewmodel.VideoDetailPageViewModel;
 import com.github.florent37.glidepalette.BitmapPalette;
 import com.github.florent37.glidepalette.GlidePalette;
 import com.google.android.gms.ads.AdRequest;
@@ -117,7 +116,7 @@ public class VideoDetailPageFragment extends BaseFragment {
     private String mDetailLink;
 
     private VideoDetailPageViewModel mVideoDetailPageViewModel;
-
+    private ThunderHelper mThunderHelper;
     private Observer<Resource<List<VideoDetail>>> mVideoDetailObserver = new Observer<Resource<List<VideoDetail>>>() {
         @Override
         public void onChanged(@Nullable Resource<List<VideoDetail>> result) {
@@ -228,7 +227,6 @@ public class VideoDetailPageFragment extends BaseFragment {
             }
         }
     };
-    private ThunderHelper mThunderHelper;
 
     public static VideoDetailPageFragment newInstance(String detailLink) {
         Bundle args = new Bundle();

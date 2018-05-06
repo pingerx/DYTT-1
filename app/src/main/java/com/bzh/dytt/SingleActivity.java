@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import com.bzh.dytt.ui.VideoDetailPageFragment;
 import com.bzh.dytt.search.SearchFragment;
+import com.bzh.dytt.ui.VideoDetailPageFragment;
 
 import javax.inject.Inject;
 

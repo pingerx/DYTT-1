@@ -7,7 +7,6 @@ import android.arch.lifecycle.Observer;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
 
 import com.bzh.dytt.AppExecutors;
 import com.bzh.dytt.data.Resource;

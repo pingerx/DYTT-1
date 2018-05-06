@@ -6,7 +6,6 @@ import android.app.Application;
 
 import com.bzh.dytt.di.AppInjector;
 import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.DiskLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.umeng.commonsdk.UMConfigure;
 
