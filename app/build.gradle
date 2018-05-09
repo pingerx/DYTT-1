@@ -116,7 +116,7 @@ dependencies {
     implementation 'android.arch.lifecycle:viewmodel:1.1.1'
     implementation 'android.arch.lifecycle:livedata:1.1.1'
     implementation 'android.arch.persistence.room:runtime:1.0.0'
-    implementation 'android.arch.paging:runtime:1.0.0-rc1'
+    implementation 'android.arch.paging:runtime:1.0.0'
     implementation 'org.jsoup:jsoup:1.8.3'
     implementation 'com.google.dagger:dagger:2.14.1'
     implementation 'com.google.dagger:dagger-android:2.14.1'
@@ -137,7 +137,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-core-utils'
     })
-    testImplementation 'android.arch.persistence.room:testing:1.0.0'
+    testImplementation 'android.arch.persistence.room:testing:1.1.0'
     testImplementation 'org.jsoup:jsoup:1.8.3'
     androidTestImplementation 'com.android.support:recyclerview-v7:27.1.1'
     androidTestImplementation 'com.android.support:appcompat-v7:27.1.1'
