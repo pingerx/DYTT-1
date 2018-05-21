@@ -21,4 +21,5 @@ public interface DyttService {
 
     @GET
     Call<ResponseBody> getSearchVideoDetail(@Url String url);
+
 }
