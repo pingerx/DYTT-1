@@ -33,7 +33,7 @@ public class BasicApp extends Application implements HasActivityInjector {
         Logger.addLogAdapter(new AndroidLogAdapter() {
             @Override
             public boolean isLoggable(int priority, String tag) {
-                return false;
+                return BuildConfig.DEBUG;
             }
         });
 
