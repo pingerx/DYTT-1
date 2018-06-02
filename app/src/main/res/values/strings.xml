@@ -20,5 +20,16 @@
     <string name="ok">确认</string>
     <string name="coming_now">即将开放！敬请期待!</string>
 
+    <string name="home_tab_item_zuixin_film">最新电影</string>
+    <string name="home_tab_item_zonghe_film">综合电影</string>
+    <string name="home_tab_item_huayu_film">华语电影</string>
+    <string name="home_tab_item_oumei_film">欧美电影</string>
+    <string name="home_tab_item_rihan_film">日韩电影</string>
+    <string name="home_tab_item_huayu_tv">华语电视</string>
+    <string name="home_tab_item_oumei_tv">欧美电视</string>
+    <string name="home_tab_item_rihan_tv">日韩电视</string>
+    <string name="home_tab_item_zongyi">综艺</string>
+    <string name="home_tab_item_dongman">动漫</string>
+
 
 </resources>
