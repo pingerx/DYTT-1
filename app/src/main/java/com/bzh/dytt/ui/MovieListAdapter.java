@@ -24,12 +24,9 @@ import com.bzh.dytt.util.GlideApp;
 import java.lang.ref.SoftReference;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieItemHolder> {
 
-    protected List<VideoDetail> mItems;
+    protected List<? extends VideoDetail> mItems;
     protected int mDataVersion = 0;
     private Context mContext;
     private MutableLiveData<VideoDetail> mLiveData;
@@ -94,7 +91,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
                 public void onClick(View view) {
                     Activity activity = getActivityByHolder(holder);
                     if (activity != null) {
-                        SingleActivity.startDetailPage(activity, videoDetail.getDetailLink());
+                        SingleActivity.Companion.startDetailPage(activity, videoDetail.getDetailLink());
                     }
                 }
             });
@@ -107,7 +104,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     }
 
     @MainThread
-    public void replace(final List<VideoDetail> update) {
+    public void replace(final List<? extends VideoDetail> update) {
         mDataVersion++;
         if (mItems == null) {
             if (update == null) {
@@ -135,11 +132,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     static class UpdateTask extends AsyncTask<Void, Void, DiffUtil.DiffResult> {
 
         private final int mStartVersion;
-        private final List<VideoDetail> mOldItems;
+        private final List<? extends VideoDetail> mOldItems;
         SoftReference<MovieListAdapter> mReference;
-        private List<VideoDetail> mUpdate;
+        private List<? extends VideoDetail> mUpdate;
 
-        UpdateTask(MovieListAdapter adapter, List<VideoDetail> update) {
+        UpdateTask(MovieListAdapter adapter, List<? extends VideoDetail> update) {
             mReference = new SoftReference<>(adapter);
             mStartVersion = adapter.mDataVersion;
             mOldItems = adapter.mItems;
@@ -191,27 +188,26 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     class MovieItemHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.video_title)
         TextView VideoTitleTv;
 
-        @BindView(R.id.video_publish_time)
         TextView VideoPublishTv;
 
-        @BindView(R.id.douban_grade)
         TextView DoubanGradeTv;
 
-        @BindView(R.id.imdb_grade)
         TextView IMDBGradeTv;
 
-        @BindView(R.id.video_description)
         TextView VideoDescriptionTv;
 
-        @BindView(R.id.video_cover)
         ImageView VideoCover;
 
         MovieItemHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            VideoTitleTv = itemView.findViewById(R.id.video_title);
+            VideoPublishTv = itemView.findViewById(R.id.video_publish_time);
+            DoubanGradeTv = itemView.findViewById(R.id.douban_grade);
+            IMDBGradeTv = itemView.findViewById(R.id.imdb_grade);
+            VideoDescriptionTv = itemView.findViewById(R.id.video_description);
+            VideoCover = itemView.findViewById(R.id.video_cover);
         }
     }
 }
