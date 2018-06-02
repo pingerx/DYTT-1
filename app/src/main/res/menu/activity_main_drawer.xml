@@ -6,18 +6,7 @@
         <item
             android:id="@+id/nav_home"
             android:checked="true"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_film"
             android:title="@string/nav_home_page" />
-
-        <item
-            android:id="@+id/nav_movie"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/nav_movie_page" />
-
-        <item
-            android:id="@+id/nav_imdb"
-            android:icon="@drawable/color_hunt_logo"
-            android:title="@string/nav_imdb_page" />
-
     </group>
 </menu>

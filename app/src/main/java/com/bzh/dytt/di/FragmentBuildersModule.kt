@@ -1,12 +1,16 @@
 package com.bzh.dytt.di
 
-import com.bzh.dytt.ui.search.SearchFragment
 import com.bzh.dytt.ui.*
+import com.bzh.dytt.ui.home.HomeFragment
+import com.bzh.dytt.ui.search.SearchFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class FragmentBuildersModule {
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeMainHomePageFragment(): HomeFragment
 
     @ContributesAndroidInjector
     internal abstract fun contributeHomePageFragment(): AllMoviePageFragment

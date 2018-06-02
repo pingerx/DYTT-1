@@ -23,6 +23,11 @@ abstract class BaseFragment : Fragment(), Injectable {
         doViewCreated(view, savedInstanceState)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        doActivityCreate(savedInstanceState)
+    }
+
     override fun onResume() {
         super.onResume()
         doResume()
@@ -50,6 +55,8 @@ abstract class BaseFragment : Fragment(), Injectable {
     protected open fun doViewCreated(view: View, savedInstanceState: Bundle?) {}
 
     protected open fun doDestroyView() {}
+
+    protected open fun doActivityCreate(savedInstanceState: Bundle?) {}
 
     protected open fun doDestroy() {}
 

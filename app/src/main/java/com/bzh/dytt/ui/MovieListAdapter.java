@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.bzh.dytt.R;
 import com.bzh.dytt.SingleActivity;
+import com.bzh.dytt.di.GlideApp;
 import com.bzh.dytt.vo.VideoDetail;
-import com.bzh.dytt.util.GlideApp;
 
 import java.lang.ref.SoftReference;
 import java.util.List;

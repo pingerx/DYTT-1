@@ -11,9 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.bzh.dytt.base.BaseActivity
 import com.bzh.dytt.base.BaseFragment
-import com.bzh.dytt.ui.AllMoviePageFragment
-import com.bzh.dytt.ui.ImdbMovieFragment
-import com.bzh.dytt.ui.NewMovieFragment
+import com.bzh.dytt.ui.home.HomeFragment
 import com.google.android.gms.ads.MobileAds
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -84,14 +82,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 toolbar.setTitle(R.string.nav_home_page)
                 content_container.currentItem = 0
             }
-            R.id.nav_movie -> {
-                toolbar.setTitle(R.string.nav_movie_page)
-                content_container.currentItem = 1
-            }
-            R.id.nav_imdb -> {
-                toolbar.setTitle(R.string.nav_imdb_page)
-                content_container.currentItem = 2
-            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
@@ -104,13 +94,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     class MainViewPagerAdapter internal constructor(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): BaseFragment = when (position) {
-            0 -> NewMovieFragment.newInstance()
-            1 -> AllMoviePageFragment.newInstance()
-            2 -> ImdbMovieFragment.newInstance()
+            0 -> HomeFragment.newInstance()
+//            0 -> NewMovieFragment.newInstance()
+//            1 -> AllMoviePageFragment.newInstance()
+//            2 -> ImdbMovieFragment.newInstance()
             else -> throw IndexOutOfBoundsException()
         }
 
-        override fun getCount() = 3
+        override fun getCount() = 1
     }
 
     companion object {

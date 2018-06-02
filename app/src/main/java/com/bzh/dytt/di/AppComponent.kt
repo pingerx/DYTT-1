@@ -24,10 +24,6 @@ interface AppComponent {
     @Component.Builder
     interface Builder {
 
-        /**
-         * You can add a method annotated @BindsInstance to the component builder to allow that
-         * instance to be injected in the component.
-         */
         @BindsInstance
         fun application(application: Application): Builder
 
