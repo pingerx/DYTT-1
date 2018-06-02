@@ -13,11 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.bzh.dytt.SingleListFragment;
-import com.bzh.dytt.data.ExceptionType;
-import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.data.db.DataTypeConverter;
-import com.bzh.dytt.data.entity.MovieCategory;
-import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.vo.ExceptionType;
+import com.bzh.dytt.vo.Resource;
+import com.bzh.dytt.db.DataTypeConverter;
+import com.bzh.dytt.vo.MovieCategory;
+import com.bzh.dytt.vo.VideoDetail;
 import com.bzh.dytt.viewmodel.LoadableMoviePageViewModel;
 
 import org.jetbrains.annotations.NotNull;

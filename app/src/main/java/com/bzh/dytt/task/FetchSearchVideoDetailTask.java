@@ -3,13 +3,13 @@ package com.bzh.dytt.task;
 
 import android.arch.lifecycle.MutableLiveData;
 
-import com.bzh.dytt.data.ExceptionType;
-import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.data.db.VideoDetailDAO;
-import com.bzh.dytt.data.entity.VideoDetail;
-import com.bzh.dytt.data.network.ApiResponse;
-import com.bzh.dytt.data.network.ApiSuccessResponse;
-import com.bzh.dytt.data.network.DyttService;
+import com.bzh.dytt.vo.ExceptionType;
+import com.bzh.dytt.vo.Resource;
+import com.bzh.dytt.db.VideoDetailDAO;
+import com.bzh.dytt.vo.VideoDetail;
+import com.bzh.dytt.api.ApiResponse;
+import com.bzh.dytt.api.ApiSuccessResponse;
+import com.bzh.dytt.api.DyttService;
 import com.bzh.dytt.util.VideoDetailPageParser;
 import com.orhanobut.logger.Logger;
 

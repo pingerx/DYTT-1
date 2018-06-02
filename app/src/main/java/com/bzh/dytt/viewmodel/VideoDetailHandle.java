@@ -5,8 +5,8 @@ import android.arch.lifecycle.Observer;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 
-import com.bzh.dytt.DataRepository;
-import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.repository.DataRepository;
+import com.bzh.dytt.vo.VideoDetail;
 
 public class VideoDetailHandle implements Observer<VideoDetail> {
 

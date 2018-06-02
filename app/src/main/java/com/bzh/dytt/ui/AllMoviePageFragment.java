@@ -12,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bzh.dytt.BaseFragment;
+import com.bzh.dytt.base.BaseFragment;
 import com.bzh.dytt.R;
-import com.bzh.dytt.data.entity.MovieCategory;
+import com.bzh.dytt.vo.MovieCategory;
 
 import java.util.ArrayList;
 import java.util.List;

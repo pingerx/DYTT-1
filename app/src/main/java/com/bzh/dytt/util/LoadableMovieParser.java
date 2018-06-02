@@ -1,7 +1,7 @@
 package com.bzh.dytt.util;
 
-import com.bzh.dytt.data.entity.CategoryMap;
-import com.bzh.dytt.data.entity.MovieCategory;
+import com.bzh.dytt.vo.CategoryMap;
+import com.bzh.dytt.vo.MovieCategory;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -24,11 +24,11 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.bzh.dytt.BaseFragment;
+import com.bzh.dytt.base.BaseFragment;
 import com.bzh.dytt.R;
-import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.data.Status;
-import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.vo.Resource;
+import com.bzh.dytt.vo.Status;
+import com.bzh.dytt.vo.VideoDetail;
 import com.bzh.dytt.util.GlideApp;
 import com.bzh.dytt.util.ThunderHelper;
 import com.bzh.dytt.viewmodel.VideoDetailPageViewModel;

@@ -3,7 +3,7 @@ package com.bzh.dytt.util;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.vo.VideoDetail;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

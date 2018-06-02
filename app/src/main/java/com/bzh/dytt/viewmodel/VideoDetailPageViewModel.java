@@ -6,9 +6,9 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import com.bzh.dytt.DataRepository;
-import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.repository.DataRepository;
+import com.bzh.dytt.vo.Resource;
+import com.bzh.dytt.vo.VideoDetail;
 
 import java.util.Collections;
 import java.util.List;

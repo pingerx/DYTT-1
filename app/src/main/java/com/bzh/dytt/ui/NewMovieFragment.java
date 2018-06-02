@@ -12,9 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.bzh.dytt.SingleListFragment;
-import com.bzh.dytt.data.ExceptionType;
-import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.vo.ExceptionType;
+import com.bzh.dytt.vo.Resource;
+import com.bzh.dytt.vo.VideoDetail;
 import com.bzh.dytt.viewmodel.NewMovieViewModel;
 
 import org.jetbrains.annotations.NotNull;

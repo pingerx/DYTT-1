@@ -8,13 +8,13 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.arch.lifecycle.Transformations;
 
-import com.bzh.dytt.BaseViewModel;
-import com.bzh.dytt.DataRepository;
-import com.bzh.dytt.data.ExceptionType;
-import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.data.entity.CategoryMap;
-import com.bzh.dytt.data.entity.MovieCategory;
-import com.bzh.dytt.data.entity.VideoDetail;
+import com.bzh.dytt.base.BaseViewModel;
+import com.bzh.dytt.repository.DataRepository;
+import com.bzh.dytt.vo.ExceptionType;
+import com.bzh.dytt.vo.Resource;
+import com.bzh.dytt.vo.CategoryMap;
+import com.bzh.dytt.vo.MovieCategory;
+import com.bzh.dytt.vo.VideoDetail;
 
 import java.util.List;
 

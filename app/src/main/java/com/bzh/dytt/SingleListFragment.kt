@@ -12,21 +12,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.bzh.dytt.data.ExceptionType
-import com.bzh.dytt.data.Resource
-import com.bzh.dytt.data.Status
+import com.bzh.dytt.base.BaseFragment
+import com.bzh.dytt.vo.ExceptionType
+import com.bzh.dytt.vo.Resource
+import com.bzh.dytt.vo.Status
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.single_list_page.*
 
-
 abstract class SingleListFragment<T> : BaseFragment() {
 
-    protected var mOtherExceptionObserver: Observer<Resource<ExceptionType>> = Observer { result -> onOtherException(result) }
+    private var mOtherExceptionObserver: Observer<Resource<ExceptionType>> = Observer { result -> onOtherException(result) }
 
-    protected var mRefreshListener: SwipeRefreshLayout.OnRefreshListener = SwipeRefreshLayout.OnRefreshListener { doRefresh() }
+    private var mRefreshListener: SwipeRefreshLayout.OnRefreshListener = SwipeRefreshLayout.OnRefreshListener { doRefresh() }
 
-    protected var mListObserver: Observer<Resource<List<T>>> = Observer { result ->
+    private var mListObserver: Observer<Resource<List<T>>> = Observer { result ->
 
         mEmpty.visibility = View.GONE
         mError.visibility = View.GONE
@@ -55,7 +55,7 @@ abstract class SingleListFragment<T> : BaseFragment() {
         }
     }
 
-    protected val mScrollListener = object : RecyclerView.OnScrollListener() {
+    private val mScrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)

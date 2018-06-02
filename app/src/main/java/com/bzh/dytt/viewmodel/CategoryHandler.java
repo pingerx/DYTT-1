@@ -5,11 +5,11 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
 
-import com.bzh.dytt.DataRepository;
-import com.bzh.dytt.data.Resource;
-import com.bzh.dytt.data.Status;
-import com.bzh.dytt.data.entity.CategoryMap;
-import com.bzh.dytt.data.entity.MovieCategory;
+import com.bzh.dytt.repository.DataRepository;
+import com.bzh.dytt.vo.Resource;
+import com.bzh.dytt.vo.Status;
+import com.bzh.dytt.vo.CategoryMap;
+import com.bzh.dytt.vo.MovieCategory;
 
 import java.util.List;
 

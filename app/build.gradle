@@ -4,7 +4,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-allopen'
 
 android {
     compileSdkVersion 27
@@ -35,52 +34,19 @@ android {
         test.java.srcDirs += "src/test-common/java"
     }
 
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
-
     buildTypes {
         debug {
-            // Minifying the variant used for tests is not supported when using Jack.
-            minifyEnabled false
-            // Uses new built-in shrinker http://tools.android.com/tech-docs/new-build-system/built-in-shrinker
-            useProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+            testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
         }
-
         release {
             minifyEnabled false
-            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
-        }
-    }
-
-    // Always show the result of every unit test, even if it passes.
-    testOptions.unitTests.all {
-        testLogging {
-            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
         }
     }
 
     lintOptions {
         lintConfig rootProject.file('lint.xml')
     }
-
-//    flavorDimensions "default"
-//
-//    // If you need to add more flavors, consider using flavor dimensions.
-//    productFlavors {
-//        mock {
-//            dimension "default"
-//            applicationIdSuffix = ".mock"
-//        }
-//        prod {
-//            dimension "default"
-//        }
-//    }
-
 }
 
 configurations.all {
@@ -100,7 +66,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.6.1'
 
     //
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //
     implementation 'com.android.support:support-annotations:27.1.1'
@@ -183,8 +149,6 @@ dependencies {
     androidTestImplementation 'android.arch.core:core-testing:1.1.1'
     androidTestImplementation 'org.mockito:mockito-core:2.18.3'
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
-
-
 
 }
 repositories {

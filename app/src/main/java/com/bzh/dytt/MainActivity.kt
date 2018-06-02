@@ -9,6 +9,8 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
+import com.bzh.dytt.base.BaseActivity
+import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.ui.AllMoviePageFragment
 import com.bzh.dytt.ui.ImdbMovieFragment
 import com.bzh.dytt.ui.NewMovieFragment
@@ -29,7 +31,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
 
         toolbar.setTitle(R.string.nav_home_page)
@@ -113,6 +114,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     companion object {
-        val ADMOB_APP_ID = "ca-app-pub-8112052667906046~4830848371"
+        const val ADMOB_APP_ID = "ca-app-pub-8112052667906046~4830848371"
     }
 }

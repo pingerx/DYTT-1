@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.MenuItem
-import com.bzh.dytt.search.SearchFragment
+import com.bzh.dytt.base.BaseActivity
+import com.bzh.dytt.base.BaseFragment
+import com.bzh.dytt.ui.search.SearchFragment
 import com.bzh.dytt.ui.VideoDetailPageFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
