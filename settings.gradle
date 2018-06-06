@@ -1,1 +1,1 @@
-include ':app', ':lintrules', ':key-release'
+include ':app', ':lintrules'

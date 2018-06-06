@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(dataRepository: DataRepository) : ViewModel(), LifecycleObserver {
 
-    private val mTabLiveData: MutableLiveData<List<HomeMovieType>> = MutableLiveData<List<HomeMovieType>>()
+    private val mTabLiveData: MutableLiveData<List<HomeMovieType>> = MutableLiveData()
 
     val tabLiveData: LiveData<List<HomeMovieType>>
         get() = mTabLiveData

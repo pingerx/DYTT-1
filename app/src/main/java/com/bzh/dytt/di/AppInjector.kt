@@ -16,7 +16,7 @@ object AppInjector {
     fun init(basicApp: BasicApp) {
 
         // Injector App
-        DaggerAppComponent.builder().application(basicApp).appModule(AppModule("http://www.dytt8.net")).build().inject(basicApp)
+        DaggerAppComponent.builder().application(basicApp).appModule(AppModule("http://m.dydytt.net:8080")).build().inject(basicApp)
 
         // Injector Activities
         basicApp

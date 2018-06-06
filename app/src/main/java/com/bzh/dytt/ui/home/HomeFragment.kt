@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import com.bzh.dytt.R
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.di.Injectable
-import com.bzh.dytt.ui.NewMovieFragment
 import kotlinx.android.synthetic.main.home_fragment.*
 import javax.inject.Inject
 
@@ -101,11 +100,9 @@ class HomeFragment : BaseFragment(), Injectable {
         }
 
         override fun getItem(position: Int): Fragment {
-//            data[position]
-            return NewMovieFragment.newInstance()
+            return HomeListFragment.newInstnace(data[position])
         }
 
         override fun getCount() = data.size
-
     }
 }

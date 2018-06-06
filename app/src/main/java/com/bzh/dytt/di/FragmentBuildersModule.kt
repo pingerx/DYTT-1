@@ -2,6 +2,7 @@ package com.bzh.dytt.di
 
 import com.bzh.dytt.ui.*
 import com.bzh.dytt.ui.home.HomeFragment
+import com.bzh.dytt.ui.home.HomeListFragment
 import com.bzh.dytt.ui.search.SearchFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -11,6 +12,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeMainHomePageFragment(): HomeFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeHomeListPageFragment(): HomeListFragment
 
     @ContributesAndroidInjector
     internal abstract fun contributeHomePageFragment(): AllMoviePageFragment

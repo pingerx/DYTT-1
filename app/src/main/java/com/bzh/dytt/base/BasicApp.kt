@@ -1,7 +1,11 @@
 package com.bzh.dytt.base
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
+import android.content.Context
+import android.content.pm.PackageManager
+import android.util.Log
 import com.bzh.dytt.BuildConfig
 import com.bzh.dytt.di.AppInjector
 import com.bzh.dytt.key.KeyUtils
@@ -33,5 +37,13 @@ class BasicApp : Application(), HasActivityInjector {
         KeyUtils.init(this)
 
         UMConfigure.init(this, "5acda2b4f29d98253600000c", "Kuan", UMConfigure.DEVICE_TYPE_PHONE, null)
+
+        Log.d("BasicApp", getSignature(this))
+    }
+
+    @SuppressLint("PackageManagerGetSignatures")
+    private fun getSignature(context: Context): String {
+        val packageInfo = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)
+        return packageInfo.signatures[0].toCharsString()
     }
 }

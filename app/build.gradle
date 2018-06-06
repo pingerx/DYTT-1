@@ -49,6 +49,10 @@ android {
     }
 }
 
+repositories {
+    flatDir { dirs 'libs' }
+}
+
 configurations.all {
     resolutionStrategy {
         force 'com.android.support:support-v4:27.1.1'
@@ -96,6 +100,9 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
 
     //
+    implementation(name:'key-release', ext:'aar')
+
+    //
     implementation 'org.jsoup:jsoup:1.8.3'
 
     //
@@ -118,9 +125,6 @@ dependencies {
     //
     implementation 'com.umeng.sdk:common:1.5.0'
     implementation 'com.umeng.sdk:analytics:7.5.0'
-
-    //
-    implementation project(':key-release')
 
     //
     lintChecks project(':lintrules')
