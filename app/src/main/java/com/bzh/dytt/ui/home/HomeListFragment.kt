@@ -10,25 +10,28 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.R
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.di.GlideApp
-import com.bzh.dytt.vo.ExceptionType
 import com.bzh.dytt.vo.MovieDetail
 import com.bzh.dytt.vo.Resource
 import com.bzh.dytt.vo.Status
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.item_home_child.view.*
 import kotlinx.android.synthetic.main.single_list_page.*
 import javax.inject.Inject
 
-class HomeListFragment : BaseFragment() {
+interface OnLoadMoreListener {
+    fun onLoadMore()
+}
+
+
+class HomeListFragment : BaseFragment(), OnLoadMoreListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -36,20 +39,28 @@ class HomeListFragment : BaseFragment() {
     @Inject
     lateinit var appExecutors: AppExecutors
 
-    private var otherExceptionObserver: Observer<Resource<ExceptionType>> = Observer { result ->
-        when (result?.data) {
-            ExceptionType.TaskFailure -> {
-                if (activity != null) {
-                    Toast.makeText(activity, resources.getString(R.string.fetch_video_detail_exception, result.message), Toast.LENGTH_SHORT).show()
-                } else {
-                    Logger.e(TAG, "onChanged: activity is null")
-                }
-            }
-        }
-    }
+    private var isLoadMore: Boolean = false
 
     private var refreshListener: SwipeRefreshLayout.OnRefreshListener = SwipeRefreshLayout.OnRefreshListener {
         listViewModel.refresh()
+    }
+
+    private var onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+
+        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            if (recyclerView?.layoutManager is LinearLayoutManager) {
+                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val itemCount = linearLayoutManager.itemCount
+                val lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition()
+
+                if (!isLoadMore && itemCount <= (lastVisibleItemPosition + 5)) {
+                    isLoadMore = true
+                    onLoadMore()
+                }
+            }
+        }
     }
 
     private var listObserver: Observer<Resource<List<MovieDetail>>> = Observer { result ->
@@ -59,6 +70,7 @@ class HomeListFragment : BaseFragment() {
                 swipe_refresh_layout.isRefreshing = false
                 error_layout.visibility = View.VISIBLE
                 empty_layout.visibility = View.GONE
+                isLoadMore = false
 
             }
             Status.LOADING -> {
@@ -76,13 +88,20 @@ class HomeListFragment : BaseFragment() {
                     error_layout.visibility = View.GONE
                     homeListAdapter.submitList(result.data)
                 }
+                isLoadMore = false
             }
         }
     }
 
-    lateinit var listViewModel: HomeListViewModel
+    private lateinit var listViewModel: HomeListViewModel
 
-    lateinit var homeListAdapter: HomeListAdapter
+    private lateinit var homeListAdapter: HomeListAdapter
+
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
+    override fun onLoadMore() {
+        listViewModel.loadMore()
+    }
 
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.single_list_page, container, false)
@@ -95,7 +114,12 @@ class HomeListFragment : BaseFragment() {
         listViewModel = viewModelFactory.create(HomeListViewModel::class.java)
         listViewModel.moveTypeLiveData.value = movieType as HomeViewModel.HomeMovieType
         swipe_refresh_layout.setOnRefreshListener(refreshListener)
-        listview.layoutManager = LinearLayoutManager(activity)
+
+        listview.addOnScrollListener(onScrollListener)
+
+        linearLayoutManager = LinearLayoutManager(activity)
+        listview.layoutManager = linearLayoutManager
+
         homeListAdapter = HomeListAdapter(appExecutors)
         listview.adapter = homeListAdapter
 
@@ -109,7 +133,7 @@ class HomeListFragment : BaseFragment() {
         super.doDestroyView()
     }
 
-    class HomeListAdapter constructor(appExecutors: AppExecutors) : ListAdapter<MovieDetail, MovieItemHolder>(
+    inner class HomeListAdapter constructor(appExecutors: AppExecutors) : ListAdapter<MovieDetail, MovieItemHolder>(
             AsyncDifferConfig
                     .Builder<MovieDetail>(object : DiffUtil.ItemCallback<MovieDetail>() {
                         override fun areItemsTheSame(oldItem: MovieDetail, newItem: MovieDetail): Boolean {
@@ -161,9 +185,24 @@ class HomeListFragment : BaseFragment() {
             holder.itemView.setOnClickListener {
             }
         }
+
+        override public fun getItem(position: Int): MovieDetail {
+            return super.getItem(position)
+        }
+
+        override fun onViewAttachedToWindow(holder: MovieItemHolder) {
+            super.onViewAttachedToWindow(holder)
+            Log.d(TAG, "onViewAttachedToWindow ${holder.adapterPosition}")
+            listViewModel.doUpdateMovieDetail(getItem(holder.adapterPosition))
+        }
+
+        override fun onViewDetachedFromWindow(holder: MovieItemHolder) {
+            super.onViewDetachedFromWindow(holder)
+            Log.d(TAG, "onViewDetachedFromWindow ${holder.adapterPosition}")
+        }
     }
 
-    class MovieItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class MovieItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     companion object {
 

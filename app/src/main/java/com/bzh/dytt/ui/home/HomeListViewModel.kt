@@ -11,6 +11,8 @@ class HomeListViewModel @Inject constructor(private val repository: Repository) 
 
     private var _isRefresh = false
 
+    private var _isLoadMore = false
+
     private val _movieListLiveData: MutableLiveData<Resource<List<MovieDetail>>> = MutableLiveData()
 
     private var _movieRepositoryLiveData: LiveData<Resource<List<MovieDetail>>>? = null
@@ -27,6 +29,13 @@ class HomeListViewModel @Inject constructor(private val repository: Repository) 
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun inactive() {
+        unregister()
+    }
+
+    fun loadMore() {
+        if (_isLoadMore) {
+            return
+        }
         unregister()
     }
 
@@ -63,5 +72,9 @@ class HomeListViewModel @Inject constructor(private val repository: Repository) 
                 _movieListLiveData.value = result
             }
         }
+    }
+
+    fun doUpdateMovieDetail(item: MovieDetail) {
+
     }
 }

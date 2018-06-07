@@ -5,6 +5,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy.IGNORE
 import android.arch.persistence.room.Query
+import android.arch.persistence.room.Update
 import com.bzh.dytt.vo.MovieDetail
 
 @Dao
@@ -15,5 +16,11 @@ interface MovieDetailDAO {
 
     @Insert(onConflict = IGNORE)
     fun insertMovieList(movieList: List<MovieDetail>)
+
+    @Update
+    fun updateMovieList(movieList: List<MovieDetail>)
+
+    @Update
+    fun updateMovie(movie: MovieDetail)
 
 }
