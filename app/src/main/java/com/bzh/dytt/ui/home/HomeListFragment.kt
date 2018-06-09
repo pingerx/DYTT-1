@@ -10,10 +10,10 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.R
 import com.bzh.dytt.base.BaseFragment
@@ -26,12 +26,7 @@ import kotlinx.android.synthetic.main.item_home_child.view.*
 import kotlinx.android.synthetic.main.single_list_page.*
 import javax.inject.Inject
 
-interface OnLoadMoreListener {
-    fun onLoadMore()
-}
-
-
-class HomeListFragment : BaseFragment(), OnLoadMoreListener {
+class HomeListFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -59,6 +54,13 @@ class HomeListFragment : BaseFragment(), OnLoadMoreListener {
                     isLoadMore = true
                     onLoadMore()
                 }
+            }
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (RecyclerView.SCROLL_STATE_IDLE == newState) {
+                doUpdateItems()
             }
         }
     }
@@ -99,8 +101,22 @@ class HomeListFragment : BaseFragment(), OnLoadMoreListener {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
 
-    override fun onLoadMore() {
+    fun onLoadMore() {
         listViewModel.loadMore()
+    }
+
+    fun doUpdateItems() {
+
+        val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
+        val lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition()
+
+        if (firstVisibleItemPosition == -1 || lastVisibleItemPosition == -1)
+            return
+
+        for (pos in firstVisibleItemPosition..lastVisibleItemPosition) {
+            val item = homeListAdapter.getItem(pos)
+            listViewModel.doUpdateMovieDetail(item)
+        }
     }
 
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -125,6 +141,14 @@ class HomeListFragment : BaseFragment(), OnLoadMoreListener {
 
         lifecycle.addObserver(listViewModel)
         listViewModel.movieListLiveData.observe(this, listObserver)
+
+        val layoutListener: ViewTreeObserver.OnGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                listview.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                doUpdateItems()
+            }
+        }
+        listview.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }
 
     override fun doDestroyView() {
@@ -190,16 +214,6 @@ class HomeListFragment : BaseFragment(), OnLoadMoreListener {
             return super.getItem(position)
         }
 
-        override fun onViewAttachedToWindow(holder: MovieItemHolder) {
-            super.onViewAttachedToWindow(holder)
-            Log.d(TAG, "onViewAttachedToWindow ${holder.adapterPosition}")
-            listViewModel.doUpdateMovieDetail(getItem(holder.adapterPosition))
-        }
-
-        override fun onViewDetachedFromWindow(holder: MovieItemHolder) {
-            super.onViewDetachedFromWindow(holder)
-            Log.d(TAG, "onViewDetachedFromWindow ${holder.adapterPosition}")
-        }
     }
 
     inner class MovieItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

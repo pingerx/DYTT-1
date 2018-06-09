@@ -10,7 +10,7 @@ import com.bzh.dytt.vo.VideoDetail
 
 @Database(
         entities = [VideoDetail::class, CategoryMap::class, CategoryPage::class],
-        version = 2
+        version = 4
 )
 @TypeConverters(DataTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {

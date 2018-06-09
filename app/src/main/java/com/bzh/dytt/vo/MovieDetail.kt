@@ -4,13 +4,14 @@ import android.arch.persistence.room.Entity
 
 @Entity(tableName = "movie_detail", primaryKeys = ["id", "categoryId"])
 data class MovieDetail(
-        val id: Int,
+        var id: Int,
         var categoryId: Int,
-        val name: String?,
-        val simpleName: String?,
-        val publishTime: String?,
-        val homePicUrl: String?,
-        val pics: String?,
-        val downloadUrl: String?,
-        val content: String?
+        var name: String?,
+        var simpleName: String?,
+        var publishTime: String?,
+        var homePicUrl: String?,
+        var pics: String?,
+        var downloadUrl: String?,
+        var content: String?,
+        var isPrefect: Boolean = false
 )

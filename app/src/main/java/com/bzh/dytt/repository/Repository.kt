@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.api.ApiResponse
 import com.bzh.dytt.api.NetworkBoundResource
+import com.bzh.dytt.api.NetworkResource
 import com.bzh.dytt.api.NetworkService
 import com.bzh.dytt.db.MovieDetailDAO
 import com.bzh.dytt.key.KeyUtils
@@ -58,6 +59,34 @@ class Repository @Inject constructor(
                         categoryId = movieType?.type,
                         page = page,
                         searchContent = ""
+                )
+            }
+
+        }.asLiveData()
+    }
+
+    fun movieItemUpdate(oldItem: MovieDetail): LiveData<Resource<MovieDetail>> {
+
+        return object : NetworkResource<MovieDetail, MovieDetail>(appExecutors) {
+
+            override fun saveCallResult(item: MovieDetail): MovieDetail {
+                item.categoryId = oldItem.categoryId
+                item.id = oldItem.id
+                item.isPrefect = true
+                movieDetailDAO.updateMovie(item)
+                return item
+            }
+
+            override fun createCall(): LiveData<ApiResponse<MovieDetail>> {
+                val timeStamp = System.currentTimeMillis() / 1000L
+                val imei = ""
+                val key = KeyUtils.getHeaderKey(timeStamp)
+                return networkService.movieDetail(
+                        headerKey = key,
+                        headerTimestamp = "$timeStamp",
+                        headerImei = imei,
+                        categoryId = oldItem.categoryId,
+                        movieDetailId = oldItem.id
                 )
             }
 
