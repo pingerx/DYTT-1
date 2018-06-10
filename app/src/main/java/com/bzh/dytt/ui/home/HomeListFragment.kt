@@ -13,7 +13,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.R
 import com.bzh.dytt.base.BaseFragment
@@ -54,13 +53,6 @@ class HomeListFragment : BaseFragment() {
                     isLoadMore = true
                     onLoadMore()
                 }
-            }
-        }
-
-        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if (RecyclerView.SCROLL_STATE_IDLE == newState) {
-                doUpdateItems()
             }
         }
     }
@@ -105,20 +97,6 @@ class HomeListFragment : BaseFragment() {
         listViewModel.loadMore()
     }
 
-    fun doUpdateItems() {
-
-        val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
-        val lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition()
-
-        if (firstVisibleItemPosition == -1 || lastVisibleItemPosition == -1)
-            return
-
-        for (pos in firstVisibleItemPosition..lastVisibleItemPosition) {
-            val item = homeListAdapter.getItem(pos)
-            listViewModel.doUpdateMovieDetail(item)
-        }
-    }
-
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.single_list_page, container, false)
     }
@@ -141,14 +119,6 @@ class HomeListFragment : BaseFragment() {
 
         lifecycle.addObserver(listViewModel)
         listViewModel.movieListLiveData.observe(this, listObserver)
-
-        val layoutListener: ViewTreeObserver.OnGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                listview.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                doUpdateItems()
-            }
-        }
-        listview.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }
 
     override fun doDestroyView() {
@@ -196,9 +166,9 @@ class HomeListFragment : BaseFragment() {
                     .into(holder.itemView.video_cover)
 
             // update value
-            holder.itemView.video_title.text = item.name
+            holder.itemView.video_title.text = item.simpleName
             holder.itemView.video_publish_time.text = item.publishTime
-            holder.itemView.video_description.text = item.content
+            holder.itemView.video_description.text = item.description
             if (!TextUtils.isEmpty(item.homePicUrl)) {
                 GlideApp.with(holder.itemView.context)
                         .load(item.homePicUrl)
@@ -210,10 +180,11 @@ class HomeListFragment : BaseFragment() {
             }
         }
 
-        override public fun getItem(position: Int): MovieDetail {
-            return super.getItem(position)
+        override fun onViewAttachedToWindow(holder: MovieItemHolder) {
+            super.onViewAttachedToWindow(holder)
+            val item = homeListAdapter.getItem(holder.adapterPosition)
+            listViewModel.doUpdateMovieDetail(item)
         }
-
     }
 
     inner class MovieItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

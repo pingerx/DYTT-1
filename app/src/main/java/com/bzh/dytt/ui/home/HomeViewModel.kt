@@ -1,10 +1,8 @@
 package com.bzh.dytt.ui.home
 
 import android.arch.lifecycle.*
-import com.bzh.dytt.repository.DataRepository
-import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(dataRepository: DataRepository) : ViewModel(), LifecycleObserver {
+class HomeViewModel : ViewModel(), LifecycleObserver {
 
     private val mTabLiveData: MutableLiveData<List<HomeMovieType>> = MutableLiveData()
 

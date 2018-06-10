@@ -9,6 +9,7 @@ import com.bzh.dytt.api.NetworkService
 import com.bzh.dytt.db.MovieDetailDAO
 import com.bzh.dytt.key.KeyUtils
 import com.bzh.dytt.ui.home.HomeViewModel
+import com.bzh.dytt.util.MovieDetailParse
 import com.bzh.dytt.util.RateLimiter
 import com.bzh.dytt.vo.MovieDetail
 import com.bzh.dytt.vo.MovieDetailResponse
@@ -21,7 +22,8 @@ import javax.inject.Singleton
 class Repository @Inject constructor(
         private val appExecutors: AppExecutors,
         private val networkService: NetworkService,
-        private val movieDetailDAO: MovieDetailDAO
+        private val movieDetailDAO: MovieDetailDAO,
+        private val movieDetailParse: MovieDetailParse
 ) {
 
     private val repoListRateLimit = RateLimiter<String>(10, TimeUnit.MINUTES)
@@ -36,6 +38,7 @@ class Repository @Inject constructor(
             override fun saveCallResult(item: MovieDetailResponse) {
                 for (movie in item.rows) {
                     movie.categoryId = movieType?.type ?: -1
+                    movieDetailParse.parse(movie)
                 }
                 movieDetailDAO.insertMovieList(item.rows)
             }
@@ -71,8 +74,8 @@ class Repository @Inject constructor(
 
             override fun saveCallResult(item: MovieDetail): MovieDetail {
                 item.categoryId = oldItem.categoryId
-                item.id = oldItem.id
                 item.isPrefect = true
+                movieDetailParse.parse(item)
                 movieDetailDAO.updateMovie(item)
                 return item
             }

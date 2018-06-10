@@ -14,8 +14,8 @@
     <string name="home_child_load_empty">还没有发现数据\n下拉刷新试试吧!</string>
     <string name="search_edit">搜索</string>
     <string name="china">中国</string>
-    <string name="douban_grade">豆瓣/%1$s</string>
-    <string name="imdb_grade">IMDB/%1$s</string>
+    <string name="douban_grade">豆瓣/%1$f</string>
+    <string name="imdb_grade">IMDB/%1$f</string>
     <string name="fetch_video_detail_exception">获取视频详情时发生了错误，快去给开发者反馈吧!(%1$s)</string>
     <string name="ok">确认</string>
     <string name="coming_now">即将开放！敬请期待!</string>

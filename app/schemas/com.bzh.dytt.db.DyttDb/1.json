@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a332b4ac8ac821aba477f7197000fd83",
+    "identityHash": "6b3d535af5153dd78a35e4ccb1ee5029",
     "entities": [
       {
         "tableName": "movie_detail",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, `name` TEXT, `simpleName` TEXT, `publishTime` TEXT, `homePicUrl` TEXT, `pics` TEXT, `downloadUrl` TEXT, `content` TEXT, `isPrefect` INTEGER NOT NULL, PRIMARY KEY(`id`, `categoryId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `publishTime` TEXT, `homePicUrl` TEXT, `pics` TEXT, `downloadUrl` TEXT, `content` TEXT, `categoryId` INTEGER NOT NULL, `simpleName` TEXT, `imdbGrade` REAL, `doubanGrade` REAL, `diretorName` TEXT, `description` TEXT, `isPrefect` INTEGER NOT NULL, PRIMARY KEY(`id`, `categoryId`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,20 +15,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "categoryId",
-            "columnName": "categoryId",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "name",
             "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "simpleName",
-            "columnName": "simpleName",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -63,6 +51,42 @@
             "notNull": false
           },
           {
+            "fieldPath": "categoryId",
+            "columnName": "categoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "simpleName",
+            "columnName": "simpleName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imdbGrade",
+            "columnName": "imdbGrade",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "doubanGrade",
+            "columnName": "doubanGrade",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "diretorName",
+            "columnName": "diretorName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "isPrefect",
             "columnName": "isPrefect",
             "affinity": "INTEGER",
@@ -82,7 +106,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a332b4ac8ac821aba477f7197000fd83\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6b3d535af5153dd78a35e4ccb1ee5029\")"
     ]
   }
 }
