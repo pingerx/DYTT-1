@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6b3d535af5153dd78a35e4ccb1ee5029",
+    "identityHash": "35d3addbff8b09dd8f2b775464c3c3fd",
     "entities": [
       {
         "tableName": "movie_detail",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `publishTime` TEXT, `homePicUrl` TEXT, `pics` TEXT, `downloadUrl` TEXT, `content` TEXT, `categoryId` INTEGER NOT NULL, `simpleName` TEXT, `imdbGrade` REAL, `doubanGrade` REAL, `diretorName` TEXT, `description` TEXT, `isPrefect` INTEGER NOT NULL, PRIMARY KEY(`id`, `categoryId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `publishTime` TEXT, `homePicUrl` TEXT, `pics` TEXT, `downloadUrl` TEXT, `content` TEXT, `categoryId` INTEGER NOT NULL, `simpleName` TEXT, `imdbGrade` REAL NOT NULL, `doubanGrade` REAL NOT NULL, `diretorName` TEXT, `description` TEXT, `type` TEXT, `language` TEXT, `productArea` TEXT, `duration` TEXT, `diretor` TEXT, `isPrefect` INTEGER NOT NULL, PRIMARY KEY(`id`, `categoryId`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -66,13 +66,13 @@
             "fieldPath": "imdbGrade",
             "columnName": "imdbGrade",
             "affinity": "REAL",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "doubanGrade",
             "columnName": "doubanGrade",
             "affinity": "REAL",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "diretorName",
@@ -83,6 +83,36 @@
           {
             "fieldPath": "description",
             "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "productArea",
+            "columnName": "productArea",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "diretor",
+            "columnName": "diretor",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -106,7 +136,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6b3d535af5153dd78a35e4ccb1ee5029\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"35d3addbff8b09dd8f2b775464c3c3fd\")"
     ]
   }
 }

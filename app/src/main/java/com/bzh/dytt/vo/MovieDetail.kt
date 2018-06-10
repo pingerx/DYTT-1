@@ -44,6 +44,7 @@ data class MovieDetail(
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
+            parcel.readString(),
             parcel.readByte() != 0.toByte()) {
     }
 
@@ -65,6 +66,7 @@ data class MovieDetail(
         parcel.writeString(language)
         parcel.writeString(productArea)
         parcel.writeString(duration)
+        parcel.writeString(diretor)
         parcel.writeByte(if (isPrefect) 1 else 0)
     }
 

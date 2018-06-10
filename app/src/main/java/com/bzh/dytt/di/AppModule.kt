@@ -3,9 +3,9 @@ package com.bzh.dytt.di
 
 import android.app.Application
 import android.arch.persistence.room.Room
-import com.bzh.dytt.api.DyttService
 import com.bzh.dytt.api.NetworkService
-import com.bzh.dytt.db.*
+import com.bzh.dytt.db.DyttDb
+import com.bzh.dytt.db.MovieDetailDAO
 import com.bzh.dytt.util.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -66,11 +66,6 @@ class AppModule(private val mBaseUrl: String) {
                 .build()
     }
 
-    @Singleton
-    @Provides
-    fun provideDyttService(retrofit: Retrofit): DyttService {
-        return retrofit.create(DyttService::class.java)
-    }
 
     @Singleton
     @Provides
@@ -84,29 +79,6 @@ class AppModule(private val mBaseUrl: String) {
         return Room.databaseBuilder(app, DyttDb::class.java, DyttDb.DATABASE_NAME).fallbackToDestructiveMigration().build()
     }
 
-    @Singleton
-    @Provides
-    fun provideDb(app: Application): AppDatabase {
-        return Room.databaseBuilder(app, AppDatabase::class.java, AppDatabase.DATABASE_NAME).fallbackToDestructiveMigration().build()
-    }
-
-    @Singleton
-    @Provides
-    fun provideCategoryMapDao(db: AppDatabase): CategoryMapDAO {
-        return db.categoryMapDAO()
-    }
-
-    @Singleton
-    @Provides
-    fun provideCategroyPageDao(db: AppDatabase): CategoryPageDAO {
-        return db.categoryPageDAO()
-    }
-
-    @Singleton
-    @Provides
-    fun provideVideoDetailDao(db: AppDatabase): VideoDetailDAO {
-        return db.videoDetailDAO()
-    }
 
     @Singleton
     @Provides

@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.MenuItem
 import com.bzh.dytt.base.BaseActivity
-import com.bzh.dytt.base.BaseFragment
-import com.bzh.dytt.ui.search.SearchFragment
-import com.bzh.dytt.ui.VideoDetailPageFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
@@ -29,17 +26,17 @@ class SingleActivity : BaseActivity(), HasSupportFragmentInjector {
 
         val type = intent.getSerializableExtra(TYPE)
 
-        val fragment: BaseFragment = when (type) {
-            SingleType.Detail -> {
-                val detailLink = intent.getStringExtra(DATA)
-                VideoDetailPageFragment.newInstance(detailLink)
-            }
-            else -> {
-                SearchFragment.newInstance()
-            }
-        }
+//        val fragment: BaseFragment = when (type) {
+//            SingleType.Detail -> {
+//                val detailLink = intent.getStringExtra(DATA)
+//                VideoDetailPageFragment.newInstance(detailLink)
+//            }
+//            else -> {
+//                SearchFragment.newInstance()
+//            }
+//        }
 
-        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
+//        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
     }
 
     fun setupActionBar() {
