@@ -10,6 +10,7 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,7 +81,7 @@ class HomeListFragment : BaseFragment() {
                 } else {
                     empty_layout.visibility = View.GONE
                     error_layout.visibility = View.GONE
-                    homeListAdapter.submitList(result.data)
+                    homeListAdapter.submitList(result.data.filter { it.id != 22066 })
                 }
                 isLoadMore = false
             }
@@ -136,8 +137,9 @@ class HomeListFragment : BaseFragment() {
                         }
 
                         override fun areContentsTheSame(oldItem: MovieDetail, newItem: MovieDetail): Boolean {
-                            return oldItem.name == newItem.name
+                            return oldItem.simpleName == newItem.simpleName
                                     && oldItem.homePicUrl == newItem.homePicUrl
+
                         }
                     })
                     .setBackgroundThreadExecutor(appExecutors.diskIO())
@@ -166,9 +168,24 @@ class HomeListFragment : BaseFragment() {
                     .into(holder.itemView.video_cover)
 
             // update value
-            holder.itemView.video_title.text = item.simpleName
+            Log.d(TAG, "id=${item.id} categoryId=${item.categoryId} ${item.name} ${item.productArea} ${item.translateName} ${item.titleName} ")
+
+            when {
+                item.translateName?.contains(Regex(PATTERN)) == true -> {
+                    holder.itemView.video_title.text = item.translateName
+                }
+                item.titleName?.contains(Regex(PATTERN)) == true -> {
+                    holder.itemView.video_title.text = item.titleName
+                }
+                else -> {
+                    holder.itemView.video_title.text = item.simpleName
+                }
+            }
+
             holder.itemView.video_publish_time.text = item.publishTime
             holder.itemView.video_description.text = item.description
+            holder.itemView.douban_grade.text = "DB/${item.doubanGrade}"
+            holder.itemView.imdb_grade.text = "IMDB/${item.imdbGrade}"
             if (!TextUtils.isEmpty(item.homePicUrl)) {
                 GlideApp.with(holder.itemView.context)
                         .load(item.homePicUrl)
@@ -190,6 +207,8 @@ class HomeListFragment : BaseFragment() {
     inner class MovieItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     companion object {
+
+        const val PATTERN = "[\\u4e00-\\u9fa5]"
 
         private const val TAG = "HomeListFragment"
 

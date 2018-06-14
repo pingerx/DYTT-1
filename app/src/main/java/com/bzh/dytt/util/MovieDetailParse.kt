@@ -18,8 +18,11 @@ class MovieDetailParse @Inject constructor() {
         if (movie.content != null && movie.content.isNotEmpty()) {
             val contents = movie.content.split("◎")
             for (content: String in contents) {
-                if (content.startsWith(simpleName)) {
-                    movie.simpleName = content.substring(simpleName.length).replaceIllegal()
+                if (content.startsWith(translateName)) {
+                    movie.translateName = content.substring(translateName.length).replaceIllegal().split("/")[0]
+                }
+                if (content.startsWith(titleName)) {
+                    movie.titleName = content.substring(titleName.length).replaceIllegal().split("/")[0]
                 }
                 if (content.startsWith(imdbGrade)) {
                     val imdb = content.substring(imdbGrade.length).replaceIllegal()
@@ -55,8 +58,8 @@ class MovieDetailParse @Inject constructor() {
     }
 
     companion object {
-        val simpleName = "译　　名"
-        val englishName = "片　　名"
+        val translateName = "译　　名"
+        val titleName = "片　　名"
         val publishYear = "年　　代"
         val productArea = "产　　地"
         val type = "类　　别"
@@ -75,5 +78,5 @@ class MovieDetailParse @Inject constructor() {
 }
 
 fun String.replaceIllegal(): String {
-    return this.replace(Regex("(　)*|( )*|(\\r\\n)*"), "")
+    return replace(Regex("[\\r\\n 　]"), "")
 }

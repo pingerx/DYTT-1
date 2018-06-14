@@ -9,7 +9,7 @@ import com.bzh.dytt.vo.MovieDetail
         entities = [MovieDetail::class],
         version = 1
 )
-abstract class DyttDb : RoomDatabase() {
+abstract class DyttDB : RoomDatabase() {
 
     abstract fun movieDetailDao(): MovieDetailDAO
 

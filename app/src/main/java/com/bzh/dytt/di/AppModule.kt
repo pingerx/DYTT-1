@@ -4,7 +4,7 @@ package com.bzh.dytt.di
 import android.app.Application
 import android.arch.persistence.room.Room
 import com.bzh.dytt.api.NetworkService
-import com.bzh.dytt.db.DyttDb
+import com.bzh.dytt.db.DyttDB
 import com.bzh.dytt.db.MovieDetailDAO
 import com.bzh.dytt.util.LiveDataCallAdapterFactory
 import dagger.Module
@@ -75,14 +75,14 @@ class AppModule(private val mBaseUrl: String) {
 
     @Singleton
     @Provides
-    fun provideDyttDb(app: Application): DyttDb {
-        return Room.databaseBuilder(app, DyttDb::class.java, DyttDb.DATABASE_NAME).fallbackToDestructiveMigration().build()
+    fun provideDyttDb(app: Application): DyttDB {
+        return Room.databaseBuilder(app, DyttDB::class.java, DyttDB.DATABASE_NAME).fallbackToDestructiveMigration().build()
     }
 
 
     @Singleton
     @Provides
-    fun provideMovieDetailDao(db: DyttDb): MovieDetailDAO {
-        return db.movieDetailDao()
+    fun provideMovieDetailDao(DB: DyttDB): MovieDetailDAO {
+        return DB.movieDetailDao()
     }
 }

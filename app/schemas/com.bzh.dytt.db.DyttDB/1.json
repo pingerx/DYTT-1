@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "35d3addbff8b09dd8f2b775464c3c3fd",
+    "identityHash": "81e6bd30ffcde095603cae001d0386ad",
     "entities": [
       {
         "tableName": "movie_detail",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `publishTime` TEXT, `homePicUrl` TEXT, `pics` TEXT, `downloadUrl` TEXT, `content` TEXT, `categoryId` INTEGER NOT NULL, `simpleName` TEXT, `imdbGrade` REAL NOT NULL, `doubanGrade` REAL NOT NULL, `diretorName` TEXT, `description` TEXT, `type` TEXT, `language` TEXT, `productArea` TEXT, `duration` TEXT, `diretor` TEXT, `isPrefect` INTEGER NOT NULL, PRIMARY KEY(`id`, `categoryId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `publishTime` TEXT, `homePicUrl` TEXT, `pics` TEXT, `downloadUrl` TEXT, `content` TEXT, `categoryId` INTEGER NOT NULL, `simpleName` TEXT, `translateName` TEXT, `titleName` TEXT, `imdbGrade` REAL NOT NULL, `doubanGrade` REAL NOT NULL, `diretorName` TEXT, `description` TEXT, `type` TEXT, `language` TEXT, `productArea` TEXT, `duration` TEXT, `diretor` TEXT, `isPrefect` INTEGER NOT NULL, PRIMARY KEY(`id`, `categoryId`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -59,6 +59,18 @@
           {
             "fieldPath": "simpleName",
             "columnName": "simpleName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "translateName",
+            "columnName": "translateName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "titleName",
+            "columnName": "titleName",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -136,7 +148,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"35d3addbff8b09dd8f2b775464c3c3fd\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"81e6bd30ffcde095603cae001d0386ad\")"
     ]
   }
 }

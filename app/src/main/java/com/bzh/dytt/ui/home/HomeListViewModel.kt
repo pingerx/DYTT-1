@@ -2,13 +2,13 @@ package com.bzh.dytt.ui.home
 
 import android.arch.lifecycle.*
 import android.util.Log
-import com.bzh.dytt.repository.Repository
+import com.bzh.dytt.repository.DataRepository
 import com.bzh.dytt.vo.MovieDetail
 import com.bzh.dytt.vo.Resource
 import com.bzh.dytt.vo.Status
 import javax.inject.Inject
 
-class HomeListViewModel @Inject constructor(private val repository: Repository) : ViewModel(), LifecycleObserver {
+class HomeListViewModel @Inject constructor(private val dataRepository: DataRepository) : ViewModel(), LifecycleObserver {
 
     private var _isRefresh = false
 
@@ -21,7 +21,7 @@ class HomeListViewModel @Inject constructor(private val repository: Repository) 
     private var _itemUpdateRepositoryLiveData: LiveData<Resource<MovieDetail>>? = null
 
     private val detailObserver = Observer<Resource<MovieDetail>> {
-        Log.d(TAG, "HomeListViewModel ${it?.data}")
+        Log.d(TAG, "HomeListViewModel $it")
         when (it?.status) {
             Status.SUCCESS -> {
             }
@@ -75,12 +75,12 @@ class HomeListViewModel @Inject constructor(private val repository: Repository) 
             return
         }
         unregister()
-        _movieRepositoryLiveData = repository.movieList(moveTypeLiveData.value, 1, true)
+        _movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value, 1, true)
         _movieRepositoryLiveData?.observeForever(listObserver)
     }
 
     private fun register() {
-        _movieRepositoryLiveData = repository.movieList(moveTypeLiveData.value, 1)
+        _movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value, 1)
         _movieRepositoryLiveData?.observeForever(listObserver)
     }
 
@@ -91,7 +91,7 @@ class HomeListViewModel @Inject constructor(private val repository: Repository) 
 
     fun doUpdateMovieDetail(item: MovieDetail) {
         if (!item.isPrefect) {
-            _itemUpdateRepositoryLiveData = repository.movieItemUpdate(item)
+            _itemUpdateRepositoryLiveData = dataRepository.movieItemUpdate(item)
             _itemUpdateRepositoryLiveData?.observeForever(detailObserver)
         }
     }

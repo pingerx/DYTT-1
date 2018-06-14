@@ -15,6 +15,8 @@ data class MovieDetail(
         val content: String?,
         var categoryId: Int,
         var simpleName: String?,
+        var translateName: String?,
+        var titleName: String?,
         var imdbGrade: Float,
         var doubanGrade: Float,
         var diretorName: String?,
@@ -35,6 +37,8 @@ data class MovieDetail(
             parcel.readString(),
             parcel.readString(),
             parcel.readInt(),
+            parcel.readString(),
+            parcel.readString(),
             parcel.readString(),
             parcel.readFloat(),
             parcel.readFloat(),
@@ -58,6 +62,8 @@ data class MovieDetail(
         parcel.writeString(content)
         parcel.writeInt(categoryId)
         parcel.writeString(simpleName)
+        parcel.writeString(translateName)
+        parcel.writeString(titleName)
         parcel.writeFloat(imdbGrade)
         parcel.writeFloat(doubanGrade)
         parcel.writeString(diretorName)
