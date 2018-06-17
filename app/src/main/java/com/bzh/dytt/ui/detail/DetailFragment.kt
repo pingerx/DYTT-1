@@ -15,8 +15,10 @@ import com.bzh.dytt.R
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.di.GlideApp
 import com.bzh.dytt.di.Injectable
+import com.bzh.dytt.ui.home.HomeListFragment
 import com.bzh.dytt.util.ThunderHelper
 import com.bzh.dytt.vo.MovieDetail
+import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import kotlinx.android.synthetic.main.video_detail_layout.*
 
@@ -29,7 +31,7 @@ class DetailFragment : BaseFragment(), Injectable {
     override fun doCreate(savedInstanceState: Bundle?) {
         super.doCreate(savedInstanceState)
         if (arguments != null) {
-            movieDetail = arguments?.getParcelable<MovieDetail>(MOVIE_DETAIL)
+            movieDetail = arguments?.getParcelable(MOVIE_DETAIL)
         }
     }
 
@@ -47,6 +49,17 @@ class DetailFragment : BaseFragment(), Injectable {
         if (activity != null) {
             val actionBar = (activity as AppCompatActivity).supportActionBar
             actionBar?.title = movieDetail?.simpleName
+            when {
+                movieDetail?.translateName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
+                    actionBar?.title = movieDetail?.translateName
+                }
+                movieDetail?.titleName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
+                    actionBar?.title = movieDetail?.titleName
+                }
+                else -> {
+                    actionBar?.title = movieDetail?.simpleName
+                }
+            }
         }
 
         video_type.text = movieDetail?.type
@@ -89,7 +102,7 @@ class DetailFragment : BaseFragment(), Injectable {
         if (movieDetail?.homePicUrl?.isNotEmpty()!!) {
 
             val glidePalette = GlidePalette.with(movieDetail?.homePicUrl)
-//                    .use(GlidePalette.Profile.MUTED_DARK)
+                    .use(BitmapPalette.Profile.MUTED_DARK)
                     .intoBackground(video_cover_bg)
                     .crossfade(true)
                     .intoCallBack { palette ->

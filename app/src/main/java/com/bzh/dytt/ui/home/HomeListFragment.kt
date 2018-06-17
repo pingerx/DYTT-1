@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.R
+import com.bzh.dytt.SingleActivity
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.di.GlideApp
 import com.bzh.dytt.vo.MovieDetail
@@ -194,6 +195,7 @@ class HomeListFragment : BaseFragment() {
             }
 
             holder.itemView.setOnClickListener {
+                SingleActivity.startDetailPage(activity, item)
             }
         }
 

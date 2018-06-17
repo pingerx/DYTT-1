@@ -4,8 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.view.MenuItem
 import com.bzh.dytt.base.BaseActivity
+import com.bzh.dytt.base.BaseFragment
+import com.bzh.dytt.ui.detail.DetailFragment
+import com.bzh.dytt.vo.MovieDetail
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
@@ -18,7 +22,6 @@ class SingleActivity : BaseActivity(), HasSupportFragmentInjector {
 
     override fun supportFragmentInjector() = fragmentInjector
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,17 +29,19 @@ class SingleActivity : BaseActivity(), HasSupportFragmentInjector {
 
         val type = intent.getSerializableExtra(TYPE)
 
-//        val fragment: BaseFragment = when (type) {
-//            SingleType.Detail -> {
-//                val detailLink = intent.getStringExtra(DATA)
-//                VideoDetailPageFragment.newInstance(detailLink)
-//            }
-//            else -> {
-//                SearchFragment.newInstance()
-//            }
-//        }
+        val fragment: BaseFragment = when (type) {
+            SingleType.Detail -> {
+                val detailLink: MovieDetail = intent.getParcelableExtra(DATA)
+                DetailFragment.newInstnace(detailLink)
+            }
+            else -> {
+                // SearchFragment.newInstance()
+                return
+            }
+        }
+        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
 
-//        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
+        setupActionBar()
     }
 
     fun setupActionBar() {
@@ -64,11 +69,11 @@ class SingleActivity : BaseActivity(), HasSupportFragmentInjector {
         const val TYPE = "TYPE"
         const val DATA = "DATA"
 
-        fun startDetailPage(activity: Activity, detailLink: String) {
+        fun startDetailPage(activity: FragmentActivity?, movieDetail: MovieDetail) {
             val intent = Intent(activity, SingleActivity::class.java)
             intent.putExtra(TYPE, SingleActivity.SingleType.Detail)
-            intent.putExtra(DATA, detailLink)
-            activity.startActivity(intent)
+            intent.putExtra(DATA, movieDetail)
+            activity?.startActivity(intent)
         }
 
         fun startSearchPage(activity: Activity) {
