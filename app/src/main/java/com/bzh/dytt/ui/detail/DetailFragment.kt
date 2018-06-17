@@ -99,7 +99,7 @@ class DetailFragment : BaseFragment(), Injectable {
                 dialogFragment.show(activity!!.supportFragmentManager, "InnerDialog")
             }
         })
-        if (movieDetail?.homePicUrl?.isNotEmpty()!!) {
+        if (movieDetail?.homePicUrl?.isNotEmpty() == true) {
 
             val glidePalette = GlidePalette.with(movieDetail?.homePicUrl)
                     .use(BitmapPalette.Profile.MUTED_DARK)

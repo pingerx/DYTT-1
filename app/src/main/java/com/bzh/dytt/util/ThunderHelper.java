@@ -19,7 +19,8 @@ public class ThunderHelper {
             return false;
         }
         if (checkIsInstall(context)) {
-            context.startActivity(new Intent("android.intent.action.VIEW", Uri.parse(getThunderEncode(ftpUrl))));
+            String[] url = ftpUrl.split(";");
+            context.startActivity(new Intent("android.intent.action.VIEW", Uri.parse(getThunderEncode(url[0]))));
             return true;
         }
         return false;
