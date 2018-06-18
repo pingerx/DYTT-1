@@ -26,4 +26,14 @@ interface NetworkService {
             @Header("x-header-request-imei") headerImei: String = "",
             @Query("categoryId") categoryId: Int,
             @Query("movieDetailId") movieDetailId: Int): LiveData<ApiResponse<MovieDetail>>
+
+    @POST("/adminapi/api/movieList.json")
+    fun search(
+            @Header("x-header-request-timestamp") headerTimestamp: String = "",
+            @Header("x-header-request-key") headerKey: String = "",
+            @Header("x-header-request-imei") headerImei: String = "",
+            @Query("categoryId") categoryId: Int? = 1,
+            @Query("page") page: Int? = 1,
+            @Query("searchContent") searchContent: String? = ""): LiveData<ApiResponse<MovieDetailResponse>>
+
 }

@@ -9,6 +9,7 @@ import android.view.MenuItem
 import com.bzh.dytt.base.BaseActivity
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.ui.detail.DetailFragment
+import com.bzh.dytt.ui.search.SearchFragment
 import com.bzh.dytt.vo.MovieDetail
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -35,8 +36,7 @@ class SingleActivity : BaseActivity(), HasSupportFragmentInjector {
                 DetailFragment.newInstnace(detailLink)
             }
             else -> {
-                // SearchFragment.newInstance()
-                return
+                SearchFragment.newInstance()
             }
         }
         supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()

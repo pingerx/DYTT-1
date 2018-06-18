@@ -95,9 +95,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         override fun getItem(position: Int): BaseFragment = when (position) {
             0 -> HomeFragment.newInstance()
-//            0 -> NewMovieFragment.newInstance()
-//            1 -> AllMoviePageFragment.newInstance()
-//            2 -> ImdbMovieFragment.newInstance()
             else -> throw IndexOutOfBoundsException()
         }
 

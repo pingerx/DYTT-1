@@ -3,6 +3,7 @@ package com.bzh.dytt.di
 import com.bzh.dytt.ui.detail.DetailFragment
 import com.bzh.dytt.ui.home.HomeFragment
 import com.bzh.dytt.ui.home.HomeListFragment
+import com.bzh.dytt.ui.search.SearchFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -18,6 +19,6 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributeDetailPageFragment(): DetailFragment
 
-//    @ContributesAndroidInjector
-//    internal abstract fun contributeSearchFragment(): SearchFragment
+    @ContributesAndroidInjector
+    internal abstract fun contributeSearchFragment(): SearchFragment
 }

@@ -102,6 +102,33 @@ class DataRepository @Inject constructor(
         }.asLiveData()
     }
 
+    fun search(input: String): LiveData<Resource<List<MovieDetail>>> {
+        return object : NetworkResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
+            override fun saveCallResult(item: MovieDetailResponse): List<MovieDetail> {
+                for (movie in item.rows) {
+                    movieDetailParse.parse(movie)
+                }
+                movieDetailDAO.insertMovieList(item.rows)
+                return item.rows
+            }
+
+            override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> {
+                val timeStamp = System.currentTimeMillis() / 1000L
+                val imei = ""
+                val key = KeyUtils.getHeaderKey(timeStamp)
+                return networkService.movieList(
+                        headerKey = key,
+                        headerTimestamp = "$timeStamp",
+                        headerImei = imei,
+                        categoryId = 1,
+                        page = 1,
+                        searchContent = input
+                )
+            }
+
+        }.asLiveData()
+    }
+
     companion object {
         const val TAG = "DataRepository"
     }

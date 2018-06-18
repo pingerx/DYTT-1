@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.bzh.dytt.ui.home.HomeListViewModel
 import com.bzh.dytt.ui.home.HomeViewModel
+import com.bzh.dytt.ui.search.SearchViewModel
 import com.bzh.dytt.util.ViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -17,7 +18,7 @@ abstract class ViewModelModule {
 //    @Binds
 //    @IntoMap
 //    @ViewModelKey(SearchViewModel::class)
-//    abstract fun bindSearchViewModel(searchViewModel: SearchViewModel): ViewModel
+//    abstract fun bindSearchViewModel(viewModel: SearchViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -28,6 +29,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(HomeListViewModel::class)
     abstract fun bindHomeListViewModel(homeListViewModel: HomeListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchViewModel::class)
+    abstract fun bindSearchViewModel(searchViewModel: SearchViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
