@@ -33,6 +33,7 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
     }
 
     private val listObserver = Observer<Resource<List<MovieDetail>>> {
+        Log.d(TAG, "ListObserver ${it?.status} ${it?.message} ${it?.data?.size}")
         when (it?.status) {
             Status.SUCCESS -> {
                 _isRefresh = false
@@ -75,7 +76,7 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
             return
         }
         unregister()
-        _movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value, 1, true)
+        _movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value, 1)
         _movieRepositoryLiveData?.observeForever(listObserver)
     }
 

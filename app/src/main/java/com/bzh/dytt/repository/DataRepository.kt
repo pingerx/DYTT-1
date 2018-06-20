@@ -27,12 +27,11 @@ class DataRepository @Inject constructor(
         private val movieDetailParse: MovieDetailParse
 ) {
 
-    private val repoListRateLimit = RateLimiter<String>(10, TimeUnit.MINUTES)
+    private val repoListRateLimit = RateLimiter<String>(5, TimeUnit.SECONDS)
 
     fun movieList(
             movieType: HomeViewModel.HomeMovieType?,
-            page: Int,
-            force: Boolean = false): LiveData<Resource<List<MovieDetail>>> {
+            page: Int): LiveData<Resource<List<MovieDetail>>> {
 
         return object : NetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
 
@@ -46,7 +45,7 @@ class DataRepository @Inject constructor(
             }
 
             override fun shouldFetch(data: List<MovieDetail>?): Boolean {
-                val fetch = force || data == null || data.isEmpty() || repoListRateLimit.shouldFetch("MOVIE_LIST_" + movieType?.type)
+                val fetch = data == null || data.isEmpty() || repoListRateLimit.shouldFetch("MOVIE_LIST_" + movieType?.type)
                 Log.d(TAG, "movieList shouldFetch $fetch ${data?.size}")
                 return fetch
             }
@@ -59,6 +58,9 @@ class DataRepository @Inject constructor(
                 val timeStamp = System.currentTimeMillis() / 1000L
                 val imei = ""
                 val key = KeyUtils.getHeaderKey(timeStamp)
+
+                Log.d(TAG, "Request Header timeStamp=$timeStamp imei=$imei key=$key categoryId=${movieType?.type} page=$page")
+
                 return networkService.movieList(
                         headerKey = key,
                         headerTimestamp = "$timeStamp",
@@ -81,15 +83,16 @@ class DataRepository @Inject constructor(
                 item.isPrefect = true
                 movieDetailParse.parse(item)
                 movieDetailDAO.updateMovie(item)
-                Log.d(TAG, "movieItemUpdate saveCallResult $item ")
                 return item
             }
 
             override fun createCall(): LiveData<ApiResponse<MovieDetail>> {
-                Log.d(TAG, "movieItemUpdate createCall id=${oldItem.id} categoryId=${oldItem.categoryId} name=${oldItem.name}")
                 val timeStamp = System.currentTimeMillis() / 1000L
                 val imei = ""
                 val key = KeyUtils.getHeaderKey(timeStamp)
+
+                Log.d(TAG, "Request Header timeStamp=$timeStamp imei=$imei key=$key id=${oldItem.id} categoryId=${oldItem.categoryId} name=${oldItem.name}")
+
                 return networkService.movieDetail(
                         headerKey = key,
                         headerTimestamp = "$timeStamp",
@@ -116,6 +119,9 @@ class DataRepository @Inject constructor(
                 val timeStamp = System.currentTimeMillis() / 1000L
                 val imei = ""
                 val key = KeyUtils.getHeaderKey(timeStamp)
+
+                Log.d(TAG, "Request Header timeStamp=$timeStamp imei=$imei key=$key")
+
                 return networkService.movieList(
                         headerKey = key,
                         headerTimestamp = "$timeStamp",

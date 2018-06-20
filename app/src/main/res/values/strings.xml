@@ -30,6 +30,7 @@
     <string name="home_tab_item_rihan_tv">日韩电视</string>
     <string name="home_tab_item_zongyi">综艺</string>
     <string name="home_tab_item_dongman">动漫</string>
+    <string name="github_address">https://github.com/BullfrogTeam/DYTT</string>
 
 
 </resources>

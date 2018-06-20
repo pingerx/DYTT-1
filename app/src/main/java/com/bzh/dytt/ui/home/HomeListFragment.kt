@@ -185,8 +185,12 @@ class HomeListFragment : BaseFragment() {
 
             holder.itemView.video_publish_time.text = item.publishTime
             holder.itemView.video_description.text = item.description
-            holder.itemView.douban_grade.text = "DB/${item.doubanGrade}"
-            holder.itemView.imdb_grade.text = "IMDB/${item.imdbGrade}"
+            if (item.doubanGrade != 0F) {
+                holder.itemView.douban_grade.text = "DB/${item.doubanGrade}"
+            }
+            if (item.imdbGrade != 0F) {
+                holder.itemView.imdb_grade.text = "IMDB/${item.imdbGrade}"
+            }
             if (!TextUtils.isEmpty(item.homePicUrl)) {
                 GlideApp.with(holder.itemView.context)
                         .load(item.homePicUrl)
@@ -197,12 +201,6 @@ class HomeListFragment : BaseFragment() {
             holder.itemView.setOnClickListener {
                 SingleActivity.startDetailPage(activity, item)
             }
-        }
-
-        override fun onViewAttachedToWindow(holder: MovieItemHolder) {
-            super.onViewAttachedToWindow(holder)
-            val item = homeListAdapter.getItem(holder.adapterPosition)
-            listViewModel.doUpdateMovieDetail(item)
         }
     }
 
