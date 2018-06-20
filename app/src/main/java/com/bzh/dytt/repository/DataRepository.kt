@@ -27,7 +27,7 @@ class DataRepository @Inject constructor(
         private val movieDetailParse: MovieDetailParse
 ) {
 
-    private val repoListRateLimit = RateLimiter<String>(5, TimeUnit.SECONDS)
+    private val repoListRateLimit = RateLimiter<String>(10, TimeUnit.SECONDS)
 
     fun movieList(
             movieType: HomeViewModel.HomeMovieType?,

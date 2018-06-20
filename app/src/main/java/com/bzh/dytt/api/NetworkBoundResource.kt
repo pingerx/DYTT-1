@@ -4,15 +4,21 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
+import android.util.Log
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.vo.Resource
 
 @MainThread
 abstract class NetworkBoundResource<ResultType, RequestType> constructor(private val appExecutors: AppExecutors) {
 
+    companion object {
+        const val TAG = "NetworkBoundResource"
+    }
+
     private val result = MediatorLiveData<Resource<ResultType>>()
 
     init {
+        Log.d(TAG, "init NetworkBoundResource")
         result.value = Resource.loading(null)
         val dbSource = loadFromDb()
         result.addSource(dbSource) { data ->

@@ -18,6 +18,7 @@ package com.bzh.dytt.util;
 
 import android.os.SystemClock;
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +26,8 @@ import java.util.concurrent.TimeUnit;
  * Utility class that decides whether we should fetch some data or not.
  */
 public class RateLimiter<KEY> {
+
+    private static final String TAG = "RateLimiter";
 
     private final long timeout;
 
@@ -41,7 +44,9 @@ public class RateLimiter<KEY> {
             timestamps.put(key, now);
             return true;
         }
-        if (now - lastFetched > timeout) {
+        long diff = now - lastFetched;
+        Log.d(TAG, "shouldFetch: lastFetched=" + lastFetched + " now=" + now + " diff=" + diff + " timeout=" + timeout + " key=" + key);
+        if (diff > timeout) {
             timestamps.put(key, now);
             return true;
         }
