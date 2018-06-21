@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.util.Log
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.api.ApiResponse
-import com.bzh.dytt.api.NetworkBoundResource
+import com.bzh.dytt.api.DelayNetworkBoundResource
 import com.bzh.dytt.api.NetworkResource
 import com.bzh.dytt.api.NetworkService
 import com.bzh.dytt.db.MovieDetailDAO
@@ -33,14 +33,14 @@ class DataRepository @Inject constructor(
             movieType: HomeViewModel.HomeMovieType?,
             page: Int): LiveData<Resource<List<MovieDetail>>> {
 
-        return object : NetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
+        return object : DelayNetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
 
             override fun saveCallResult(item: MovieDetailResponse) {
                 for (movie in item.rows) {
                     movie.categoryId = movieType?.type ?: -1
                     movieDetailParse.parse(movie)
-                    Log.d(TAG, "movieList saveCallResult id=${movie.id} categoryId=${movie.categoryId} name=${movie.name} ")
                 }
+                Log.d(TAG, "movieList saveCallResult ${item.rows.size} ")
                 movieDetailDAO.insertMovieList(item.rows)
             }
 
