@@ -72,16 +72,19 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
     }
 
     fun refresh() {
-        if (_isRefresh) {
+        if (_isRefresh || moveTypeLiveData.value == null) {
             return
         }
         unregister()
-        _movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value, 1)
+        _movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value!!, 1)
         _movieRepositoryLiveData?.observeForever(listObserver)
     }
 
     private fun register() {
-        _movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value, 1)
+        if (moveTypeLiveData.value == null) {
+            return;
+        }
+        _movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value!!, 1)
         _movieRepositoryLiveData?.observeForever(listObserver)
     }
 

@@ -9,35 +9,27 @@ import com.bzh.dytt.vo.Resource
 
 
 @MainThread
-abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(private val appExecutors: AppExecutors) {
-
+abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(private val appExecutors: AppExecutors) : Runnable {
 
     private val result = MediatorLiveData<Resource<ResultType>>()
 
-    init {
+    override fun run() {
+        appExecutors.mainThread().execute {
+            result.value = Resource.loading(null)
+            val dbSource = loadFromDb()
+            result.addSource(dbSource) { data ->
 
-        DelayQueueObject.producer.produce(Runnable {
+                result.removeSource(dbSource)
 
-            appExecutors.mainThread().execute {
-
-                result.value = Resource.loading(null)
-                val dbSource = loadFromDb()
-                result.addSource(dbSource) { data ->
-
-                    result.removeSource(dbSource)
-
-                    if (shouldFetch(data)) {
-                        fetchFromNetwork(dbSource)
-                    } else {
-                        result.addSource(dbSource) { newData ->
-                            setValue(Resource.success(newData))
-                        }
+                if (shouldFetch(data)) {
+                    fetchFromNetwork(dbSource)
+                } else {
+                    result.addSource(dbSource) { newData ->
+                        setValue(Resource.success(newData))
                     }
-
-                    DelayQueueObject.elements.decrementAndGet()
                 }
             }
-        })
+        }
     }
 
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
@@ -72,7 +64,7 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
                     }
                 }
                 is ApiErrorResponse -> {
-                    onFetchFailed()
+                    onFetchFailed(response)
                     result.addSource(dbSource) { newData ->
                         setValue(Resource.error(response.errorMessage, newData))
                     }
@@ -88,7 +80,7 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
         }
     }
 
-    protected open fun onFetchFailed() {}
+    protected open fun onFetchFailed(response: ApiErrorResponse<RequestType>) {}
 
     fun asLiveData() = result as LiveData<Resource<ResultType>>
 

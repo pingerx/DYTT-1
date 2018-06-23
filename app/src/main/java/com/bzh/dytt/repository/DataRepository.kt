@@ -3,9 +3,7 @@ package com.bzh.dytt.repository
 import android.arch.lifecycle.LiveData
 import android.util.Log
 import com.bzh.dytt.AppExecutors
-import com.bzh.dytt.api.ApiResponse
-import com.bzh.dytt.api.DelayNetworkBoundResource
-import com.bzh.dytt.api.NetworkService
+import com.bzh.dytt.api.*
 import com.bzh.dytt.db.MovieDetailDAO
 import com.bzh.dytt.key.KeyUtils
 import com.bzh.dytt.ui.home.HomeViewModel
@@ -23,32 +21,40 @@ class DataRepository @Inject constructor(
         private val appExecutors: AppExecutors,
         private val networkService: NetworkService,
         private val movieDetailDAO: MovieDetailDAO,
+        private val delayRunnableQueue: DelayRunnableQueue<Any, Runnable>,
         private val movieDetailParse: MovieDetailParse
 ) {
 
     private val repoListRateLimit = RateLimiter<String>(10, TimeUnit.SECONDS)
 
-    fun movieList(movieType: HomeViewModel.HomeMovieType?, page: Int): LiveData<Resource<List<MovieDetail>>> {
+    fun movieList(movieType: HomeViewModel.HomeMovieType, page: Int): LiveData<Resource<List<MovieDetail>>> {
 
-        return object : DelayNetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
+        val value = object : DelayNetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
 
             override fun saveCallResult(item: MovieDetailResponse) {
                 for (movie in item.rows) {
-                    movie.categoryId = movieType?.type ?: -1
+                    movie.categoryId = movieType.type ?: -1
                     movieDetailParse.parse(movie)
                 }
                 Log.d(TAG, "movieList saveCallResult ${item.rows.size} ")
                 movieDetailDAO.insertMovieList(item.rows)
+                delayRunnableQueue.finishDelay(movieType.type)
+            }
+
+            override fun onFetchFailed(response: ApiErrorResponse<MovieDetailResponse>) {
+                super.onFetchFailed(response)
+                Log.d(TAG, "DelayRunnableQueue onFetchFailed ${response.errorMessage} ")
+                delayRunnableQueue.finishDelay(movieType.type)
             }
 
             override fun shouldFetch(data: List<MovieDetail>?): Boolean {
-                val fetch = data == null || data.isEmpty() || repoListRateLimit.shouldFetch("MOVIE_LIST_" + movieType?.type)
+                val fetch = data == null || data.isEmpty() || repoListRateLimit.shouldFetch("MOVIE_LIST_" + movieType.type)
                 Log.d(TAG, "movieList shouldFetch $fetch ${data?.size}")
                 return fetch
             }
 
             override fun loadFromDb(): LiveData<List<MovieDetail>> {
-                return movieDetailDAO.movieList(movieType?.type)
+                return movieDetailDAO.movieList(movieType.type)
             }
 
             override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> {
@@ -56,24 +62,27 @@ class DataRepository @Inject constructor(
                 val imei = ""
                 val key = KeyUtils.getHeaderKey(timeStamp)
 
-                Log.d(TAG, "Request Header timeStamp=$timeStamp imei=$imei key=$key categoryId=${movieType?.type} page=$page")
+                Log.d(TAG, "Request Header timeStamp=$timeStamp imei=$imei key=$key categoryId=${movieType.type} page=$page")
 
                 return networkService.movieList(
                         headerKey = key,
                         headerTimestamp = "$timeStamp",
                         headerImei = imei,
-                        categoryId = movieType?.type,
+                        categoryId = movieType.type,
                         page = page,
                         searchContent = ""
                 )
             }
+        }
 
-        }.asLiveData()
+        delayRunnableQueue.removeDelay(movieType.type)
+        delayRunnableQueue.addDelay(movieType.type, value)
+        return value.asLiveData()
     }
 
     fun movieItemUpdate(oldItem: MovieDetail): LiveData<Resource<MovieDetail>> {
 
-        return object : DelayNetworkBoundResource<MovieDetail, MovieDetail>(appExecutors) {
+        val value = object : DelayNetworkBoundResource<MovieDetail, MovieDetail>(appExecutors) {
 
             override fun shouldFetch(data: MovieDetail?): Boolean {
                 return data?.isPrefect == false
@@ -88,6 +97,7 @@ class DataRepository @Inject constructor(
                 item.isPrefect = true
                 movieDetailParse.parse(item)
                 movieDetailDAO.updateMovie(item)
+                delayRunnableQueue.finishDelay(oldItem.id)
             }
 
             override fun createCall(): LiveData<ApiResponse<MovieDetail>> {
@@ -105,8 +115,12 @@ class DataRepository @Inject constructor(
                         movieDetailId = oldItem.id
                 )
             }
+        }
 
-        }.asLiveData()
+        delayRunnableQueue.removeDelay(oldItem.id)
+        delayRunnableQueue.addDelay(oldItem.id, value)
+
+        return value.asLiveData()
     }
 
     fun search(input: String): LiveData<Resource<List<MovieDetail>>> {
