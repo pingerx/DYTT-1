@@ -18,6 +18,20 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
 
     private var _movieRepositoryLiveData: LiveData<Resource<List<MovieDetail>>>? = null
 
+    private var _itemUpdateRepositoryLiveData: LiveData<Resource<MovieDetail>>? = null
+
+    private val detailObserver = Observer<Resource<MovieDetail>> {
+        Log.d(TAG, "HomeListViewModel $it")
+        when (it?.status) {
+            Status.SUCCESS -> {
+            }
+            Status.ERROR -> {
+            }
+            else -> {
+            }
+        }
+    }
+
     private val listObserver = Observer<Resource<List<MovieDetail>>> {
         Log.d(TAG, "ListObserver ${it?.status} ${it?.message} ${it?.data?.size}")
         when (it?.status) {
@@ -74,6 +88,13 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
     private fun unregister() {
         _isRefresh = false
         _movieRepositoryLiveData?.removeObserver(listObserver)
+    }
+
+    fun doUpdateMovieDetail(item: MovieDetail) {
+        if (!item.isPrefect) {
+            _itemUpdateRepositoryLiveData = dataRepository.movieItemUpdate(item)
+            _itemUpdateRepositoryLiveData?.observeForever(detailObserver)
+        }
     }
 
     companion object {

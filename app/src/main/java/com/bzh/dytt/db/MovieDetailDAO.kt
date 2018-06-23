@@ -14,8 +14,11 @@ interface MovieDetailDAO {
     @Query("SELECT * FROM movie_detail WHERE categoryId=:type  ORDER BY id DESC")
     fun movieList(type: Int?): LiveData<List<MovieDetail>>
 
+    @Query("SELECT * FROM movie_detail WHERE categoryId=:categoryId AND id=:id")
+    fun movie(categoryId: Int, id: Int): LiveData<MovieDetail>
+
     @Insert(onConflict = IGNORE)
-    fun insertMovieList(movieList: List<MovieDetail>)
+    fun insertMovieList(movieList: List<MovieDetail>): Array<Long>
 
     @Update
     fun updateMovieList(movieList: List<MovieDetail>)

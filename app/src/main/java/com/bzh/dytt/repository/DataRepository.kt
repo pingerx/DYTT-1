@@ -5,7 +5,6 @@ import android.util.Log
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.api.ApiResponse
 import com.bzh.dytt.api.DelayNetworkBoundResource
-import com.bzh.dytt.api.NetworkResource
 import com.bzh.dytt.api.NetworkService
 import com.bzh.dytt.db.MovieDetailDAO
 import com.bzh.dytt.key.KeyUtils
@@ -29,9 +28,7 @@ class DataRepository @Inject constructor(
 
     private val repoListRateLimit = RateLimiter<String>(10, TimeUnit.SECONDS)
 
-    fun movieList(
-            movieType: HomeViewModel.HomeMovieType?,
-            page: Int): LiveData<Resource<List<MovieDetail>>> {
+    fun movieList(movieType: HomeViewModel.HomeMovieType?, page: Int): LiveData<Resource<List<MovieDetail>>> {
 
         return object : DelayNetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
 
@@ -76,14 +73,21 @@ class DataRepository @Inject constructor(
 
     fun movieItemUpdate(oldItem: MovieDetail): LiveData<Resource<MovieDetail>> {
 
-        return object : NetworkResource<MovieDetail, MovieDetail>(appExecutors) {
+        return object : DelayNetworkBoundResource<MovieDetail, MovieDetail>(appExecutors) {
 
-            override fun saveCallResult(item: MovieDetail): MovieDetail {
+            override fun shouldFetch(data: MovieDetail?): Boolean {
+                return data?.isPrefect == false
+            }
+
+            override fun loadFromDb(): LiveData<MovieDetail> {
+                return movieDetailDAO.movie(oldItem.categoryId, oldItem.id)
+            }
+
+            override fun saveCallResult(item: MovieDetail) {
                 item.categoryId = oldItem.categoryId
                 item.isPrefect = true
                 movieDetailParse.parse(item)
                 movieDetailDAO.updateMovie(item)
-                return item
             }
 
             override fun createCall(): LiveData<ApiResponse<MovieDetail>> {
@@ -106,13 +110,22 @@ class DataRepository @Inject constructor(
     }
 
     fun search(input: String): LiveData<Resource<List<MovieDetail>>> {
-        return object : NetworkResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
-            override fun saveCallResult(item: MovieDetailResponse): List<MovieDetail> {
+
+        return object : DelayNetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
+
+            override fun loadFromDb(): LiveData<List<MovieDetail>> {
+                return movieDetailDAO.movieList(1)
+            }
+
+            override fun shouldFetch(data: List<MovieDetail>?): Boolean {
+                return true
+            }
+
+            override fun saveCallResult(item: MovieDetailResponse) {
                 for (movie in item.rows) {
                     movieDetailParse.parse(movie)
                 }
                 movieDetailDAO.insertMovieList(item.rows)
-                return item.rows
             }
 
             override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> {

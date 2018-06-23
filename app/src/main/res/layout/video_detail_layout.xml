@@ -42,8 +42,8 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="10dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="0dp">
+                android:paddingEnd="0dp"
+                android:paddingStart="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -56,7 +56,7 @@
                         style="@style/video_detail_info_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="国家：" />
+                        android:text="@string/detail_country" />
 
                     <TextView
                         android:id="@+id/video_country"
@@ -78,7 +78,7 @@
                         style="@style/video_detail_info_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="时长：" />
+                        android:text="@string/detail_duration" />
 
                     <TextView
                         android:id="@+id/video_duration"
@@ -99,7 +99,7 @@
                         style="@style/video_detail_info_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="时间：" />
+                        android:text="@string/detail_time" />
 
                     <TextView
                         android:id="@+id/video_show_time"
@@ -121,7 +121,7 @@
                         style="@style/video_detail_info_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="类型：" />
+                        android:text="@string/detail_type" />
 
                     <TextView
                         android:id="@+id/video_type"
@@ -239,9 +239,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_marginStart="0dp"
                     android:layout_marginBottom="5dp"
-                    android:text="导演：" />
+                    android:layout_marginStart="0dp"
+                    android:text="@string/detail_director" />
 
                 <TextView
                     android:id="@+id/video_director"
@@ -260,9 +260,9 @@
                     style="@style/video_detail_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
                     android:layout_marginBottom="5dp"
-                    android:text="简介：" />
+                    android:layout_marginStart="0dp"
+                    android:text="@string/detail_description" />
 
                 <TextView
                     android:id="@+id/video_description"

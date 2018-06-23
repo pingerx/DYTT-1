@@ -121,6 +121,18 @@ class HomeListFragment : BaseFragment() {
 
         lifecycle.addObserver(listViewModel)
         listViewModel.movieListLiveData.observe(this, listObserver)
+
+        listview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                Log.d(TAG, "onScrolled $dx $dy")
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                Log.d(TAG, "onScrollStateChanged $newState")
+            }
+        })
     }
 
     override fun doDestroyView() {
@@ -169,7 +181,7 @@ class HomeListFragment : BaseFragment() {
                     .into(holder.itemView.video_cover)
 
             // update value
-            Log.d(TAG, "id=${item.id} categoryId=${item.categoryId} ${item.name} ${item.productArea} ${item.translateName} ${item.titleName} ")
+            //  Log.d(TAG, "id=${item.id} categoryId=${item.categoryId} ${item.name} ${item.productArea} ${item.translateName} ${item.titleName} ")
 
             when {
                 item.translateName?.contains(Regex(PATTERN)) == true -> {
@@ -201,6 +213,12 @@ class HomeListFragment : BaseFragment() {
             holder.itemView.setOnClickListener {
                 SingleActivity.startDetailPage(activity, item)
             }
+        }
+
+        override fun onViewAttachedToWindow(holder: MovieItemHolder) {
+            super.onViewAttachedToWindow(holder)
+            val item = homeListAdapter.getItem(holder.adapterPosition)
+            listViewModel.doUpdateMovieDetail(item)
         }
     }
 

@@ -4,107 +4,22 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
-import android.util.Log
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.vo.Resource
-import java.util.concurrent.DelayQueue
-import java.util.concurrent.Delayed
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicInteger
 
-class DelayObject<E : Runnable>(val data: E, delayInMilliseconds: Long) : Delayed {
-
-    private val startTime: Long = System.currentTimeMillis() + delayInMilliseconds
-
-    override fun toString(): String {
-        return "DelayObject{" +
-                "data='" + data + '\''.toString() +
-                ", startTime=" + startTime +
-                '}'.toString()
-    }
-
-    override fun getDelay(unit: TimeUnit): Long {
-        val diff = startTime - System.currentTimeMillis()
-        return unit.convert(diff, TimeUnit.MILLISECONDS)
-    }
-
-    override fun compareTo(o: Delayed): Int {
-        return saturatedCast(this.startTime - (o as DelayObject<*>).startTime)
-    }
-
-    companion object {
-
-        internal fun saturatedCast(value: Long): Int {
-            if (value > Integer.MAX_VALUE) {
-                return Integer.MAX_VALUE
-            }
-            return if (value < Integer.MIN_VALUE) {
-                Integer.MIN_VALUE
-            } else value.toInt()
-        }
-    }
-}
-
-class DelayQueueConsumer(private val queue: DelayQueue<DelayObject<Runnable>>) : Runnable {
-
-    override fun run() {
-        while (true) {
-            try {
-                val item: DelayObject<Runnable> = queue.take() as DelayObject<Runnable>
-                Log.d("Delay", "DelayQueueConsumer run $item")
-                item.data.run()
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-        }
-    }
-}
-
-class DelayQueueProducer(private val queue: DelayQueue<DelayObject<Runnable>>, private val delayInMilliseconds: Long) {
-
-    fun produce(runnable: Runnable, index: Int) {
-        Log.d("Delay", "DelayQueueProducer produce $index")
-        queue.put(DelayObject(runnable, delayInMilliseconds * index))
-    }
-}
 
 @MainThread
 abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(private val appExecutors: AppExecutors) {
 
-    companion object {
-        val TAG = "Delay"
-
-        const val delayOfEachProducedMessageMilliseconds = 1000L
-
-        val delayQueue: DelayQueue<DelayObject<Runnable>> = DelayQueue()
-
-        val consumer = DelayQueueConsumer(delayQueue)
-
-        val producer = DelayQueueProducer(delayQueue, delayOfEachProducedMessageMilliseconds)
-
-        val executor = Executors.newSingleThreadExecutor()
-
-        var elements = AtomicInteger()
-
-        init {
-            executor.execute(consumer)
-        }
-    }
 
     private val result = MediatorLiveData<Resource<ResultType>>()
 
     init {
 
-        elements.incrementAndGet()
-
-        producer.produce(Runnable {
-
-            Log.d(TAG, "init producer task")
+        DelayQueueObject.producer.produce(Runnable {
 
             appExecutors.mainThread().execute {
 
-                Log.d(TAG, "execute task")
                 result.value = Resource.loading(null)
                 val dbSource = loadFromDb()
                 result.addSource(dbSource) { data ->
@@ -119,10 +34,10 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
                         }
                     }
 
-                    elements.decrementAndGet()
+                    DelayQueueObject.elements.decrementAndGet()
                 }
             }
-        }, elements.get() - 1)
+        })
     }
 
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
