@@ -22,8 +22,10 @@ import com.bzh.dytt.util.ThunderHelper
 import com.bzh.dytt.vo.MovieDetail
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
+import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.video_detail_layout.*
 import javax.inject.Inject
+
 
 class DetailFragment : BaseFragment(), Injectable {
 
@@ -103,7 +105,7 @@ class DetailFragment : BaseFragment(), Injectable {
 
         if (movieDetail?.homePicUrl?.isNotEmpty() == true) {
 
-            val glidePalette = GlidePalette.with(movieDetail?.homePicUrl)
+            val glidePalette = GlidePalette.with(movieDetail.homePicUrl)
                     .use(BitmapPalette.Profile.MUTED_DARK)
                     .intoBackground(video_cover_bg)
                     .crossfade(true)
@@ -115,7 +117,7 @@ class DetailFragment : BaseFragment(), Injectable {
                     }
 
             GlideApp.with(this)
-                    .load(movieDetail?.homePicUrl)
+                    .load(movieDetail.homePicUrl)
                     .listener(glidePalette)
                     .placeholder(R.drawable.default_video)
                     .into(video_cover)
@@ -135,6 +137,9 @@ class DetailFragment : BaseFragment(), Injectable {
         }
         viewModel.movieDetailLiveData.observe(this, movieDetailObserver)
         viewModel.refreshLiveData.observe(this, refreshObserver)
+
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
     }
 
     override fun doDestroyView() {
@@ -148,7 +153,7 @@ class DetailFragment : BaseFragment(), Injectable {
 
         private const val TAG = "DetailFragment"
 
-        public const val MOVIE_DETAIL = "MOVIE_DETAIL"
+        const val MOVIE_DETAIL = "MOVIE_DETAIL"
 
         fun newInstnace(movieDetail: MovieDetail): DetailFragment {
             val args = Bundle()
