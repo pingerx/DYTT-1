@@ -30,9 +30,9 @@ class DataRepository @Inject constructor(
         private val networkHelper: NetworkHelper
 ) {
 
-    private val repoListRateLimit = RateLimiter<String>(10, TimeUnit.SECONDS)
+    private val repoListRateLimit = RateLimiter<String>(5, TimeUnit.MINUTES)
 
-    fun getFirstPageByType(movieType: HomeViewModel.HomeMovieType, page: Int): LiveData<Resource<List<MovieDetail>>> {
+    fun movieList(movieType: HomeViewModel.HomeMovieType, page: Int): LiveData<Resource<List<MovieDetail>>> {
 
         val value = object : DelayNetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
 
@@ -43,16 +43,24 @@ class DataRepository @Inject constructor(
                 for (movie in item.rows) {
                     movie.categoryId = movieType.type ?: -1
                     movieDetailParse.parse(movie)
+
+                    Log.d(TAG, "SaveCallResult ${movie.id} ${movie.simpleName}")
                 }
                 movieDetailDAO.insertMovieList(item.rows)
             }
 
             override fun shouldFetch(data: List<MovieDetail>?): Boolean {
-                return networkHelper.isNetworkConnected() && (data == null || data.isEmpty() || repoListRateLimit.shouldFetch("MOVIE_LIST_" + movieType.type))
+                val networkConnected = networkHelper.isNetworkConnected()
+                val isExist = data != null && !data.isEmpty()
+                val isSize = data != null && data.size < page * 30
+                val isShouldFetch = repoListRateLimit.shouldFetch("MOVIE_LIST_" + movieType.type)
+                val isFetch = networkConnected && (!isExist || isSize || isShouldFetch)
+                Log.d(TAG, "ShouldFetch size=${data?.size} networkConnected=$networkConnected isExist=${isExist} shouldFetch=$isShouldFetch fetch=$isFetch")
+                return isFetch
             }
 
             override fun loadFromDb(): LiveData<List<MovieDetail>> {
-                return movieDetailDAO.getFirstPage(movieType.type)
+                return movieDetailDAO.movieList(movieType.type, page * 30)
             }
 
             override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> {
@@ -139,7 +147,7 @@ class DataRepository @Inject constructor(
         return object : DelayNetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
 
             override fun loadFromDb(): LiveData<List<MovieDetail>> {
-                return movieDetailDAO.getFirstPage(1)
+                return movieDetailDAO.movieList(1, 30)
             }
 
             override fun shouldFetch(data: List<MovieDetail>?): Boolean {

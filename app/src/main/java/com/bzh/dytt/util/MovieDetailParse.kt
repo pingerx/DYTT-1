@@ -26,11 +26,17 @@ class MovieDetailParse @Inject constructor() {
                 }
                 if (content.startsWith(imdbGrade)) {
                     val imdb = content.substring(imdbGrade.length).replaceIllegal()
-                    movie.imdbGrade = imdb.substring(0, imdb.indexOf("/")).toFloat()
+                    val substring = imdb.substring(0, imdb.indexOf("/"))
+                    if (substring.isNotEmpty()) {
+                        movie.imdbGrade = substring.toFloat()
+                    }
                 }
                 if (content.startsWith(doubanGrade)) {
                     val douban = content.substring(doubanGrade.length).replaceIllegal()
-                    movie.doubanGrade = douban.substring(0, douban.indexOf("/")).toFloat()
+                    val substring = douban.substring(0, douban.indexOf("/"))
+                    if (substring.isNotEmpty()) {
+                        movie.doubanGrade = substring.toFloat()
+                    }
                 }
                 if (content.startsWith(diretor)) {
                     movie.diretorName = content.substring(diretor.length).replaceIllegal()

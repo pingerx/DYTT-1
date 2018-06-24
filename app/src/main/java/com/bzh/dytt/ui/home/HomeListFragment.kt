@@ -10,7 +10,6 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,7 @@ class HomeListFragment : BaseFragment() {
     private var isLoadMore: Boolean = false
 
     private var refreshListener: SwipeRefreshLayout.OnRefreshListener = SwipeRefreshLayout.OnRefreshListener {
-        listViewModel.refresh()
+        listViewModel.doRefreshFirstPage()
     }
 
     private var onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -49,9 +48,8 @@ class HomeListFragment : BaseFragment() {
             if (recyclerView?.layoutManager is LinearLayoutManager) {
                 val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val itemCount = linearLayoutManager.itemCount
-                val lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition()
-
-                if (!isLoadMore && itemCount <= (lastVisibleItemPosition + 5)) {
+                val completelyVisibleItemPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition()
+                if (!isLoadMore && completelyVisibleItemPosition == (itemCount - 1)) {
                     isLoadMore = true
                     onLoadMore()
                 }
@@ -89,6 +87,10 @@ class HomeListFragment : BaseFragment() {
         }
     }
 
+    private val refreshObserver: Observer<Boolean> = Observer {
+        swipe_refresh_layout.isRefreshing = (it == true)
+    }
+
     private lateinit var listViewModel: HomeListViewModel
 
     private lateinit var homeListAdapter: HomeListAdapter
@@ -96,7 +98,7 @@ class HomeListFragment : BaseFragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     fun onLoadMore() {
-        listViewModel.loadMore()
+        listViewModel.doLoadMorePage()
     }
 
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -122,21 +124,12 @@ class HomeListFragment : BaseFragment() {
         lifecycle.addObserver(listViewModel)
         listViewModel.movieListLiveData.observe(this, listObserver)
 
-        listview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                Log.d(TAG, "onScrolled $dx $dy")
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                Log.d(TAG, "onScrollStateChanged $newState")
-            }
-        })
+        listViewModel.refresLiveData.observe(this, refreshObserver)
     }
 
     override fun doDestroyView() {
         listViewModel.movieListLiveData.removeObserver(listObserver)
+        listViewModel.refresLiveData.removeObserver(refreshObserver)
         lifecycle.removeObserver(listViewModel)
         super.doDestroyView()
     }
@@ -217,14 +210,18 @@ class HomeListFragment : BaseFragment() {
 
         override fun onViewAttachedToWindow(holder: MovieItemHolder) {
             super.onViewAttachedToWindow(holder)
-            val item = homeListAdapter.getItem(holder.adapterPosition)
-            listViewModel.doUpdateMovieDetail(item)
+            if (holder.adapterPosition != RecyclerView.NO_POSITION) {
+                val item = homeListAdapter.getItem(holder.adapterPosition)
+                listViewModel.doUpdateMovieDetail(item)
+            }
         }
 
         override fun onViewDetachedFromWindow(holder: MovieItemHolder) {
             super.onViewDetachedFromWindow(holder)
-            val item = homeListAdapter.getItem(holder.adapterPosition)
-            listViewModel.doRemoveUpdateMovieDetail(item)
+            if (holder.adapterPosition != RecyclerView.NO_POSITION) {
+                val item = homeListAdapter.getItem(holder.adapterPosition)
+                listViewModel.doRemoveUpdateMovieDetail(item)
+            }
         }
     }
 
