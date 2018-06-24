@@ -16,9 +16,9 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
 
     val movieListLiveData: MutableLiveData<Resource<List<MovieDetail>>> = MutableLiveData()
 
-    var movieRepositoryLiveData: LiveData<Resource<List<MovieDetail>>>? = null
+    private var movieRepositoryLiveData: LiveData<Resource<List<MovieDetail>>>? = null
 
-    var itemUpdateRepositoryLiveData: LiveData<Resource<MovieDetail>>? = null
+    private var itemUpdateRepositoryLiveData: LiveData<Resource<MovieDetail>>? = null
 
     var refresLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -101,7 +101,6 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
     private fun unregister() {
         isRefresh = false
         isLoadMore = false
-        refresLiveData.value = false
         movieRepositoryLiveData?.removeObserver(listObserver)
     }
 

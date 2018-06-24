@@ -144,10 +144,12 @@ class DataRepository @Inject constructor(
 
     fun search(input: String): LiveData<Resource<List<MovieDetail>>> {
 
-        return object : DelayNetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
+        val rowIds = arrayListOf<Int>()
+
+        val value = object : DelayNetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
 
             override fun loadFromDb(): LiveData<List<MovieDetail>> {
-                return movieDetailDAO.movieList(1, 30)
+                return movieDetailDAO.movieListByRowIds(rowIds.toIntArray())
             }
 
             override fun shouldFetch(data: List<MovieDetail>?): Boolean {
@@ -155,10 +157,16 @@ class DataRepository @Inject constructor(
             }
 
             override fun saveCallResult(item: MovieDetailResponse) {
+                if (item.rows.isEmpty()) {
+                    return
+                }
                 for (movie in item.rows) {
                     movieDetailParse.parse(movie)
                 }
                 movieDetailDAO.insertMovieList(item.rows)
+                for (movie in item.rows) {
+                    rowIds.add(movie.id)
+                }
             }
 
             override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> {
@@ -177,8 +185,12 @@ class DataRepository @Inject constructor(
                         searchContent = input
                 )
             }
+        }
 
-        }.asLiveData()
+        delayRunnableQueue.removeDelay(input)
+        delayRunnableQueue.addDelay(input, value)
+
+        return value.asLiveData()
     }
 
     companion object {
