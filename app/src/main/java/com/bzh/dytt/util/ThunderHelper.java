@@ -20,7 +20,7 @@ public class ThunderHelper {
         }
         if (checkIsInstall(context)) {
             String[] url = ftpUrl.split(";");
-            context.startActivity(new Intent("android.intent.action.VIEW", Uri.parse(getThunderEncode(url[0]))));
+            context.startActivity(new Intent("android.intent.action.VIEW", Uri.parse(url[0])));
             return true;
         }
         return false;
@@ -34,9 +34,5 @@ public class ThunderHelper {
             Logger.e(TAG, "checkIsInstall: ", e);
         }
         return false;
-    }
-
-    private String getThunderEncode(String ftpUrl) {
-        return "thunder://" + XunLeiBase64.base64encode(("AA" + ftpUrl + "ZZ").getBytes());
     }
 }

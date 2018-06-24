@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface NetworkService {
 
-    @POST("/adminapi/api/movieList.json")
+    @POST("/adminapi/api/getFirstPageByType.json")
     fun movieList(
             @Header("x-header-request-timestamp") headerTimestamp: String = "",
             @Header("x-header-request-key") headerKey: String = "",
@@ -27,7 +27,7 @@ interface NetworkService {
             @Query("categoryId") categoryId: Int,
             @Query("movieDetailId") movieDetailId: Int): LiveData<ApiResponse<MovieDetail>>
 
-    @POST("/adminapi/api/movieList.json")
+    @POST("/adminapi/api/getFirstPageByType.json")
     fun search(
             @Header("x-header-request-timestamp") headerTimestamp: String = "",
             @Header("x-header-request-key") headerKey: String = "",

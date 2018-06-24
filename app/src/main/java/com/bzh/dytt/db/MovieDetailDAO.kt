@@ -11,11 +11,11 @@ import com.bzh.dytt.vo.MovieDetail
 @Dao
 interface MovieDetailDAO {
 
-    @Query("SELECT * FROM movie_detail WHERE categoryId=:type  ORDER BY id DESC")
-    fun movieList(type: Int?): LiveData<List<MovieDetail>>
+    @Query("SELECT * FROM movie_detail WHERE categoryId=:type  ORDER BY id DESC LIMIT 30")
+    fun getFirstPage(type: Int?): LiveData<List<MovieDetail>>
 
     @Query("SELECT * FROM movie_detail WHERE categoryId=:categoryId AND id=:id")
-    fun movie(categoryId: Int, id: Int): LiveData<MovieDetail>
+    fun getMovieByCategoryIdAndId(categoryId: Int, id: Int): LiveData<MovieDetail>
 
     @Insert(onConflict = IGNORE)
     fun insertMovieList(movieList: List<MovieDetail>): Array<Long>

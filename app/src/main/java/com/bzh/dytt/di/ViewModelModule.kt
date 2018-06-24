@@ -2,6 +2,7 @@ package com.bzh.dytt.di
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.bzh.dytt.ui.detail.DetailViewModel
 import com.bzh.dytt.ui.home.HomeListViewModel
 import com.bzh.dytt.ui.home.HomeViewModel
 import com.bzh.dytt.ui.search.SearchViewModel
@@ -14,11 +15,10 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class ViewModelModule {
 
-
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(SearchViewModel::class)
-//    abstract fun bindSearchViewModel(viewModel: SearchViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailViewModel::class)
+    abstract fun bindDetailViewModel(viewModel: DetailViewModel): ViewModel
 
     @Binds
     @IntoMap

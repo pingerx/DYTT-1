@@ -1,6 +1,8 @@
 package com.bzh.dytt.ui.detail
 
 import android.app.Dialog
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -21,40 +23,37 @@ import com.bzh.dytt.vo.MovieDetail
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import kotlinx.android.synthetic.main.video_detail_layout.*
+import javax.inject.Inject
 
 class DetailFragment : BaseFragment(), Injectable {
 
-    var thunderHelper: ThunderHelper = ThunderHelper()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    var movieDetail: MovieDetail? = null
+    lateinit var viewModel: DetailViewModel
 
-    override fun doCreate(savedInstanceState: Bundle?) {
-        super.doCreate(savedInstanceState)
-        if (arguments != null) {
-            movieDetail = arguments?.getParcelable(MOVIE_DETAIL)
+    private var thunderHelper: ThunderHelper = ThunderHelper()
+
+    private var refreshObserver: Observer<Boolean> = Observer {
+        if (it == true) {
+            swipe_refresh_layout.isEnabled = true
+            swipe_refresh_layout.isRefreshing = true
+        } else {
+            swipe_refresh_layout.isEnabled = false
+            swipe_refresh_layout.isRefreshing = false
         }
     }
 
-    override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.video_detail_layout, container, false)
-    }
-
-    override fun doViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.doViewCreated(view, savedInstanceState)
-
-        if (movieDetail == null) {
-            return
-        }
-
+    private var movieDetailObserver: Observer<MovieDetail> = Observer { movieDetail ->
         if (activity != null) {
             val actionBar = (activity as AppCompatActivity).supportActionBar
             actionBar?.title = movieDetail?.simpleName
             when {
                 movieDetail?.translateName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
-                    actionBar?.title = movieDetail?.translateName
+                    actionBar?.title = movieDetail.translateName
                 }
                 movieDetail?.titleName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
-                    actionBar?.title = movieDetail?.titleName
+                    actionBar?.title = movieDetail.titleName
                 }
                 else -> {
                     actionBar?.title = movieDetail?.simpleName
@@ -68,16 +67,16 @@ class DetailFragment : BaseFragment(), Injectable {
         video_show_time.text = movieDetail?.publishTime
 
         if (movieDetail?.doubanGrade != null) {
-            douban_grade.text = getString(R.string.douban_grade, movieDetail?.doubanGrade)
-            douban_rating_bar.rating = movieDetail?.doubanGrade!! / 2
+            douban_grade.text = getString(R.string.douban_grade, movieDetail.doubanGrade)
+            douban_rating_bar.rating = movieDetail.doubanGrade / 2
             douban_rating_layout.visibility = View.VISIBLE
         } else {
             douban_rating_layout.visibility = View.GONE
         }
 
         if (movieDetail?.imdbGrade != null) {
-            imdb_grade.text = getString(R.string.imdb_grade, movieDetail?.imdbGrade)
-            imdb_rating_bar.rating = movieDetail?.imdbGrade!! / 2
+            imdb_grade.text = getString(R.string.imdb_grade, movieDetail.imdbGrade)
+            imdb_rating_bar.rating = movieDetail.imdbGrade / 2
             imdb_rating_layout.visibility = View.VISIBLE
         } else {
             imdb_rating_layout.visibility = View.GONE
@@ -86,19 +85,22 @@ class DetailFragment : BaseFragment(), Injectable {
         video_director.text = movieDetail?.diretor
 
         video_description.text = movieDetail?.description
-        video_description.setOnClickListener({ view ->
+
+        video_description.setOnClickListener { view ->
             if ((view as TextView).maxLines > 4) {
                 view.maxLines = 4
             } else {
                 view.maxLines = 100
             }
-        })
-        download_button.setOnClickListener({
+        }
+
+        download_button.setOnClickListener {
             if (activity == null || !thunderHelper.onClickDownload(activity, movieDetail?.downloadUrl)) {
                 val dialogFragment = InnerDialogFragment()
                 dialogFragment.show(activity!!.supportFragmentManager, "InnerDialog")
             }
-        })
+        }
+
         if (movieDetail?.homePicUrl?.isNotEmpty() == true) {
 
             val glidePalette = GlidePalette.with(movieDetail?.homePicUrl)
@@ -118,6 +120,28 @@ class DetailFragment : BaseFragment(), Injectable {
                     .placeholder(R.drawable.default_video)
                     .into(video_cover)
         }
+    }
+
+    override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return inflater.inflate(R.layout.video_detail_layout, container, false)
+    }
+
+    override fun doViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.doViewCreated(view, savedInstanceState)
+        viewModel = viewModelFactory.create(DetailViewModel::class.java)
+        lifecycle.addObserver(viewModel)
+        if (arguments != null) {
+            viewModel.paramsLiveData.value = arguments?.getParcelable(MOVIE_DETAIL)
+        }
+        viewModel.movieDetailLiveData.observe(this, movieDetailObserver)
+        viewModel.refreshLiveData.observe(this, refreshObserver)
+    }
+
+    override fun doDestroyView() {
+        lifecycle.removeObserver(viewModel)
+        viewModel.movieDetailLiveData.removeObserver(movieDetailObserver)
+        viewModel.refreshLiveData.removeObserver(refreshObserver)
+        super.doDestroyView()
     }
 
     companion object {
@@ -144,5 +168,4 @@ class DetailFragment : BaseFragment(), Injectable {
             return builder.create()
         }
     }
-
 }

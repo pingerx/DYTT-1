@@ -53,7 +53,7 @@ class SearchViewModel @Inject constructor(private val dataRepository: DataReposi
 
     fun doUpdateMovieDetail(item: MovieDetail) {
         if (!item.isPrefect) {
-            itemUpdateRepositoryLiveData = dataRepository.movieItemUpdate(item)
+            itemUpdateRepositoryLiveData = dataRepository.movieUpdate(item)
             itemUpdateRepositoryLiveData?.observeForever(detailObserver)
         }
     }

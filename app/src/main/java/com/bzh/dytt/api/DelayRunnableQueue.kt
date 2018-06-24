@@ -101,7 +101,7 @@ class DelayRunnableQueue<F, E : Runnable> @Inject constructor() {
 
         lastMills = newDelayObject.startTimeMillis + delayOfEachProducedMessageMillis
 
-        Log.d(TAG, "addDelay F=$f Delay=$newDelayObject ${delayQueue.size} ${delayLinkQueue.size}")
+        Log.d(TAG, "addDelay Flag=$f Delay=$newDelayObject ${delayQueue.size} ${delayLinkQueue.size}")
         delayLinkQueue.offer(newDelayObject)
         delayQueue.put(newDelayObject)
     }
@@ -119,12 +119,12 @@ class DelayRunnableQueue<F, E : Runnable> @Inject constructor() {
         }
         delayLinkQueue.remove(delayObject)
         delayQueue.remove(delayObject)
-        Log.d(TAG, "removeDelay F=$f ${delayQueue.size} ${delayLinkQueue.size}")
+        Log.d(TAG, "removeDelay Flag=$f ${delayQueue.size} ${delayLinkQueue.size}")
     }
 
     fun finishDelay(f: F) {
         val delayObject = DelayObject<F, E>(f)
-        Log.d(TAG, "finishDelay F=$f ${delayQueue.size} ${delayLinkQueue.size}")
         delayLinkQueue.remove(delayObject)
+        Log.d(TAG, "finishDelay Flag=$f ${delayQueue.size} ${delayLinkQueue.size}")
     }
 }

@@ -220,6 +220,12 @@ class HomeListFragment : BaseFragment() {
             val item = homeListAdapter.getItem(holder.adapterPosition)
             listViewModel.doUpdateMovieDetail(item)
         }
+
+        override fun onViewDetachedFromWindow(holder: MovieItemHolder) {
+            super.onViewDetachedFromWindow(holder)
+            val item = homeListAdapter.getItem(holder.adapterPosition)
+            listViewModel.doRemoveUpdateMovieDetail(item)
+        }
     }
 
     inner class MovieItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -1,289 +1,294 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/video_cover_bg"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="?selectableItemBackgroundBorderless">
-
-            <ImageView
-                android:id="@+id/video_cover"
-                android:layout_width="150dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:background="@android:color/background_dark"
-                android:elevation="10dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/default_video"
-                tools:ignore="ContentDescription" />
-
-        </FrameLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:paddingEnd="0dp"
-                android:paddingStart="16dp">
+            <FrameLayout
+                android:id="@+id/video_cover_bg"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="?selectableItemBackgroundBorderless">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="left|center_vertical"
-                    android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/video_cover"
+                    android:layout_width="150dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/background_dark"
+                    android:elevation="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_video"
+                    tools:ignore="ContentDescription" />
 
-                    <TextView
-                        style="@style/video_detail_info_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/detail_country" />
-
-                    <TextView
-                        android:id="@+id/video_country"
-                        style="@style/video_detail_secondary_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="left|center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/video_detail_info_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/detail_duration" />
-
-                    <TextView
-                        android:id="@+id/video_duration"
-                        style="@style/video_detail_secondary_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="left|center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/video_detail_info_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/detail_time" />
-
-                    <TextView
-                        android:id="@+id/video_show_time"
-                        style="@style/video_detail_secondary_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="left|center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/video_detail_info_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/detail_type" />
-
-                    <TextView
-                        android:id="@+id/video_type"
-                        style="@style/video_detail_secondary_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLength="20"
-                        android:maxLines="1" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/download_button"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="?selectableItemBackground"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_download"
-                        android:tint="@color/colorSecondaryText"
-                        tools:ignore="ContentDescription" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/douban_rating_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <RatingBar
-                            android:id="@+id/douban_rating_bar"
-                            style="?android:attr/ratingBarStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/colorAccent"
-                            android:isIndicator="true"
-                            android:numStars="5" />
-                    </FrameLayout>
-
-
-                    <TextView
-                        android:id="@+id/douban_grade"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/imdb_rating_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <RatingBar
-                            android:id="@+id/imdb_rating_bar"
-                            style="?android:attr/ratingBarStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:backgroundTint="@color/colorAccent"
-                            android:isIndicator="true"
-                            android:numStars="5"
-                            android:rating="1" />
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/imdb_grade"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1" />
-
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical"
-            android:padding="16dp">
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <TextView
-                    style="@style/video_detail_info_text"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/video_detail_info_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/detail_country" />
+
+                        <TextView
+                            android:id="@+id/video_country"
+                            style="@style/video_detail_secondary_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/video_detail_info_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/detail_duration" />
+
+                        <TextView
+                            android:id="@+id/video_duration"
+                            style="@style/video_detail_secondary_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/video_detail_info_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/detail_time" />
+
+                        <TextView
+                            android:id="@+id/video_show_time"
+                            style="@style/video_detail_secondary_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/video_detail_info_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/detail_type" />
+
+                        <TextView
+                            android:id="@+id/video_type"
+                            style="@style/video_detail_secondary_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLength="20"
+                            android:maxLines="1" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginStart="0dp"
-                    android:text="@string/detail_director" />
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                <TextView
-                    android:id="@+id/video_director"
-                    style="@style/video_detail_secondary_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/download_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="?selectableItemBackground"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_download"
+                            android:tint="@color/colorSecondaryText"
+                            tools:ignore="ContentDescription" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/douban_rating_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <RatingBar
+                                android:id="@+id/douban_rating_bar"
+                                style="?android:attr/ratingBarStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/colorAccent"
+                                android:isIndicator="true"
+                                android:numStars="5" />
+                        </FrameLayout>
+
+
+                        <TextView
+                            android:id="@+id/douban_grade"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/imdb_rating_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <RatingBar
+                                android:id="@+id/imdb_rating_bar"
+                                style="?android:attr/ratingBarStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:backgroundTint="@color/colorAccent"
+                                android:isIndicator="true"
+                                android:numStars="5" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/imdb_grade"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <TextView
-                    style="@style/video_detail_info_text"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginStart="0dp"
-                    android:text="@string/detail_description" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/video_description"
-                    style="@style/video_detail_secondary_text"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        style="@style/video_detail_info_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/detail_director" />
+
+                    <TextView
+                        android:id="@+id/video_director"
+                        style="@style/video_detail_secondary_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:ellipsize="end"
-                    android:lineSpacingMultiplier="1.2"
-                    android:maxLines="4" />
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/video_detail_info_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/detail_description" />
+
+                    <TextView
+                        android:id="@+id/video_description"
+                        style="@style/video_detail_secondary_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:ellipsize="end"
+                        android:lineSpacingMultiplier="1.2"
+                        android:maxLines="100" />
+                </LinearLayout>
+
             </LinearLayout>
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-8112052667906046/1948101912" />
 
         </LinearLayout>
 
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-8112052667906046/1948101912" />
-
-    </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>

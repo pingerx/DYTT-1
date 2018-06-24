@@ -76,15 +76,15 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
             return
         }
         unregister()
-        _movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value!!, 1)
+        _movieRepositoryLiveData = dataRepository.getFirstPageByType(moveTypeLiveData.value!!, 1)
         _movieRepositoryLiveData?.observeForever(listObserver)
     }
 
     private fun register() {
         if (moveTypeLiveData.value == null) {
-            return;
+            return
         }
-        _movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value!!, 1)
+        _movieRepositoryLiveData = dataRepository.getFirstPageByType(moveTypeLiveData.value!!, 1)
         _movieRepositoryLiveData?.observeForever(listObserver)
     }
 
@@ -95,9 +95,13 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
 
     fun doUpdateMovieDetail(item: MovieDetail) {
         if (!item.isPrefect) {
-            _itemUpdateRepositoryLiveData = dataRepository.movieItemUpdate(item)
+            _itemUpdateRepositoryLiveData = dataRepository.movieUpdate(item)
             _itemUpdateRepositoryLiveData?.observeForever(detailObserver)
         }
+    }
+
+    fun doRemoveUpdateMovieDetail(item: MovieDetail) {
+        dataRepository.removeMovieUpdate(item)
     }
 
     companion object {

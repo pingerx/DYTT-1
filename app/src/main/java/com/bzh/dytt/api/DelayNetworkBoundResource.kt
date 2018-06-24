@@ -26,6 +26,7 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
                 } else {
                     result.addSource(dbSource) { newData ->
                         setValue(Resource.success(newData))
+                        finish()
                     }
                 }
             }
@@ -51,6 +52,7 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
                             // which may not be updated with latest results received from network.
                             result.addSource(loadFromDb()) { newData ->
                                 setValue(Resource.success(newData))
+                                finish()
                             }
                         }
                     }
@@ -60,6 +62,7 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
                         // reload from disk whatever we had
                         result.addSource(loadFromDb()) { newData ->
                             setValue(Resource.success(newData))
+                            finish()
                         }
                     }
                 }
@@ -67,6 +70,7 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
                     onFetchFailed(response)
                     result.addSource(dbSource) { newData ->
                         setValue(Resource.error(response.errorMessage, newData))
+                        finish()
                     }
                 }
             }
@@ -86,6 +90,10 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
 
     @WorkerThread
     protected open fun processResponse(response: ApiSuccessResponse<RequestType>) = response.body
+
+    @MainThread
+    protected open fun finish() {
+    }
 
     @WorkerThread
     protected abstract fun saveCallResult(item: RequestType)
