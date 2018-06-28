@@ -17,8 +17,6 @@
 
 看完后相信你一定会有所收获。
 
-此外，可测试行也是Andorid Architecture Compontents推崇的重点，但是本项目还未完整的补充完整（主要是我还不太理解关键，不太会写），稍后一些commit会补充完整的。
-
 # Memebers
 
 本项目由[biezhihua](https://github.com/biezhihua)和[yifan](https://github.com/zhuyifan2013)共同完成。
