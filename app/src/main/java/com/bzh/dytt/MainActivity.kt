@@ -12,7 +12,6 @@ import android.view.MenuItem
 import com.bzh.dytt.base.BaseActivity
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.ui.home.HomeFragment
-import com.google.android.gms.ads.MobileAds
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,7 +32,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         toolbar.setTitle(R.string.nav_home_page)
 
-        MobileAds.initialize(this, ADMOB_APP_ID)
+//        MobileAds.initialize(this, ADMOB_APP_ID)
 
         setSupportActionBar(toolbar)
 
@@ -102,6 +101,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     companion object {
+
+        // ca-app-pub-2810447214027158/1355816417
+        const val ADMOB_APP_ID_BZH = "ca-app-pub-2810447214027158~8679772669"
+
         const val ADMOB_APP_ID = "ca-app-pub-8112052667906046~4830848371"
     }
 }

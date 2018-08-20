@@ -42,7 +42,7 @@ class HomeListFragment : BaseFragment() {
 
     private var onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
             if (recyclerView?.layoutManager is LinearLayoutManager) {

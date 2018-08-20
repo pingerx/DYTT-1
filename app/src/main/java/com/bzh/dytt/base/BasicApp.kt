@@ -11,7 +11,6 @@ import com.bzh.dytt.di.AppInjector
 import com.bzh.dytt.key.KeyUtils
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
-import com.umeng.commonsdk.UMConfigure
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
@@ -35,8 +34,6 @@ class BasicApp : Application(), HasActivityInjector {
         AppInjector.init(this)
 
         KeyUtils.init(this)
-
-        UMConfigure.init(this, "5acda2b4f29d98253600000c", "Kuan", UMConfigure.DEVICE_TYPE_PHONE, null)
 
         Log.d("BasicApp", getSignature(this))
     }

@@ -57,12 +57,12 @@ abstract class SingleListFragment<T> : BaseFragment() {
 
     private val mScrollListener = object : RecyclerView.OnScrollListener() {
 
-        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             mIsScrollIdle = newState == SCROLL_STATE_IDLE
         }
 
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
         }
     }
