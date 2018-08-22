@@ -9,6 +9,7 @@ import android.util.Log
 import com.bzh.dytt.BuildConfig
 import com.bzh.dytt.di.AppInjector
 import com.bzh.dytt.key.KeyUtils
+import com.google.firebase.FirebaseApp
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import dagger.android.DispatchingAndroidInjector
@@ -24,6 +25,8 @@ class BasicApp : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
+
+        FirebaseApp.initializeApp(this)
 
         Logger.addLogAdapter(object : AndroidLogAdapter() {
             override fun isLoggable(priority: Int, tag: String?): Boolean {
