@@ -48,6 +48,10 @@ android {
     lintOptions {
         lintConfig rootProject.file('lint.xml')
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 repositories {

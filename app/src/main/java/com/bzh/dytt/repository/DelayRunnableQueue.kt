@@ -1,4 +1,4 @@
-package com.bzh.dytt.api
+package com.bzh.dytt.repository
 
 import android.util.Log
 import java.util.concurrent.*
@@ -41,12 +41,9 @@ class DelayObject<F, E : Runnable>(val flag: F, val data: E? = null) : Delayed {
     }
 
     private fun saturatedCast(value: Long): Int {
-        if (value > Integer.MAX_VALUE) {
-            return Integer.MAX_VALUE
-        }
-        return if (value < Integer.MIN_VALUE) {
-            Integer.MIN_VALUE
-        } else value.toInt()
+        if (value > Integer.MAX_VALUE) return Integer.MAX_VALUE
+
+        return if (value < Integer.MIN_VALUE) Integer.MIN_VALUE else value.toInt()
     }
 }
 
@@ -102,6 +99,7 @@ class DelayRunnableQueue<F, E : Runnable> @Inject constructor() {
         lastMills = newDelayObject.startTimeMillis + delayOfEachProducedMessageMillis
 
         Log.d(TAG, "addDelay Flag=$f Delay=$newDelayObject ${delayQueue.size} ${delayLinkQueue.size}")
+
         delayLinkQueue.offer(newDelayObject)
         delayQueue.put(newDelayObject)
     }
@@ -119,12 +117,14 @@ class DelayRunnableQueue<F, E : Runnable> @Inject constructor() {
         }
         delayLinkQueue.remove(delayObject)
         delayQueue.remove(delayObject)
+
         Log.d(TAG, "removeDelay Flag=$f ${delayQueue.size} ${delayLinkQueue.size}")
     }
 
     fun finishDelay(f: F) {
         val delayObject = DelayObject<F, E>(f)
         delayLinkQueue.remove(delayObject)
+
         Log.d(TAG, "finishDelay Flag=$f ${delayQueue.size} ${delayLinkQueue.size}")
     }
 }

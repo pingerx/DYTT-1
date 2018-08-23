@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
-import android.util.Log
 import com.bzh.dytt.BuildConfig
 import com.bzh.dytt.di.AppInjector
 import com.bzh.dytt.key.KeyUtils
@@ -38,7 +37,7 @@ class BasicApp : Application(), HasActivityInjector {
 
         KeyUtils.init(this)
 
-        Log.d("BasicApp", getSignature(this))
+        Logger.d("BasicApp", getSignature(this))
     }
 
     @SuppressLint("PackageManagerGetSignatures")

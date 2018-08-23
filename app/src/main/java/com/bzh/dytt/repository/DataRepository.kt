@@ -4,8 +4,6 @@ import android.arch.lifecycle.LiveData
 import android.util.Log
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.api.ApiResponse
-import com.bzh.dytt.api.DelayNetworkBoundResource
-import com.bzh.dytt.api.DelayRunnableQueue
 import com.bzh.dytt.api.NetworkService
 import com.bzh.dytt.db.MovieDetailDAO
 import com.bzh.dytt.key.KeyUtils

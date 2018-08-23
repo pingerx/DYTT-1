@@ -1,33 +1,35 @@
-package com.bzh.dytt.api
+package com.bzh.dytt.repository
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
 import com.bzh.dytt.AppExecutors
+import com.bzh.dytt.api.ApiEmptyResponse
+import com.bzh.dytt.api.ApiErrorResponse
+import com.bzh.dytt.api.ApiResponse
+import com.bzh.dytt.api.ApiSuccessResponse
 import com.bzh.dytt.vo.Resource
 
-
 @MainThread
-abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(private val appExecutors: AppExecutors) : Runnable {
+abstract class NetworkBoundResource<ResultType, RequestType> constructor(private val appExecutors: AppExecutors) {
+
+    companion object {
+        const val TAG = "NetworkBoundResource"
+    }
 
     private val result = MediatorLiveData<Resource<ResultType>>()
 
-    override fun run() {
-        appExecutors.mainThread().execute {
-            result.value = Resource.loading(null)
-            val dbSource = loadFromDb()
-            result.addSource(dbSource) { data ->
-
-                result.removeSource(dbSource)
-
-                if (shouldFetch(data)) {
-                    fetchFromNetwork(dbSource)
-                } else {
-                    result.addSource(dbSource) { newData ->
-                        setValue(Resource.success(newData))
-                        finish()
-                    }
+    init {
+        result.value = Resource.loading(null)
+        val dbSource = loadFromDb()
+        result.addSource(dbSource) { data ->
+            result.removeSource(dbSource)
+            if (shouldFetch(data)) {
+                fetchFromNetwork(dbSource)
+            } else {
+                result.addSource(dbSource) { newData ->
+                    setValue(Resource.success(newData))
                 }
             }
         }
@@ -52,7 +54,6 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
                             // which may not be updated with latest results received from network.
                             result.addSource(loadFromDb()) { newData ->
                                 setValue(Resource.success(newData))
-                                finish()
                             }
                         }
                     }
@@ -62,15 +63,13 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
                         // reload from disk whatever we had
                         result.addSource(loadFromDb()) { newData ->
                             setValue(Resource.success(newData))
-                            finish()
                         }
                     }
                 }
                 is ApiErrorResponse -> {
-                    onFetchFailed(response)
+                    onFetchFailed()
                     result.addSource(dbSource) { newData ->
                         setValue(Resource.error(response.errorMessage, newData))
-                        finish()
                     }
                 }
             }
@@ -84,16 +83,12 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
         }
     }
 
-    protected open fun onFetchFailed(response: ApiErrorResponse<RequestType>) {}
+    protected open fun onFetchFailed() {}
 
     fun asLiveData() = result as LiveData<Resource<ResultType>>
 
     @WorkerThread
     protected open fun processResponse(response: ApiSuccessResponse<RequestType>) = response.body
-
-    @MainThread
-    protected open fun finish() {
-    }
 
     @WorkerThread
     protected abstract fun saveCallResult(item: RequestType)

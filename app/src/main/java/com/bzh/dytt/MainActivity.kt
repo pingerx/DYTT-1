@@ -32,8 +32,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         toolbar.setTitle(R.string.nav_home_page)
 
-//        MobileAds.initialize(this, ADMOB_APP_ID)
-
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -42,7 +40,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        // You should keep this limit low, especially if your pages have complex layouts.
         content_container.offscreenPageLimit = 1
         pagerAdapter = MainViewPagerAdapter(supportFragmentManager)
         content_container.adapter = pagerAdapter

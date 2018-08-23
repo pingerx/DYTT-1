@@ -1,10 +1,8 @@
 package com.bzh.dytt.base
 
-import android.annotation.SuppressLint
 import android.support.v7.app.AppCompatActivity
 
-@SuppressLint("Registered")
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
