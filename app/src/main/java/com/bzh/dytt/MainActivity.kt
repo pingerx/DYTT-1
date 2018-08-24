@@ -31,10 +31,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        MobileAds.initialize(this, ADMOB_APP_ID)
-
         toolbar.setTitle(R.string.nav_home_page)
-
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -43,9 +40,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        content_container.offscreenPageLimit = 1
         pagerAdapter = MainViewPagerAdapter(supportFragmentManager)
         content_container.adapter = pagerAdapter
+
+        MobileAds.initialize(this, ADMOB_APP_ID)
     }
 
     override fun onBackPressed() {
@@ -73,7 +71,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         val id = item.itemId
 
         when (id) {

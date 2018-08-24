@@ -25,26 +25,25 @@ class SingleActivity : BaseActivity(), HasSupportFragmentInjector {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_single)
+        setupActionBar()
+        setupContainerWithType()
+    }
 
+    private fun setupContainerWithType() {
         val type = intent.getSerializableExtra(TYPE)
-
         val fragment: BaseFragment = when (type) {
             SingleType.Detail -> {
-                val detailLink: MovieDetail = intent.getParcelableExtra(DATA)
-                DetailFragment.newInstance(detailLink)
+                DetailFragment.newInstance(intent.getParcelableExtra(DATA))
             }
             else -> {
                 SearchFragment.newInstance()
             }
         }
-        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
-
-        setupActionBar()
+        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commitAllowingStateLoss()
     }
 
-    fun setupActionBar() {
+    private fun setupActionBar() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
