@@ -33,7 +33,7 @@ class SingleActivity : BaseActivity(), HasSupportFragmentInjector {
         val fragment: BaseFragment = when (type) {
             SingleType.Detail -> {
                 val detailLink: MovieDetail = intent.getParcelableExtra(DATA)
-                DetailFragment.newInstnace(detailLink)
+                DetailFragment.newInstance(detailLink)
             }
             else -> {
                 SearchFragment.newInstance()

@@ -9,20 +9,26 @@ import javax.inject.Inject
 
 class DetailViewModel @Inject constructor(private val dataRepository: DataRepository) : ViewModel(), LifecycleObserver {
 
-    private var _itemUpdateRepositoryLiveData: LiveData<Resource<MovieDetail>>? = null
+    val paramsLiveData: MutableLiveData<MovieDetail> = MutableLiveData()
+
+    val movieDetailLiveData: MutableLiveData<MovieDetail> = MutableLiveData()
+
+    val swipeRefreshStatus: MutableLiveData<Boolean> = MutableLiveData()
+
+    var autoUpdateLiveData: LiveData<Resource<MovieDetail>>? = null
 
     private val paramsObserver: Observer<MovieDetail> = Observer {
         if (it != null) {
             if (it.isPrefect) {
                 movieDetailLiveData.value = it
-                refreshLiveData.value = false
+                swipeRefreshStatus.value = false
             } else {
-                refreshLiveData.value = true
-                _itemUpdateRepositoryLiveData = dataRepository.movieUpdate(it)
-                _itemUpdateRepositoryLiveData?.observeForever(detailObserver)
+                swipeRefreshStatus.value = true
+                autoUpdateLiveData = dataRepository.movieUpdate(it)
+                autoUpdateLiveData?.observeForever(detailObserver)
             }
         } else {
-            refreshLiveData.value = false
+            swipeRefreshStatus.value = false
         }
     }
 
@@ -32,22 +38,13 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
                 if (it.data?.isPrefect == true) {
                     movieDetailLiveData.value = it.data
                 }
-                refreshLiveData.value = false
-            }
-            Status.ERROR -> {
-                refreshLiveData.value = false
+                swipeRefreshStatus.value = false
             }
             else -> {
-                refreshLiveData.value = false
+                swipeRefreshStatus.value = false
             }
         }
     }
-
-    val paramsLiveData: MutableLiveData<MovieDetail> = MutableLiveData()
-
-    val movieDetailLiveData: MutableLiveData<MovieDetail> = MutableLiveData()
-
-    val refreshLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun active() {

@@ -19,13 +19,13 @@ data class MovieDetail(
         var titleName: String?,
         var imdbGrade: Float,
         var doubanGrade: Float,
-        var diretorName: String?,
+        var directorName: String?,
         var description: String?,
         var type: String?,
         var language: String?,
         var productArea: String?,
         var duration: String?,
-        var diretor: String?,
+        var director: String?,
         var isPrefect: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -66,13 +66,13 @@ data class MovieDetail(
         parcel.writeString(titleName)
         parcel.writeFloat(imdbGrade)
         parcel.writeFloat(doubanGrade)
-        parcel.writeString(diretorName)
+        parcel.writeString(directorName)
         parcel.writeString(description)
         parcel.writeString(type)
         parcel.writeString(language)
         parcel.writeString(productArea)
         parcel.writeString(duration)
-        parcel.writeString(diretor)
+        parcel.writeString(director)
         parcel.writeByte(if (isPrefect) 1 else 0)
     }
 

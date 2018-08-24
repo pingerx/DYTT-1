@@ -12,6 +12,7 @@ import android.view.MenuItem
 import com.bzh.dytt.base.BaseActivity
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.ui.home.HomeFragment
+import com.google.android.gms.ads.MobileAds
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
@@ -29,6 +30,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        MobileAds.initialize(this, ADMOB_APP_ID)
 
         toolbar.setTitle(R.string.nav_home_page)
 

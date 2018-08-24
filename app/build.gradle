@@ -105,7 +105,7 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
 
     //
-    implementation(name:'key-release', ext:'aar')
+    implementation(name: 'key-release', ext: 'aar')
 
     //
     implementation 'org.jsoup:jsoup:1.8.3'
@@ -128,9 +128,10 @@ dependencies {
 
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.4'
     implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-perf:16.1.0'
+    implementation 'com.google.firebase:firebase-perf:16.0.0'
     implementation 'com.google.firebase:firebase-config:16.0.0'
-    // implementation 'com.google.firebase:firebase-ads:15.0.1'
+    implementation 'com.google.firebase:firebase-crash:16.0.1'
+    implementation 'com.google.firebase:firebase-ads:15.0.1'
 
     //
     lintChecks project(':lintrules')
@@ -166,7 +167,8 @@ dependencies {
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
 
     // optional - Test helpers
-    androidTestImplementation "android.arch.navigation:navigation-testing:$nav_version" // use -ktx for Kotlin
+    androidTestImplementation "android.arch.navigation:navigation-testing:$nav_version"
+    // use -ktx for Kotlin
 }
 repositories {
     mavenCentral()

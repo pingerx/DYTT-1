@@ -39,7 +39,7 @@ class MovieDetailParse @Inject constructor() {
                     }
                 }
                 if (content.startsWith(diretor)) {
-                    movie.diretorName = content.substring(diretor.length).replaceIllegal()
+                    movie.directorName = content.substring(diretor.length).replaceIllegal()
                 }
                 if (content.startsWith(description)) {
                     movie.description = content.substring(description.length).replaceIllegal()
@@ -57,7 +57,7 @@ class MovieDetailParse @Inject constructor() {
                     movie.duration = content.substring(duration.length).replaceIllegal()
                 }
                 if (content.startsWith(diretor)) {
-                    movie.diretor = content.substring(diretor.length).replaceIllegal()
+                    movie.director = content.substring(diretor.length).replaceIllegal()
                 }
             }
         }
