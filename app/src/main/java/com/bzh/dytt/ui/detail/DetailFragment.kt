@@ -100,7 +100,7 @@ class DetailFragment : BaseFragment(), Injectable {
     }
 
     fun onClickDownload(movieDetail: MovieDetail) {
-        if (activity == null || !thunderHelper.onClickDownload(activity, movieDetail.downloadUrl)) {
+        if (activity == null || !thunderHelper.onClickDownload(context, movieDetail.downloadUrl)) {
             val dialogFragment = InnerDialogFragment()
             dialogFragment.show(activity?.supportFragmentManager, "InnerDialog")
         }
