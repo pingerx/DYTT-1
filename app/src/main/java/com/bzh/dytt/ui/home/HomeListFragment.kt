@@ -235,7 +235,7 @@ class HomeListFragment : BaseFragment() {
 
         private const val MOVIE_TYPE = "MOVIE_TYPE"
 
-        fun newInstnace(movieType: HomeViewModel.HomeMovieType): HomeListFragment {
+        fun newInstance(movieType: HomeViewModel.HomeMovieType): HomeListFragment {
             val args = Bundle()
             args.putSerializable(MOVIE_TYPE, movieType)
             val fragment = HomeListFragment()

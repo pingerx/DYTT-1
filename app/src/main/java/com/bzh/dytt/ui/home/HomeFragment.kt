@@ -102,7 +102,7 @@ class HomeFragment : BaseFragment(), Injectable {
         }
 
         override fun getItem(position: Int): Fragment {
-            return HomeListFragment.newInstnace(data[position])
+            return HomeListFragment.newInstance(data[position])
         }
 
         override fun getCount() = data.size

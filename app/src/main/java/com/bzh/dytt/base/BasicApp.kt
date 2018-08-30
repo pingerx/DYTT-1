@@ -5,12 +5,8 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
-import com.bzh.dytt.BuildConfig
 import com.bzh.dytt.di.AppInjector
 import com.bzh.dytt.key.KeyUtils
-import com.google.firebase.FirebaseApp
-import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.Logger
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
@@ -25,19 +21,19 @@ class BasicApp : Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
 
-        FirebaseApp.initializeApp(this)
-
-        Logger.addLogAdapter(object : AndroidLogAdapter() {
-            override fun isLoggable(priority: Int, tag: String?): Boolean {
-                return BuildConfig.DEBUG
-            }
-        })
+//        FirebaseApp.initializeApp(this)
+//
+//        Logger.addLogAdapter(object : AndroidLogAdapter() {
+//            override fun isLoggable(priority: Int, tag: String?): Boolean {
+//                return BuildConfig.DEBUG
+//            }
+//        })
 
         AppInjector.init(this)
 
         KeyUtils.init(this)
 
-        Logger.d("BasicApp", getSignature(this))
+//        Logger.d("BasicApp", getSignature(this))
     }
 
     @SuppressLint("PackageManagerGetSignatures")

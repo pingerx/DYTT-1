@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import com.orhanobut.logger.Logger
 
 class ThunderHelper {
 
@@ -20,7 +19,7 @@ class ThunderHelper {
         context?.packageManager?.getApplicationInfo(XUN_LEI_PACKAGE_NAME, 0)
         true
     } catch (e: PackageManager.NameNotFoundException) {
-        Logger.e(TAG, "checkIsInstall: ", e)
+//        Logger.e(TAG, "checkIsInstall: ", e)
         false
     }
 

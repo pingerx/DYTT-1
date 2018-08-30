@@ -25,7 +25,6 @@ import com.bzh.dytt.util.autoCleared
 import com.bzh.dytt.vo.MovieDetail
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
-import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.detail_fragment.*
 import javax.inject.Inject
 
@@ -136,8 +135,8 @@ class DetailFragment : BaseFragment(), Injectable {
         viewModel.movieDetailLiveData.observe(this, movieDetailObserver)
         viewModel.swipeRefreshStatus.observe(this, refreshObserver)
 
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
+//        val adRequest = AdRequest.Builder().build()
+//        adView.loadAd(adRequest)
     }
 
     companion object {

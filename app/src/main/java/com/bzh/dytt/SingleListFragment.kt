@@ -16,7 +16,6 @@ import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.vo.ExceptionType
 import com.bzh.dytt.vo.Resource
 import com.bzh.dytt.vo.Status
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.single_list_page.*
 
@@ -130,7 +129,6 @@ abstract class SingleListFragment<T> : BaseFragment() {
                 if (activity != null) {
                     Toast.makeText(activity, resources.getString(R.string.fetch_video_detail_exception, result.message), Toast.LENGTH_SHORT).show()
                 } else {
-                    Logger.e(TAG, "onChanged: activity is null")
                 }
             }
         }
