@@ -4,8 +4,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.res.Resources
+import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.LayoutInflater
@@ -13,8 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.bzh.dytt.R
 import com.bzh.dytt.base.BaseFragment
+import com.bzh.dytt.databinding.HomeFragmentBinding
 import com.bzh.dytt.di.Injectable
 import com.bzh.dytt.testing.OpenForTesting
+import com.bzh.dytt.util.autoCleared
 import kotlinx.android.synthetic.main.home_fragment.*
 import javax.inject.Inject
 
@@ -28,7 +30,9 @@ class HomeFragment : BaseFragment(), Injectable {
 
     private lateinit var homePagerAdapter: HomePagerAdapter
 
-    private var tabObserver: Observer<List<HomeViewModel.HomeMovieType>> = Observer { tabs ->
+    private var binding by autoCleared<HomeFragmentBinding>()
+
+    private var tabDataObserver: Observer<List<HomeViewModel.HomeMovieType>> = Observer { tabs ->
         if (tabs != null) {
             homePagerAdapter.data.clear()
             for (tab in tabs) {
@@ -39,29 +43,32 @@ class HomeFragment : BaseFragment(), Injectable {
     }
 
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.home_fragment, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment, container, false)
+
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
+        lifecycle.addObserver(homeViewModel)
+        homeViewModel.tabLiveData.observe(this, tabDataObserver)
+
+        return binding.root
     }
 
     override fun doViewCreated(view: View, savedInstanceState: Bundle?) {
         super.doViewCreated(view, savedInstanceState)
-        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
-        lifecycle.addObserver(homeViewModel)
-        homeViewModel.tabLiveData.observe(this, tabObserver)
-        home_tab_layout.setupWithViewPager(home_view_pager)
+
+
+        binding.homeTabLayout.setupWithViewPager(home_view_pager)
         homePagerAdapter = HomePagerAdapter(resources, fragmentManager)
-        home_view_pager.adapter = homePagerAdapter
+        binding.homeViewPager.adapter = homePagerAdapter
     }
 
     override fun doDestroyView() {
-        homeViewModel.tabLiveData.removeObserver(tabObserver)
+        homeViewModel.tabLiveData.removeObserver(tabDataObserver)
         lifecycle.removeObserver(homeViewModel)
         super.doDestroyView()
     }
 
     companion object {
-        fun newInstance(): HomeFragment {
-            return HomeFragment()
-        }
+        fun newInstance() = HomeFragment()
     }
 
     class HomePagerAdapter(private val resources: Resources, private val fragmentManager: FragmentManager?) : FragmentPagerAdapter(fragmentManager) {
@@ -78,10 +85,10 @@ class HomeFragment : BaseFragment(), Injectable {
             HomeViewModel.HomeMovieType.MOVIE_HUAYU_FILM -> {
                 resources.getString(R.string.home_tab_item_huayu_film)
             }
-            HomeViewModel.HomeMovieType.MOIVE_OUMEI_FILM -> {
+            HomeViewModel.HomeMovieType.MOVIE_OUMEI_FILM -> {
                 resources.getString(R.string.home_tab_item_oumei_film)
             }
-            HomeViewModel.HomeMovieType.MOIVE_RIHAN_FILM -> {
+            HomeViewModel.HomeMovieType.MOVIE_RIHAN_FILM -> {
                 resources.getString(R.string.home_tab_item_rihan_film)
             }
             HomeViewModel.HomeMovieType.MOVIE_HUAYU_TV -> {
@@ -101,9 +108,7 @@ class HomeFragment : BaseFragment(), Injectable {
             }
         }
 
-        override fun getItem(position: Int): Fragment {
-            return HomeListFragment.newInstance(data[position])
-        }
+        override fun getItem(position: Int) = HomeListFragment.newInstance(data[position])
 
         override fun getCount() = data.size
     }
