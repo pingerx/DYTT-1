@@ -44,8 +44,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         pagerAdapter = MainViewPagerAdapter(supportFragmentManager)
         binding.contentContainer.adapter = pagerAdapter
-
-//        MobileAds.initialize(this, ADMOB_APP_ID)
     }
 
     override fun onBackPressed() {

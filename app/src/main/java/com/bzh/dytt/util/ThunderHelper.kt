@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 
 class ThunderHelper {
 
@@ -19,7 +20,7 @@ class ThunderHelper {
         context?.packageManager?.getApplicationInfo(XUN_LEI_PACKAGE_NAME, 0)
         true
     } catch (e: PackageManager.NameNotFoundException) {
-//        Logger.e(TAG, "checkIsInstall: ", e)
+        Log.d(TAG, "checkIsInstall() called with: context = [$context]")
         false
     }
 

@@ -35,11 +35,11 @@ class DataRepository @Inject constructor(
         val value = object : DelayNetworkBoundResource<List<MovieDetail>, MovieDetailResponse>(appExecutors) {
 
             override fun saveCallResult(item: MovieDetailResponse) {
-                if (item.rows == null || item.rows.isEmpty()) {
+                if (item.rows.isEmpty()) {
                     return
                 }
                 for (movie in item.rows) {
-                    movie.categoryId = movieType.type ?: -1
+                    movie.categoryId = movieType.type
                     movieDetailParse.parse(movie)
 
                     Log.d(TAG, "SaveCallResult ${movie.id} ${movie.simpleName}")
@@ -53,7 +53,7 @@ class DataRepository @Inject constructor(
                 val isSize = data != null && data.size < page * 30
                 val isShouldFetch = repoListRateLimit.shouldFetch("MOVIE_LIST_" + movieType.type)
                 val isFetch = networkConnected && (!isExist || isSize || isShouldFetch)
-                Log.d(TAG, "ShouldFetch size=${data?.size} networkConnected=$networkConnected isExist=${isExist} shouldFetch=$isShouldFetch fetch=$isFetch")
+                Log.d(TAG, "ShouldFetch size=${data?.size} networkConnected=$networkConnected isExist=$isExist shouldFetch=$isShouldFetch fetch=$isFetch")
                 return isFetch
             }
 
