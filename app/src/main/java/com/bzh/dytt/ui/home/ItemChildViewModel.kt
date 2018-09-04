@@ -38,4 +38,4 @@ class ItemChildViewModel(private val movieDetail: MovieDetail) : ViewModel() {
     companion object {
         private const val TAG = "ItemChildViewModel";
     }
-biez}
+}
