@@ -3,6 +3,7 @@ package com.bzh.dytt.ui.search
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
@@ -25,18 +26,21 @@ import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.R
 import com.bzh.dytt.SingleActivity
 import com.bzh.dytt.base.BaseFragment
+import com.bzh.dytt.databinding.SingleListPageBinding
 import com.bzh.dytt.di.GlideApp
 import com.bzh.dytt.ui.home.HomeListFragment
+import com.bzh.dytt.util.autoCleared
 import com.bzh.dytt.vo.MovieDetail
 import com.bzh.dytt.vo.Resource
 import com.bzh.dytt.vo.Status
-import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.item_home_child.view.*
 import kotlinx.android.synthetic.main.single_list_page.*
 import javax.inject.Inject
 
 
 class SearchFragment : BaseFragment() {
+
+    private var binding by autoCleared<SingleListPageBinding>()
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -74,20 +78,20 @@ class SearchFragment : BaseFragment() {
 
         when (result?.status) {
             Status.ERROR -> {
-                error_layout.visibility = View.VISIBLE
-                empty_layout.visibility = View.GONE
+                binding.errorLayout.visibility = View.VISIBLE
+                binding.emptyLayout.visibility = View.GONE
             }
             Status.LOADING -> {
-                error_layout.visibility = View.GONE
-                empty_layout.visibility = View.GONE
+                binding.errorLayout.visibility = View.GONE
+                binding.emptyLayout.visibility = View.GONE
             }
             Status.SUCCESS -> {
                 if (result.data == null || result.data.isEmpty()) {
-                    empty_layout.visibility = View.VISIBLE
-                    error_layout.visibility = View.GONE
+                    binding.emptyLayout.visibility = View.VISIBLE
+                    binding.errorLayout.visibility = View.GONE
                 } else {
-                    empty_layout.visibility = View.GONE
-                    error_layout.visibility = View.GONE
+                    binding.emptyLayout.visibility = View.GONE
+                    binding.errorLayout.visibility = View.GONE
                     adapter.submitList(result.data.filter { it.id != 22066 })
                 }
             }
@@ -117,7 +121,12 @@ class SearchFragment : BaseFragment() {
     }
 
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.single_list_page, container, false)
+        binding = DataBindingUtil.inflate<SingleListPageBinding>(inflater, R.layout.single_list_page, container, false)
+
+        viewModel = viewModelFactory.create(SearchViewModel::class.java)
+        lifecycle.addObserver(viewModel)
+
+        return binding.root
     }
 
     override fun doViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -128,13 +137,11 @@ class SearchFragment : BaseFragment() {
         swipe_refresh_layout.isEnabled = false
         swipe_refresh_layout.isRefreshing = false
 
-        viewModel = viewModelFactory.create(SearchViewModel::class.java)
-
         linearLayoutManager = LinearLayoutManager(activity)
-        listview.layoutManager = linearLayoutManager
+        binding.recyclerView.layoutManager = linearLayoutManager
 
         adapter = SearchListAdapter(appExecutors)
-        listview.adapter = adapter
+        binding.recyclerView.adapter = adapter
 
         lifecycle.addObserver(viewModel)
         viewModel.listLiveData.observe(this, listObserver)

@@ -55,7 +55,6 @@ class HomeFragment : BaseFragment(), Injectable {
     override fun doViewCreated(view: View, savedInstanceState: Bundle?) {
         super.doViewCreated(view, savedInstanceState)
 
-
         binding.homeTabLayout.setupWithViewPager(home_view_pager)
         homePagerAdapter = HomePagerAdapter(resources, fragmentManager)
         binding.homeViewPager.adapter = homePagerAdapter
@@ -71,7 +70,7 @@ class HomeFragment : BaseFragment(), Injectable {
         fun newInstance() = HomeFragment()
     }
 
-    class HomePagerAdapter(private val resources: Resources, private val fragmentManager: FragmentManager?) : FragmentPagerAdapter(fragmentManager) {
+    class HomePagerAdapter(val resources: Resources, fragmentManager: FragmentManager?) : FragmentPagerAdapter(fragmentManager) {
 
         val data = arrayListOf<HomeViewModel.HomeMovieType>()
 

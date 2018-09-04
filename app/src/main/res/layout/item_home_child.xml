@@ -1,73 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:orientation="horizontal"
-    android:padding="10dp">
 
-    <ImageView
-        android:id="@+id/video_cover"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:elevation="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/default_video"
-        tools:ignore="ContentDescription" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.bzh.dytt.ui.home.ItemChildViewModel" />
+
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> viewModel.onClick()}"
+        android:orientation="horizontal"
         android:padding="10dp">
 
-        <TextView
-            android:id="@+id/video_title"
-            style="@style/video_detail_main_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2" />
+        <ImageView
+            android:id="@+id/video_cover"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:elevation="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_video"
+            app:imageFromUrl="@{viewModel.imageUrl}"
+            tools:ignore="ContentDescription" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/video_publish_time"
-                style="@style/video_detail_info_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="2018-8-8" />
-
-            <TextView
-                android:id="@+id/douban_grade"
-                style="@style/video_detail_info_text_grade"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp" />
-
-            <TextView
-                android:id="@+id/imdb_grade"
-                style="@style/video_detail_info_text_grade"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/video_description"
-            style="@style/video_detail_secondary_text"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:ellipsize="end"
-            android:lineSpacingMultiplier="1.4"
-            android:maxLines="5"
-            android:textSize="12sp" />
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/video_title"
+                style="@style/video_detail_main_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{viewModel.title}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/video_publish_time"
+                    style="@style/video_detail_info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.publishTime}"
+                    tools:text="2018-8-8" />
+
+                <TextView
+                    android:id="@+id/douban_grade"
+                    style="@style/video_detail_info_text_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:text="@{viewModel.doubanGrade}" />
+
+                <TextView
+                    android:id="@+id/imdb_grade"
+                    style="@style/video_detail_info_text_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:text="@{viewModel.imdbGrade}" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/video_description"
+                style="@style/video_detail_secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.4"
+                android:maxLines="5"
+                android:text="@{viewModel.description}"
+                android:textSize="12sp" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</layout>
