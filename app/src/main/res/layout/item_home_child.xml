@@ -28,6 +28,7 @@
             android:elevation="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/default_video"
+            android:transitionName="cover"
             app:imageFromUrl="@{viewModel.imageUrl}"
             tools:ignore="ContentDescription" />
 

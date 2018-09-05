@@ -10,6 +10,7 @@ import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -163,6 +164,7 @@ class HomeListFragment : BaseFragment() {
         )
 
         override fun onBindViewHolder(holder: MovieItemHolder, position: Int) {
+            holder.unbind()
             getItem(position).let { movieDetail ->
                 with(holder) {
                     itemView.tag = movieDetail
@@ -190,15 +192,25 @@ class HomeListFragment : BaseFragment() {
         }
     }
 
-    inner class MovieItemHolder(private val binding: ItemHomeChildBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MovieItemHolder(val binding: ItemHomeChildBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(movieDetail: MovieDetail) {
             with(binding) {
-                viewModel = ItemChildViewModel(movieDetail)
+                if (viewModel == null) {
+                    Log.d(TAG, "bind() called viewModel is null")
+                    viewModel = ItemChildViewModel(movieDetail)
+                } else {
+                    Log.d(TAG, "bind() called viewModel is not null")
+                }
                 viewModel?.clickObserver?.observe(viewLifecycleOwner, Observer {
-                    SingleActivity.startDetailPage(activity, movieDetail)
+                    SingleActivity.startDetailPage(activity, binding.videoCover, binding.videoCover.transitionName, movieDetail)
                 })
                 executePendingBindings()
             }
+        }
+
+        fun unbind() {
+            binding.viewModel?.imageUrl?.set("")
         }
     }
 

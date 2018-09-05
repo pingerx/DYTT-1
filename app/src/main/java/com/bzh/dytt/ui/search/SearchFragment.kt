@@ -24,7 +24,6 @@ import android.widget.EditText
 import android.widget.TextView
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.R
-import com.bzh.dytt.SingleActivity
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.databinding.SingleListPageBinding
 import com.bzh.dytt.di.GlideApp
@@ -223,7 +222,7 @@ class SearchFragment : BaseFragment() {
             }
 
             holder.itemView.setOnClickListener {
-                SingleActivity.startDetailPage(activity, item)
+                //                SingleActivity.startDetailPage(activity, item, "cover", movieDetail)
             }
         }
     }

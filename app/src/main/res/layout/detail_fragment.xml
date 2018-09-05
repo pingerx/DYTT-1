@@ -50,6 +50,7 @@
                         android:elevation="10dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/default_video"
+                        android:transitionName="cover"
                         tools:ignore="ContentDescription" />
 
                 </FrameLayout>
@@ -314,11 +315,11 @@
                 </LinearLayout>
 
                 <!--<com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-                    <!--android:id="@+id/adView"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--ads:adSize="BANNER"-->
-                    <!--ads:adUnitId="ca-app-pub-8112052667906046/1948101912" />-->
+                <!--android:id="@+id/adView"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--ads:adSize="BANNER"-->
+                <!--ads:adUnitId="ca-app-pub-8112052667906046/1948101912" />-->
 
             </LinearLayout>
 

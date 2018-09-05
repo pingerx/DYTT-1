@@ -1,11 +1,14 @@
 package com.bzh.dytt
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.view.MenuItem
+import android.widget.ImageView
 import com.bzh.dytt.base.BaseActivity
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.ui.detail.DetailFragment
@@ -68,11 +71,16 @@ class SingleActivity : BaseActivity(), HasSupportFragmentInjector {
         const val TYPE = "TYPE"
         const val DATA = "DATA"
 
-        fun startDetailPage(activity: FragmentActivity?, movieDetail: MovieDetail) {
+        fun startDetailPage(activity: FragmentActivity?, sharedElement: ImageView, sharedKey: String, movieDetail: MovieDetail) {
             val intent = Intent(activity, SingleActivity::class.java)
             intent.putExtra(TYPE, SingleActivity.SingleType.Detail)
             intent.putExtra(DATA, movieDetail)
-            activity?.startActivity(intent)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                activity?.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity, sharedElement, sharedKey).toBundle())
+            } else {
+                activity?.startActivity(intent)
+            }
         }
 
         fun startSearchPage(activity: Activity) {
