@@ -18,10 +18,10 @@ class ItemChildViewModel(private val movieDetail: MovieDetail) : ViewModel() {
     val description = ObservableField<String>(movieDetail.description)
 
     val title = ObservableField<String>(when {
-        movieDetail.translateName?.contains(Regex(HomeListFragment.PATTERN))!! -> {
+        movieDetail.translateName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
             movieDetail.translateName
         }
-        movieDetail.titleName?.contains(Regex(HomeListFragment.PATTERN))!! -> {
+        movieDetail.titleName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
             movieDetail.titleName
         }
         else -> {

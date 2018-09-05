@@ -35,5 +35,4 @@ interface NetworkService {
             @Query("categoryId") categoryId: Int? = 1,
             @Query("page") page: Int? = 1,
             @Query("searchContent") searchContent: String? = ""): LiveData<ApiResponse<MovieDetailResponse>>
-
 }

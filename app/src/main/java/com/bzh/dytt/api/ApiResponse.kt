@@ -5,6 +5,7 @@ import retrofit2.Response
 sealed class ApiResponse<T> {
 
     companion object {
+
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
             return ApiErrorResponse(error.message ?: "unknown error")
         }

@@ -70,7 +70,7 @@ class HomeFragment : BaseFragment(), Injectable {
         fun newInstance() = HomeFragment()
     }
 
-    class HomePagerAdapter(val resources: Resources, fragmentManager: FragmentManager?) : FragmentPagerAdapter(fragmentManager) {
+    class HomePagerAdapter(private val resources: Resources, fragmentManager: FragmentManager?) : FragmentPagerAdapter(fragmentManager) {
 
         val data = arrayListOf<HomeViewModel.HomeMovieType>()
 
