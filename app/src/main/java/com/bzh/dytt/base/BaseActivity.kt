@@ -1,5 +1,18 @@
 package com.bzh.dytt.base
 
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.google.firebase.analytics.FirebaseAnalytics
 
-abstract class BaseActivity : AppCompatActivity()
+
+abstract class BaseActivity : AppCompatActivity() {
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Obtain the FirebaseAnalytics instance.
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+    }
+}
