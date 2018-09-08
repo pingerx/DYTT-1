@@ -3,12 +3,12 @@ package com.bzh.dytt.repository
 import android.arch.lifecycle.LiveData
 import android.util.Log
 import com.bzh.dytt.AppExecutors
+import com.bzh.dytt.api.ApiErrorResponse
 import com.bzh.dytt.api.ApiResponse
 import com.bzh.dytt.api.NetworkService
 import com.bzh.dytt.db.MovieDetailDAO
 import com.bzh.dytt.key.KeyUtils
 import com.bzh.dytt.ui.home.HomeViewModel
-import com.bzh.dytt.util.MovieDetailParse
 import com.bzh.dytt.util.NetworkHelper
 import com.bzh.dytt.util.RateLimiter
 import com.bzh.dytt.vo.MovieDetail
@@ -24,7 +24,6 @@ class DataRepository @Inject constructor(
         private val networkService: NetworkService,
         private val movieDetailDAO: MovieDetailDAO,
         private val delayRunnableQueue: DelayRunnableQueue<Any, Runnable>,
-        private val movieDetailParse: MovieDetailParse,
         private val networkHelper: NetworkHelper
 ) {
 
@@ -40,8 +39,6 @@ class DataRepository @Inject constructor(
                 }
                 for (movie in item.rows) {
                     movie.categoryId = movieType.type
-                    movieDetailParse.parse(movie)
-
                     Log.d(TAG, "saveCallResult() called with: movie = [${movie.id} ${movie.name}]")
                 }
                 movieDetailDAO.insertMovieList(item.rows)
@@ -53,7 +50,9 @@ class DataRepository @Inject constructor(
                 val isSize = data != null && data.size < page * 30
                 val isShouldFetch = repoListRateLimit.shouldFetch("MOVIE_LIST_" + movieType.type)
                 val isFetch = networkConnected && (!isExist || isSize || isShouldFetch)
-                Log.d(TAG, "ShouldFetch size=${data?.size} networkConnected=$networkConnected isExist=$isExist shouldFetch=$isShouldFetch fetch=$isFetch")
+
+                Log.d(TAG, "shouldFetch() called with: size=${data?.size} networkConnected=$networkConnected isExist=$isExist shouldFetch=$isShouldFetch fetch=$isFetch")
+
                 return isFetch
             }
 
@@ -65,11 +64,12 @@ class DataRepository @Inject constructor(
             }
 
             override fun createCall(): LiveData<ApiResponse<MovieDetailResponse>> {
+
                 val timeStamp = System.currentTimeMillis() / 1000L
                 val imei = ""
                 val key = KeyUtils.getHeaderKey(timeStamp)
 
-                Log.d(TAG, "Request Header timeStamp=$timeStamp imei=$imei key=$key categoryId=${movieType.type} page=$page")
+                Log.d(TAG, "createCall() called timeStamp=$timeStamp imei=$imei key=$key categoryId=${movieType.type} page=$page")
 
                 return networkService.movieList(
                         headerKey = key,
@@ -79,6 +79,11 @@ class DataRepository @Inject constructor(
                         page = page,
                         searchContent = ""
                 )
+            }
+
+            override fun onFetchFailed(response: ApiErrorResponse<MovieDetailResponse>) {
+                super.onFetchFailed(response)
+                Log.d(TAG, "onFetchFailed() called with: response = [$response]")
             }
 
             override fun finish() {
@@ -111,7 +116,6 @@ class DataRepository @Inject constructor(
             override fun saveCallResult(item: MovieDetail) {
                 item.categoryId = oldItem.categoryId
                 item.isPrefect = true
-                movieDetailParse.parse(item)
                 movieDetailDAO.updateMovie(item)
             }
 
@@ -160,9 +164,6 @@ class DataRepository @Inject constructor(
             override fun saveCallResult(item: MovieDetailResponse) {
                 if (item.rows.isEmpty()) {
                     return
-                }
-                for (movie in item.rows) {
-                    movieDetailParse.parse(movie)
                 }
                 movieDetailDAO.insertMovieList(item.rows)
                 for (movie in item.rows) {

@@ -104,7 +104,7 @@ class HomeListFragment : BaseFragment() {
     }
 
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate<SingleListPageBinding>(inflater, R.layout.single_list_page, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.single_list_page, container, false)
 
         listViewModel = viewModelFactory.create(HomeListViewModel::class.java)
         lifecycle.addObserver(listViewModel)
@@ -211,8 +211,6 @@ class HomeListFragment : BaseFragment() {
     }
 
     companion object {
-
-        const val PATTERN = "[\\u4e00-\\u9fa5]"
 
         private const val TAG = "HomeListFragment"
 
