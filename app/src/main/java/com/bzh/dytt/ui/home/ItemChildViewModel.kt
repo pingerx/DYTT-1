@@ -2,32 +2,9 @@ package com.bzh.dytt.ui.home
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableField
 import com.bzh.dytt.vo.MovieDetail
 
-class ItemChildViewModel(private val movieDetail: MovieDetail) : ViewModel() {
-
-    val imageUrl = ObservableField<String>(movieDetail.homePicUrl)
-
-    val doubanGrade = ObservableField<String>("DB/${movieDetail.doubanGrade}")
-
-    val imdbGrade = ObservableField<String>("IMDB/${movieDetail.imdbGrade}")
-
-    val publishTime = ObservableField<String>(movieDetail.publishTime)
-
-    val description = ObservableField<String>(movieDetail.description)
-
-    val title = ObservableField<String>(when {
-        movieDetail.translateName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
-            movieDetail.translateName
-        }
-        movieDetail.titleName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
-            movieDetail.titleName
-        }
-        else -> {
-            movieDetail.simpleName
-        }
-    })
+class ItemChildViewModel(val movieDetail: MovieDetail) : ViewModel() {
 
     val clickObserver: MutableLiveData<MovieDetail> = MutableLiveData()
 
@@ -35,7 +12,19 @@ class ItemChildViewModel(private val movieDetail: MovieDetail) : ViewModel() {
         clickObserver.value = movieDetail
     }
 
+    fun description(): String = when (movieDetail.categoryId) {
+        HomeViewModel.HomeMovieType.MOVIE_RIHAN_TV.type -> {
+            val filter = movieDetail.content?.split("\r\n")?.filter { it.isNotEmpty() }
+            filter?.last().orEmpty()
+
+        }
+        else -> {
+            val filter = movieDetail.content?.split("◎")?.filter { it.isNotEmpty() }
+            filter?.last().orEmpty().replace(Regex("[\\r\\n 　]"), "").replace("简介", "[简 介]:")
+        }
+    }
+
     companion object {
-        private const val TAG = "ItemChildViewModel";
+        private const val TAG = "ItemChildViewModel"
     }
 }

@@ -28,7 +28,7 @@ class DataRepository @Inject constructor(
         private val networkHelper: NetworkHelper
 ) {
 
-    private val repoListRateLimit = RateLimiter<String>(1, TimeUnit.MINUTES)
+    private val repoListRateLimit = RateLimiter<String>(0, TimeUnit.MINUTES)
 
     fun movieList(movieType: HomeViewModel.HomeMovieType, page: Int): LiveData<Resource<List<MovieDetail>>> {
 

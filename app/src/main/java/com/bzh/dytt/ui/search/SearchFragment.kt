@@ -161,7 +161,7 @@ class SearchFragment : BaseFragment() {
                         }
 
                         override fun areContentsTheSame(oldItem: MovieDetail, newItem: MovieDetail): Boolean {
-                            return oldItem.simpleName == newItem.simpleName
+                            return oldItem.name == newItem.name
                                     && oldItem.homePicUrl == newItem.homePicUrl
 
                         }
@@ -180,50 +180,50 @@ class SearchFragment : BaseFragment() {
             val item = getItem(position)
 
             // clear value
-            holder.itemView.video_title.text = ""
-            holder.itemView.video_publish_time.text = ""
-            holder.itemView.douban_grade.text = ""
-            holder.itemView.imdb_grade.text = ""
-            holder.itemView.video_description.text = ""
-            holder.itemView.setOnClickListener(null)
-            GlideApp.with(holder.itemView.context)
-                    .load("")
-                    .placeholder(R.drawable.default_video)
-                    .into(holder.itemView.video_cover)
-
-            // update value
-            Log.d(TAG, "id=${item.id} categoryId=${item.categoryId} ${item.name} ${item.productArea} ${item.translateName} ${item.titleName} ")
-
-            when {
-                item.translateName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
-                    holder.itemView.video_title.text = item.translateName
-                }
-                item.titleName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
-                    holder.itemView.video_title.text = item.titleName
-                }
-                else -> {
-                    holder.itemView.video_title.text = item.simpleName
-                }
-            }
-
-            holder.itemView.video_publish_time.text = item.publishTime
-            holder.itemView.video_description.text = item.description
-            if (item.doubanGrade != 0F) {
-                holder.itemView.douban_grade.text = "DB/${item.doubanGrade}"
-            }
-            if (item.imdbGrade != 0F) {
-                holder.itemView.imdb_grade.text = "IMDB/${item.imdbGrade}"
-            }
-            if (!TextUtils.isEmpty(item.homePicUrl)) {
-                GlideApp.with(holder.itemView.context)
-                        .load(item.homePicUrl)
-                        .placeholder(R.drawable.default_video)
-                        .into(holder.itemView.video_cover)
-            }
-
-            holder.itemView.setOnClickListener {
-                //                SingleActivity.startDetailPage(activity, item, "cover", movieDetail)
-            }
+//            holder.itemView.video_title.text = ""
+//            holder.itemView.video_publish_time.text = ""
+//            holder.itemView.douban_grade.text = ""
+//            holder.itemView.imdb_grade.text = ""
+//            holder.itemView.video_description.text = ""
+//            holder.itemView.setOnClickListener(null)
+//            GlideApp.with(holder.itemView.context)
+//                    .load("")
+//                    .placeholder(R.drawable.default_video)
+//                    .into(holder.itemView.video_cover)
+//
+//            // update value
+//            Log.d(TAG, "id=${item.id} categoryId=${item.categoryId} ${item.name} ${item.productArea} ${item.translateName} ${item.titleName} ")
+//
+//            when {
+//                item.translateName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
+//                    holder.itemView.video_title.text = item.translateName
+//                }
+//                item.titleName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
+//                    holder.itemView.video_title.text = item.titleName
+//                }
+//                else -> {
+//                    holder.itemView.video_title.text = item.simpleName
+//                }
+//            }
+//
+//            holder.itemView.video_publish_time.text = item.publishTime
+//            holder.itemView.video_description.text = item.description
+//            if (item.doubanGrade != 0F) {
+//                holder.itemView.douban_grade.text = "DB/${item.doubanGrade}"
+//            }
+//            if (item.imdbGrade != 0F) {
+//                holder.itemView.imdb_grade.text = "IMDB/${item.imdbGrade}"
+//            }
+//            if (!TextUtils.isEmpty(item.homePicUrl)) {
+//                GlideApp.with(holder.itemView.context)
+//                        .load(item.homePicUrl)
+//                        .placeholder(R.drawable.default_video)
+//                        .into(holder.itemView.video_cover)
+//            }
+//
+//            holder.itemView.setOnClickListener {
+//                //                SingleActivity.startDetailPage(activity, item, "cover", movieDetail)
+//            }
         }
     }
 

@@ -19,7 +19,6 @@ import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.databinding.DetailFragmentBinding
 import com.bzh.dytt.di.GlideApp
 import com.bzh.dytt.di.Injectable
-import com.bzh.dytt.ui.home.HomeListFragment
 import com.bzh.dytt.util.ThunderHelper
 import com.bzh.dytt.util.autoCleared
 import com.bzh.dytt.vo.MovieDetail
@@ -81,21 +80,21 @@ class DetailFragment : BaseFragment(), Injectable {
     }
 
     private fun updateTitleBar(movieDetail: MovieDetail) {
-        if (activity != null) {
-            val actionBar = (activity as AppCompatActivity).supportActionBar
-            actionBar?.title = movieDetail.simpleName
-            when {
-                movieDetail.translateName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
-                    actionBar?.title = movieDetail.translateName
-                }
-                movieDetail.titleName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
-                    actionBar?.title = movieDetail.titleName
-                }
-                else -> {
-                    actionBar?.title = movieDetail.simpleName
-                }
-            }
-        }
+//        if (activity != null) {
+//            val actionBar = (activity as AppCompatActivity).supportActionBar
+//            actionBar?.title = movieDetail.simpleName
+//            when {
+//                movieDetail.translateName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
+//                    actionBar?.title = movieDetail.translateName
+//                }
+//                movieDetail.titleName?.contains(Regex(HomeListFragment.PATTERN)) == true -> {
+//                    actionBar?.title = movieDetail.titleName
+//                }
+//                else -> {
+//                    actionBar?.title = movieDetail.simpleName
+//                }
+//            }
+//        }
     }
 
     fun onClickDownload(movieDetail: MovieDetail) {

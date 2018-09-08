@@ -90,7 +90,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:maxLines="1"
-                                android:text="@{movieDetail.productArea}" />
+                                 />
                         </LinearLayout>
 
 
@@ -112,7 +112,7 @@
                                 style="@style/video_detail_secondary_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{movieDetail.duration}" />
+                                 />
 
                         </LinearLayout>
 
@@ -136,7 +136,7 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="1"
-                                android:text="@{movieDetail.publishTime}" />
+                                />
                         </LinearLayout>
 
                         <LinearLayout
@@ -160,7 +160,7 @@
                                 android:ellipsize="end"
                                 android:maxLength="20"
                                 android:maxLines="1"
-                                android:text="@{movieDetail.type}" />
+                                 />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -182,7 +182,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:background="?selectableItemBackground"
-                                android:onClick="@{() ->  detailFragment.onClickDownload(movieDetail)}"
+
                                 android:padding="10dp"
                                 android:src="@drawable/ic_download"
                                 android:tint="@color/colorSecondaryText"
@@ -208,7 +208,8 @@
                                     android:backgroundTint="@color/colorAccent"
                                     android:isIndicator="true"
                                     android:numStars="5"
-                                    android:rating="@{movieDetail.doubanGrade / 2}" />
+                                     />
+                                <!--android:rating="@{movieDetail.doubanGrade / 2}"-->
                             </FrameLayout>
 
                             <TextView
@@ -217,7 +218,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:layout_weight="1"
-                                android:text="@{String.format(@string/douban_grade,movieDetail.doubanGrade)}" />
+                                 />
+                            <!--android:text="@{String.format(@string/douban_grade,movieDetail.doubanGrade)}"-->
 
                         </LinearLayout>
 
@@ -240,7 +242,8 @@
                                     android:backgroundTint="@color/colorAccent"
                                     android:isIndicator="true"
                                     android:numStars="5"
-                                    android:rating="@{movieDetail.imdbGrade / 2}" />
+                                     />
+                                <!--android:rating="@{movieDetail.imdbGrade / 2}"-->
                             </FrameLayout>
 
                             <TextView
@@ -249,7 +252,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:layout_weight="1"
-                                android:text="@{String.format(@string/imdb_grade,movieDetail.imdbGrade)}" />
+                                 />
+                            <!--android:text="@{String.format(@string/imdb_grade,movieDetail.imdbGrade)}"-->
 
                         </LinearLayout>
                     </LinearLayout>
@@ -281,7 +285,7 @@
                             style="@style/video_detail_secondary_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{movieDetail.director}" />
+                             />
                     </LinearLayout>
 
                     <LinearLayout
@@ -307,8 +311,8 @@
                             android:ellipsize="end"
                             android:lineSpacingMultiplier="1.2"
                             android:maxLines="100"
-                            android:onClick="@{(view) -> detailFragment.onClickDescription(view)}"
-                            android:text="@{movieDetail.description}" />
+
+                             />
 
                     </LinearLayout>
 

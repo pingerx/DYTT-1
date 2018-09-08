@@ -14,18 +14,6 @@ data class MovieDetail(
         val downloadUrl: String?,
         val content: String?,
         var categoryId: Int,
-        var simpleName: String?,
-        var translateName: String?,
-        var titleName: String?,
-        var imdbGrade: Float,
-        var doubanGrade: Float,
-        var directorName: String?,
-        var description: String?,
-        var type: String?,
-        var language: String?,
-        var productArea: String?,
-        var duration: String?,
-        var director: String?,
         var isPrefect: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -37,18 +25,6 @@ data class MovieDetail(
             parcel.readString(),
             parcel.readString(),
             parcel.readInt(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readFloat(),
-            parcel.readFloat(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
             parcel.readByte() != 0.toByte()) {
     }
 
@@ -61,18 +37,6 @@ data class MovieDetail(
         parcel.writeString(downloadUrl)
         parcel.writeString(content)
         parcel.writeInt(categoryId)
-        parcel.writeString(simpleName)
-        parcel.writeString(translateName)
-        parcel.writeString(titleName)
-        parcel.writeFloat(imdbGrade)
-        parcel.writeFloat(doubanGrade)
-        parcel.writeString(directorName)
-        parcel.writeString(description)
-        parcel.writeString(type)
-        parcel.writeString(language)
-        parcel.writeString(productArea)
-        parcel.writeString(duration)
-        parcel.writeString(director)
         parcel.writeByte(if (isPrefect) 1 else 0)
     }
 
@@ -89,4 +53,5 @@ data class MovieDetail(
             return arrayOfNulls(size)
         }
     }
+
 }

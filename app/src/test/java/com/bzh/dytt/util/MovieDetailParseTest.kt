@@ -1,32 +1,53 @@
 package com.bzh.dytt.util
 
-import com.bzh.dytt.TestUtils
 import com.bzh.dytt.vo.MovieDetail
 import com.google.gson.Gson
-import org.junit.After
+import okio.Okio
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
+import java.io.IOException
+import java.nio.charset.StandardCharsets
 
 class MovieDetailParseTest {
 
-    lateinit var movieDetail: MovieDetail
-    lateinit var movieDetailParse: MovieDetailParse
+    @Throws(IOException::class)
+    fun getResource(fileName: String): String {
+        val inputStream = javaClass!!.classLoader!!.getResourceAsStream("api-response/$fileName")
+        val source = Okio.buffer(Okio.source(inputStream))
+        return source.readString(StandardCharsets.UTF_8)
+    }
+
     @Before
     fun setUp() {
-        val json = TestUtils.getResource(javaClass, "movie-detail.json")
-        val gson = Gson()
-        movieDetail = gson.fromJson<MovieDetail>(json, MovieDetail::class.java)
 
-        movieDetailParse = MovieDetailParse()
     }
 
 
-    @After
-    fun tearDown() {
+    @Test
+    fun parseRiHan() {
+
+        val json = getResource("movie-rihan-tv.json")
+        val gson = Gson()
+        val movieDetail = gson.fromJson<MovieDetail>(json, MovieDetail::class.java)
+
+        val parse = RiHanTVParase()
+
+        parse.parse(movieDetail)
+
     }
 
     @Test
     fun parse() {
-        movieDetailParse.parse(movieDetail)
+
+        val json = getResource("movie-detail.json")
+        val gson = Gson()
+        val movieDetail = gson.fromJson<MovieDetail>(json, MovieDetail::class.java)
+
+        val parse = NormalParse()
+
+        parse.parse(movieDetail)
+
     }
 }

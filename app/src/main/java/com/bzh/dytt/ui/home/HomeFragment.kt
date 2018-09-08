@@ -102,8 +102,8 @@ class HomeFragment : BaseFragment(), Injectable {
             HomeViewModel.HomeMovieType.MOVIE_ZENGYIV -> {
                 resources.getString(R.string.home_tab_item_zongyi)
             }
-            else -> {
-                resources.getString(R.string.home_tab_item_zuixin_film)
+            HomeViewModel.HomeMovieType.MOVIE_DONGMAN -> {
+                resources.getString(R.string.home_tab_item_dongman)
             }
         }
 

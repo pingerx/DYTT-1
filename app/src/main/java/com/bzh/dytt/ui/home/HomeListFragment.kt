@@ -147,7 +147,7 @@ class HomeListFragment : BaseFragment() {
                 }
 
                 override fun areContentsTheSame(oldItem: MovieDetail, newItem: MovieDetail): Boolean {
-                    return oldItem.simpleName == newItem.simpleName && oldItem.homePicUrl == newItem.homePicUrl
+                    return oldItem.name == newItem.name && oldItem.homePicUrl == newItem.homePicUrl
                 }
             })
             .setBackgroundThreadExecutor(appExecutors.diskIO())
