@@ -61,14 +61,16 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
 
     val moveTypeLiveData: MutableLiveData<HomeViewModel.HomeMovieType> = MutableLiveData()
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun active() {
-        refresLiveData.value = true
-        doLoadFirstPage()
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun create() {
+        moveTypeLiveData.observeForever {
+            refresLiveData.value = true
+            doLoadFirstPage()
+        }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun inactive() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun destroy() {
         unregister()
     }
 

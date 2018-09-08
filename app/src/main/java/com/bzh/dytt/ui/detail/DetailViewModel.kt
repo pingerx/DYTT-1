@@ -1,6 +1,7 @@
 package com.bzh.dytt.ui.detail
 
 import android.arch.lifecycle.*
+import android.databinding.ObservableField
 import com.bzh.dytt.repository.DataRepository
 import com.bzh.dytt.vo.MovieDetail
 import com.bzh.dytt.vo.Resource
@@ -9,9 +10,9 @@ import javax.inject.Inject
 
 class DetailViewModel @Inject constructor(private val dataRepository: DataRepository) : ViewModel(), LifecycleObserver {
 
-    val paramsLiveData: MutableLiveData<MovieDetail> = MutableLiveData()
+    val homePicUrl = ObservableField<String>()
 
-    val movieDetailLiveData: MutableLiveData<MovieDetail> = MutableLiveData()
+    val paramsLiveData: MutableLiveData<MovieDetail> = MutableLiveData()
 
     val swipeRefreshStatus: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -20,7 +21,7 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
     private val paramsObserver: Observer<MovieDetail> = Observer {
         if (it != null) {
             if (it.isPrefect) {
-                movieDetailLiveData.value = it
+                homePicUrl.set(it.homePicUrl)
                 swipeRefreshStatus.value = false
             } else {
                 swipeRefreshStatus.value = true
@@ -36,7 +37,7 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
         when (it?.status) {
             Status.SUCCESS -> {
                 if (it.data?.isPrefect == true) {
-                    movieDetailLiveData.value = it.data
+                    homePicUrl.set(it.data.homePicUrl)
                 }
                 swipeRefreshStatus.value = false
             }
