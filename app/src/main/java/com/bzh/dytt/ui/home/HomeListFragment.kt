@@ -164,8 +164,8 @@ class HomeListFragment : BaseFragment() {
         )
 
         override fun onBindViewHolder(holder: MovieItemHolder, position: Int) {
-            holder.unbind()
             getItem(position).let { movieDetail ->
+                Log.d(TAG, "onBindViewHolder() called with: movieDetail = [${movieDetail.name}]")
                 with(holder) {
                     itemView.tag = movieDetail
                     bind(movieDetail)
@@ -196,21 +196,12 @@ class HomeListFragment : BaseFragment() {
 
         fun bind(movieDetail: MovieDetail) {
             with(binding) {
-                if (viewModel == null) {
-                    Log.d(TAG, "bind() called viewModel is null")
-                    viewModel = ItemChildViewModel(movieDetail)
-                } else {
-                    Log.d(TAG, "bind() called viewModel is not null")
-                }
+                viewModel = ItemChildViewModel(movieDetail)
                 viewModel?.clickObserver?.observe(viewLifecycleOwner, Observer {
                     SingleActivity.startDetailPage(activity, binding.videoCover, binding.videoCover.transitionName, movieDetail)
                 })
                 executePendingBindings()
             }
-        }
-
-        fun unbind() {
-            binding.viewModel?.imageUrl?.set("")
         }
     }
 

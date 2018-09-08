@@ -43,6 +43,10 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
                 isLoadMore = false
                 isRefresh = false
                 movieListLiveData.value = it
+
+                it.data?.forEach {
+                    Log.d(TAG, "home list model viewModel ${it.name}")
+                }
             }
             Status.ERROR -> {
                 isLoadMore = false

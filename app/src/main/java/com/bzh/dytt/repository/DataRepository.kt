@@ -28,7 +28,7 @@ class DataRepository @Inject constructor(
         private val networkHelper: NetworkHelper
 ) {
 
-    private val repoListRateLimit = RateLimiter<String>(5, TimeUnit.MINUTES)
+    private val repoListRateLimit = RateLimiter<String>(1, TimeUnit.MINUTES)
 
     fun movieList(movieType: HomeViewModel.HomeMovieType, page: Int): LiveData<Resource<List<MovieDetail>>> {
 
@@ -42,7 +42,7 @@ class DataRepository @Inject constructor(
                     movie.categoryId = movieType.type
                     movieDetailParse.parse(movie)
 
-                    Log.d(TAG, "SaveCallResult ${movie.id} ${movie.simpleName}")
+                    Log.d(TAG, "saveCallResult() called with: ${movie.id} ${movie.simpleName}")
                 }
                 movieDetailDAO.insertMovieList(item.rows)
             }
@@ -58,6 +58,9 @@ class DataRepository @Inject constructor(
             }
 
             override fun loadFromDb(): LiveData<List<MovieDetail>> {
+
+                Log.d(TAG, "loadFromDb() called type ${movieType.type} limit ${page * 30}")
+
                 return movieDetailDAO.movieList(movieType.type, page * 30)
             }
 
