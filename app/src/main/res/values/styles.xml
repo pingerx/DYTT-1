@@ -17,6 +17,8 @@
         <!-- specify shared element transitions -->
         <item name="android:windowSharedElementEnterTransition">@transition/change_bounds</item>
         <item name="android:windowSharedElementExitTransition">@transition/change_bounds</item>
+
+        <item name="android:windowSharedElementsUseOverlay">false</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
