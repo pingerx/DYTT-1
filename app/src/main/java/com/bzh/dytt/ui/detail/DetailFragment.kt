@@ -29,7 +29,6 @@ import javax.inject.Inject
 
 class DetailFragment : BaseFragment(), Injectable {
 
-
     @Inject
     lateinit var appExecutors: AppExecutors
 
@@ -85,6 +84,7 @@ class DetailFragment : BaseFragment(), Injectable {
         viewModel = viewModelFactory.create(DetailViewModel::class.java)
         lifecycle.addObserver(viewModel)
         binding.viewModel = viewModel
+        binding.detailFragment = this
 
         return binding.root
     }
@@ -138,7 +138,6 @@ class DetailFragment : BaseFragment(), Injectable {
                 }
             }
         }
-
     }
 
     inner class DetailItemHolder(val binding: ItemDetailBinding) : RecyclerView.ViewHolder(binding.root) {

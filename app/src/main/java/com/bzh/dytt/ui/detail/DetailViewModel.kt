@@ -11,6 +11,8 @@ import javax.inject.Inject
 
 class DetailViewModel @Inject constructor(private val dataRepository: DataRepository) : ViewModel(), LifecycleObserver {
 
+    var movieDetail: MovieDetail? = null
+
     val homePicUrl = ObservableField<String>()
 
     val paramsLiveData: MutableLiveData<MovieDetail> = MutableLiveData()
@@ -24,9 +26,9 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
     private val paramsObserver: Observer<MovieDetail> = Observer {
         if (it != null) {
             if (it.isPrefect) {
+                movieDetail = it
                 homePicUrl.set(it.homePicUrl)
                 setDetailList(it)
-
                 swipeRefreshStatus.value = false
             } else {
                 swipeRefreshStatus.value = true
@@ -42,7 +44,6 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
         when (movieDetail.categoryId) {
             HomeViewModel.HomeMovieType.MOVIE_RIHAN_TV.type -> {
                 detailList.value = movieDetail.content?.split("\r\n")?.filter { it.isNotEmpty() }
-
             }
             else -> {
                 detailList.value = movieDetail.content?.split("◎")?.filter { it.isNotEmpty() }
@@ -54,6 +55,7 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
         when (it?.status) {
             Status.SUCCESS -> {
                 if (it.data?.isPrefect == true) {
+                    movieDetail = it.data
                     setDetailList(it.data)
                     homePicUrl.set(it.data.homePicUrl)
                 }
@@ -64,7 +66,6 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
             }
         }
     }
-
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun active() {

@@ -12,6 +12,10 @@
             type="android.support.v7.app.ActionBar" />
 
         <variable
+            name="detailFragment"
+            type="com.bzh.dytt.ui.detail.DetailFragment" />
+
+        <variable
             name="viewModel"
             type="com.bzh.dytt.ui.detail.DetailViewModel" />
 
@@ -72,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:onClick="@{() ->  detailFragment.onClickDownload(viewModel.movieDetail)}"
                 android:tint="@android:color/white"
                 app:layout_anchor="@id/app_bar"
                 app:layout_anchorGravity="bottom|end"
