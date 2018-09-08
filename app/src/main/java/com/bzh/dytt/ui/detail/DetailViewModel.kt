@@ -3,6 +3,7 @@ package com.bzh.dytt.ui.detail
 import android.arch.lifecycle.*
 import android.databinding.ObservableField
 import com.bzh.dytt.repository.DataRepository
+import com.bzh.dytt.ui.home.HomeViewModel
 import com.bzh.dytt.vo.MovieDetail
 import com.bzh.dytt.vo.Resource
 import com.bzh.dytt.vo.Status
@@ -14,6 +15,8 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
 
     val paramsLiveData: MutableLiveData<MovieDetail> = MutableLiveData()
 
+    val detailList: MutableLiveData<List<String>> = MutableLiveData()
+
     val swipeRefreshStatus: MutableLiveData<Boolean> = MutableLiveData()
 
     var autoUpdateLiveData: LiveData<Resource<MovieDetail>>? = null
@@ -22,6 +25,8 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
         if (it != null) {
             if (it.isPrefect) {
                 homePicUrl.set(it.homePicUrl)
+                setDetailList(it)
+
                 swipeRefreshStatus.value = false
             } else {
                 swipeRefreshStatus.value = true
@@ -33,10 +38,23 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
         }
     }
 
+    private fun setDetailList(movieDetail: MovieDetail) {
+        when (movieDetail.categoryId) {
+            HomeViewModel.HomeMovieType.MOVIE_RIHAN_TV.type -> {
+                detailList.value = movieDetail.content?.split("\r\n")?.filter { it.isNotEmpty() }
+
+            }
+            else -> {
+                detailList.value = movieDetail.content?.split("◎")?.filter { it.isNotEmpty() }
+            }
+        }
+    }
+
     private val detailObserver = Observer<Resource<MovieDetail>> {
         when (it?.status) {
             Status.SUCCESS -> {
                 if (it.data?.isPrefect == true) {
+                    setDetailList(it.data)
                     homePicUrl.set(it.data.homePicUrl)
                 }
                 swipeRefreshStatus.value = false
@@ -46,6 +64,7 @@ class DetailViewModel @Inject constructor(private val dataRepository: DataReposi
             }
         }
     }
+
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun active() {
