@@ -168,6 +168,7 @@ class HomeListFragment : BaseFragment() {
                 Log.d(TAG, "onBindViewHolder() called with: movieDetail = [${movieDetail.id} ${movieDetail.name}]")
                 with(holder) {
                     itemView.tag = movieDetail
+                    reset()
                     bind(movieDetail)
                 }
             }
@@ -188,7 +189,6 @@ class HomeListFragment : BaseFragment() {
                 homeListAdapter.getItem(holder.adapterPosition).let {
                     listViewModel.doRemoveUpdateMovieDetail(it)
                 }
-                holder.unbind()
             }
         }
     }
@@ -205,7 +205,7 @@ class HomeListFragment : BaseFragment() {
             }
         }
 
-        fun unbind() {
+        fun reset() {
             binding.videoCover.setImageResource(R.drawable.default_video)
         }
     }
