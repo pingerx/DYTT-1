@@ -45,7 +45,7 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
                 movieListLiveData.value = it
 
                 it.data?.forEach {
-                    Log.d(TAG, "home list model viewModel ${it.name}")
+                    Log.d(TAG, "home list model movieDetail = [${it.id} ${it.name}]")
                 }
             }
             Status.ERROR -> {

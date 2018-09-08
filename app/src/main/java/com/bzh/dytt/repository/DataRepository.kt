@@ -42,7 +42,7 @@ class DataRepository @Inject constructor(
                     movie.categoryId = movieType.type
                     movieDetailParse.parse(movie)
 
-                    Log.d(TAG, "saveCallResult() called with: ${movie.id} ${movie.simpleName}")
+                    Log.d(TAG, "saveCallResult() called with: movie = [${movie.id} ${movie.name}]")
                 }
                 movieDetailDAO.insertMovieList(item.rows)
             }
