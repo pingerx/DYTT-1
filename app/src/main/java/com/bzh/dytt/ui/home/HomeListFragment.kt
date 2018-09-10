@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.recyclerview.extensions.AsyncDifferConfig
 import android.support.v7.recyclerview.extensions.ListAdapter
@@ -19,6 +20,7 @@ import com.bzh.dytt.R
 import com.bzh.dytt.SingleActivity
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.databinding.ItemHomeChildBinding
+import com.bzh.dytt.databinding.ItemLoadMoreBinding
 import com.bzh.dytt.databinding.SingleListPageBinding
 import com.bzh.dytt.util.autoCleared
 import com.bzh.dytt.vo.MovieDetail
@@ -67,7 +69,6 @@ class HomeListFragment : BaseFragment() {
 
     private var binding by autoCleared<SingleListPageBinding>()
 
-
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.single_list_page, container, false)
 
@@ -92,7 +93,7 @@ class HomeListFragment : BaseFragment() {
         linearLayoutManager = LinearLayoutManager(activity)
         binding.recyclerView.layoutManager = linearLayoutManager
 
-        homeListAdapter = HomeListAdapter(appExecutors)
+        homeListAdapter = HomeListAdapter(activity, viewModel, appExecutors)
         binding.recyclerView.adapter = homeListAdapter
 
         viewModel.movieListLiveData.observe(this, listObserver)
@@ -105,76 +106,6 @@ class HomeListFragment : BaseFragment() {
         viewModel.refreshLiveData.removeObserver(refreshObserver)
         lifecycle.removeObserver(viewModel)
         super.doDestroyView()
-    }
-
-    inner class HomeListAdapter constructor(appExecutors: AppExecutors) : ListAdapter<MovieDetail, MovieItemHolder>(AsyncDifferConfig
-            .Builder<MovieDetail>(object : DiffUtil.ItemCallback<MovieDetail>() {
-                override fun areItemsTheSame(oldItem: MovieDetail, newItem: MovieDetail): Boolean {
-                    return oldItem.id == newItem.id && oldItem.categoryId == newItem.categoryId
-                }
-
-                override fun areContentsTheSame(oldItem: MovieDetail, newItem: MovieDetail): Boolean {
-                    return oldItem.name == newItem.name && oldItem.homePicUrl == newItem.homePicUrl
-                }
-            })
-            .setBackgroundThreadExecutor(appExecutors.diskIO())
-            .build()
-    ) {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MovieItemHolder(
-                DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.item_home_child,
-                        parent,
-                        false
-                )
-        )
-
-        override fun onBindViewHolder(holder: MovieItemHolder, position: Int) {
-            getItem(position).let { movieDetail ->
-                Log.d(TAG, "onBindViewHolder() called with: movieDetail = [${movieDetail.id} ${movieDetail.name}]")
-                with(holder) {
-                    itemView.tag = movieDetail
-                    reset()
-                    bind(movieDetail)
-                }
-            }
-        }
-
-        override fun onViewAttachedToWindow(holder: MovieItemHolder) {
-            super.onViewAttachedToWindow(holder)
-            if (holder.adapterPosition != RecyclerView.NO_POSITION) {
-                homeListAdapter.getItem(holder.adapterPosition).let {
-                    viewModel.doUpdateMovieDetail(it)
-                }
-            }
-        }
-
-        override fun onViewDetachedFromWindow(holder: MovieItemHolder) {
-            super.onViewDetachedFromWindow(holder)
-            if (holder.adapterPosition != RecyclerView.NO_POSITION) {
-                homeListAdapter.getItem(holder.adapterPosition).let {
-                    viewModel.doRemoveUpdateMovieDetail(it)
-                }
-            }
-        }
-    }
-
-    inner class MovieItemHolder(val binding: ItemHomeChildBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(movieDetail: MovieDetail) {
-            with(binding) {
-                viewModel = ItemChildViewModel(movieDetail)
-                viewModel?.clickObserver?.observe(viewLifecycleOwner, Observer {
-                    SingleActivity.startDetailPage(activity, binding.videoCover, binding.videoCover.transitionName, movieDetail)
-                })
-                executePendingBindings()
-            }
-        }
-
-        fun reset() {
-            binding.videoCover.setImageResource(R.drawable.default_video)
-        }
     }
 
     companion object {
@@ -190,5 +121,128 @@ class HomeListFragment : BaseFragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+}
+
+
+class HomeListAdapter(val activity: FragmentActivity?, val viewModel: HomeListViewModel, appExecutors: AppExecutors) : ListAdapter<MovieDetail, RecyclerView.ViewHolder>(AsyncDifferConfig
+        .Builder<MovieDetail>(object : DiffUtil.ItemCallback<MovieDetail>() {
+            override fun areItemsTheSame(oldItem: MovieDetail, newItem: MovieDetail): Boolean {
+                return oldItem.id == newItem.id && oldItem.categoryId == newItem.categoryId
+            }
+
+            override fun areContentsTheSame(oldItem: MovieDetail, newItem: MovieDetail): Boolean {
+                return oldItem.name == newItem.name && oldItem.homePicUrl == newItem.homePicUrl
+            }
+        })
+        .setBackgroundThreadExecutor(appExecutors.diskIO())
+        .build()
+) {
+
+
+    override fun getItem(position: Int): MovieDetail {
+        return if (position >= super.getItemCount()) {
+            MovieDetail.createEmptyMovieDetail()
+        } else {
+            super.getItem(position)
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position >= super.getItemCount()) {
+            ITEM_LOAD_MORE_TYPE
+        } else {
+            super.getItemViewType(position)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return if (super.getItemCount() == 0) {
+            super.getItemCount()
+        } else {
+            super.getItemCount() + ITEM_LOAD_MORE_COUNT
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == ITEM_LOAD_MORE_TYPE) {
+            return LoadMoreItemHolder(
+                    DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+                            R.layout.item_load_more,
+                            parent, false
+                    )
+            )
+        } else {
+            return MovieItemHolder(activity,
+                    DataBindingUtil.inflate(
+                            LayoutInflater.from(parent.context),
+                            R.layout.item_home_child,
+                            parent,
+                            false
+                    )
+            )
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder.itemViewType == ITEM_LOAD_MORE_TYPE) {
+
+        } else {
+            getItem(position).let { movieDetail ->
+                Log.d(TAG, "onBindViewHolder() called with: movieDetail = [${movieDetail.id} ${movieDetail.name}]")
+                with(holder as MovieItemHolder) {
+                    itemView.tag = movieDetail
+                    reset()
+                    bind(movieDetail)
+                }
+            }
+        }
+    }
+
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        if (holder.adapterPosition != RecyclerView.NO_POSITION) {
+            getItem(holder.adapterPosition).let {
+                viewModel.doUpdateMovieDetail(it)
+            }
+        }
+    }
+
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        if (holder.adapterPosition != RecyclerView.NO_POSITION) {
+            getItem(holder.adapterPosition).let {
+                viewModel.doRemoveUpdateMovieDetail(it)
+            }
+        }
+    }
+
+    companion object {
+        const val TAG = "HomeListAdapter"
+        const val ITEM_LOAD_MORE_COUNT = 1
+        const val ITEM_LOAD_MORE_TYPE = 1000
+    }
+
+}
+
+class LoadMoreItemHolder(val binding: ItemLoadMoreBinding) : RecyclerView.ViewHolder(binding.root)
+
+
+class MovieItemHolder(val activity: FragmentActivity?, val binding: ItemHomeChildBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(movieDetail: MovieDetail) {
+        with(binding) {
+            viewModel = ItemChildViewModel(movieDetail)
+            if (activity != null) {
+                viewModel?.clickObserver?.observe(activity, Observer {
+                    SingleActivity.startDetailPage(activity, binding.videoCover, binding.videoCover.transitionName, movieDetail)
+                })
+            }
+            executePendingBindings()
+        }
+    }
+
+    fun reset() {
+        binding.videoCover.setImageResource(R.drawable.default_video)
     }
 }

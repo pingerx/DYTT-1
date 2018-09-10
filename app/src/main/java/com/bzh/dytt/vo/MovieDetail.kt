@@ -52,6 +52,7 @@ data class MovieDetail(
         override fun newArray(size: Int): Array<MovieDetail?> {
             return arrayOfNulls(size)
         }
-    }
 
+        fun createEmptyMovieDetail(): MovieDetail = MovieDetail(0, 0, "", "", "", "", "", "", false)
+    }
 }
