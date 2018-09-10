@@ -1,6 +1,7 @@
 package com.bzh.dytt.ui.home
 
 import android.arch.lifecycle.*
+import android.databinding.ObservableField
 import android.util.Log
 import com.bzh.dytt.repository.DataRepository
 import com.bzh.dytt.vo.MovieDetail
@@ -10,39 +11,46 @@ import javax.inject.Inject
 
 class HomeListViewModel @Inject constructor(private val dataRepository: DataRepository) : ViewModel(), LifecycleObserver {
 
-    private var isRefresh = false
+    val resourceEmptyStatus: ObservableField<Boolean> = ObservableField()
+    val resourceErrorStatus: ObservableField<Boolean> = ObservableField()
+    val resourceMessage: ObservableField<String> = ObservableField()
 
-    private var isLoadMore = false
+    private var currentPage = FIRST_PAGE
 
-    val movieListLiveData: MutableLiveData<Resource<List<MovieDetail>>> = MutableLiveData()
+    val movieListLiveData: MutableLiveData<List<MovieDetail>> = MutableLiveData()
+
+    var refreshLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    var isRefresh = false
+
+    var isLoadMore = false
 
     private var movieRepositoryLiveData: LiveData<Resource<List<MovieDetail>>>? = null
 
     private var itemUpdateRepositoryLiveData: LiveData<Resource<MovieDetail>>? = null
 
-    var refresLiveData: MutableLiveData<Boolean> = MutableLiveData()
-
-    private val detailObserver = Observer<Resource<MovieDetail>> {
-        when (it?.status) {
-            Status.SUCCESS -> {
-            }
-            Status.ERROR -> {
-            }
-            else -> {
-            }
-        }
-    }
-
     private val listObserver = Observer<Resource<List<MovieDetail>>> {
         Log.d(TAG, "ListObserver ${it?.status} ${it?.message} ${it?.data?.size}")
+
         when (it?.status) {
             Status.SUCCESS -> {
                 if (isLoadMore) {
-                    CURRENT_PAGE += 1
+                    currentPage += 1
                 }
+
                 isLoadMore = false
                 isRefresh = false
-                movieListLiveData.value = it
+                refreshLiveData.value = false
+
+                if (!(it.data == null || it.data.isEmpty())) {
+                    val list = it.data.filter { it.id != 22066 }
+                    if (list.isNotEmpty()) {
+                        movieListLiveData.value = list
+                    }
+                }
+
+                resourceEmptyStatus.set(it.data == null || it.data.isEmpty())
+                resourceMessage.set(it.message)
 
                 it.data?.forEach {
                     Log.d(TAG, "home list model movieDetail = [${it.id} ${it.name}]")
@@ -51,10 +59,13 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
             Status.ERROR -> {
                 isLoadMore = false
                 isRefresh = false
-                movieListLiveData.value = it
+                refreshLiveData.value = false
+
+                resourceEmptyStatus.set(true)
+                resourceMessage.set(it.message)
             }
             else -> {
-                movieListLiveData.value = it
+                refreshLiveData.value = true
             }
         }
     }
@@ -64,7 +75,7 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun create() {
         moveTypeLiveData.observeForever {
-            refresLiveData.value = true
+            refreshLiveData.value = true
             doLoadFirstPage()
         }
     }
@@ -75,13 +86,13 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
     }
 
     fun doLoadMorePage() {
-        Log.d(TAG, "doLoadMorePage isLoadMore=$isLoadMore CURRENT_PAGE=$CURRENT_PAGE")
+        Log.d(TAG, "doLoadMorePage isLoadMore=$isLoadMore currentPage=$currentPage")
         if (isLoadMore) {
             return
         }
         unregister()
         isLoadMore = true
-        movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value!!, CURRENT_PAGE + 1)
+        movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value!!, currentPage + 1)
         movieRepositoryLiveData?.observeForever(listObserver)
     }
 
@@ -92,14 +103,14 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
         }
         unregister()
         isRefresh = true
-        CURRENT_PAGE = FIRST_PAGE
+        currentPage = FIRST_PAGE
         movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value!!, FIRST_PAGE)
         movieRepositoryLiveData?.observeForever(listObserver)
     }
 
     private fun doLoadFirstPage() {
         Log.d(TAG, "doLoadFirstPage $this")
-        CURRENT_PAGE = FIRST_PAGE
+        currentPage = FIRST_PAGE
         movieRepositoryLiveData = dataRepository.movieList(moveTypeLiveData.value!!, FIRST_PAGE)
         movieRepositoryLiveData?.observeForever(listObserver)
     }
@@ -113,7 +124,7 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
     fun doUpdateMovieDetail(item: MovieDetail) {
         if (!item.isPrefect) {
             itemUpdateRepositoryLiveData = dataRepository.movieUpdate(item)
-            itemUpdateRepositoryLiveData?.observeForever(detailObserver)
+            itemUpdateRepositoryLiveData?.observeForever { }
         }
     }
 
@@ -124,7 +135,7 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
     companion object {
         const val TAG = "HomeListViewModel"
         var FIRST_PAGE = 1
-        var CURRENT_PAGE = FIRST_PAGE
+
     }
 }
 

@@ -55,6 +55,7 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
                             // otherwise we will get immediately last cached value,
                             // which may not be updated with latest results received from network.
                             result.addSource(loadFromDb()) { newData ->
+                                onFetchSuccess(newData)
                                 setValue(Resource.success(newData))
                                 finish()
                             }
@@ -86,6 +87,10 @@ abstract class DelayNetworkBoundResource<ResultType, RequestType> constructor(pr
         if (result.value != newValue) {
             result.value = newValue
         }
+    }
+
+    protected open fun onFetchSuccess(data: ResultType?) {
+
     }
 
     protected open fun onFetchFailed(response: ApiErrorResponse<RequestType>) {}

@@ -3,57 +3,28 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.bzh.dytt.vo.Status" />
+
+        <variable
+            name="viewModel"
+            type="com.bzh.dytt.ui.home.HomeListViewModel" />
+    </data>
+
     <FrameLayout
         android:id="@+id/home_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.bzh.dytt.MainActivity">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:id="@+id/empty_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_child_load_empty"
-                    android:textAlignment="center"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/error_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_load_error"
-                    android:textAlignment="center"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-        </LinearLayout>
-
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="@{(viewModel.resourceEmptyStatus || viewModel.resourceEmptyStatus )? View.GONE : View.VISIBLE}">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -61,6 +32,40 @@
                 android:layout_height="match_parent" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.resourceEmptyStatus ? View.VISIBLE : View.GONE}">
+
+            <TextView
+                android:id="@+id/empty_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.resourceMessage == null ? @string/home_child_load_empty : viewModel.resourceMessage}"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/error_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.resourceErrorStatus ? View.VISIBLE : View.GONE}">
+
+            <TextView
+                android:id="@+id/error_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.resourceMessage == null ? @string/home_load_error : viewModel.resourceMessage}"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+        </LinearLayout>
 
     </FrameLayout>
 </layout>

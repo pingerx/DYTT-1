@@ -22,8 +22,6 @@ import com.bzh.dytt.databinding.ItemHomeChildBinding
 import com.bzh.dytt.databinding.SingleListPageBinding
 import com.bzh.dytt.util.autoCleared
 import com.bzh.dytt.vo.MovieDetail
-import com.bzh.dytt.vo.Resource
-import com.bzh.dytt.vo.Status
 import javax.inject.Inject
 
 class HomeListFragment : BaseFragment() {
@@ -34,64 +32,34 @@ class HomeListFragment : BaseFragment() {
     @Inject
     lateinit var appExecutors: AppExecutors
 
-    private var isLoadMore: Boolean = false
-
     private var refreshListener: SwipeRefreshLayout.OnRefreshListener = SwipeRefreshLayout.OnRefreshListener {
-        listViewModel.doRefreshFirstPage()
+        viewModel.doRefreshFirstPage()
     }
 
     private var onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-
-            if (recyclerView?.layoutManager is LinearLayoutManager) {
+            if (recyclerView.layoutManager is LinearLayoutManager) {
                 val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val itemCount = linearLayoutManager.itemCount
                 val completelyVisibleItemPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition()
-                if (!isLoadMore && completelyVisibleItemPosition == (itemCount - 1)) {
-                    isLoadMore = true
-                    onLoadMore()
+                if (!viewModel.isLoadMore && completelyVisibleItemPosition == (itemCount - 1)) {
+                    viewModel.doLoadMorePage()
                 }
             }
         }
     }
 
-    private var listObserver: Observer<Resource<List<MovieDetail>>> = Observer { result ->
-
-        when (result?.status) {
-            Status.ERROR -> {
-                binding.swipeRefreshLayout.isRefreshing = false
-                binding.errorLayout.visibility = View.VISIBLE
-                binding.emptyLayout.visibility = View.GONE
-                isLoadMore = false
-
-            }
-            Status.LOADING -> {
-                binding.swipeRefreshLayout.isRefreshing = true
-                binding.errorLayout.visibility = View.GONE
-                binding.emptyLayout.visibility = View.GONE
-            }
-            Status.SUCCESS -> {
-                binding.swipeRefreshLayout.isRefreshing = false
-                if (result.data == null || result.data.isEmpty()) {
-                    binding.emptyLayout.visibility = View.VISIBLE
-                    binding.errorLayout.visibility = View.GONE
-                } else {
-                    binding.emptyLayout.visibility = View.GONE
-                    binding.errorLayout.visibility = View.GONE
-                    homeListAdapter.submitList(result.data.filter { it.id != 22066 })
-                }
-                isLoadMore = false
-            }
-        }
+    private var listObserver: Observer<List<MovieDetail>> = Observer { result ->
+        homeListAdapter.submitList(result)
     }
 
     private val refreshObserver: Observer<Boolean> = Observer {
         binding.swipeRefreshLayout.isRefreshing = (it == true)
     }
 
-    private lateinit var listViewModel: HomeListViewModel
+    private lateinit var viewModel: HomeListViewModel
 
     private lateinit var homeListAdapter: HomeListAdapter
 
@@ -99,15 +67,14 @@ class HomeListFragment : BaseFragment() {
 
     private var binding by autoCleared<SingleListPageBinding>()
 
-    fun onLoadMore() {
-        listViewModel.doLoadMorePage()
-    }
 
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.single_list_page, container, false)
 
-        listViewModel = viewModelFactory.create(HomeListViewModel::class.java)
-        lifecycle.addObserver(listViewModel)
+        viewModel = viewModelFactory.create(HomeListViewModel::class.java)
+        lifecycle.addObserver(viewModel)
+
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -117,7 +84,7 @@ class HomeListFragment : BaseFragment() {
 
         val movieType = arguments?.getSerializable(MOVIE_TYPE)
 
-        listViewModel.moveTypeLiveData.value = movieType as HomeViewModel.HomeMovieType
+        viewModel.moveTypeLiveData.value = movieType as HomeViewModel.HomeMovieType
         binding.swipeRefreshLayout.setOnRefreshListener(refreshListener)
 
         binding.recyclerView.addOnScrollListener(onScrollListener)
@@ -128,15 +95,15 @@ class HomeListFragment : BaseFragment() {
         homeListAdapter = HomeListAdapter(appExecutors)
         binding.recyclerView.adapter = homeListAdapter
 
-        listViewModel.movieListLiveData.observe(this, listObserver)
+        viewModel.movieListLiveData.observe(this, listObserver)
 
-        listViewModel.refresLiveData.observe(this, refreshObserver)
+        viewModel.refreshLiveData.observe(this, refreshObserver)
     }
 
     override fun doDestroyView() {
-        listViewModel.movieListLiveData.removeObserver(listObserver)
-        listViewModel.refresLiveData.removeObserver(refreshObserver)
-        lifecycle.removeObserver(listViewModel)
+        viewModel.movieListLiveData.removeObserver(listObserver)
+        viewModel.refreshLiveData.removeObserver(refreshObserver)
+        lifecycle.removeObserver(viewModel)
         super.doDestroyView()
     }
 
@@ -178,7 +145,7 @@ class HomeListFragment : BaseFragment() {
             super.onViewAttachedToWindow(holder)
             if (holder.adapterPosition != RecyclerView.NO_POSITION) {
                 homeListAdapter.getItem(holder.adapterPosition).let {
-                    listViewModel.doUpdateMovieDetail(it)
+                    viewModel.doUpdateMovieDetail(it)
                 }
             }
         }
@@ -187,7 +154,7 @@ class HomeListFragment : BaseFragment() {
             super.onViewDetachedFromWindow(holder)
             if (holder.adapterPosition != RecyclerView.NO_POSITION) {
                 homeListAdapter.getItem(holder.adapterPosition).let {
-                    listViewModel.doRemoveUpdateMovieDetail(it)
+                    viewModel.doRemoveUpdateMovieDetail(it)
                 }
             }
         }
