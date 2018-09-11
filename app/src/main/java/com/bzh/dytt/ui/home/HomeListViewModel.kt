@@ -61,7 +61,7 @@ class HomeListViewModel @Inject constructor(private val dataRepository: DataRepo
                 isRefresh = false
                 refreshLiveData.value = false
 
-                resourceEmptyStatus.set(true)
+                resourceErrorStatus.set(true)
                 resourceMessage.set(it.message)
             }
             else -> {

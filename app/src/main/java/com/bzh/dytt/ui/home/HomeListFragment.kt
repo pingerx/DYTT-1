@@ -19,9 +19,9 @@ import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.R
 import com.bzh.dytt.SingleActivity
 import com.bzh.dytt.base.BaseFragment
+import com.bzh.dytt.databinding.HomeListPageBinding
 import com.bzh.dytt.databinding.ItemHomeChildBinding
 import com.bzh.dytt.databinding.ItemLoadMoreBinding
-import com.bzh.dytt.databinding.SingleListPageBinding
 import com.bzh.dytt.util.autoCleared
 import com.bzh.dytt.vo.MovieDetail
 import javax.inject.Inject
@@ -54,7 +54,7 @@ class HomeListFragment : BaseFragment() {
     }
 
     private var listObserver: Observer<List<MovieDetail>> = Observer { result ->
-        homeListAdapter.submitList(result)
+        adapter.submitList(result)
     }
 
     private val refreshObserver: Observer<Boolean> = Observer {
@@ -63,14 +63,14 @@ class HomeListFragment : BaseFragment() {
 
     private lateinit var viewModel: HomeListViewModel
 
-    private lateinit var homeListAdapter: HomeListAdapter
+    private lateinit var adapter: HomeListAdapter
 
     private lateinit var linearLayoutManager: LinearLayoutManager
 
-    private var binding by autoCleared<SingleListPageBinding>()
+    private var binding by autoCleared<HomeListPageBinding>()
 
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.single_list_page, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.home_list_page, container, false)
 
         viewModel = viewModelFactory.create(HomeListViewModel::class.java)
         lifecycle.addObserver(viewModel)
@@ -93,19 +93,12 @@ class HomeListFragment : BaseFragment() {
         linearLayoutManager = LinearLayoutManager(activity)
         binding.recyclerView.layoutManager = linearLayoutManager
 
-        homeListAdapter = HomeListAdapter(activity, viewModel, appExecutors)
-        binding.recyclerView.adapter = homeListAdapter
+        adapter = HomeListAdapter(activity, viewModel, appExecutors)
+        binding.recyclerView.adapter = adapter
 
         viewModel.movieListLiveData.observe(this, listObserver)
 
         viewModel.refreshLiveData.observe(this, refreshObserver)
-    }
-
-    override fun doDestroyView() {
-        viewModel.movieListLiveData.removeObserver(listObserver)
-        viewModel.refreshLiveData.removeObserver(refreshObserver)
-        lifecycle.removeObserver(viewModel)
-        super.doDestroyView()
     }
 
     companion object {
