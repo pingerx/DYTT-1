@@ -7,7 +7,7 @@ import com.bzh.dytt.vo.MovieDetail
 
 @Database(
         entities = [MovieDetail::class],
-        version = 2
+        version = 5
 )
 abstract class DyttDB : RoomDatabase() {
 
