@@ -14,8 +14,8 @@ android {
         applicationId "com.bzh.dytt"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 8
-        versionName "5.3"
+        versionCode 9
+        versionName "5.4"
         testInstrumentationRunner "com.bzh.dytt.util.DyttTestRunner"
 
         javaCompileOptions {
