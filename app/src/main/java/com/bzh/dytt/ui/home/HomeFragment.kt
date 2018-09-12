@@ -15,12 +15,10 @@ import com.bzh.dytt.R
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.databinding.HomeFragmentBinding
 import com.bzh.dytt.di.Injectable
-import com.bzh.dytt.testing.OpenForTesting
 import com.bzh.dytt.util.autoCleared
 import kotlinx.android.synthetic.main.home_fragment.*
 import javax.inject.Inject
 
-@OpenForTesting
 class HomeFragment : BaseFragment(), Injectable {
 
     @Inject
