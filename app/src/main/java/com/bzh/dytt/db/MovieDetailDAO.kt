@@ -11,6 +11,9 @@ import com.bzh.dytt.vo.MovieDetail
 @Dao
 interface MovieDetailDAO {
 
+    @Query("SELECT * FROM movie_detail WHERE isPrefect = :isPrefect")
+    fun movieListNotPrefect(isPrefect: Boolean): List<MovieDetail>
+
     @Query("SELECT * FROM movie_detail WHERE categoryId=:type  ORDER BY id DESC LIMIT :limit")
     fun movieList(type: Int?, limit: Int = 30): LiveData<List<MovieDetail>>
 

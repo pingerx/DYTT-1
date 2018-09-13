@@ -2,7 +2,6 @@ package com.bzh.dytt.di
 
 
 import android.app.Application
-import android.arch.persistence.room.Room
 import com.bzh.dytt.api.NetworkService
 import com.bzh.dytt.db.DyttDB
 import com.bzh.dytt.db.MovieDetailDAO
@@ -76,7 +75,7 @@ class AppModule(private val mBaseUrl: String) {
     @Singleton
     @Provides
     fun provideDyttDb(app: Application): DyttDB {
-        return Room.databaseBuilder(app, DyttDB::class.java, DyttDB.DATABASE_NAME).fallbackToDestructiveMigration().build()
+        return DyttDB.getInstance(app)
     }
 
 
