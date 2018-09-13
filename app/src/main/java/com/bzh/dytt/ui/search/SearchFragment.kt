@@ -63,7 +63,7 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    private val searchActionListener: TextView.OnEditorActionListener = TextView.OnEditorActionListener { v, actionId, event ->
+    private val searchActionListener: TextView.OnEditorActionListener = TextView.OnEditorActionListener { v, actionId, _ ->
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             if (!TextUtils.isEmpty(v.text)) {
                 val searchTarget = v.text.toString().trim()

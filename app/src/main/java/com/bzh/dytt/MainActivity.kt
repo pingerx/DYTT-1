@@ -2,48 +2,59 @@ package com.bzh.dytt
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import com.bzh.dytt.base.BaseActivity
-import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.databinding.ActivityMainBinding
-import com.bzh.dytt.ui.home.HomeFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HasSupportFragmentInjector {
+class MainActivity : BaseActivity(), HasSupportFragmentInjector {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
-    private lateinit var pagerAdapter: MainViewPagerAdapter
+    lateinit var binding: ActivityMainBinding
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         binding.toolbar.setTitle(R.string.nav_home_page)
         setSupportActionBar(binding.toolbar)
 
-        val toggle = ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
-        binding.navView.setNavigationItemSelectedListener(this)
+        NavigationUI.setupActionBarWithNavController(this, navController, binding.drawerLayout)
 
-        pagerAdapter = MainViewPagerAdapter(supportFragmentManager)
-        binding.contentContainer.adapter = pagerAdapter
+        NavigationUI.setupWithNavController(binding.navView, navController)
+
+        navController.addOnNavigatedListener { _, destination ->
+            when (destination.id) {
+                R.id.homeFragment -> {
+                    binding.toolbar.setTitle(R.string.nav_home_page)
+                }
+            }
+        }
+
+        binding.navView.setNavigationItemSelectedListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(binding.drawerLayout, navController)
     }
 
     override fun onBackPressed() {
@@ -62,7 +73,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        if (id == R.id.action_search) {
+        if (id == R.id.searchFragment) {
             SingleActivity.startSearchPage(this)
             return true
         }
@@ -70,38 +81,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-
-        when (id) {
-            R.id.nav_home -> {
-                binding.toolbar.setTitle(R.string.nav_home_page)
-                binding.contentContainer.currentItem = 0
-            }
-        }
-
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
-
-        return true
-    }
-
     override fun supportFragmentInjector() = fragmentInjector
 
-    class MainViewPagerAdapter internal constructor(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-
-        override fun getItem(position: Int): BaseFragment = when (position) {
-            0 -> HomeFragment.newInstance()
-            else -> throw IndexOutOfBoundsException()
-        }
-
-        override fun getCount() = 1
-    }
-
     companion object {
-
-        // ca-app-pub-2810447214027158/1355816417
-        const val ADMOB_APP_ID_BZH = "ca-app-pub-2810447214027158~8679772669"
-
-        const val ADMOB_APP_ID = "ca-app-pub-8112052667906046~4830848371"
+        const val TAG = "MainActivity"
     }
 }
