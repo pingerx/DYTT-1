@@ -8,15 +8,11 @@ import android.util.Log
 
 class ThunderHelper {
 
-    fun onClickDownload(context: Context?, ftpUrl: String?) = if (ftpUrl != null && !ftpUrl.isEmpty() && checkIsInstall(context)) {
-        val url = ftpUrl.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        context?.startActivity(Intent("android.intent.action.VIEW", Uri.parse(url[0])))
-        true
-    } else {
-        false
+    fun startThunder(context: Context?, urls: String) {
+        context?.startActivity(Intent("android.intent.action.VIEW", Uri.parse(urls)))
     }
 
-    private fun checkIsInstall(context: Context?) = try {
+    fun checkIsInstall(context: Context?) = try {
         context?.packageManager?.getApplicationInfo(XUN_LEI_PACKAGE_NAME, 0)
         true
     } catch (e: PackageManager.NameNotFoundException) {

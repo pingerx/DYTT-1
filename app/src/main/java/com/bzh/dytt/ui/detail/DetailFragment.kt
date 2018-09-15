@@ -24,6 +24,7 @@ import com.bzh.dytt.di.Injectable
 import com.bzh.dytt.util.ThunderHelper
 import com.bzh.dytt.util.autoCleared
 import com.bzh.dytt.vo.MovieDetail
+import com.yarolegovich.lovelydialog.LovelyChoiceDialog
 import kotlinx.android.synthetic.main.detail_fragment.*
 import javax.inject.Inject
 
@@ -69,10 +70,23 @@ class DetailFragment : BaseFragment(), Injectable {
     }
 
     fun onClickDownload(movieDetail: MovieDetail) {
-        if (activity == null || !thunderHelper.onClickDownload(context, movieDetail.downloadUrl)) {
-            val dialogFragment = InnerDialogFragment()
-            dialogFragment.show(activity?.supportFragmentManager, "InnerDialog")
-        }
+        val url = movieDetail.downloadUrl?.split(";".toRegex())?.dropLastWhile { it.isEmpty() }?.toTypedArray().orEmpty()
+        LovelyChoiceDialog(activity)
+                .setTopColorRes(R.color.colorPrimary)
+                .setIcon(R.drawable.ic_download_white)
+                .setItemsMultiChoice(url) { _, items ->
+                    if (!thunderHelper.checkIsInstall(activity)) {
+                        val dialogFragment = InnerDialogFragment()
+                        dialogFragment.show(activity?.supportFragmentManager, "InnerDialog")
+                    } else {
+                        for (item in items) {
+                            thunderHelper.startThunder(activity, item)
+                        }
+                    }
+
+                }
+                .setConfirmButtonText(R.string.ok)
+                .show()
     }
 
     override fun doCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

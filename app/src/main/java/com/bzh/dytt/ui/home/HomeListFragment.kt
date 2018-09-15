@@ -22,9 +22,13 @@ import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.databinding.HomeListPageBinding
 import com.bzh.dytt.databinding.ItemHomeChildBinding
 import com.bzh.dytt.databinding.ItemLoadMoreBinding
+import com.bzh.dytt.ui.detail.InnerDialogFragment
+import com.bzh.dytt.util.ThunderHelper
 import com.bzh.dytt.util.autoCleared
 import com.bzh.dytt.vo.MovieDetail
+import com.yarolegovich.lovelydialog.LovelyChoiceDialog
 import javax.inject.Inject
+
 
 class HomeListFragment : BaseFragment() {
 
@@ -223,6 +227,8 @@ class LoadMoreItemHolder(val binding: ItemLoadMoreBinding) : RecyclerView.ViewHo
 
 class MovieItemHolder(val activity: FragmentActivity?, val binding: ItemHomeChildBinding) : RecyclerView.ViewHolder(binding.root) {
 
+    val thunderHelper: ThunderHelper = ThunderHelper()
+
     fun bind(movieDetail: MovieDetail) {
         with(binding) {
             viewModel = ItemChildViewModel(movieDetail)
@@ -230,6 +236,28 @@ class MovieItemHolder(val activity: FragmentActivity?, val binding: ItemHomeChil
                 viewModel?.clickObserver?.observe(activity, Observer {
                     SingleActivity.startDetailPage(activity, binding.videoCover, binding.videoCover.transitionName, movieDetail)
                 })
+                if (movieDetail.isPrefect) {
+                    binding.root.setOnLongClickListener {
+                        val url = movieDetail.downloadUrl?.split(";".toRegex())?.dropLastWhile { it.isEmpty() }?.toTypedArray().orEmpty()
+                        LovelyChoiceDialog(activity)
+                                .setTopColorRes(R.color.colorPrimary)
+                                .setIcon(R.drawable.ic_download_white)
+                                .setItemsMultiChoice(url) { _, items ->
+                                    if (!thunderHelper.checkIsInstall(activity)) {
+                                        val dialogFragment = InnerDialogFragment()
+                                        dialogFragment.show(activity.supportFragmentManager, "InnerDialog")
+                                    } else {
+                                        for (item in items) {
+                                            thunderHelper.startThunder(activity, item)
+                                        }
+                                    }
+
+                                }
+                                .setConfirmButtonText(R.string.ok)
+                                .show()
+                        true
+                    }
+                }
             }
             executePendingBindings()
         }
@@ -237,5 +265,9 @@ class MovieItemHolder(val activity: FragmentActivity?, val binding: ItemHomeChil
 
     fun reset() {
         binding.videoCover.setImageResource(R.drawable.default_video)
+    }
+
+    companion object {
+        const val TAG = "MovieItemHolder"
     }
 }

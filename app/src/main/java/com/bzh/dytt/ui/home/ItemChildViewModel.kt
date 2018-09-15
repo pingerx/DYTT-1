@@ -40,8 +40,12 @@ class ItemChildViewModel(val movieDetail: MovieDetail) : ViewModel() {
             }
         }
         else -> {
-            val filter = movieDetail.content?.split("◎")?.filter { it.isNotEmpty() }
-            filter?.last().orEmpty().replace(Regex("[\\r\\n 　]"), "").replace("简介", "简 介 : ")
+            val filter = movieDetail.content?.split("◎")?.filter { it.isNotEmpty() }.orEmpty()
+            if (filter.isNotEmpty()) {
+                filter.last().replace(Regex("[\\r\\n 　]"), "").replace("简介", "简 介 : ")
+            } else {
+                ""
+            }
         }
     }
 
