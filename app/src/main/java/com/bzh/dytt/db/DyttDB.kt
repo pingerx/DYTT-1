@@ -8,10 +8,7 @@ import android.content.Context
 import android.os.Build
 import android.support.annotation.VisibleForTesting
 import android.util.Log
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
+import androidx.work.*
 import com.bzh.dytt.vo.MovieDetail
 import com.bzh.dytt.workers.FetchVideoDetailWorker
 
@@ -56,7 +53,6 @@ abstract class DyttDB : RoomDatabase() {
                                 Constraints.Builder()
                                         .setRequiresCharging(true)
                                         .setRequiresDeviceIdle(true)
-                                        .setRequiresCharging(false)
                                         .setRequiredNetworkType(NetworkType.CONNECTED)
                                         .setRequiresBatteryNotLow(true)
                                         .setRequiresStorageNotLow(true)
@@ -64,7 +60,6 @@ abstract class DyttDB : RoomDatabase() {
                             } else {
                                 Constraints.Builder()
                                         .setRequiresCharging(true)
-                                        .setRequiresCharging(false)
                                         .setRequiredNetworkType(NetworkType.CONNECTED)
                                         .setRequiresBatteryNotLow(true)
                                         .setRequiresStorageNotLow(true)

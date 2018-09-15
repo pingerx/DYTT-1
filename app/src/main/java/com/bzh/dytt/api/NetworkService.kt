@@ -3,6 +3,7 @@ package com.bzh.dytt.api
 import android.arch.lifecycle.LiveData
 import com.bzh.dytt.vo.MovieDetail
 import com.bzh.dytt.vo.MovieDetailResponse
+import retrofit2.Call
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -26,6 +27,14 @@ interface NetworkService {
             @Header("x-header-request-imei") headerImei: String = "",
             @Query("categoryId") categoryId: Int,
             @Query("movieDetailId") movieDetailId: Int): LiveData<ApiResponse<MovieDetail>>
+
+    @POST("/adminapi/api/movieDetail.json")
+    fun movieDetailNormal(
+            @Header("x-header-request-timestamp") headerTimestamp: String = "",
+            @Header("x-header-request-key") headerKey: String = "",
+            @Header("x-header-request-imei") headerImei: String = "",
+            @Query("categoryId") categoryId: Int,
+            @Query("movieDetailId") movieDetailId: Int): Call<MovieDetail>
 
     @POST("/adminapi/api/movieList.json")
     fun search(
