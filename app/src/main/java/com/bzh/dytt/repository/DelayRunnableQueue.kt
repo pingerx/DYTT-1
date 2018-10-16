@@ -60,7 +60,7 @@ class DelayRunnableQueue<F, E : Runnable> @Inject constructor() {
 
     private val delayQueue: DelayQueue<DelayObject<F, E>> = DelayQueue()
 
-    val executor = Executors.newSingleThreadExecutor()
+    private val executor = Executors.newSingleThreadExecutor()!!
 
     private var lastMills: Long = System.currentTimeMillis()
 
