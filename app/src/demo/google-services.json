@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "76759030824",
+    "firebase_url": "https://dytt-f5d13.firebaseio.com",
+    "project_id": "dytt-f5d13",
+    "storage_bucket": "dytt-f5d13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76759030824:android:361b91aa5595fa78",
+        "android_client_info": {
+          "package_name": "com.bzh.dytt.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76759030824-erjja2t3rvhgeq95o0m4evrikspijarj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxZ7yJfT5BkocMcmg9_DJoQ33MMCoea6c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

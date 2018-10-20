@@ -38,9 +38,11 @@ android {
 
     buildTypes {
         debug {
+            debuggable true
             testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
         }
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -56,6 +58,15 @@ android {
 
     dataBinding {
         enabled = true
+    }
+
+    flavorDimensions "demo"
+    productFlavors {
+        demo {
+            dimension "demo"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
     }
 }
 
