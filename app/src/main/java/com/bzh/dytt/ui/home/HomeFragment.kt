@@ -1,16 +1,14 @@
 package com.bzh.dytt.ui.home
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.res.Resources
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.bzh.dytt.R
 import com.bzh.dytt.base.BaseFragment
 import com.bzh.dytt.databinding.HomeFragmentBinding
@@ -68,7 +66,7 @@ class HomeFragment : BaseFragment(), Injectable {
         fun newInstance() = HomeFragment()
     }
 
-    class HomePagerAdapter(private val resources: Resources, fragmentManager: FragmentManager?) : FragmentPagerAdapter(fragmentManager) {
+    class HomePagerAdapter(private val resources: Resources, fragmentManager: androidx.fragment.app.FragmentManager?) : androidx.fragment.app.FragmentPagerAdapter(fragmentManager!!) {
 
         val data = arrayListOf<HomeViewModel.HomeMovieType>()
 

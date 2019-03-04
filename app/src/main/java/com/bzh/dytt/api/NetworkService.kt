@@ -1,6 +1,6 @@
 package com.bzh.dytt.api
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.bzh.dytt.vo.MovieDetail
 import com.bzh.dytt.vo.MovieDetailResponse
 import retrofit2.Call

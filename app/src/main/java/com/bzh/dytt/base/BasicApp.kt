@@ -9,7 +9,7 @@ import android.os.Build
 import android.util.Log
 import com.bzh.dytt.di.AppInjector
 import com.bzh.dytt.key.KeyUtils
-import com.google.firebase.FirebaseApp
+//import com.google.firebase.FirebaseApp
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
@@ -25,7 +25,7 @@ class BasicApp : Application(), HasActivityInjector {
         super.onCreate()
         AppInjector.init(this)
 
-        FirebaseApp.initializeApp(this)
+//        FirebaseApp.initializeApp(this)
 
         KeyUtils.init(this)
 

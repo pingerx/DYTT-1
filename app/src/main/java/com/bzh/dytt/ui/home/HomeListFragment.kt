@@ -1,16 +1,16 @@
 package com.bzh.dytt.ui.home
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.recyclerview.extensions.AsyncDifferConfig
-import android.support.v7.recyclerview.extensions.ListAdapter
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.FragmentActivity
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,16 +38,16 @@ class HomeListFragment : BaseFragment() {
     @Inject
     lateinit var appExecutors: AppExecutors
 
-    private var refreshListener: SwipeRefreshLayout.OnRefreshListener = SwipeRefreshLayout.OnRefreshListener {
+    private var refreshListener: androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener = androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener {
         viewModel.doRefreshFirstPage()
     }
 
-    private var onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+    private var onScrollListener: androidx.recyclerview.widget.RecyclerView.OnScrollListener = object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
 
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            if (recyclerView.layoutManager is LinearLayoutManager) {
-                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+            if (recyclerView.layoutManager is androidx.recyclerview.widget.LinearLayoutManager) {
+                val linearLayoutManager = recyclerView.layoutManager as androidx.recyclerview.widget.LinearLayoutManager
                 val itemCount = linearLayoutManager.itemCount
                 val completelyVisibleItemPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition()
                 if (!viewModel.isLoadMore && completelyVisibleItemPosition == (itemCount - 1)) {
@@ -69,7 +69,7 @@ class HomeListFragment : BaseFragment() {
 
     private lateinit var adapter: HomeListAdapter
 
-    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var linearLayoutManager: androidx.recyclerview.widget.LinearLayoutManager
 
     private var binding by autoCleared<HomeListPageBinding>()
 
@@ -94,7 +94,7 @@ class HomeListFragment : BaseFragment() {
 
         binding.recyclerView.addOnScrollListener(onScrollListener)
 
-        linearLayoutManager = LinearLayoutManager(activity)
+        linearLayoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
         binding.recyclerView.layoutManager = linearLayoutManager
 
         adapter = HomeListAdapter(activity, viewModel, appExecutors)
@@ -122,7 +122,7 @@ class HomeListFragment : BaseFragment() {
 }
 
 
-class HomeListAdapter(val activity: FragmentActivity?, val viewModel: HomeListViewModel, appExecutors: AppExecutors) : ListAdapter<MovieDetail, RecyclerView.ViewHolder>(AsyncDifferConfig
+class HomeListAdapter(val activity: androidx.fragment.app.FragmentActivity?, val viewModel: HomeListViewModel, appExecutors: AppExecutors) : ListAdapter<MovieDetail, androidx.recyclerview.widget.RecyclerView.ViewHolder>(AsyncDifferConfig
         .Builder<MovieDetail>(object : DiffUtil.ItemCallback<MovieDetail>() {
             override fun areItemsTheSame(oldItem: MovieDetail, newItem: MovieDetail): Boolean {
                 return oldItem.id == newItem.id && oldItem.categoryId == newItem.categoryId
@@ -161,7 +161,7 @@ class HomeListAdapter(val activity: FragmentActivity?, val viewModel: HomeListVi
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         if (viewType == ITEM_LOAD_MORE_TYPE) {
             return LoadMoreItemHolder(
                     DataBindingUtil.inflate(LayoutInflater.from(parent.context),
@@ -181,7 +181,7 @@ class HomeListAdapter(val activity: FragmentActivity?, val viewModel: HomeListVi
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         if (holder.itemViewType == ITEM_LOAD_MORE_TYPE) {
 
         } else {
@@ -196,18 +196,18 @@ class HomeListAdapter(val activity: FragmentActivity?, val viewModel: HomeListVi
         }
     }
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+    override fun onViewAttachedToWindow(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        if (holder.adapterPosition != RecyclerView.NO_POSITION) {
+        if (holder.adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
             getItem(holder.adapterPosition).let {
                 viewModel.doUpdateMovieDetail(it)
             }
         }
     }
 
-    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+    override fun onViewDetachedFromWindow(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        if (holder.adapterPosition != RecyclerView.NO_POSITION) {
+        if (holder.adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
             getItem(holder.adapterPosition).let {
                 viewModel.doRemoveUpdateMovieDetail(it)
             }
@@ -222,10 +222,10 @@ class HomeListAdapter(val activity: FragmentActivity?, val viewModel: HomeListVi
 
 }
 
-class LoadMoreItemHolder(val binding: ItemLoadMoreBinding) : RecyclerView.ViewHolder(binding.root)
+class LoadMoreItemHolder(val binding: ItemLoadMoreBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root)
 
 
-class MovieItemHolder(val activity: FragmentActivity?, val binding: ItemHomeChildBinding) : RecyclerView.ViewHolder(binding.root) {
+class MovieItemHolder(val activity: androidx.fragment.app.FragmentActivity?, val binding: ItemHomeChildBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
 
     val thunderHelper: ThunderHelper = ThunderHelper()
 

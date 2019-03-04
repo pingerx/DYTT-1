@@ -1,6 +1,6 @@
 package com.bzh.dytt.ui.home
 
-import android.arch.lifecycle.*
+import androidx.lifecycle.*
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor() : ViewModel(), LifecycleObserver {

@@ -1,11 +1,10 @@
 package com.bzh.dytt
 
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.view.GravityCompat
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -19,7 +18,7 @@ import javax.inject.Inject
 class MainActivity : BaseActivity(), HasSupportFragmentInjector {
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var fragmentInjector: DispatchingAndroidInjector<androidx.fragment.app.Fragment>
 
     lateinit var binding: ActivityMainBinding
 
@@ -39,10 +38,12 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
 
         NavigationUI.setupWithNavController(binding.navView, navController)
 
-        navController.addOnNavigatedListener { _, destination ->
-            when (destination.id) {
-                R.id.homeFragment -> {
-                    binding.toolbar.setTitle(R.string.nav_home_page)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            run {
+                when (destination.id) {
+                    R.id.homeFragment -> {
+                        binding.toolbar.setTitle(R.string.nav_home_page)
+                    }
                 }
             }
         }
@@ -54,7 +55,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(binding.drawerLayout, navController)
+        return NavigationUI.navigateUp(navController, binding.drawerLayout)
     }
 
     override fun onBackPressed() {

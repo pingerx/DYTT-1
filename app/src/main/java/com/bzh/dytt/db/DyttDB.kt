@@ -1,12 +1,12 @@
 package com.bzh.dytt.db
 
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.Room
-import android.arch.persistence.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import android.content.Context
 import android.os.Build
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import android.util.Log
 import androidx.work.*
 import com.bzh.dytt.vo.MovieDetail

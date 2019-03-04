@@ -9,7 +9,7 @@
 
         <variable
             name="actionBar"
-            type="android.support.v7.app.ActionBar" />
+            type="androidx.appcompat.app.ActionBar" />
 
         <variable
             name="detailFragment"
@@ -21,16 +21,16 @@
 
     </data>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.CoordinatorLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.design.widget.AppBarLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,9 +58,9 @@
                         tools:ignore="ContentDescription" />
 
                 </FrameLayout>
-            </android.support.design.widget.AppBarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detail_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -68,10 +68,10 @@
                 android:baselineAligned="false"
                 android:paddingBottom="20dp"
                 android:paddingTop="10dp"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,8 +83,8 @@
                 app:layout_anchorGravity="top|end"
                 app:srcCompat="@drawable/ic_download" />
 
-        </android.support.design.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>

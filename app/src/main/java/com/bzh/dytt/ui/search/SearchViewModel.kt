@@ -1,8 +1,8 @@
 package com.bzh.dytt.ui.search
 
-import android.arch.lifecycle.*
-import android.arch.lifecycle.Observer
-import android.databinding.ObservableField
+import androidx.lifecycle.*
+import androidx.lifecycle.Observer
+import androidx.databinding.ObservableField
 import android.util.Log
 import com.bzh.dytt.repository.DataRepository
 import com.bzh.dytt.vo.MovieDetail

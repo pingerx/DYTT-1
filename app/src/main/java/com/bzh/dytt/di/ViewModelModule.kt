@@ -1,7 +1,7 @@
 package com.bzh.dytt.di
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.bzh.dytt.ui.detail.DetailViewModel
 import com.bzh.dytt.ui.home.HomeListViewModel
 import com.bzh.dytt.ui.home.HomeViewModel

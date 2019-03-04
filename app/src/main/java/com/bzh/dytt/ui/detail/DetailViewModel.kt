@@ -1,7 +1,7 @@
 package com.bzh.dytt.ui.detail
 
-import android.arch.lifecycle.*
-import android.databinding.ObservableField
+import androidx.lifecycle.*
+import androidx.databinding.ObservableField
 import com.bzh.dytt.repository.DataRepository
 import com.bzh.dytt.ui.home.HomeViewModel
 import com.bzh.dytt.vo.MovieDetail

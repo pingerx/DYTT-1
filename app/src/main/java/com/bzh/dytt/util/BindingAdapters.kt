@@ -1,9 +1,9 @@
 package com.bzh.dytt.util
 
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.support.v7.app.ActionBar
+import androidx.appcompat.app.ActionBar
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView

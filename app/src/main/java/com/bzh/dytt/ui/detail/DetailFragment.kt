@@ -1,20 +1,18 @@
 package com.bzh.dytt.ui.detail
 
 import android.app.Dialog
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.recyclerview.extensions.AsyncDifferConfig
-import android.support.v7.recyclerview.extensions.ListAdapter
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.bzh.dytt.AppExecutors
 import com.bzh.dytt.R
 import com.bzh.dytt.base.BaseFragment
@@ -77,7 +75,7 @@ class DetailFragment : BaseFragment(), Injectable {
                 .setItemsMultiChoice(url) { _, items ->
                     if (!thunderHelper.checkIsInstall(activity)) {
                         val dialogFragment = InnerDialogFragment()
-                        dialogFragment.show(activity?.supportFragmentManager, "InnerDialog")
+                        dialogFragment.show(activity?.supportFragmentManager!!, "InnerDialog")
                     } else {
                         for (item in items) {
                             thunderHelper.startThunder(activity, item)
@@ -154,7 +152,7 @@ class DetailFragment : BaseFragment(), Injectable {
         }
     }
 
-    inner class DetailItemHolder(val binding: ItemDetailBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class DetailItemHolder(val binding: ItemDetailBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
         fun bind(content: String) {
             binding.content.text = content
         }
@@ -176,7 +174,7 @@ class DetailFragment : BaseFragment(), Injectable {
     }
 }
 
-class InnerDialogFragment : DialogFragment() {
+class InnerDialogFragment : androidx.fragment.app.DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity!!)

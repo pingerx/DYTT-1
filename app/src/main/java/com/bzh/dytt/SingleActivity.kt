@@ -5,8 +5,8 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import android.view.MenuItem
 import android.widget.ImageView
 import com.bzh.dytt.base.BaseActivity
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class SingleActivity : BaseActivity(), HasSupportFragmentInjector {
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var fragmentInjector: DispatchingAndroidInjector<androidx.fragment.app.Fragment>
 
     override fun supportFragmentInjector() = fragmentInjector
 
@@ -71,7 +71,7 @@ class SingleActivity : BaseActivity(), HasSupportFragmentInjector {
         const val TYPE = "TYPE"
         const val DATA = "DATA"
 
-        fun startDetailPage(activity: FragmentActivity?, sharedElement: ImageView, sharedKey: String, movieDetail: MovieDetail) {
+        fun startDetailPage(activity: androidx.fragment.app.FragmentActivity?, sharedElement: ImageView, sharedKey: String, movieDetail: MovieDetail) {
             val intent = Intent(activity, SingleActivity::class.java)
             intent.putExtra(TYPE, SingleActivity.SingleType.Detail)
             intent.putExtra(DATA, movieDetail)

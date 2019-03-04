@@ -1,18 +1,18 @@
 package com.bzh.dytt.ui.search
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import android.content.Context
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.recyclerview.extensions.AsyncDifferConfig
-import android.support.v7.recyclerview.extensions.ListAdapter
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -47,7 +47,7 @@ class SearchFragment : BaseFragment() {
 
     lateinit var viewModel: SearchViewModel
 
-    lateinit var linearLayoutManager: LinearLayoutManager
+    lateinit var linearLayoutManager: androidx.recyclerview.widget.LinearLayoutManager
 
     lateinit var adapter: SearchListAdapter
 
@@ -120,7 +120,7 @@ class SearchFragment : BaseFragment() {
 
         editText.setOnEditorActionListener(searchActionListener)
 
-        linearLayoutManager = LinearLayoutManager(activity)
+        linearLayoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
         binding.recyclerView.layoutManager = linearLayoutManager
 
         adapter = SearchListAdapter(activity, viewModel, appExecutors)
@@ -140,7 +140,7 @@ class SearchFragment : BaseFragment() {
     }
 }
 
-class SearchListAdapter constructor(val activity: FragmentActivity?, val viewModel: SearchViewModel, appExecutors: AppExecutors) : ListAdapter<MovieDetail, MovieItemHolder>(
+class SearchListAdapter constructor(val activity: androidx.fragment.app.FragmentActivity?, val viewModel: SearchViewModel, appExecutors: AppExecutors) : ListAdapter<MovieDetail, MovieItemHolder>(
         AsyncDifferConfig
                 .Builder<MovieDetail>(object : DiffUtil.ItemCallback<MovieDetail>() {
                     override fun areItemsTheSame(oldItem: MovieDetail, newItem: MovieDetail): Boolean {
@@ -181,7 +181,7 @@ class SearchListAdapter constructor(val activity: FragmentActivity?, val viewMod
 
     override fun onViewAttachedToWindow(holder: MovieItemHolder) {
         super.onViewAttachedToWindow(holder)
-        if (holder.adapterPosition != RecyclerView.NO_POSITION) {
+        if (holder.adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
             getItem(holder.adapterPosition).let {
                 viewModel.doUpdateMovieDetail(it)
             }
@@ -190,7 +190,7 @@ class SearchListAdapter constructor(val activity: FragmentActivity?, val viewMod
 
     override fun onViewDetachedFromWindow(holder: MovieItemHolder) {
         super.onViewDetachedFromWindow(holder)
-        if (holder.adapterPosition != RecyclerView.NO_POSITION) {
+        if (holder.adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
             getItem(holder.adapterPosition).let {
                 viewModel.doRemoveUpdateMovieDetail(it)
             }

@@ -1,6 +1,6 @@
 package com.bzh.dytt.util
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 
 
 /**

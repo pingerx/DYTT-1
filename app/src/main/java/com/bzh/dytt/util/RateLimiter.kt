@@ -17,7 +17,7 @@
 package com.bzh.dytt.util
 
 import android.os.SystemClock
-import android.support.v4.util.ArrayMap
+import androidx.collection.ArrayMap
 
 import java.util.concurrent.TimeUnit
 
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
  */
 class RateLimiter<in KEY>(timeout: Int, timeUnit: TimeUnit) {
 
-    private val timestamps = ArrayMap<KEY, Long>()
+    private val timestamps = androidx.collection.ArrayMap<KEY, Long>()
     private val timeout = timeUnit.toMillis(timeout.toLong())
 
     @Synchronized

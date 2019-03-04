@@ -3,7 +3,9 @@ package com.bzh.dytt.workers
 import android.content.Context
 import android.os.Looper
 import android.util.Log
+import androidx.annotation.NonNull
 import androidx.work.Worker
+import androidx.work.WorkerParameters
 import com.bzh.dytt.api.NetworkService
 import com.bzh.dytt.db.DyttDB
 import com.bzh.dytt.key.KeyUtils
@@ -17,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
-class FetchVideoDetailWorker : Worker() {
+class FetchVideoDetailWorker(@NonNull context: Context, @NonNull workerParams: WorkerParameters) : Worker(context, workerParams) {
 
     private fun provideCacheInterceptor(): Interceptor {
         return Interceptor { chain ->
@@ -97,7 +99,7 @@ class FetchVideoDetailWorker : Worker() {
             Thread.sleep(1000L)
         }
 
-        return Result.SUCCESS
+        return Result.success()
     }
 
     companion object {
