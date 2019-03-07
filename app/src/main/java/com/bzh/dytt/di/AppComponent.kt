@@ -5,6 +5,7 @@ import com.bzh.dytt.base.BasicApp
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 
@@ -16,7 +17,7 @@ import javax.inject.Singleton
  * http://a.codekk.com/detail/Android/%E6%89%94%E7%89%A9%E7%BA%BF/Dagger%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90
  */
 @Singleton
-@Component(modules = [AndroidInjectionModule::class, MainActivityModule::class, AppModule::class])
+@Component(modules = [AndroidSupportInjectionModule::class, MainActivityModule::class, AppModule::class])
 interface AppComponent {
 
     fun inject(basicApp: BasicApp)

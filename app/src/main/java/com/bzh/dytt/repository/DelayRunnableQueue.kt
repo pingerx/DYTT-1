@@ -21,8 +21,8 @@ class DelayObject<F, E : Runnable>(val flag: F, val data: E? = null) : Delayed {
         return unit.convert(diff, TimeUnit.MILLISECONDS)
     }
 
-    override fun compareTo(o: Delayed): Int {
-        return saturatedCast(this.startTimeMillis - (o as DelayObject<*, *>).startTimeMillis)
+    override fun compareTo(other: Delayed): Int {
+        return saturatedCast(this.startTimeMillis - (other as DelayObject<*, *>).startTimeMillis)
     }
 
     override fun equals(other: Any?): Boolean {

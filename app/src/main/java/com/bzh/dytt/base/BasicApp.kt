@@ -32,6 +32,7 @@ class BasicApp : Application(), HasActivityInjector {
         Log.d(TAG, "onCreate() called ${getSignature(this)}")
     }
 
+    @Suppress("DEPRECATION")
     @SuppressLint("WrongConstant", "PackageManagerGetSignatures")
     private fun getSignature(context: Context): String = if (Build.VERSION.SDK_INT >= 28) {
         val packageInfo = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_SIGNING_CERTIFICATES)
